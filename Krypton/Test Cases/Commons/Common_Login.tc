@@ -7,12 +7,12 @@
    <testCaseGuid>05a8cfc9-8864-43a4-b0ff-080588861e82</testCaseGuid>
    <variable>
       <defaultValue>''</defaultValue>
-      <id>bee690d5-efe4-426b-b880-2eb059671524</id>
+      <id>8c092eea-d217-4a78-966b-a3dac6863891</id>
       <name>EmailAddress</name>
    </variable>
    <variable>
       <defaultValue>''</defaultValue>
-      <id>1e9d735e-2fda-41e0-ad1d-5e34f9c88e5b</id>
+      <id>e61c0520-18d3-433b-a822-6de3231e98aa</id>
       <name>Password</name>
    </variable>
 </TestCaseEntity>

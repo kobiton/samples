@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>Verify_Reply_Email</name>
+   <comment></comment>
+   <tag></tag>
+   <testCaseGuid>b50a9df8-b500-4ebf-83fc-eb5db3181159</testCaseGuid>
+   <variable>
+      <defaultValue>'Email1 sends message to Email2'</defaultValue>
+      <id>8dc967e2-1159-4a65-87a1-c0eed183ac52</id>
+      <name>Subject</name>
+   </variable>
+   <variable>
+      <defaultValue>'I am a body of Email1'</defaultValue>
+      <id>3a62fd09-f093-4ecc-be3a-a0a1d3baa800</id>
+      <name>Body</name>
+   </variable>
+   <variable>
+      <defaultValue>'Re: Email1 sends message to Email2'</defaultValue>
+      <id>8d850a17-724f-498e-98aa-7f0b301f4214</id>
+      <name>ReplySubject</name>
+   </variable>
+</TestCaseEntity>
