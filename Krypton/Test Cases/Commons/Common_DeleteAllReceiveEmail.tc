@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>Common_DeleteAllReceiveEmail</name>
+   <comment></comment>
+   <tag></tag>
+   <testCaseGuid>01989b20-aa64-4f65-958d-667f9d9b21b7</testCaseGuid>
+   <variable>
+      <defaultValue>'You have no mail.'</defaultValue>
+      <id>ec8717fa-bb59-4244-b78c-56362c0d8a4c</id>
+      <name>NoEmailMsg1</name>
+   </variable>
+   <variable>
+      <defaultValue>'Please enjoy your day!'</defaultValue>
+      <id>dbaa439b-88d8-4809-b5be-a690aaa76c8f</id>
+      <name>NoEmailMsg2</name>
+   </variable>
+</TestCaseEntity>

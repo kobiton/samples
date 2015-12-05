@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestSuiteEntity>
+   <description></description>
+   <name>KrytonTestSuite GoogleNexus7</name>
+   <isRerun>false</isRerun>
+   <lastRun>2015-12-05T12:10:27</lastRun>
+   <mailRecipient></mailRecipient>
+   <numberOfRerun>0</numberOfRerun>
+   <pageLoadTimeout>30</pageLoadTimeout>
+   <pageLoadTimeoutDefault>true</pageLoadTimeoutDefault>
+   <testSuiteGuid>05af0449-a418-4060-a898-69ea36fd087f</testSuiteGuid>
+   <testCaseLink>
+      <guid>f0f1bf12-59c4-4540-8903-0f9598218289</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/Commons/StartUp</testCaseId>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>c80ab105-ea12-4c64-bc12-885523825909</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>false</isRun>
+      <testCaseId>Test Cases/VerifyInvalidLogin</testCaseId>
+      <variableLink>
+         <testDataLinkId></testDataLinkId>
+         <type>SCRIPT</type>
+         <value></value>
+         <variableId>74d0dd81-ef68-4f5f-a4b4-4e17fb41b673</variableId>
+      </variableLink>
+      <variableLink>
+         <testDataLinkId></testDataLinkId>
+         <type>SCRIPT</type>
+         <value></value>
+         <variableId>bb99a9a4-5aaa-43e4-8833-4378ee5d5eb3</variableId>
+      </variableLink>
+      <variableLink>
+         <testDataLinkId></testDataLinkId>
+         <type>SCRIPT</type>
+         <value></value>
+         <variableId>6def97e6-333b-4839-80d2-80df556ee976</variableId>
+      </variableLink>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>9ba272b5-4d72-4813-89f3-1b7bfb0a3242</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>false</isRun>
+      <testCaseId>Test Cases/VerifyValidLogin</testCaseId>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>ec726621-ae4d-4880-b55f-4244a04c6fab</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/Verify_Compose_Reply_Delete_Email</testCaseId>
+      <variableLink>
+         <testDataLinkId></testDataLinkId>
+         <type>SCRIPT</type>
+         <value></value>
+         <variableId>5cc38f2b-f329-4343-8e37-834dd10db528</variableId>
+      </variableLink>
+      <variableLink>
+         <testDataLinkId></testDataLinkId>
+         <type>SCRIPT</type>
+         <value></value>
+         <variableId>1ef605f7-8ec8-4517-b17d-b279eabbea9e</variableId>
+      </variableLink>
+      <variableLink>
+         <testDataLinkId></testDataLinkId>
+         <type>SCRIPT</type>
+         <value></value>
+         <variableId>0f184aa8-2b5c-4d04-a2bd-5ee20b2a4104</variableId>
+      </variableLink>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>d944c2f3-02b9-4e3d-b039-5daf323ea16d</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>false</isRun>
+      <testCaseId>Test Cases/VerifyComposeEmail - Copy</testCaseId>
+      <variableLink>
+         <testDataLinkId></testDataLinkId>
+         <type>SCRIPT</type>
+         <value></value>
+         <variableId>dc5f3b89-38b8-4b34-a4cc-eb247a02b104</variableId>
+      </variableLink>
+      <variableLink>
+         <testDataLinkId></testDataLinkId>
+         <type>SCRIPT</type>
+         <value></value>
+         <variableId>7f7ff3fb-1d6a-4845-848d-464339b9ac30</variableId>
+      </variableLink>
+      <variableLink>
+         <testDataLinkId></testDataLinkId>
+         <type>SCRIPT</type>
+         <value></value>
+         <variableId>015896b5-b566-4fb0-afae-316da27f614d</variableId>
+      </variableLink>
+   </testCaseLink>
+</TestSuiteEntity>

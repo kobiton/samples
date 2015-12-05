@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalVariableEntities>
+   <description></description>
+   <GlobalVariableEntity>
+      <initValue>'https://accounts.google.com/ServiceLogin?sacu=1&amp;scc=1&amp;continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&amp;hl=en&amp;service=mail#identifier'</initValue>
+      <name>HomePage_URL</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <initValue>'krypton.portal@gmail.com'</initValue>
+      <name>GmailAddress1</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <initValue>'krypton.portal2@gmail.com'</initValue>
+      <name>GmailAddress2</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <initValue>'Admin@123456'</initValue>
+      <name>GmailPassword</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <initValue>30</initValue>
+      <name>SHORT_WAIT</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <initValue>90</initValue>
+      <name>LONG_WAIT</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <initValue>3</initValue>
+      <name>WAIT</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <initValue>10</initValue>
+      <name>DEFAULT_WAIT</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <initValue>'https://mail.google.com/mail/#inbox'</initValue>
+      <name>GMAIL_URL</name>
+   </GlobalVariableEntity>
+</GlobalVariableEntities>

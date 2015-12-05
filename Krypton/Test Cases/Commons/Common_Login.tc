@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>Common_Login</name>
+   <comment></comment>
+   <tag></tag>
+   <testCaseGuid>05a8cfc9-8864-43a4-b0ff-080588861e82</testCaseGuid>
+   <variable>
+      <defaultValue>''</defaultValue>
+      <id>bee690d5-efe4-426b-b880-2eb059671524</id>
+      <name>EmailAddress</name>
+   </variable>
+   <variable>
+      <defaultValue>''</defaultValue>
+      <id>1e9d735e-2fda-41e0-ad1d-5e34f9c88e5b</id>
+      <name>Password</name>
+   </variable>
+</TestCaseEntity>

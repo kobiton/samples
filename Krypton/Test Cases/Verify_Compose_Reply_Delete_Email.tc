@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>Verify_Compose_Reply_Delete_Email</name>
+   <comment></comment>
+   <tag></tag>
+   <testCaseGuid>583276a6-8685-4808-866c-fceda9d3b669</testCaseGuid>
+   <variable>
+      <defaultValue>'Email1 sends message to Email2'</defaultValue>
+      <id>5cc38f2b-f329-4343-8e37-834dd10db528</id>
+      <name>Subject</name>
+   </variable>
+   <variable>
+      <defaultValue>'I am a body of Email1'</defaultValue>
+      <id>1ef605f7-8ec8-4517-b17d-b279eabbea9e</id>
+      <name>Body</name>
+   </variable>
+   <variable>
+      <defaultValue>'Re: Email1 sends message to Email2'</defaultValue>
+      <id>0f184aa8-2b5c-4d04-a2bd-5ee20b2a4104</id>
+      <name>ReplySubject</name>
+   </variable>
+</TestCaseEntity>
