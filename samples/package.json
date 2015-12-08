@@ -1,0 +1,15 @@
+{
+  "name": "krypton-samples",
+  "version": "1.0.0",
+  "description": "Sample test scripts to exercise Krypton flow",
+  "scripts": {
+    "test": "mocha --timeout 50000 --compilers js:babel/register 'test/**/*.js'"
+  },
+  "devDependencies": {
+    "babel": "^5.8.34",
+    "bluebird": "^3.0.6",
+    "chai": "^2.2.0",
+    "mocha": "^2.3.4",
+    "wd": "^0.3.11"
+  }
+}
