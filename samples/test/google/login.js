@@ -28,13 +28,13 @@ describe('Google Login', () => {
     const text = await driver
       .get(GOOGLE_URL)
       .waitForElementById('Email')
-      .sendKeys('invalid_email@where.about')
+      .sendKeys('invalid email')
       .waitForElementByName('signIn')
       .click()
       .waitForElementById('errormsg_0_Email')
       .text()
 
-    assert.equal(text, `Sorry, Google doesn't recognize that email. Create an account using that address?`)
+    assert.equal(text, 'Please enter a valid email address.')
   })
 
   it('should accept valid credentials', async () => {
