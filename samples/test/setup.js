@@ -20,6 +20,7 @@ const desiredCaps = {
 
 global.createDriver = async () => {
   const driver = wd.promiseChainRemote(serverConfig)
+  driver.setImplicitWaitTimeout(5000)
   await driver.init(desiredCaps)
   return driver
 }
