@@ -16,8 +16,9 @@ describe('Google Login', () => {
   it('should not accept empty email', async () => {
     const text = await driver
       .get(GOOGLE_URL)
-      .waitForElementByName('signIn')
+      .waitForElementById('next')
       .click()
+      .sleep(1000)
       .waitForElementById('errormsg_0_Email')
       .text()
 
@@ -28,13 +29,14 @@ describe('Google Login', () => {
     const text = await driver
       .get(GOOGLE_URL)
       .waitForElementById('Email')
-      .sendKeys('invalid email')
-      .waitForElementByName('signIn')
+      .sendKeys('invalid_email@where.about')
+      .waitForElementById('next')
       .click()
+      .sleep(1000)
       .waitForElementById('errormsg_0_Email')
       .text()
 
-    assert.equal(text, 'Please enter a valid email address.')
+    assert.equal(text, `Sorry, Google doesn't recognize that email. Create an account using that address?`)
   })
 
   it('should accept valid credentials', async () => {
@@ -42,12 +44,13 @@ describe('Google Login', () => {
       .get(GOOGLE_URL)
       .waitForElementById('Email')
       .sendKeys('krypton.portal')
-      .waitForElementByName('signIn')
+      .waitForElementById('next')
       .click()
       .waitForElementById('Passwd')
       .sendKeys('Admin@123456')
       .waitForElementById('signIn')
       .click()
+      .sleep(10000)
       .url()
 
     assert.equal(url, 'https://myaccount.google.com/?pli=1')
