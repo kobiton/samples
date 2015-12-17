@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Google Test Suite" verbose="1" preserve-order="true" parallel="none">
+ <test name="Google Tests SamsungGalaxyS4" >
+    <parameter name="browserName" value="Chrome"/>
+    <parameter name="deviceName" value="Galaxy S4"/>
+    <parameter name="platformVersion" value="5.0.1"/>
+    <parameter name="emailSend" value="krypton.portal@gmail.com"/>
+    <parameter name="emailTo" value="krypton.portal2@gmail.com"/>
+    <parameter name="password" value="Admin@123456"/>
+   <classes>
+     <class name="com.google.test.GoogleTests"/>
+   </classes>
+</test>
+</suite>
