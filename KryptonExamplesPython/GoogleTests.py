@@ -5,7 +5,10 @@ from time import sleep
 from appium import webdriver
 
 class GoogleTests(TestCase):
-    TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImlhdCI6MTQ1MDA2MzU1NywiZXhwIjoxNDUyNjU1NTU3fQ.rqGvGdYxJm_5SXYOpvaTjfi04qPQ8Hy1F-plqyhd69o"
+    USER_NAME = "tester01"
+    API_KEY = "13e36639-92e3-411b-a067-3457b5dea573"
+    HOST_NAME = "ec2-54-226-177-179.compute-1.amazonaws.com"
+    PORT = "3001"
     GOOGLE_URL = "https://mail.google.com"
     GOOGLE_URL_HOMEPAGE = "https://mail.google.com/mail/mu/mp/4/#tl/priority/%5Esmartlabel_personal"
     TRASH_URL = "https://mail.google.com/mail/mu/mp/4/#tl/Trash"
@@ -25,13 +28,14 @@ class GoogleTests(TestCase):
     }
      
     def setUp(self):
+        URL = self.USER_NAME + ":" + self.API_KEY + "@" + self.HOST_NAME + ":" + self.PORT + "/v1/tests"
         self.log ("WebDriver request initiated. Waiting for response, this may take a while.")
-        self.driver = webdriver.Remote(command_executor='http://0.0.0.0:4723/wd/hub', desired_capabilities=self.desired_capabilities, browser_profile=None, proxy=None, keep_alive=False)
+        self.driver = webdriver.Remote(self.URL, desired_capabilities=self.desired_capabilities, browser_profile=None, proxy=None, keep_alive=False)
         self.driver.delete_all_cookies()
         self.driver.refresh()
     def tearDown(self):
         self.driver.quit()
-        sleep(10) # We need to wait appium server clean up environment
+        sleep(10)  # We need to wait appium server clean up environment
     
     def test_should_not_accept_empty_email_or_invalid_email(self):
         self.log ("should not accept empty and invalid email")
