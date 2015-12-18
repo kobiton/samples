@@ -1,20 +1,27 @@
 import wd from 'wd'
 
-const username = 'tester01'
-const apiKey = '13e36639-92e3-411b-a067-3457b5dea573'
+const username = 'tester'
+const apiKey = '4d97044c-6db3-4ec6-be17-28b51279f8bd'
 
 const serverConfig = {
-  host: 'ec2-54-226-177-179.compute-1.amazonaws.com',
+  host: 'localhost',
   port: 3001,
   pathname: 'v1/tests',
   auth: `${username}:${apiKey}`
 }
+//
+// const desiredCaps = {
+//   browserName: 'Chrome',
+//   platformName: 'Android',
+//   platformVersion: '5.0.2',
+//   deviceName: 'Moto G'
+// }
 
 const desiredCaps = {
-  browserName: 'Chrome',
+  browserName: 'browser',
   platformName: 'Android',
-  platformVersion: '5.0.1',
-  deviceName: 'Galaxy S4'
+  platformVersion: '4.4.4',
+  deviceName: 'Nexus 7'
 }
 
 global.createDriver = async () => {

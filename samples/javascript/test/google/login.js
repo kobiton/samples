@@ -36,7 +36,8 @@ describe('Google Login', () => {
       .waitForElementById('errormsg_0_Email')
       .text()
 
-    assert.equal(text, `Sorry, Google doesn't recognize that email. Create an account using that address?`)
+    assert.equal(text,
+      `Sorry, Google doesn't recognize that email. Create an account using that address?`)
   })
 
   it('should accept valid credentials', async () => {
@@ -50,7 +51,7 @@ describe('Google Login', () => {
       .sendKeys('Admin@123456')
       .waitForElementById('signIn')
       .click()
-      .sleep(10000)
+      .sleep(5000)
       .url()
 
     assert.equal(url, 'https://myaccount.google.com/?pli=1')
