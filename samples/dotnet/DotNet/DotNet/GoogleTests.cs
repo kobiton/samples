@@ -6,16 +6,16 @@ using OpenQA.Selenium.Remote;
 using NUnit.Framework;
 using System.Threading;
 
-namespace KryptonExamplesDotNet
+namespace DotNet
 {
     [TestFixture()]
     public class GoogleTests
     {
-        private AndroidDriver<AppiumWebElement> driver;
-        private static string USER_NAME="tester01";
-        private static string API_KEY="13e36639-92e3-411b-a067-3457b5dea573";
-        private static string HOST_NAME="ec2-54-226-177-179.compute-1.amazonaws.com";
-        private static string PORT="3001";
+        private static AndroidDriver<AppiumWebElement> driver;
+        private static string USER_NAME = "tester01";
+        private static string API_KEY = "13e36639-92e3-411b-a067-3457b5dea573";
+        private static string HOST_NAME = "ec2-54-226-177-179.compute-1.amazonaws.com";
+        private static string PORT = "3001";
         private static Uri URL = null;
         private static TimeSpan INIT_TIMEOUT_SEC = TimeSpan.FromSeconds(180);
         private static TimeSpan IMPLICIT_TIMEOUT_SEC = TimeSpan.FromSeconds(10);
@@ -40,8 +40,8 @@ namespace KryptonExamplesDotNet
             capabilities.SetCapability("platformName", "Android");
             capabilities.SetCapability("platformVersion", "5.1.1");
             capabilities.SetCapability(CapabilityType.AcceptSslCertificates, true);
-            URL = new Uri(USER_NAME+":"+API_KEY+"@"+HOST_NAME+":"+PORT+"/v1/tests");
-
+            URL = new Uri(USER_NAME + ":" + API_KEY + "@" + HOST_NAME + ":" + PORT + "/v1/tests");
+            //URL = new Uri("http://127.0.0.1:4723/wd/hub");
             driver = new AndroidDriver<AppiumWebElement>(URL, capabilities, INIT_TIMEOUT_SEC);
             driver.Manage().Timeouts().ImplicitlyWait(IMPLICIT_TIMEOUT_SEC);
             driver.Manage().Cookies.DeleteAllCookies();
@@ -52,6 +52,7 @@ namespace KryptonExamplesDotNet
         public void AfterAll()
         {
             driver.Quit();
+            Thread.Sleep(3000); // Mare sure Appium cleanup appium session
         }
         [Test()]
         public void GoogleLogin_Invalid()

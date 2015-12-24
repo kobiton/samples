@@ -1,4 +1,4 @@
-package com.google.test;
+package google;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,10 +19,10 @@ import io.appium.java_client.remote.MobilePlatform;
 public class GoogleTests {
 	AndroidDriver<WebElement> driver = null;
 	static URL url = null;
-	final static String USER_NAME="tester01";
-	final static String API_KEY="13e36639-92e3-411b-a067-3457b5dea573";
-	final static String HOST_NAME="ec2-54-226-177-179.compute-1.amazonaws.com";
-	final static String PORT="3001";
+	final static String USER_NAME = "tester01";
+	final static String API_KEY = "13e36639-92e3-411b-a067-3457b5dea573";
+	final static String HOST_NAME = "ec2-54-226-177-179.compute-1.amazonaws.com";
+	final static String PORT = "3001";
 	final static String GOOGLE_URL = "https://mail.google.com";
 	final static String GOOGLE_URL_HOMEPAGE = "https://mail.google.com/mail/mu/mp/4/#tl/priority/%5Esmartlabel_personal";
 	final static String TRASH_URL = "https://mail.google.com/mail/mu/mp/4/#tl/Trash";
@@ -50,7 +50,8 @@ public class GoogleTests {
 		capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 
 		try {
-			url = new URL(USER_NAME+":"+API_KEY+"@"+HOST_NAME+":"+PORT+"/v1/tests");
+			String parseUrl=USER_NAME + ":" + API_KEY + "@" + HOST_NAME + ":" + PORT + "/v1/tests";
+			url = new URL(parseUrl);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
