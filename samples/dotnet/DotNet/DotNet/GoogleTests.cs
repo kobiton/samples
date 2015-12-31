@@ -40,7 +40,7 @@ namespace DotNet
             capabilities.SetCapability("platformName", "Android");
             capabilities.SetCapability("platformVersion", "5.1.1");
             capabilities.SetCapability(CapabilityType.AcceptSslCertificates, true);
-            URL = new Uri(USER_NAME + ":" + API_KEY + "@" + HOST_NAME + ":" + PORT + "/v1/tests");
+            URL = new Uri("http://" + USER_NAME + ":" + API_KEY + "@" + HOST_NAME + ":" + PORT + "/wd/hub");
             //URL = new Uri("http://127.0.0.1:4723/wd/hub");
             driver = new AndroidDriver<AppiumWebElement>(URL, capabilities, INIT_TIMEOUT_SEC);
             driver.Manage().Timeouts().ImplicitlyWait(IMPLICIT_TIMEOUT_SEC);

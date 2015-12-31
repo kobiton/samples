@@ -21,14 +21,9 @@ class AndroidTests < Test::Unit::TestCase
   MSG_NOEMAIL_PRIMARY1 = 'You have no mail.'
   MSG_NOEMAIL_PRIMARY2 = 'Please enjoy your day!'
   SERVER_URL_LOCAL='http://127.0.0.1:4723/wd/hub'
-
-  def define_url
-    url = "http://" + USER_NAME + ":" + API_KEY + "@" + HOST_NAME + ":" + PORT + "/v1/tests"
-    return url
-  end
+  SERVER_URL = "http://" + USER_NAME + ":" + API_KEY + "\@" + HOST_NAME + ":" + PORT + "/wd/hub"
 
     def setup
-      #puts(define_url)
         desired_caps = {
             caps:       {
             'browserName'=> 'Chrome',
@@ -36,9 +31,7 @@ class AndroidTests < Test::Unit::TestCase
             'platformName' => 'Android',
             'deviceName' => 'Nexus 5'
             },
-            appium_lib: {
-                server_url: SERVER_URL_LOCAL
-            }
+            'appium_lib': { 'server_url': SERVER_URL }
         }
         @driver = Appium::Driver.new(desired_caps)
         @driver.start_driver.manage.timeouts.implicit_wait = 30
@@ -80,7 +73,7 @@ class AndroidTests < Test::Unit::TestCase
       assert_equal(true,(getURL.include? 'https://mail.google.com/mail'))
   end
 
-  def test_should_compose_email_successfully_by_Gmail1
+  def test_should_compose_email_successfully
       login EMAIL_ADDRESS1, PASSWORD
       compose_email EMAIL_ADDRESS2, SUBJECT1, BODY1
       verify_sent_email SUBJECT1, BODY1, EMAIL_ADDRESS1, EMAIL_ADDRESS2

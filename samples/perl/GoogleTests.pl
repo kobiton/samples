@@ -8,7 +8,7 @@ use Test::More;
 my $SERVER_URL_LOCAL = 'http://127.0.0.1:4723/wd/hub';
 my $USER_NAME = 'tester01';
 my $API_KEY = '13e36639-92e3-411b-a067-3457b5dea573';
-my $HOST_NAME = '192.168.74.51';
+my $HOST_NAME = 'ec2-54-226-177-179.compute-1.amazonaws.com';
 my $PORT = '3001';
 my $GOOGLE_URL = 'https://mail.google.com';
 my $GOOGLE_URL_HOMEPAGE = 'https://mail.google.com/mail/mu/mp/4/#tl/priority/%5Esmartlabel_personal';
@@ -32,18 +32,16 @@ my $caps = {
 };
 
 sub before : Test(setup){
-  my $SERVER_URL = "http://" . $USER_NAME . ":" . $API_KEY . "\@" . $HOST_NAME . ":" . $PORT . "/v1/tests";
-  print $SERVER_URL ."\n";
+  my $SERVER_URL = $USER_NAME . ":" . $API_KEY . "\@" . $HOST_NAME;
   $driver = Selenium::Remote::Driver->new_from_caps(
-     remote_server_addr   => $HOST_NAME,
+     remote_server_addr   => $SERVER_URL,
      port                 => $PORT,
-     url                  => $SERVER_URL,
      desired_capabilities => $caps
   );
 
-  $driver->set_implicit_wait_timeout(5000);
-  $driver->set_timeout("page load",10000);
-  $driver->delete_all_cookies();
+    $driver->set_implicit_wait_timeout(5000);
+    $driver->set_timeout("page load",10000);
+    $driver->delete_all_cookies();
 }
 
 sub should_not_accept_empty_or_invalid_email() : Test(2){
