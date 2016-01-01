@@ -23,17 +23,15 @@ class SampleTest extends PHPUnit_Framework_TestCase {
 
   public function setUp() {
     $capabilities=array(
-            'local' => true,
-            'port' => 4723,
-            'browserName' => 'Chrome',
-                'platformVersion' => '5.1.1',
-                'platformName' => 'Android',
-                'deviceName' => 'Nexus 5'
-                #'deviceName' => 'SM-G530H'
-
+    'browserName' => 'Chrome',
+    'platformVersion' => '5.1.1',
+    'platformName' => 'Android',
+    'deviceName' => 'Nexus 5'
     );
     print_r($capabilities);
-    $this->driver = RemoteWebDriver::create($this->SERVER_URL_LOCAL, $capabilities);
+    $SERVER_URL = $this->USER_NAME . ':' . $this->API_KEY . '@' . $this->HOST_NAME .':' . $this->PORT . '/wd/hub';
+    print_r($SERVER_URL);
+    $this->driver = RemoteWebDriver::create($SERVER_URL, $capabilities);
     $this->driver->manage()->timeouts()->implicitlyWait(3000);
     $this->driver->manage()->deleteAllCookies();
   }
@@ -205,5 +203,4 @@ class SampleTest extends PHPUnit_Framework_TestCase {
     }
     parent::tearDown();
   }
-
 }

@@ -1,4 +1,4 @@
-package google;
+package com.google.test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,12 +12,13 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.remote.MobilePlatform;
 
 public class GoogleTests {
-	AndroidDriver<WebElement> driver = null;
+	private static ppiumDriver<WebElement> driver;
 	static URL url = null;
 	final static String USER_NAME = "tester01";
 	final static String API_KEY = "13e36639-92e3-411b-a067-3457b5dea573";
@@ -50,7 +51,8 @@ public class GoogleTests {
 		capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 
 		try {
-			String parseUrl=USER_NAME + ":" + API_KEY + "@" + HOST_NAME + ":" + PORT + "/v1/tests";
+			String parseUrl="http://" + USER_NAME +":" + API_KEY +"@" +  HOST_NAME +":"+PORT+"/wd/hub";
+			//String parseUrl="http://127.0.0.1:4723/wd/hub";
 			url = new URL(parseUrl);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
