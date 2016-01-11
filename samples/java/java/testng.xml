@@ -7,7 +7,7 @@
      <parameter name="platformVersion" value="5.1.1"/>
      <parameter name="emailSend" value="krypton.portal5@gmail.com"/>
      <parameter name="emailTo" value="krypton.portal6@gmail.com"/>
-     <parameter name="password" value="Admin@123456"/>
+     <parameter name="password" value="Admin@123456789 "/>
     <classes>
       <class name="google.GoogleTests"/>
     </classes>

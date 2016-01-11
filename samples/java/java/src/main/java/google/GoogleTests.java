@@ -1,27 +1,28 @@
-package com.google.test;
+package google;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.internal.ApacheHttpClient;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.remote.MobilePlatform;
 
 public class GoogleTests {
-	private static ppiumDriver<WebElement> driver;
+	private AndroidDriver<WebElement> driver = null;
 	static URL url = null;
 	final static String USER_NAME = "tester01";
-	final static String API_KEY = "13e36639-92e3-411b-a067-3457b5dea573";
+	final static String API_KEY = "94097a8a-a8e1-46ab-a9e4-f80fb9c29581";
 	final static String HOST_NAME = "ec2-54-226-177-179.compute-1.amazonaws.com";
 	final static String PORT = "3001";
 	final static String GOOGLE_URL = "https://mail.google.com";
@@ -29,7 +30,7 @@ public class GoogleTests {
 	final static String TRASH_URL = "https://mail.google.com/mail/mu/mp/4/#tl/Trash";
 	static String EMAIL_ADDRESS1 = "krypton.portal@gmail.com";
 	static String EMAIL_ADDRESS2 = "krypton.portal2@gmail.com";
-	static String PASSWORD = "Admin@123456";
+	static String PASSWORD = "Admin@123456789";
 	final static String SUBJECT1 = "It is a subject";
 	final static String BODY1 = "It is a body";
 	final static String MSG_NOEMAIL = "You have no mail here.";
@@ -52,11 +53,11 @@ public class GoogleTests {
 
 		try {
 			String parseUrl="http://" + USER_NAME +":" + API_KEY +"@" +  HOST_NAME +":"+PORT+"/wd/hub";
-			//String parseUrl="http://127.0.0.1:4723/wd/hub";
 			url = new URL(parseUrl);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+
 		driver = new AndroidDriver<WebElement>(url, capabilities);
 		driver.manage().deleteAllCookies();
 		driver.navigate().refresh();
@@ -118,7 +119,7 @@ public class GoogleTests {
 		driver.findElementByXPath("//div[contains(@class,'m')]//div[@role='listitem'][1]").click();
 		Sleep(1000);
 		driver.findElementByXPath("//div[contains(@class,'V j hj') and text()='Details']").click();
-		Sleep(1000);
+		Sleep(3000);
 		String getSubject = driver.findElementByXPath("//span[@class='kj']/span").getText();
 		String getBody = driver.findElementByXPath("//div[@class='Hi']").getText();
 		String getSentEmail = driver.findElementByXPath("//div[@class='Kg']/span").getText();
@@ -173,7 +174,7 @@ public class GoogleTests {
 		driver.findElementByXPath("//div[contains(@class,'fm')]//div[@role='listitem'][1]").click();
 		Sleep(1000);
 		driver.findElementByXPath("//div[contains(@class,'V j hj') and text()='Details']").click();
-		Sleep(1000);
+		Sleep(2000);
 		getSubject = driver.findElementByXPath("//span[@class='kj']/span").getText();
 		getBody = driver.findElementByXPath("//div[@class='Hi']").getText();
 		getSentEmail = driver.findElementByXPath("//div[@class='Kg']/span").getText();
