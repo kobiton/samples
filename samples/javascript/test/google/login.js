@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 
 describe('Google Login', () => {
-  const GOOGLE_URL = 'https://accounts.google.com/ServiceLogin?sacu=1&amp;scc=1&amp;continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&amp;hl=en&amp;service=mail#identifier'
+  const GOOGLE_URL = 'https://mail.google.com'
   let driver
 
   before(async () => {
@@ -10,6 +10,7 @@ describe('Google Login', () => {
   })
 
   after(async () => {
+    if(driver!=null)
     await driver.quit()
   })
 
@@ -48,7 +49,7 @@ describe('Google Login', () => {
       .waitForElementById('next')
       .click()
       .waitForElementById('Passwd')
-      .sendKeys('Admin@123456')
+      .sendKeys('Admin@123456789')
       .waitForElementById('signIn')
       .click()
       .sleep(5000)

@@ -34,7 +34,6 @@ namespace DotNet
         public void BeforeAll()
         {
             DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.SetCapability("device", "Android");
             capabilities.SetCapability("browserName", "chrome");
             capabilities.SetCapability("deviceName", "Nexus 5");
             capabilities.SetCapability("platformName", "Android");

@@ -1,48 +1,53 @@
-package com.google.test;
+package google;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.internal.ApacheHttpClient;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.remote.MobilePlatform;
 
 public class GoogleTests {
-	private static ppiumDriver<WebElement> driver;
-	static URL url = null;
-	final static String USER_NAME = "tester01";
-	final static String API_KEY = "13e36639-92e3-411b-a067-3457b5dea573";
-	final static String HOST_NAME = "ec2-54-226-177-179.compute-1.amazonaws.com";
-	final static String PORT = "3001";
-	final static String GOOGLE_URL = "https://mail.google.com";
-	final static String GOOGLE_URL_HOMEPAGE = "https://mail.google.com/mail/mu/mp/4/#tl/priority/%5Esmartlabel_personal";
-	final static String TRASH_URL = "https://mail.google.com/mail/mu/mp/4/#tl/Trash";
-	static String EMAIL_ADDRESS1 = "krypton.portal@gmail.com";
-	static String EMAIL_ADDRESS2 = "krypton.portal2@gmail.com";
-	static String PASSWORD = "Admin@123456";
-	final static String SUBJECT1 = "It is a subject";
-	final static String BODY1 = "It is a body";
-	final static String MSG_NOEMAIL = "You have no mail here.";
-	final static String MSG_NOEMAIL_PRIMARY = "You have no mail.\nPlease enjoy your day!";
+	private AndroidDriver<WebElement> driver = null;
+	URL url = null;
+	String USER_NAME = "tester01";
+	String API_KEY = "fe82cbb9-a8df-4c60-95cc-90a2ac1ccf21";
+	String HOST_NAME = "ec2-54-226-177-179.compute-1.amazonaws.com";
+	String PORT = "3001";
+	String GOOGLE_URL = "https://mail.google.com";
+	String GOOGLE_URL_HOMEPAGE = "https://mail.google.com/mail/mu/mp/4/#tl/priority/%5Esmartlabel_personal";
+	String TRASH_URL = "https://mail.google.com/mail/mu/mp/4/#tl/Trash";
+	String EMAIL_ADDRESS1 = "krypton.portal@gmail.com";
+	String EMAIL_ADDRESS2 = "krypton.portal2@gmail.com";
+	String PASSWORDSEND = "Admin@123456";
+	String PASSWORDTO = "Admin@123456";
+	String SUBJECT1 = "It is a subject";
+	String BODY1 = "It is a body";
+	String MSG_NOEMAIL = "You have no mail here.";
+	String MSG_NOEMAIL_PRIMARY = "You have no mail.\nPlease enjoy your day!";
 
-	@Parameters({ "browserName", "deviceName", "platformVersion", "emailSend", "emailTo", "password" })
+	@Parameters({ "browserName", "deviceName", "platformVersion", "emailSend", "passwordSend", "emailTo", "passwordTo", "username", "apikey" })
 	@BeforeTest
-	public void Setup(String browserName, String deviceName, String platformVersion, String emailSend, String emailTo,
-			String password) {
+	public void Setup(String browserName, String deviceName, String platformVersion, String emailSend, String passwordSend, String emailTo,
+			String passwordTo, String username, String apikey) {
 
 		EMAIL_ADDRESS1 = emailSend;
+		PASSWORDSEND = passwordSend;
 		EMAIL_ADDRESS2 = emailTo;
-		PASSWORD = password;
+		PASSWORDTO = passwordTo;
+		USER_NAME= username;
+		API_KEY=apikey;
 		DesiredCapabilities capabilities = DesiredCapabilities.android();
 		capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, browserName);
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
@@ -52,11 +57,11 @@ public class GoogleTests {
 
 		try {
 			String parseUrl="http://" + USER_NAME +":" + API_KEY +"@" +  HOST_NAME +":"+PORT+"/wd/hub";
-			//String parseUrl="http://127.0.0.1:4723/wd/hub";
 			url = new URL(parseUrl);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+		
 		driver = new AndroidDriver<WebElement>(url, capabilities);
 		driver.manage().deleteAllCookies();
 		driver.navigate().refresh();
@@ -89,7 +94,7 @@ public class GoogleTests {
 
 	@Test(priority = 2, description = "should accept valid credentials")
 	public void GoogleLogin_Valid() {
-		Login(EMAIL_ADDRESS1, PASSWORD);
+		Login(EMAIL_ADDRESS1, PASSWORDSEND);
 		Sleep(5000);
 		String getURL = driver.getCurrentUrl();
 		Assert.assertEquals(true, getURL.contains("https://mail.google.com/mail"));
@@ -116,9 +121,9 @@ public class GoogleTests {
 		Assert.assertEquals(true, getText.contains(SUBJECT1));
 		Assert.assertEquals(true, getText.contains(BODY1));
 		driver.findElementByXPath("//div[contains(@class,'m')]//div[@role='listitem'][1]").click();
-		Sleep(1000);
+		Sleep(2000);
 		driver.findElementByXPath("//div[contains(@class,'V j hj') and text()='Details']").click();
-		Sleep(1000);
+		Sleep(3000);
 		String getSubject = driver.findElementByXPath("//span[@class='kj']/span").getText();
 		String getBody = driver.findElementByXPath("//div[@class='Hi']").getText();
 		String getSentEmail = driver.findElementByXPath("//div[@class='Kg']/span").getText();
@@ -162,7 +167,7 @@ public class GoogleTests {
 		driver.navigate().refresh();
 
 		// verify Gmail2 received a new email from Gmail1
-		Login(EMAIL_ADDRESS2, PASSWORD);
+		Login(EMAIL_ADDRESS2, PASSWORDTO);
 		driver.get(GOOGLE_URL_HOMEPAGE);
 		driver.navigate().refresh();
 		Sleep(5000);
@@ -173,7 +178,7 @@ public class GoogleTests {
 		driver.findElementByXPath("//div[contains(@class,'fm')]//div[@role='listitem'][1]").click();
 		Sleep(1000);
 		driver.findElementByXPath("//div[contains(@class,'V j hj') and text()='Details']").click();
-		Sleep(1000);
+		Sleep(2000);
 		getSubject = driver.findElementByXPath("//span[@class='kj']/span").getText();
 		getBody = driver.findElementByXPath("//div[@class='Hi']").getText();
 		getSentEmail = driver.findElementByXPath("//div[@class='Kg']/span").getText();
