@@ -1,15 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Google Test Suite" verbose="1" preserve-order="true" parallel="none">
-
- <test name="Google Tests Nexus 5" >
-     <parameter name="browserName" value="Chrome"/>
-     <parameter name="deviceName" value="Nexus 5"/>
-     <parameter name="platformVersion" value="5.1.1"/>
-     <parameter name="emailSend" value="krypton.portal5@gmail.com"/>
-     <parameter name="emailTo" value="krypton.portal6@gmail.com"/>
-     <parameter name="password" value="Admin@123456789 "/>
-    <classes>
-      <class name="google.GoogleTests"/>
-    </classes>
- </test>
+<suite name="Google Test Suite" preserve-order="true" verbose="1"
+	parallel="tests" thread-count="2">
+	<test name="Google Tests1">
+		<parameter name="browserName" value="Chrome" />
+		<parameter name="deviceName" value="Galaxy Grand Prime" />
+		<parameter name="platformVersion" value="4.4.4" />
+		<parameter name="emailSend" value="krypton.portal@gmail.com" />
+		<parameter name="passwordSend" value="Admin@123456789" />
+		<parameter name="emailTo" value="krypton.portal2@gmail.com" />
+		<parameter name="passwordTo" value="Admin@123456789" />
+		<parameter name="username" value="tester01" />
+		<parameter name="apikey" value="fe82cbb9-a8df-4c60-95cc-90a2ac1ccf21" />
+		<classes>
+			<class name="google.GoogleTests" />
+		</classes>
+	</test>
+	<test name="Google Tests2">
+		<parameter name="browserName" value="Chrome" />
+		<parameter name="deviceName" value="Galaxy Win" />
+		<parameter name="platformVersion" value="4.1.2" />
+		<parameter name="emailSend" value="krypton.portal3@gmail.com" />
+		<parameter name="passwordSend" value="Admin@123456" />
+		<parameter name="emailTo" value="krypton.portal4@gmail.com" />
+		<parameter name="passwordTo" value="Admin@123456" />
+		<parameter name="username" value="tester01" />
+		<parameter name="apikey" value="65900279-8cd7-48da-bc19-d73729819712" />
+		<classes>
+			<class name="google.GoogleTests" />
+		</classes>
+	</test>
+  <test name="Google Tests3">
+		<parameter name="browserName" value="Chrome" />
+		<parameter name="deviceName" value="Galaxy Grand Prime" />
+		<parameter name="platformVersion" value="4.4.4" />
+		<parameter name="emailSend" value="krypton.portal@gmail.com" />
+		<parameter name="passwordSend" value="Admin@123456789" />
+		<parameter name="emailTo" value="krypton.portal2@gmail.com" />
+		<parameter name="passwordTo" value="Admin@123456789" />
+		<parameter name="username" value="tester01" />
+		<parameter name="apikey" value="fe82cbb9-a8df-4c60-95cc-90a2ac1ccf21" />
+		<classes>
+			<class name="google.GoogleTests" />
+		</classes>
+	</test>
+	<test name="Google Tests4">
+		<parameter name="browserName" value="Chrome" />
+		<parameter name="deviceName" value="Galaxy Win" />
+		<parameter name="platformVersion" value="4.1.2" />
+		<parameter name="emailSend" value="krypton.portal3@gmail.com" />
+		<parameter name="passwordSend" value="Admin@123456" />
+		<parameter name="emailTo" value="krypton.portal4@gmail.com" />
+		<parameter name="passwordTo" value="Admin@123456" />
+		<parameter name="username" value="tester02" />
+		<parameter name="apikey" value="65900279-8cd7-48da-bc19-d73729819712" />
+		<classes>
+			<class name="google.GoogleTests" />
+		</classes>
+	</test>
 </suite>
