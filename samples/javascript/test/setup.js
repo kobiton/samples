@@ -19,12 +19,12 @@ const desiredCaps = {
 
 global.createDriver = async() => {
   const driver = wd.promiseChainRemote(serverConfig)
-  driver.setPageLoadTimeout(30000)
-  driver.setImplicitWaitTimeout(30000)
-  driver.setAsyncScriptTimeout(30000)
   driver.on('status', (info) => console.log(info.cyan))
   driver.on('command', (meth, path, data) => console.log(' > ' + meth.yellow, path.grey, data || ''))
   driver.on('http', (meth, path, data) => console.log(' > ' + meth.magenta, path, (data || '').grey))
   await driver.init(desiredCaps)
+  .setPageLoadTimeout(30000)
+  .setImplicitWaitTimeout(30000)
+  .setAsyncScriptTimeout(30000)
   return driver
 }
