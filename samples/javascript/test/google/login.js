@@ -10,8 +10,9 @@ describe('Google Login', () => {
   })
 
   after(async () => {
-    if(driver!=null)
-    await driver.quit()
+    if (driver != null) {
+      await driver.quit()
+    }
   })
 
   it('should not accept empty email', async () => {
