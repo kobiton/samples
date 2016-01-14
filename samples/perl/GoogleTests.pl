@@ -8,7 +8,7 @@ use Test::More;
 my $SERVER_URL_LOCAL = 'http://127.0.0.1:4723/wd/hub';
 my $USER_NAME = 'tester01';
 my $API_KEY = '13e36639-92e3-411b-a067-3457b5dea573';
-my $HOST_NAME = 'ec2-54-226-177-179.compute-1.amazonaws.com';
+my $HOST_NAME = 'test.kobiton.com';
 my $PORT = '3001';
 my $GOOGLE_URL = 'https://mail.google.com';
 my $GOOGLE_URL_HOMEPAGE = 'https://mail.google.com/mail/mu/mp/4/#tl/priority/%5Esmartlabel_personal';

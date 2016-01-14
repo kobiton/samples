@@ -5,7 +5,7 @@ class SampleTest extends PHPUnit_Framework_TestCase {
   protected $SERVER_URL_LOCAL = 'http://127.0.0.1:4723/wd/hub';
   protected $USER_NAME = 'tester01';
   protected $API_KEY = '13e36639-92e3-411b-a067-3457b5dea573';
-  protected $HOST_NAME = 'ec2-54-226-177-179.compute-1.amazonaws.com';
+  protected $HOST_NAME = 'test.kobiton.com';
   protected $PORT = '3001';
   protected $GOOGLE_URL = 'https://mail.google.com';
   protected $GOOGLE_URL_HOMEPAGE = 'https://mail.google.com/mail/mu/mp/4/#tl/priority/%5Esmartlabel_personal';

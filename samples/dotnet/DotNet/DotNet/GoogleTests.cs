@@ -14,7 +14,7 @@ namespace DotNet
         private static AndroidDriver<AppiumWebElement> driver;
         private static string USER_NAME = "tester01";
         private static string API_KEY = "13e36639-92e3-411b-a067-3457b5dea573";
-        private static string HOST_NAME = "ec2-54-226-177-179.compute-1.amazonaws.com";
+        private static string HOST_NAME = "test.kobiton.com";
         private static string PORT = "3001";
         private static Uri URL = null;
         private static TimeSpan INIT_TIMEOUT_SEC = TimeSpan.FromSeconds(180);

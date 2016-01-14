@@ -23,7 +23,7 @@ public class GoogleTests {
 	URL url = null;
 	String USER_NAME = "tester01";
 	String API_KEY = "fe82cbb9-a8df-4c60-95cc-90a2ac1ccf21";
-	String HOST_NAME = "ec2-54-226-177-179.compute-1.amazonaws.com";
+	String HOST_NAME = "test.kobiton.com";
 	String PORT = "3001";
 	String GOOGLE_URL = "https://mail.google.com";
 	String GOOGLE_URL_HOMEPAGE = "https://mail.google.com/mail/mu/mp/4/#tl/priority/%5Esmartlabel_personal";
@@ -61,7 +61,7 @@ public class GoogleTests {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
+
 		driver = new AndroidDriver<WebElement>(url, capabilities);
 		driver.manage().deleteAllCookies();
 		driver.navigate().refresh();

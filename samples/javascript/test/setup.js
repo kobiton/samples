@@ -1,20 +1,19 @@
 import 'colors'
 import wd from 'wd'
 
-const username = 'tester01'
-const apiKey = '13e36639-92e3-411b-a067-3457b5dea573'
+const username = 'admin'
+const apiKey = '79522257-99e2-434c-a6eb-4f443938fde6'
 
 const serverConfig = {
-  host: 'ec2-54-226-177-179.compute-1.amazonaws.com',
+  host: 'localhost',
   port: 3001,
   auth: `${username}:${apiKey}`
 }
 
 const desiredCaps = {
-  browserName: 'chrome',
+  browserName: 'browser',
   platformName: 'Android',
-  platformVersion: '5.1.1',
-  deviceName: 'Nexus 5'
+  deviceName: 'Nexus 7'
 }
 
 global.createDriver = async() => {
