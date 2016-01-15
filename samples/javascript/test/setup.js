@@ -1,3 +1,4 @@
+import 'babel-core/polyfill'
 import 'colors'
 import wd from 'wd'
 
