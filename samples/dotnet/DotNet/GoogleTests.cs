@@ -17,8 +17,8 @@ namespace DotNet
         private static string HOST_NAME = "test.kobiton.com";
         private static string PORT = "3001";
         private static Uri URL = null;
-        private static TimeSpan INIT_TIMEOUT_SEC = TimeSpan.FromSeconds(180);
-        private static TimeSpan IMPLICIT_TIMEOUT_SEC = TimeSpan.FromSeconds(10);
+        private static TimeSpan INIT_TIMEOUT_SEC = TimeSpan.FromSeconds(60);
+        private static TimeSpan IMPLICIT_TIMEOUT_SEC = TimeSpan.FromSeconds(30);
         private static string GOOGLE_URL = "https://mail.google.com";
         private static string GOOGLE_URL_HOMEPAGE = "https://mail.google.com/mail/mu/mp/4/#tl/priority/%5Esmartlabel_personal";
         private static string TRASH_URL = "https://mail.google.com/mail/mu/mp/4/#tl/Trash";
@@ -38,8 +38,10 @@ namespace DotNet
             capabilities.SetCapability("deviceName", "Nexus 5");
             capabilities.SetCapability("platformName", "Android");
             capabilities.SetCapability("platformVersion", "5.1.1");
+            capabilities.SetCapability("username", USER_NAME);
+            capabilities.SetCapability("accessKey", API_KEY);
             capabilities.SetCapability(CapabilityType.AcceptSslCertificates, true);
-            URL = new Uri("http://" + USER_NAME + ":" + API_KEY + "@" + HOST_NAME + ":" + PORT + "/wd/hub");
+            URL = new Uri("http://" + HOST_NAME + ":" + PORT + "/wd/hub");
             //URL = new Uri("http://127.0.0.1:4723/wd/hub");
             driver = new AndroidDriver<AppiumWebElement>(URL, capabilities, INIT_TIMEOUT_SEC);
             driver.Manage().Timeouts().ImplicitlyWait(IMPLICIT_TIMEOUT_SEC);
@@ -51,7 +53,7 @@ namespace DotNet
         public void AfterAll()
         {
             driver.Quit();
-            Thread.Sleep(3000); // Mare sure Appium cleanup appium session
+            Thread.Sleep(3000); // Make sure Appium cleanup appium session
         }
         [Test()]
         public void GoogleLogin_Invalid()
