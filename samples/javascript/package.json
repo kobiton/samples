@@ -1,5 +1,6 @@
 {
   "name": "krypton-samples",
+  "private": true,
   "version": "1.0.0",
   "description": "Sample test scripts to exercise Krypton flow",
   "scripts": {
