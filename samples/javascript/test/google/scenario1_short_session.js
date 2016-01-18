@@ -10,18 +10,19 @@ describe('Google Login', () => {
   })
 
   after(async () => {
-    if (driver != null) {
-      await driver.quit()
-    }
+    if(driver!=null)
+    await driver.quit()
   })
 
   it('should not accept empty email', async () => {
     const text = await driver
       .get(GOOGLE_URL)
       .waitForElementById('next')
+      .sleep(1000)
       .click()
       .sleep(1000)
       .waitForElementById('errormsg_0_Email')
+      .sleep(1000)
       .text()
 
     assert.equal(text, 'Please enter your email.')
@@ -37,9 +38,7 @@ describe('Google Login', () => {
       .sleep(1000)
       .waitForElementById('errormsg_0_Email')
       .text()
-
-    assert.equal(text,
-      `Sorry, Google doesn't recognize that email. Create an account using that address?`)
+    assert.equal(text, `Sorry, Google doesn't recognize that email. Create an account using that address?`)
   })
 
   it('should accept valid credentials', async () => {
@@ -49,13 +48,13 @@ describe('Google Login', () => {
       .sendKeys('krypton.portal')
       .waitForElementById('next')
       .click()
+      .sleep(2000)
       .waitForElementById('Passwd')
-      .sendKeys('Admin@123456789')
+      .sendKeys('Admin@1234567')
       .waitForElementById('signIn')
       .click()
-      .sleep(5000)
+      .sleep(10000)
       .url()
-
     assert.equal(true, url.includes('https://mail.google.com'))
   })
 })
