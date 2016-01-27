@@ -36,7 +36,7 @@ describe('Scenario - Run tests with short timeout duration', () => {
       .sleep(1000)
       .waitForElementById('errormsg_0_Email')
       .text()
-    assert.equal(getWrongAccountMsg, `Sorry, Google doesn't recognize that email. Create an account using that address?`)
+    assert.equal(getWrongAccountMsg, `Sorry, Google doesn\'t recognize that email.`)
   })
 
   it('should accept valid credential', async() => {
