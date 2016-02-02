@@ -46,7 +46,7 @@ describe('Scenario - Run multiple tests on multiple devices with the same accoun
               .sleep(2000)
               .waitForElementById('errormsg_0_Email')
               .text()
-            assert.equal(text, `Sorry, Google doesn't recognize that email. Create an account using that address?`)
+            assert.equal(text, `Sorry, Google doesn\'t recognize that email.`)
           })()
         ]
       }
