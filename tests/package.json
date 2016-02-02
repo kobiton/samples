@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Automation test suite for Kobiton",
   "scripts": {
-    "test": "mocha --timeout 60000 --compilers js:babel/register 'test/**/*.js'"
+    "test": "mocha --timeout 60000 --compilers js:babel/register 'src/**/*.js'"
   },
   "devDependencies": {
     "babel": "^5.8.34",
