@@ -1,57 +1,59 @@
 import {assert} from 'chai'
-var account = require('../helpers/config')
+import {gmail} from '../config'
 
-describe('Scenario - Run tests with short timeout duration', () => {
+describe('Scenario - Run tests with long timeout duration', () => {
   const GMAIL_URL = 'https://mail.google.com'
   let driver
 
-  before(async() => {
+  before(async () => {
     driver = await createDriver()
     await driver.deleteAllCookies()
   })
 
-  after(async() => {
+  after(async () => {
     if (driver != null) {
       await driver.quit()
     }
   })
 
-  it('should not accept empty email and invalid email', async() => {
+  it('should not accept empty email and invalid email', async () => {
     const getEmptyMsg = await driver
       .get(GMAIL_URL)
       .waitForElementById('next')
-      .sleep(1000)
+      .sleep(10000)
       .click()
-      .sleep(1000)
+      .sleep(10000)
       .waitForElementById('errormsg_0_Email')
-      .sleep(1000)
+      .sleep(10000)
       .text()
     assert.equal(getEmptyMsg, 'Please enter your email.')
 
     const getWrongAccountMsg = await driver
       .waitForElementById('Email')
       .sendKeys('invalid_email@where.about')
+      .sleep(10000)
       .waitForElementById('next')
       .click()
-      .sleep(1000)
+      .sleep(10000)
       .waitForElementById('errormsg_0_Email')
       .text()
     assert.equal(getWrongAccountMsg, `Sorry, Google doesn\'t recognize that email.`)
   })
 
-  it('should accept valid credential', async() => {
+  it('should accept valid credential', async () => {
     const url = await driver
       .get(GMAIL_URL)
       .waitForElementById('Email')
-      .sendKeys(account.gmailAccount1.gmail)
+      .sendKeys(gmail.email)
+      .sleep(10000)
       .waitForElementById('next')
       .click()
-      .sleep(2000)
+      .sleep(10000)
       .waitForElementById('Passwd')
-      .sendKeys(account.gmailAccount1.password)
+      .sendKeys(gmail.password)
       .waitForElementById('signIn')
       .click()
-      .sleep(10000)
+      .sleep(15000)
       .url()
     assert.include(url, 'https://mail.google.com')
   })

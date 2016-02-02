@@ -1,22 +1,22 @@
 import {assert} from 'chai'
-var account = require('../helpers/config')
+import {gmail} from '../config'
 
 describe('Scenario - Run the failed tests', () => {
   const GMAIL_URL = 'https://mail.google.com'
   let driver
 
-  before(async() => {
+  before(async () => {
     driver = await createDriver()
     await driver.deleteAllCookies()
   })
 
-  after(async() => {
+  after(async () => {
     if (driver != null) {
       await driver.quit()
     }
   })
 
-  it('should not accept empty email and invalid email', async() => {
+  it('should not accept empty email and invalid email', async () => {
     const getEmptyMsg = await driver
       .get(GMAIL_URL)
       .waitForElementById('next')
@@ -39,16 +39,16 @@ describe('Scenario - Run the failed tests', () => {
     assert.equal(getWrongAccountMsg, `Sorry, Google doesn\'t recognize that email.`)
   })
 
-  it('should accept valid credential', async() => {
+  it('should accept valid credential', async () => {
     const url = await driver
       .get(GMAIL_URL)
       .waitForElementById('Email')
-      .sendKeys(account.gmailAccount1.gmail)
+      .sendKeys(gmail.username)
       .waitForElementById('next')
       .click()
       .sleep(2000)
       .waitForElementById('Passwd')
-      .sendKeys(account.gmailAccount1.password)
+      .sendKeys(gmail.password)
       .waitForElementById('signIn')
       .click()
       .sleep(10000)
