@@ -1,32 +1,23 @@
 describe('Simple test', () => {
-
-  // TODO: rewrite not using async/await: use the style most testers would use
-
-  it('should search Google', async () => {
-
+  it('should search Google', (cb) => {
     const wd = require('wd')
     const assert = require('chai').assert
 
-    const driver = wd.promiseChainRemote({
-      protocol: 'https',
-      host: 'api-test.kobiton.com',
-      port: 443,
-      auth: 'kobiton:e1b66526-6719-44a7-bad9-b5709e3c050b'
-    })
-
-    await driver.init({
-      browserName: 'browser',
+    const username = 'kobiton'
+    const apikey = 'e1b66526-6719-44a7-bad9-b5709e3c050b'
+    const desiredCaps = {
+      browserName: 'chrome',
       platformName: 'Android',
       platformVersion: '4.4.2',
       deviceName: 'Nexus 5 (KitKat)'
-    })
+    }
+    const browser = wd.promiseChainRemote(`https://${username}:${apikey}@api-test.kobiton.com`)
 
-    await driver
-      .get('https://www.google.com')
-      // TODO: search KMS Technology
-      // TODO: click search button
-      // TODO: get first link and assert its www.kms-technology.com
-
-    await driver.quit()
+    browser
+      .init(desiredCaps)
+      .then(() => browser.get('https://www.google.com'))
+      // TODO: search KMS Technology, assert first link is www.kms-technology.com
+      .fin(() => browser.quit())
+      .done(cb)
   })
 })
