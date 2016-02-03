@@ -4,7 +4,10 @@
   "version": "1.0.0",
   "description": "Automation test suite for Kobiton",
   "scripts": {
-    "test": "mocha --timeout 60000 --compilers js:babel/register 'src/**/*.js'"
+    "test": "mocha --timeout 100000 --compilers js:babel/register 'src/**/*.js'",
+    "test2": "DESIRED_CAPS=cap1 npm run test",
+    "test3": "DESIRED_CAPS=cap2 npm run test",
+    "test-sequence": "npm run test2 && npm run test3"
   },
   "devDependencies": {
     "babel": "^5.8.34",

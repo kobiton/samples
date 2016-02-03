@@ -22,9 +22,9 @@ describe('Scenario - Run the failed tests', () => {
       .waitForElementById('next')
       .sleep(1000)
       .click()
-      .sleep(1000)
+      .sleep(2000)
       .waitForElementById('errormsg_0_Email')
-      .sleep(1000)
+      .sleep(2000)
       .text()
     assert.equal(getEmptyMsg, 'Please enter your email.')
 
@@ -36,14 +36,14 @@ describe('Scenario - Run the failed tests', () => {
       .sleep(1000)
       .waitForElementById('errormsg_0_Email')
       .text()
-    assert.equal(getWrongAccountMsg, `Sorry, Google doesn\'t recognize that email.`)
+    assert.equal(getWrongAccountMsg, 'Wrong message')
   })
 
   it('should accept valid credential', async () => {
     const url = await driver
       .get(GMAIL_URL)
       .waitForElementById('Email')
-      .sendKeys(gmail.username)
+      .sendKeys(gmail.email)
       .waitForElementById('next')
       .click()
       .sleep(2000)
