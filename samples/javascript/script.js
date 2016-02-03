@@ -10,9 +10,10 @@ describe('Google Search', () => {
       auth: `'tester01':bfa52857-a0ee-4412-b634-e25fcdfaf6e8`
     }
     const desiredCaps = {
+      deviceName: 'Nexus 6',
       browserName: 'chrome',
       platformName: 'Android',
-      deviceName: 'Nexus 6'
+      platformVersion: '4.4.2'
     }
 
     const browser = wd.promiseChainRemote(serverConfig)
