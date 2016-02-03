@@ -4,7 +4,9 @@ import {local, remote} from './config'
 
 global.createDriver = process.env.NODE_ENV === 'development'
   ? () => createDriver(local.caps, local.server)
-  : () => createDriver(remote.caps, remote.server)
+  : process.env.DESIRED_CAPS === 'cap1'
+    ? () => createDriver(remote.caps1, remote.server)
+    : () => createDriver(remote.caps2, remote.server)
 
 async function createDriver(desiredCaps, serverConfigs) {
   const driver = wd.promiseChainRemote(serverConfigs)

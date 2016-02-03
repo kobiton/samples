@@ -22,9 +22,9 @@ describe('Scenario - Run tests with short timeout duration', () => {
       .waitForElementById('next')
       .sleep(1000)
       .click()
-      .sleep(1000)
+      .sleep(2000)
       .waitForElementById('errormsg_0_Email')
-      .sleep(1000)
+      .sleep(2000)
       .text()
     assert.equal(getEmptyMsg, 'Please enter your email.')
 
@@ -40,19 +40,20 @@ describe('Scenario - Run tests with short timeout duration', () => {
   })
 
   it('should accept valid credential', async () => {
-    const url = await driver
+    const getUrl = await driver
       .get(GMAIL_URL)
       .waitForElementById('Email')
       .sendKeys(gmail.email)
       .waitForElementById('next')
       .click()
-      .sleep(2000)
+      .sleep(3000)
       .waitForElementById('Passwd')
       .sendKeys(gmail.password)
+      .sleep(1000)
       .waitForElementById('signIn')
       .click()
       .sleep(10000)
       .url()
-    assert.include(url, 'https://mail.google.com')
+    assert.include(getUrl, 'https://mail.google.com')
   })
 })
