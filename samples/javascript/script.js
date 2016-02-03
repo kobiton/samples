@@ -1,40 +1,28 @@
-const wd = require('wd')
-const assert = require('chai').assert
-
-const username = 'tester01'
-const apikey = 'bfa52857-a0ee-4412-b634-e25fcdfaf6e8'
-
-const serverConfig = {
-  desiredCaps: {
-    browserName: 'chrome',
-    platformName: 'Android',
-    deviceName: 'Galaxy Grand Prime'
-  },
-  serverLocal: {
-    host: 'localhost',
-    port: 4723
-  },
-  serverKobiton: {
-    protocol: 'https',
-    host: 'api-test.kobiton.com',
-    port: 443,
-    auth: `${username}:${apikey}`
-  }
-}
-
 describe('Google Search', () => {
   it('should search Google', (cb) => {
-    const browser = wd.promiseChainRemote(serverConfig.serverKobiton)
+    const wd = require('wd')
+    const assert = require('chai').assert
 
+    const serverConfig = {
+      protocol: 'https',
+      host: 'api-test.kobiton.com',
+      port: 443,
+      auth: `'tester01':bfa52857-a0ee-4412-b634-e25fcdfaf6e8`
+    }
+    const desiredCaps = {
+      browserName: 'chrome',
+      platformName: 'Android',
+      deviceName: 'Nexus 6'
+    }
+
+    const browser = wd.promiseChainRemote(serverConfig)
     browser
-      .init(serverConfig.desiredCaps)
+      .init(desiredCaps)
       .get('https://www.google.com')
       .waitForElementByName('q').sendKeys('KMS Technology')
       .waitForElementByName('btnG').click()
       .sleep(3000)
-      .title().then((text) => {
-          assert.include(text, 'KMS Technology')
-      })
+      .title().then((text) => assert.include(text, 'KMS Technology'))
       .fin(() => browser.quit())
       .done(cb)
   })
