@@ -1,30 +1,31 @@
-describe('Google Search', () => {
-  it('should search Google', (cb) => {
+describe('Google Search', function() {
+  it('should search Google', function(cb) {
     const wd = require('wd')
     const assert = require('chai').assert
 
     const serverConfig = {
-      protocol: 'https',
       host: 'api-test.kobiton.com',
-      port: 443,
-      auth: `'tester01':bfa52857-a0ee-4412-b634-e25fcdfaf6e8`
+      auth: 'kobiton:3ff04ea4-3b72-4aaa-906f-68a443181c5b',
+      port: 80
     }
+
     const desiredCaps = {
-      deviceName: 'Nexus 6',
+      deviceName: 'Nexus 6P',
       browserName: 'chrome',
       platformName: 'Android',
-      platformVersion: '4.4.2'
+      platformVersion: '6.0.1'
     }
 
     const browser = wd.promiseChainRemote(serverConfig)
     browser
       .init(desiredCaps)
       .get('https://www.google.com')
-      .waitForElementByName('q').sendKeys('KMS Technology')
+      .waitForElementByName('q').sendKeys('Kobiton.com')
       .waitForElementByName('btnG').click()
       .sleep(3000)
-      .title().then((text) => assert.include(text, 'KMS Technology'))
-      .fin(() => browser.quit())
+      .title().then(function(text) { assert.include(text, 'Kobiton.com') })
+      .fin(function() { browser.quit() })
+      .sleep(3000)
       .done(cb)
   })
 })
