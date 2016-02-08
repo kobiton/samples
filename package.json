@@ -1,5 +1,5 @@
 {
-  "name": "kobiton-tests",
+  "name": "tests",
   "private": true,
   "version": "1.0.0",
   "description": "Automation test suite for Kobiton",

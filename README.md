@@ -1,19 +1,27 @@
-1. Install [nodejs](https://nodejs.org/)
-2. Open Terminal, navigate to `samples/tests` folder and run `npm install`
-3. Access [Kobition](https://kobiton.com) to get *username* and *api key*
-5. Prepare 01 gmail account
-6. Open `src/config.js`
-	1. Replace *username* and *api key* to appropriate variables
-  2. Replace *gmail* and *password* of gmail accounts to appropriate variables
-	3. Modify`desiredCaps` to match with your available devices
-7. Run `npm test` or `NODE_ENV=production npm test`
+#### Init
+Access [Kobition](https://kobiton.com) to get *username* and *api key*
+Prepare 01 gmail account
+Open `src/config.js`
+ * Replace *username* and *api key*
+ * Replace *gmail* and *password*
+ * Modify`desiredCaps` to match with your available devices
 
-> To run the same server with different caps so that it can test both
-> devices at the same time, open two Terminals
+#### Tests
+Run test
+```bash
+npm test
+NODE_ENV=production npm test
+```
 
-  1. Run `npm run test2`
-  2. Run `npm run test3`
+Run tests with different caps sequentially:
 
-> To run the same server with different caps so that it can test both
-> devices in the sequence time
-> Run `npm run test-sequence`
+```bash
+npm run test-sequence
+```
+
+Run tests with different caps concurrently:
+
+```bash
+npm run test2
+npm run test3
+```
