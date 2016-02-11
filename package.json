@@ -1,7 +1,8 @@
 {
   "name": "tests",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.2",
+  "author": "Kobiton Inc.",
   "description": "Automation test suite for Kobiton",
   "scripts": {
     "test": "mocha --timeout 100000 --compilers js:babel/register 'src/**/*.js'",
