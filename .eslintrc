@@ -3,9 +3,6 @@ extends: standard
 plugins: ["babel"]
 env:
   node: true
-  mocha: true
-globals:
-  createDriver: true
 rules:
   eqeqeq: 0
   no-var: 2

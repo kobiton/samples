@@ -1,5 +1,12 @@
 {
-  "stage": 0,
-  "loose": "all",
-  "optional": ["bluebirdCoroutines"]
+  "presets": ["es2015"],
+  "plugins": [
+    "add-module-exports",
+    "syntax-async-functions",
+    "transform-regenerator",
+    "transform-function-bind",
+    "transform-object-rest-spread",
+    "transform-decorators-legacy",
+    "transform-class-properties"
+  ]
 }

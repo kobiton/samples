@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 import 'colors'
 import wd from 'wd'
 import {local, remote} from './config'
