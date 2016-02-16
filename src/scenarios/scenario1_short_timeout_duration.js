@@ -5,12 +5,12 @@ describe('Scenario - Run tests with short timeout duration', () => {
   const GMAIL_URL = 'https://mail.google.com'
   let driver
 
-  before(async () => {
+  beforeEach(async () => {
     driver = await createDriver()
     await driver.deleteAllCookies()
   })
 
-  after(async () => {
+  afterEach(async () => {
     if (driver != null) {
       await driver.quit()
     }

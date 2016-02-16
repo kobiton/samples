@@ -22,6 +22,5 @@ npm run test-sequence
 Run tests with different caps concurrently:
 
 ```bash
-npm run test2
-npm run test3
+npm run test-parallel
 ```
