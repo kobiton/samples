@@ -1,9 +1,7 @@
 #### Init
 Access [Kobition](https://kobiton.com) to get *username* and *api key*
-Prepare 01 gmail account
 Open `src/config.js`
  * Replace *username* and *api key*
- * Replace *gmail* and *password*
  * Modify`desiredCaps` to match with your available devices
 
 #### Tests
