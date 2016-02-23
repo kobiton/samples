@@ -1,7 +1,7 @@
 {
   "name": "@kobiton/tests",
   "private": true,
-  "version": "0.0.2",
+  "version": "1.0.0",
   "author": "Kobiton Inc.",
   "description": "Automation test suite for Kobiton",
   "scripts": {
