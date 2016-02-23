@@ -1,8 +1,3 @@
-exports.gmail = {
-  email: '<email>',
-  password: '<password>'
-}
-
 exports.local = {
   caps: {
     browserName: 'chrome',
@@ -30,9 +25,9 @@ exports.remote = {
     deviceName: 'Galaxy Win'
   },
   server: {
-    protocol: 'https',
+    protocol: 'http',
     host: 'api-test.kobiton.com',
-    port: 443,
-     auth: `<username>:<apikey>`
+    port: 80,
+     auth: '<username>:<apikey>'
   }
 }
