@@ -5,14 +5,15 @@
   "author": "Kobiton Inc.",
   "description": "Automation test suite for Kobiton",
   "scripts": {
-    "test": "mocha --timeout 100000 --compilers js:babel-register 'src/**/*.js'",
+    "test": "mocha --timeout 900000 --compilers js:babel-register 'src/**/*.js'",
     "test1": "DESIRED_CAPS=cap1 npm run test",
     "test2": "DESIRED_CAPS=cap2 npm run test",
     "test-sequence": "npm run test1 && npm run test2",
     "test-parallel": "node 'src/run-parallel.js' test1 test2"
   },
   "devDependencies": {
-    "@kobiton/core-build": "0.0.11"
+    "@kobiton/core-build": "0.0.11",
+    "@kobiton/core-util": "~0.0.5"
   },
   "dependencies": {
     "babel-polyfill": "^6.5.0",

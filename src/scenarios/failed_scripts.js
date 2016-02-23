@@ -1,13 +1,11 @@
 import {assert} from 'chai'
-import {gmail} from '../config'
 
-describe('Scenario - Run tests with short timeout duration', () => {
+describe('Scenario - Run the failed tests', () => {
   const GMAIL_URL = 'https://mail.google.com'
   let driver
 
   beforeEach(async () => {
     driver = await createDriver()
-    await driver.deleteAllCookies()
   })
 
   afterEach(async () => {
@@ -16,7 +14,7 @@ describe('Scenario - Run tests with short timeout duration', () => {
     }
   })
 
-  it('should not accept empty email and invalid email', async () => {
+  it('should throw error after verifying message', async () => {
     const getEmptyMsg = await driver
       .get(GMAIL_URL)
       .waitForElementById('next')
@@ -36,24 +34,26 @@ describe('Scenario - Run tests with short timeout duration', () => {
       .sleep(1000)
       .waitForElementById('errormsg_0_Email')
       .text()
-    assert.equal(getWrongAccountMsg, `Sorry, Google doesn\'t recognize that email.`)
+    assert.equal(getWrongAccountMsg, 'Wrong message')
   })
 
-  it('should accept valid credential', async () => {
-    const getUrl = await driver
-      .get(GMAIL_URL)
-      .waitForElementById('Email')
-      .sendKeys(gmail.email)
-      .waitForElementById('next')
-      .click()
+  it('should throw error after verifying title', async () => {
+    const url = await driver
+      .get('https://www.google.com')
+      .waitForElementByName('q').sendKeys('Kobiton.com')
+      .waitForElementByName('btnG').click()
       .sleep(3000)
-      .waitForElementById('Passwd')
-      .sendKeys(gmail.password)
-      .sleep(1000)
-      .waitForElementById('signIn')
-      .click()
-      .sleep(10000)
+      .title()
+    assert.include(url, 'Wrong title')
+  })
+
+  it('should search Google sucessfully after two failed test cases', async () => {
+    const url = await driver
+      .get('https://www.google.com')
+      .waitForElementByName('q').sendKeys('Kobiton.com')
+      .waitForElementByName('btnG').click()
+      .sleep(3000)
       .url()
-    assert.include(getUrl, 'https://mail.google.com')
+    assert.include(url, 'Kobiton.com')
   })
 })
