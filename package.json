@@ -1,11 +1,11 @@
 {
   "name": "@kobiton/tests",
   "private": true,
-  "version": "0.0.2",
+  "version": "1.0.0",
   "author": "Kobiton Inc.",
   "description": "Automation test suite for Kobiton",
   "scripts": {
-    "test": "mocha --timeout 900000 --compilers js:babel-register 'src/**/*.js'",
+    "test": "mocha --reporter mochawesome  --timeout 900000 --compilers js:babel-register 'src/**/*.js'",
     "test1": "DESIRED_CAPS=cap1 npm run test",
     "test2": "DESIRED_CAPS=cap2 npm run test",
     "test-sequence": "npm run test1 && npm run test2",
@@ -20,6 +20,8 @@
     "bluebird": "^3.0.6",
     "chai": "^2.2.0",
     "colors": "^1.0.3",
-    "wd": "^0.3.11"
+    "wd": "^0.3.11",
+    "mocha": "^2.4.4",
+    "mochawesome": "^1.3.1"
   }
 }
