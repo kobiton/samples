@@ -1,21 +1,22 @@
-import 'babel-polyfill'
-import data from '../data/capabilities'
+import '../setup'
 import wd from 'wd'
 import {assert} from 'chai'
+import data from './data'
 
-describe('kobiton:e2e testing suite', () => {
+describe('Capabilities', () => {
   let driver
+
   afterEach(async () => {
     if (driver != null) {
       await driver.quit()
     }
-  });
+  })
 
   it('should init failed with non existing device', async () => {
-    driver = wd.promiseChainRemote(data.capabilities.server)
+    driver = wd.promiseChainRemote(data.server)
 
     try {
-      let sessionid = await driver.init(data.capabilities.nonexistingcap)
+      let sessionid = await driver.init(data.nonExistingCap)
       assert.isNull(sessionid)
     }
     catch (err) {
@@ -26,9 +27,8 @@ describe('kobiton:e2e testing suite', () => {
   })
 
   it('should init successfully with an existing device', async () => {
-    driver = wd.promiseChainRemote(data.capabilities.server)
-    let sessionID = await driver.init(data.capabilities.existingcap)
+    driver = wd.promiseChainRemote(data.server)
+    let sessionID = await driver.init(data.existingCap)
     assert.isNotNull(sessionID)
   })
-
 })

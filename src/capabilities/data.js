@@ -1,11 +1,11 @@
-exports.capabilities = {
-  existingcap: {
+export default {
+  existingCap: {
     browserName: 'chrome',
     platformName: 'Android',
     platformVersion: '6.0.1',
     deviceName: 'Nexus 5'
   },
-  nonexistingcap: {
+  nonExistingCap: {
     browserName: 'chrome',
     platformName: 'Android',
     platformVersion: '4.4.4',

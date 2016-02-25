@@ -4,3 +4,4 @@ npm-debug.log
 test-results.xml
 coverage
 build
+mochawesome-reports
