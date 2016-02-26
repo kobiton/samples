@@ -1,34 +1,83 @@
-import '../setup'
-import wd from 'wd'
+import 'babel-polyfill'
 import {assert} from 'chai'
-import data from './data'
+import wd from 'wd'
+const desiredCaps = require('../helpers/caps')
+const servers = require('../helpers/servers')
 
 describe('Capabilities', () => {
-  let driver
+  let driver1, driver2
 
   afterEach(async () => {
-    if (driver != null) {
-      await driver.quit()
+    if (driver1 != null) {
+      await driver1.quit()
+    }
+    if (driver2 != null) {
+      await driver2.quit()
     }
   })
 
-  it('should init failed with non existing device', async () => {
-    driver = wd.promiseChainRemote(data.server)
-
-    try {
-      let sessionid = await driver.init(data.nonExistingCap)
-      assert.isNull(sessionid)
-    }
-    catch (err) {
-      assert.include(err.toString(),
+  it('should init failed with non existing devices', async () => {
+    for (let cap of desiredCaps.invalidCaps) {
+      try {
+        driver1 = wd.promiseChainRemote(servers.remote)
+        const sessionId = await driver1.init(cap)  // eslint-disable-line babel/no-await-in-loop
+        assert.isNull(sessionId)
+      }
+     catch (err) {
+       assert.include(err.toString(),
        'The environment you requested was unavailable', 'verify error message')
+     }
+     finally {
+       if (driver1 != null) {
+         await driver1.quit() // eslint-disable-line babel/no-await-in-loop
+       }
+     }
     }
-    driver.quit()
   })
 
-  it('should init successfully with an existing device', async () => {
-    driver = wd.promiseChainRemote(data.server)
-    let sessionID = await driver.init(data.existingCap)
+  it('should init successfully with an existing devices', async () => {
+    for (let cap of desiredCaps.validCaps) {
+      try {
+        driver1 = wd.promiseChainRemote(servers.remote)
+        const sessionId = await driver1.init(cap)// eslint-disable-line babel/no-await-in-loop
+        assert.isNotNull(sessionId)
+      }
+      finally {
+        if (driver1 != null) {
+          await driver1.quit()  // eslint-disable-line babel/no-await-in-loop
+        }
+      }
+    }
+  })
+
+  it('should not be able to use a utilizing device', async () => {
+    driver1 = wd.promiseChainRemote(servers.remote)
+    let sessionID = await driver1.init(desiredCaps.nexus5_v6)
     assert.isNotNull(sessionID)
+    driver2 = wd.promiseChainRemote(servers.remote)
+    await driver2.init(desiredCaps.nexus5_v6).then((sessionId) => {
+      assert.isNull(sessionId)
+    })
+    .catch((error) => {
+      assert.include(error.toString(), 'The environment you requested was unavailable')
+    })
+  })
+
+  it('should be able to init two existing different devices sequentially', async () => {
+    driver1 = wd.promiseChainRemote(servers.remote)
+    let sessionId = await driver1.init(desiredCaps.nexus5_v6)
+    assert.isNotNull(sessionId)
+    driver2 = wd.promiseChainRemote(servers.remote)
+    let sessionId2 = await driver2.init(desiredCaps.galaxy_s4_ltea_v4)
+    assert.isNotNull(sessionId2)
+  })
+
+  it('should be able to run two existing different devices parallel', async () => {
+    driver1 = wd.promiseChainRemote(servers.remote)
+    driver2 = wd.promiseChainRemote(servers.remote)
+    let sessionId1 = driver1.init(desiredCaps.nexus5_v6)
+    let sessionId2 = driver2.init(desiredCaps.galaxy_s4_ltea_v4)
+    await Promise.all([sessionId1, sessionId2])
+
   })
 })
