@@ -10,6 +10,7 @@
     "test-capabilities" : "npm run mocha -- 'src/capabilities/test.js'",
     "test-device-one": "npm run mocha -- 'src/durations/test-first-device.js'",
     "test-device-two": "npm run mocha -- 'src/durations/test-second-device.js'",
+    "test-all-devices": "npm run mocha -- 'src/durations/test-all-devices.js'",
     "test-sequence-one-device": "npm run test-device-one && npm run test-device-one",
     "test-sequence-two-devices": "npm run test-device-one && npm run test-device-two",
     "test-sequences": "npm run test-sequence-one-device && npm run test-sequence-two-devices",
