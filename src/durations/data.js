@@ -1,6 +1,4 @@
-exports.shortData = ['Screenshot', 'Screenshot', 'JS Tutorial', 'JS HOME', 'JS Introduction',
-'JS Where To', 'JS Output', 'JS Syntax', 'JS Statements', 'JS Comments', 'JS Variables',
-'JS Operators', 'JS Arithmetic', 'JS Assignment', 'JS Data Types', 'JS Functions', 'JS Objects'];
+exports.shortData = ['Screenshot', 'JS HOME', 'JS Introduction'];
 
 exports.longData = ['JS Tutorial', 'JS HOME', 'JS Introduction', 'JS Where To', 'JS Output',
 'JS Syntax', 'JS Statements', 'JS Comments', 'JS Variables', 'JS Operators', 'JS Arithmetic',

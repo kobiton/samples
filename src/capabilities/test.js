@@ -6,6 +6,8 @@ const servers = require('../helpers/servers')
 
 describe('Capabilities', () => {
   let driver1, driver2
+  let cap1 = desiredCaps.galaxy_s4_ltea_v4
+  let cap2 = desiredCaps.galaxy_tab410_v5
 
   afterEach(async () => {
     if (driver1 != null) {
@@ -52,10 +54,10 @@ describe('Capabilities', () => {
 
   it('should not be able to use a utilizing device', async () => {
     driver1 = wd.promiseChainRemote(servers.remote)
-    let sessionID = await driver1.init(desiredCaps.nexus5_v6)
+    let sessionID = await driver1.init(cap1)
     assert.isNotNull(sessionID)
     driver2 = wd.promiseChainRemote(servers.remote)
-    await driver2.init(desiredCaps.nexus5_v6).then((sessionId) => {
+    await driver2.init(cap1).then((sessionId) => {
       assert.isNull(sessionId)
     })
     .catch((error) => {
@@ -65,19 +67,22 @@ describe('Capabilities', () => {
 
   it('should be able to init two existing different devices sequentially', async () => {
     driver1 = wd.promiseChainRemote(servers.remote)
-    let sessionId = await driver1.init(desiredCaps.nexus5_v6)
+    let sessionId = await driver1.init(cap1)
     assert.isNotNull(sessionId)
     driver2 = wd.promiseChainRemote(servers.remote)
-    let sessionId2 = await driver2.init(desiredCaps.galaxy_s4_ltea_v4)
+    let sessionId2 = await driver2.init(cap2)
     assert.isNotNull(sessionId2)
   })
 
-  it('should be able to run two existing different devices parallel', async () => {
+  it.only('should be able to run two existing different devices parallel', async () => {
     driver1 = wd.promiseChainRemote(servers.remote)
     driver2 = wd.promiseChainRemote(servers.remote)
-    let sessionId1 = driver1.init(desiredCaps.nexus5_v6)
-    let sessionId2 = driver2.init(desiredCaps.galaxy_s4_ltea_v4)
-    await Promise.all([sessionId1, sessionId2])
-
+    const [sessionId1, sessionId2] = await Promise.all([
+      driver1.init(cap1),
+      driver2.init(cap2)
+    ])
+    assert.isNotNull(sessionId1)
+    assert.isNotNull(sessionId2)
   })
+
 })

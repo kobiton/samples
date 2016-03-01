@@ -60,6 +60,7 @@ exports.nexus5_v6 = {
   platformVersion: '6.0.1',
   deviceName: 'Nexus 5'
 }
+exports.existingCaps = Object.keys(exports).map((key) => exports[key])
 
 exports.validCaps = [
   {
