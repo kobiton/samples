@@ -2,7 +2,7 @@ import 'babel-polyfill'
 const desiredCaps = require('../helpers/caps')
 const test = require('./test')
 
-describe('Scenario-run script with all of existing devices', () => {
+describe('Run a short script with all of existing devices', () => {
   let drivers = []
 
   beforeEach(async() => {

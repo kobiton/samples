@@ -68,18 +68,6 @@ exports.validCaps = [
     platformName: 'Android',
     platformVersion: '6.0.1',
     deviceName: 'Nexus 5'
-  },
-  {
-    browserName: 'chrome',
-    platformName: 'Android',
-    platformVersion: '',
-    deviceName: 'Nexus 5'
-  },
-  {
-    browserName: '',
-    platformName: 'Android',
-    platformVersion: '6.0.1',
-    deviceName: 'Nexus 5'
   }
 ]
 

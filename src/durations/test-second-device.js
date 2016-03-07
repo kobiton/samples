@@ -3,11 +3,11 @@ import '../helpers/setup'
 const desiredCaps = require('../helpers/caps')
 const test = require('./test')
 
-describe('Scenario - Google Search on the second device', () => {
+describe('Google Search on the second device', () => {
   let driver
 
   beforeEach(async() => {
-    driver = await createDriver(desiredCaps.galaxy_s5_v5)
+    driver = await createDriver(desiredCaps.nexus5_v6_2)
   })
 
   afterEach(async() => {
