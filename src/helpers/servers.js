@@ -1,51 +1,149 @@
-exports.local = {
-  host: 'localhost',
-  port: 4723
+import 'babel-core/register'
+import 'babel-polyfill'
+import request from 'request'
+
+const api = {
+  login: 'v1/users/login',
+  devices: 'v1/devices/search'
 }
-exports.remote_test = {
-  protocol: 'http',
-  host: 'api-test.kobiton.com',
-  auth: 'ktest3:951ae0da-4b8f-454d-b6bc-15a293626b76',
-  port: 80
+const account_test = {
+  api_url: 'https://api-test.kobiton.com/',
+  hub_url: 'api-test.kobiton.com',
+  emailOrUsername: 'api_test1',
+  password: 'mario8x@123'
 }
-exports.remote_staging = {
-  protocol: 'http',
-  host: 'api-staging.kobiton.com',
-  auth: 'ktest2:8cde8879-9643-494a-8e79-007be03c7dd0',
-  port: 80
+const account_staging = {
+  api_url: 'https://api-staging.kobiton.com/',
+  hub_url: 'api-staging.kobiton.com',
+  emailOrUsername: 'ktest2',
+  password: 'mario8x@123'
 }
-exports.remote_production = {
-  protocol: 'http',
-  host: 'api.kobiton.com',
-  port: 80,
-  auth: 'ktest1:794699db-2a0c-4f4b-b70d-f4ef48457502'
+const account_production = {
+  api_url: 'https://api.kobiton.com/',
+  hub_url: 'api.kobiton.com',
+  emailOrUsername: 'ktest1',
+  password: 'mario8x@123'
 }
-exports.saucelab = {
-  host: 'ondemand.saucelabs.com',
-  auth: 'khanhdo:38183591-ffbe-434f-abef-f97dd0aa8e22',
-  port: 80
+let remote = {}
+let caps = []
+
+const sendRequest = (
+  {method = 'GET', url, qs = {}, headers = {}, body = {}, json = true, token}) => {
+  let options = {
+    method: `${method}`,
+    url: `${url}`,
+    qs,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+      ...headers
+    },
+    body,
+    json
+  }
+
+  let promise = new Promise((resolve, reject) => {
+    request(options, function (error, response, body) {
+      if (error) {
+        reject(error)
+      }
+        else {
+        if (response.statusCode == 200) {
+          resolve(body)
+        }
+          else {
+          reject(body.message)
+        }
+      }
+    })
+  })
+  return promise
 }
-let env_remote = 'test'
-exports.init = (env) => {
-  env_remote
+
+const login = async () => {
+
+  let url = exports.account().api_url + api.login
+  let body = {emailOrUsername: exports.account().emailOrUsername,
+               password: exports.account().password}
+  return await sendRequest({url, method: 'POST', body})
 }
-exports.remote = () => {
-  let remote
-  switch (env_remote) {
-    case 'local':
-      remote = exports.local
-      break;
+
+const getDevices = async (token) => {
+  let options = {
+    method: 'GET',
+    url: exports.account().api_url + api.devices,
+    qs: {
+      platformName: 'android', platformVers: ''
+    },
+    headers: {'postman-token': 'a1d7a79d-3cc5-7727-df15-629bb52c419f',
+     'cache-control': 'no-cache',
+     authorization: `Bearer ${token}`,
+     'content-type': 'application/json'
+   },
+    json: true
+  }
+  return await sendRequest(options)
+}
+
+exports.account = () => {
+  let account
+  switch (process.env.REMOTE) {
     case 'staging':
-      remote = exports.remote_staging
+      account = account_staging
       break;
     case 'production':
-      remote = exports.remote_production
-      break;
-    case 'saucelab' :
-      remote = exports.saucelab
+      account = account_production
       break;
     default :
-      remote = exports.remote_test
+      account = account_test
   }
-  return remote;
+  return account;
+}
+exports.initServer = async () => {
+  try {
+    let account = await login()
+    //init remote information for testing
+    remote.protocol = 'http'
+    remote.host = exports.account().hub_url
+    remote.auth = exports.account().emailOrUsername + ':' + account.user.apiKey
+    remote.port = 80
+
+    let devices = await getDevices(account.token)
+    devices.data.forEach((device) => {
+      if (device.onlineCount > 0) {
+        exports.availableDevices.push(device)
+        //init online caps for testing
+        let cap = {
+          browserName: 'chrome',
+          platformName: device.platformName,
+          platformVersion: device.platformVersion,
+          deviceName: device.deviceName
+        }
+        caps.push(cap)
+      }
+
+    })
+    console.log(1, 'success', devices);//eslint-disable-line no-console
+  }
+  catch (error) {
+    console.log(2, 'error', error.message);//eslint-disable-line no-console
+  }
+  //await login().then(callback.success, callback.error)
+  //console.log('result is: ' + result)
+}
+exports.availableDevices = []
+
+exports.remote = () => {
+  return remote
+}
+
+exports.onlineCaps = () => {
+  return caps
+}
+
+exports.validCaps = () => {
+  let caps = []
+  caps.push(exports.onlineCaps()[0])
+  return caps
 }

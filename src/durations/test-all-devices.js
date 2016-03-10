@@ -1,12 +1,12 @@
 import 'babel-polyfill'
-const desiredCaps = require('../helpers/caps')
 const test = require('./test')
+const servers = require('../helpers/servers')
 
 describe('Run a short script with all of existing devices', () => {
   let drivers = []
 
   beforeEach(async() => {
-    for (let cap of desiredCaps.existingCaps) {
+    for (let cap of servers.onlineCaps()) {
       let driver
       try {
         driver = await createDriver(cap)//eslint-disable-line

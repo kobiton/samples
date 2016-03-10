@@ -1,13 +1,13 @@
 import 'babel-polyfill'
 import '../helpers/setup'
-const desiredCaps = require('../helpers/caps')
+const servers = require('../helpers/servers')
 const test = require('./test')
 
 describe('Google Search on the second device', () => {
   let driver
 
   beforeEach(async() => {
-    driver = await createDriver(desiredCaps.nexus5_v6_2)
+    driver = await createDriver(servers.onlineCaps()[1])
   })
 
   afterEach(async() => {

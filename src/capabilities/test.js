@@ -2,13 +2,13 @@ import 'babel-polyfill'
 import {assert} from 'chai'
 import wd from 'wd'
 import '../helpers/setup'
-const desiredCaps = require('../helpers/caps')
 const servers = require('../helpers/servers')
+const data = require('./data')
 
 describe('Capabilities', () => {
   let driver1, driver2
-  let cap1 = desiredCaps.nexus5_v6
-  let cap2 = desiredCaps.galaxy_note4_v5
+  let cap1 = servers.onlineCaps()[0]
+  let cap2 = servers.onlineCaps()[1]
 
   afterEach(async () => {
     if (driver1 != null) {
@@ -30,7 +30,7 @@ describe('Capabilities', () => {
   })
 
   it('should init failed with non existing devices', async () => {
-    for (let cap of desiredCaps.invalidCaps) {
+    for (let cap of data.invalidCaps) {
       try {
         driver1 = wd.promiseChainRemote(servers.remote())
         const sessionId = await driver1.init(cap)  // eslint-disable-line babel/no-await-in-loop
@@ -49,7 +49,7 @@ describe('Capabilities', () => {
   })
 
   it('should init successfully with an existing devices', async () => {
-    for (let cap of desiredCaps.validCaps) {
+    for (let cap of servers.validCaps()) {
       try {
         driver1 = wd.promiseChainRemote(servers.remote())
         const sessionId = await driver1.init(cap)// eslint-disable-line babel/no-await-in-loop
@@ -74,6 +74,7 @@ describe('Capabilities', () => {
     .catch((error) => {
       assert.include(error.toString(), 'The environment you requested was unavailable')
     })
+
   })
 
   it('should be able to init two existing different devices sequentially', async () => {

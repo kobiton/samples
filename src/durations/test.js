@@ -10,9 +10,9 @@ export async function run_test_short_duration(driver) {
   for (let search of data.shortData) {
     let getMsg = await driver// eslint-disable-line babel/no-await-in-loop
       .get('https://www.google.com')
-      .waitForElementByName('q', asserters.isDisplayed, 5000)
+      .waitForElementByName('q', asserters.isDisplayed, 15000)
       .sendKeys(search)
-      .waitForElementByName('btnG', asserters.isDisplayed, 5000)
+      .waitForElementByName('btnG', asserters.isDisplayed, 15000)
       .click()
       .sleep(3000)
       .title()
