@@ -10,6 +10,16 @@ global.createDriver = async (desiredCaps) => {
   driver.on('command', (meth, path, data) => console.log(' >', meth.yellow, path.grey, data || ''))
   driver.on('http', (meth, path, data) => console.log(' >', meth.magenta, path, (data || '').grey))
   /* eslint-enable */
-  await driver.init(desiredCaps)
+
+  //Mocha doesn't show error data in its report
+  try {
+    await driver.init(desiredCaps)
+  }
+  catch (error) {
+    if (error.data) {
+      console.log('ERROR'.red, error.data) //eslint-disable-line no-console
+    }
+    throw error
+  }
   return driver
 }
