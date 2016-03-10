@@ -1,32 +1,29 @@
 #### Init
-Access [Kobition](https://kobiton.com) to get *username* and *api key*
+Access [Kobition](https://kobiton.com) to get *username* and *password*
 
 Open `src/helpers/servers.js`
-* Replace *username* and *api key*
-
-Open `src/helpers/caps.js`
-* Modify`desiredCaps` to match with your available devices
+* Replace *username* and *password* into account_test
 
 #### Tests
-Run test
+Run all test
 ```bash
-npm test-all
+gulp
 ```
 
 Run tests with the same caps and different caps sequentially:
 
 ```bash
-npm run test-sequences
+gulp test-sequence-one-device
 ```
 
 Run tests with different caps concurrently:
 
 ```bash
-npm run test-parallel
+gulp test-all-devices
 ```
 
 Run tests to verify capabilities:
 
 ```bash
-npm run test-capabilities
+gulp test-capabilities
 ```
