@@ -5,7 +5,7 @@ import {debug} from '@kobiton/core-util'
 import servers from '../helpers/servers'
 import data from './data'
 
-describe('capabilities', () => {
+describe('Verify capabilities', () => {
   let driver1, driver2
   const remote = servers.getRemote()
   const cap1 = servers.getOnlineCaps()[0]
