@@ -1,6 +1,6 @@
 import '../helpers/setup'
-const servers = require('../helpers/servers')
-const test = require('./test')
+import servers from '../helpers/servers'
+import test from './test'
 
 describe('Google Search on the second device', () => {
   let driver

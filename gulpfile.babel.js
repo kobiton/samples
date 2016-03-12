@@ -2,21 +2,20 @@ import 'babel-polyfill'
 import gulp from 'gulp'
 import mocha from 'gulp-mocha'
 import {debug} from '@kobiton/core-util'
-const servers = require('./src/helpers/servers')
+import servers from './src/helpers/servers'
+
 process.env.REMOTE = 'test'
-const mochaOption =
-  {
-    timeout: 900000,
-    clearRequireCache: true,
-    reporter: 'mochawesome',
-    reporterOptions:
-    {
-      reportDir: 'reports/' + process.env.REMOTE,
-      reportName: process.env.REMOTE,
-      reportTitle: 'Kobiton Test',
-      inlineAssets: true
-    }
+const mochaOption = {
+  timeout: 900000,
+  clearRequireCache: true,
+  reporter: 'mochawesome',
+  reporterOptions: {
+    reportDir: 'reports/' + process.env.REMOTE,
+    reportName: process.env.REMOTE,
+    reportTitle: 'Kobiton Test',
+    inlineAssets: true
   }
+}
 const scenarios = {
   'test-capabilities': 'src/capabilities/test.js',
   'test-first-device': 'src/durations/test-first-device.js',
@@ -29,15 +28,25 @@ const runAllScenarios = () => {
   return new Promise((resolve) => {
     gulp.src(Object.values(scenarios), {read: false})
         .pipe(mocha(mochaOption))
-        .finally(resolve())
+        .once('error', (err) => {
+          debug.error('test', err)
+        })
+        .once('end', (result) => {
+          debug.log('test', 'run all scenario done')
+        })
   })
 }
 
 const runScenario = (name) => {
   return new Promise((resolve) => {
     gulp.src(scenarios[name], {read: false})
-        .pipe(mocha(mochaOption))
-        .finally(resolve())
+         .pipe(mocha(mochaOption))
+         .once('error', (err) => {
+           debug.error('test', err)
+         })
+         .once('end', (result) => {
+           debug.log('test', `run scenario ${name} done`)
+         })
   })
 }
 
@@ -49,10 +58,10 @@ envs.forEach((env) => {
     process.env.REMOTE = env
     mochaOption.reporterOptions.reportName = env
     mochaOption.reporterOptions.reportDir = 'reports/' + env
-    await servers.initServer()
+    return servers.initServer()
   })
   // Define run all test on specific environment
-  gulp.task(`${env}`, [`init-${env}`], async () => {
+  gulp.task(`${env}`, [`init-${env}`], () => {
     debug.log('test', 'run all scenarios on:' + env)
     return runAllScenarios()
   })

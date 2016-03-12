@@ -2,7 +2,7 @@ import 'babel-polyfill'
 import 'colors'
 import {debug} from '@kobiton/core-util'
 import wd from 'wd'
-const servers = require('../helpers/servers')
+import servers from '../helpers/servers'
 
 global.createDriver = async (desiredCaps) => {
   const driver = wd.promiseChainRemote(servers.getRemote())

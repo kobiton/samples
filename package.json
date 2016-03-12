@@ -28,7 +28,7 @@
   "dependencies": {
     "babel-polyfill": "^6.5.0",
     "bluebird": "^3.0.6",
-    "chai": "^2.2.0",
+    "chai": "^3.5.0",
     "colors": "^1.0.3",
     "wd": "^0.3.11",
     "mocha": "^2.4.4"

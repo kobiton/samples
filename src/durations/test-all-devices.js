@@ -1,6 +1,7 @@
 import {debug} from '@kobiton/core-util'
-const servers = require('../helpers/servers')
-const test = require('./test')
+import {assert} from 'chai'
+import servers from '../helpers/servers'
+import test from './test'
 
 describe('Run a short script with all of existing devices', () => {
   let drivers = []
@@ -13,8 +14,8 @@ describe('Run a short script with all of existing devices', () => {
         debug.log('durations', 'create driver ' + cap.deviceName)
         driver = await createDriver(cap)//eslint-disable-line
       }
-      catch (error) {
-        debug.error('durations', error)
+      catch (err) {
+        debug.error('durations', err)
       }
       finally {
         if (driver != null) {
@@ -36,6 +37,7 @@ describe('Run a short script with all of existing devices', () => {
 
   it('should be succesfully run a short test with all of existing devices parallel', async () => {
     const jobs = []
+    assert.isAtLeast(drivers.length, 1, 'There should be atleast 1 online device')
     for (let driver of drivers) {
       jobs.push(test.run_test_short_duration(driver))
     }

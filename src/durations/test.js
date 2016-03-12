@@ -1,9 +1,7 @@
 import {assert} from 'chai'
 import '../helpers/setup'
-import wd from 'wd'
-const data = require('./data')
-
-const asserters = wd.asserters
+import {asserters} from 'wd'
+import data from './data'
 
 export async function run_test_short_duration(driver) {
   for (let search of data.shortData) {

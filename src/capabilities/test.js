@@ -2,8 +2,8 @@ import {assert} from 'chai'
 import wd from 'wd'
 import '../helpers/setup'
 import {debug} from '@kobiton/core-util'
-const servers = require('../helpers/servers')
-const data = require('./data')
+import servers from '../helpers/servers'
+import data from './data'
 
 describe('capabilities', () => {
   let driver1, driver2
@@ -18,17 +18,17 @@ describe('capabilities', () => {
       try {
         await driver1.quit()
       }
-      catch (error) {
-        debug.error('capabilities', error)
+      catch (err) {
+        debug.error('capabilities', err)
       }
     }
     if (driver2 != null) {
       try {
         await driver2.quit()
       }
-    catch (err) {
-      debug.error('capabilities', err)
-    }
+      catch (err) {
+        debug.error('capabilities', err)
+      }
     }
   })
 
@@ -39,8 +39,8 @@ describe('capabilities', () => {
         const sessionId = await driver1.init(cap)  // eslint-disable-line babel/no-await-in-loop
         assert.isNull(sessionId)
       }
-     catch (error) {
-       assert.include(error.toString(),
+     catch (err) {
+       assert.include(err.toString(),
        'The environment you requested was unavailable', 'verify error message')
      }
      finally {
@@ -56,10 +56,11 @@ describe('capabilities', () => {
       try {
         driver1 = wd.promiseChainRemote(remote)
         const sessionId = await driver1.init(cap)// eslint-disable-line babel/no-await-in-loop
+        debug.log(sessionId)
         assert.isNotNull(sessionId)
       }
-      catch (error) {
-        debug.error('capabilities', error)
+      catch (err) {
+        debug.error('capabilities', err)
       }
       finally {
         if (driver1 != null) {
@@ -77,8 +78,8 @@ describe('capabilities', () => {
     await driver2.init(cap1).then((sessionId) => {
       assert.isNull(sessionId)
     })
-    .catch((error) => {
-      assert.include(error.toString(), 'The environment you requested was unavailable')
+    .catch((err) => {
+      assert.include(err.toString(), 'The environment you requested was unavailable')
     })
   })
 
