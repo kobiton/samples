@@ -1,13 +1,12 @@
-import 'babel-polyfill'
 import '../helpers/setup'
-const desiredCaps = require('../helpers/caps')
-const test = require('./test')
+import servers from '../helpers/servers'
+import test from './test'
 
-describe('Scenario - Google Search on the first device', () => {
+describe('Google Search on the first device', () => {
   let driver
-
+  const cap = servers.getOnlineCaps()[0]
   beforeEach(async() => {
-    driver = await createDriver(desiredCaps.galaxy_note4_v5)
+    driver = await createDriver(cap)
   })
 
   afterEach(async() => {

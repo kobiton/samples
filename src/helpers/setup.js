@@ -1,15 +1,17 @@
 import 'babel-polyfill'
 import 'colors'
+import {debug} from '@kobiton/core-util'
 import wd from 'wd'
-
-const servers = require('../helpers/servers')
+import servers from '../helpers/servers'
 
 global.createDriver = async (desiredCaps) => {
-  const driver = wd.promiseChainRemote(servers.remote)
+  const driver = wd.promiseChainRemote(servers.getRemote())
   /* eslint-disable no-console */
-  driver.on('status', (info) => console.log(info.cyan))
-  driver.on('command', (meth, path, data) => console.log(' >', meth.yellow, path.grey, data || ''))
-  driver.on('http', (meth, path, data) => console.log(' >', meth.magenta, path, (data || '').grey))
+  driver.on('status', (info) => debug.log('helpers', info.cyan))
+  driver.on('command', (meth, path, data) => debug.log('helpers',
+  ' >', meth.yellow, path.grey, data || ''))
+  driver.on('http', (meth, path, data) => debug.log('helpers',
+  ' >', meth.magenta, path, (data || '').grey))
   /* eslint-enable */
 
   //Mocha doesn't show error data in its report
@@ -18,7 +20,7 @@ global.createDriver = async (desiredCaps) => {
   }
   catch (error) {
     if (error.data) {
-      console.log('ERROR'.red, error.data) //eslint-disable-line no-console
+      debug.error('helpers', error)
     }
     throw error
   }

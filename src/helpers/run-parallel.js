@@ -1,5 +1,5 @@
-const debug = require('@kobiton/core-util').debug
-const spawn = require('child_process').spawn
+import {debug} from '@kobiton/core-util'
+import {spawn} from 'child_process'
 
 debug.enable('test')
 
