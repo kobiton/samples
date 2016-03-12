@@ -1,13 +1,12 @@
-import 'babel-polyfill'
 import '../helpers/setup'
-const servers = require('../helpers/servers')
+import servers from '../helpers/servers'
 const test = require('./test')
 
 describe('Google Search on the first device', () => {
   let driver
-
+  const cap = servers.getOnlineCaps()[0]
   beforeEach(async() => {
-    driver = await createDriver(servers.onlineCaps()[0])
+    driver = await createDriver(cap)
   })
 
   afterEach(async() => {

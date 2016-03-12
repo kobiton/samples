@@ -1,17 +1,20 @@
-import 'babel-polyfill'
-const test = require('./test')
+import {debug} from '@kobiton/core-util'
 const servers = require('../helpers/servers')
+const test = require('./test')
 
 describe('Run a short script with all of existing devices', () => {
   let drivers = []
+  const onlineCaps = servers.getOnlineCaps()
 
   beforeEach(async() => {
-    for (let cap of servers.onlineCaps()) {
+    for (let cap of onlineCaps) {
       let driver
       try {
+        debug.log('durations', 'create driver ' + cap.deviceName)
         driver = await createDriver(cap)//eslint-disable-line
       }
       catch (error) {
+        debug.error('durations', error)
       }
       finally {
         if (driver != null) {
