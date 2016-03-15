@@ -39,7 +39,7 @@ describe('Run a short script with all of existing devices', () => {
     const jobs = []
     assert.isAtLeast(drivers.length, 1, 'There should be atleast 1 online device')
     for (let driver of drivers) {
-      jobs.push(test.run_test_short_duration(driver))
+      jobs.push(test.runTestShortDuration(driver))
     }
     await Promise.all(jobs)
   })

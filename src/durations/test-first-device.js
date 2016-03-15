@@ -16,10 +16,10 @@ describe('Google Search on the first device', () => {
   })
 
   it('should search Google with short duration', async() => {
-    await test.run_test_short_duration(driver)
+    await test.runTestShortDuration(driver)
   })
 
   it('should search Google with long duration', async() => {
-    await test.run_test_long_duration(driver)
+    await test.runTestLongDuration(driver)
   })
 })

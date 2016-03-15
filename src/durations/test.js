@@ -3,7 +3,7 @@ import '../helpers/setup'
 import {asserters} from 'wd'
 import data from './data'
 
-export async function run_test_short_duration(driver) {
+exports.runTestShortDuration = async (driver) => {
   for (let search of data.shortData) {
     let getMsg = await driver// eslint-disable-line babel/no-await-in-loop
       .get('https://www.google.com')
@@ -17,7 +17,7 @@ export async function run_test_short_duration(driver) {
   }
 }
 
-export async function run_test_long_duration(driver) {
+exports.runTestLongDuration = async (driver) => {
   for (let search of data.longData) {
     let getMsg = await driver// eslint-disable-line babel/no-await-in-loop
       .get('https://www.google.com')
