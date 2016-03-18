@@ -14,7 +14,7 @@ const accountTest = {
 const accountStaging = {
   apiUrl: 'https://api-staging.kobiton.com/',
   hubUrl: 'api-staging.kobiton.com',
-  emailOrUsername: 'ktest2',
+  emailOrUsername: 'staging_test1',
   password: 'mario8x@123'
 }
 const accountProduction = {
@@ -119,9 +119,10 @@ exports.initServer = async () => {
           browserName: 'chrome',
           platformName: device.platformName,
           platformVersion: device.platformVersion,
-          deviceName: device.deviceName
+          deviceName: device.deviceName,
+          newCommandTimeout: 240
         }
-        debug.log('helpers', 'initSerer: online caps:' + cap.deviceName)
+        debug.log('helpers', 'initServer: online caps:' + cap.deviceName)
         caps.push(cap)
       }
     })
@@ -135,13 +136,30 @@ exports.availableDevices = []
 exports.getRemote = () => {
   return remote
 }
+const testerDevices = [{
+  deviceName: 'Nexus 5',
+  browserName: 'chrome',
+  platformName: 'Android',
+  platformVersion: '6.0.1',
+  newCommandTimeout: 240},
+  {
+    deviceName: 'Galaxy S6',
+    browserName: 'chrome',
+    platformName: 'Android',
+    platformVersion: '5.1.1',
+    newCommandTimeout: 240
+  }
+]
 
 exports.getOnlineCaps = () => {
+  // return caps for real online devices
   return caps
+  //return testerDevices for tester testing
+  //return testerDevices
 }
 
 exports.getValidCaps = () => {
-  let caps = []
+  const caps = []
   caps.push(exports.getOnlineCaps()[0])
   return caps
 }

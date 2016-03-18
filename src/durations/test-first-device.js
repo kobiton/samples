@@ -4,6 +4,9 @@ import test from './test'
 
 describe('Google Search on the first device', () => {
   let driver
+  const wait = (t) => {
+    return new Promise((resolve) => setTimeout(resolve, t));
+  }
   const cap = servers.getOnlineCaps()[0]
   beforeEach(async() => {
     driver = await createDriver(cap)
@@ -12,6 +15,7 @@ describe('Google Search on the first device', () => {
   afterEach(async() => {
     if (driver != null) {
       await driver.quit()
+      await wait(15000)
     }
   })
 

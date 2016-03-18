@@ -5,7 +5,9 @@ import test from './test'
 describe('Google Search on the second device', () => {
   let driver
   const cap = servers.getOnlineCaps()[1]
-
+  const wait = (t) => {
+    return new Promise((resolve) => setTimeout(resolve, t));
+  }
   beforeEach(async() => {
     driver = await createDriver(cap)
   })
@@ -13,7 +15,9 @@ describe('Google Search on the second device', () => {
   afterEach(async() => {
     if (driver != null) {
       await driver.quit()
+      await wait(15000)
     }
+
   })
 
   it('should search Google with short duration', async() => {

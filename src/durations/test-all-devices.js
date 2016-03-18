@@ -6,7 +6,9 @@ import test from './test'
 describe('Run a short script with all of existing devices', () => {
   let drivers = []
   const onlineCaps = servers.getOnlineCaps()
-
+  const wait = (t) => {
+    return new Promise((resolve) => setTimeout(resolve, t));
+  }
   beforeEach(async() => {
     for (let cap of onlineCaps) {
       let driver
@@ -33,6 +35,7 @@ describe('Run a short script with all of existing devices', () => {
       }
     }
     await Promise.all(jobs)
+    await wait(15000)
   })
 
   it('should be succesfully run a short test with all of existing devices parallel', async () => {
