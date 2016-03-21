@@ -61,7 +61,8 @@ const sendRequest = ({
   })
 }
 
-const login = async () => {
+exports.login = login
+async function login() {
   const {emailOrUsername, password, apiUrl} = getAccount()
   const url = apiUrl + api.login
   return await sendRequest({url, method: 'POST', body: {emailOrUsername, password}})
@@ -86,7 +87,8 @@ const getDevices = async (token) => {
   return await sendRequest(options)
 }
 
-const getAccount = () => {
+exports.getAccount = getAccount
+function getAccount() {
   let account
   switch (process.env.REMOTE) {
     case 'staging':
@@ -100,6 +102,7 @@ const getAccount = () => {
   }
   return account;
 }
+
 exports.initServer = async () => {
   try {
     const account = getAccount()
