@@ -24,7 +24,13 @@ const accountProduction = {
   password: 'mario8x@123'
 }
 const remote = {}
-const caps = []
+const onlineCaps = []
+const testerCaps = [{
+  deviceName: 'Nexus 5',
+  browserName: 'chrome',
+  platformName: 'Android',
+  platformVersion: '6.0.1'}
+]
 
 const sendRequest = ({
   method = 'GET', url, qs = {}, headers = {}, body = {}, json = true, token}) => {
@@ -61,15 +67,14 @@ const sendRequest = ({
   })
 }
 
-exports.login = login
-async function login() {
-  const {emailOrUsername, password, apiUrl} = getAccount()
+exports.login = async () => {
+  const {emailOrUsername, password, apiUrl} = exports.getAccount()
   const url = apiUrl + api.login
   return await sendRequest({url, method: 'POST', body: {emailOrUsername, password}})
 }
 
-const getDevices = async (token) => {
-  const account = getAccount()
+exports.getDevices = async (token) => {
+  const account = exports.getAccount()
   let options = {
     method: 'GET',
     url: account.apiUrl + api.devices,
@@ -87,8 +92,7 @@ const getDevices = async (token) => {
   return await sendRequest(options)
 }
 
-exports.getAccount = getAccount
-function getAccount() {
+exports.getAccount = () => {
   let account
   switch (process.env.REMOTE) {
     case 'staging':
@@ -102,31 +106,28 @@ function getAccount() {
   }
   return account;
 }
-
 exports.initServer = async () => {
   try {
-    const account = getAccount()
+    const account = exports.getAccount()
     debug.log('helpers', 'initServer')
-    const loginAccount = await login()
+    const loginAccount = await exports.login()
     //init remote information for testing
     remote.protocol = 'http'
     remote.host = account.hubUrl
     remote.auth = account.emailOrUsername + ':' + loginAccount.user.apiKey
     remote.port = 80
-    const devices = await getDevices(loginAccount.token)
+    const devices = await exports.getDevices(loginAccount.token)
     devices.data.forEach((device) => {
       if (device.onlineCount > 0) {
-        exports.availableDevices.push(device)
         //init online caps for testing
         let cap = {
           browserName: 'chrome',
           platformName: device.platformName,
           platformVersion: device.platformVersion,
-          deviceName: device.deviceName,
-          newCommandTimeout: 240
+          deviceName: device.deviceName
         }
         debug.log('helpers', 'initServer: online caps:' + cap.deviceName)
-        caps.push(cap)
+        onlineCaps.push(cap)
       }
     })
   }
@@ -134,31 +135,14 @@ exports.initServer = async () => {
     throw new Error(error.message)
   }
 }
-exports.availableDevices = []
 
 exports.getRemote = () => {
   return remote
 }
-const testerDevices = [{
-  deviceName: 'Nexus 5',
-  browserName: 'chrome',
-  platformName: 'Android',
-  platformVersion: '6.0.1',
-  newCommandTimeout: 240},
-  {
-    deviceName: 'Galaxy S6',
-    browserName: 'chrome',
-    platformName: 'Android',
-    platformVersion: '5.1.1',
-    newCommandTimeout: 240
-  }
-]
 
 exports.getOnlineCaps = () => {
-  // return caps for real online devices
-  return caps
-  //return testerDevices for tester testing
-  //return testerDevices
+  return onlineCaps
+  //return testerCaps
 }
 
 exports.getValidCaps = () => {

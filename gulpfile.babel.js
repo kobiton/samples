@@ -20,7 +20,8 @@ const scenarios = {
   'test-capabilities': 'src/capabilities/test.js',
   'test-first-device': 'src/durations/test-first-device.js',
   'test-second-device': 'src/durations/test-second-device.js',
-  'test-all-devices': 'src/durations/test-all-devices.js'
+  'test-all-devices': 'src/durations/test-all-devices.js',
+  'test-response-time': 'src/durations/test-unavailable-devices-response-time.js'
 }
 debug.enable('test|capabilities|durations|helpers')
 // Common Function

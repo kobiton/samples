@@ -4,7 +4,22 @@ import {debug} from '@kobiton/core-util'
 import wd from 'wd'
 import servers from '../helpers/servers'
 
-global.createDriver = async (desiredCaps) => {
+exports.wait = (t) => {
+  return new Promise((resolve) => setTimeout(resolve, t));
+
+}
+exports.quitDriver = async (driver) => {
+  if (driver != null) {
+    try {
+      await driver.quit()
+      //await exports.wait(30000)
+    }
+    catch (err) {
+      debug.error('capabilities', err)
+    }
+  }
+}
+exports.createDriver = async (desiredCaps) => {
   const driver = wd.promiseChainRemote(servers.getRemote())
   /* eslint-disable no-console */
   driver.on('status', (info) => debug.log('helpers', info.cyan))
