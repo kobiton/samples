@@ -1,108 +1,77 @@
 import {assert} from 'chai'
 import wd from 'wd'
-import '../helpers/setup'
+import setup from '../helpers/setup'
 import {debug} from '@kobiton/core-util'
 import servers from '../helpers/servers'
-import data from './data'
+import {invalidCaps, nonExistCapConfig} from './data'
 
 describe('Verify capabilities', () => {
-  let driver1, driver2
   const remote = servers.getRemote()
-  const cap1 = servers.getOnlineCaps()[0]
-  const cap2 = servers.getOnlineCaps()[1]
-  const validCaps = servers.getValidCaps()
-  const invalidCaps = data.invalidCaps
+  const onlineCaps = servers.getOnlineCaps()
+  const nonExistingCaps = new Array(nonExistCapConfig.threadCount).fill(nonExistCapConfig.cap)
+  let drivers = []
+
+  const initFailedScenario = async (cap) => {
+    try {
+      const driver = wd.promiseChainRemote(remote)
+      const sessionid = await driver.init(cap)
+      if (sessionid != null) {
+        throw new Error('should init failed: ' + cap.deviceName)
+      }
+    }
+    catch (err) {
+      return err
+    }
+  }
+
+  const initSuccessfulScenario = async (cap) => {
+    try {
+      const driver = wd.promiseChainRemote(remote)
+      drivers.push(driver)
+      return await driver.init(cap)
+    }
+    catch (err) {
+      debug.error('capabilities', err)
+      throw new Error('should init successfully : ' + cap.deviceName)
+    }
+  }
 
   afterEach(async () => {
-    if (driver1 != null) {
-      try {
-        await driver1.quit()
-      }
-      catch (err) {
-        debug.error('capabilities', err)
-      }
-    }
-    if (driver2 != null) {
-      try {
-        await driver2.quit()
-      }
-      catch (err) {
-        debug.error('capabilities', err)
-      }
-    }
+    const jobs = drivers.map((driver) => setup.quitDriver(driver))
+    await Promise.all(jobs)
+  })
+
+  beforeEach(() => {
+    drivers = []
   })
 
   it('should init failed with non existing devices', async () => {
-    for (let cap of invalidCaps) {
-      try {
-        driver1 = wd.promiseChainRemote(remote)
-        const sessionId = await driver1.init(cap)  // eslint-disable-line babel/no-await-in-loop
-        assert.isNull(sessionId)
-      }
-     catch (err) {
-       assert.include(err.toString(),
-       'The environment you requested was unavailable', 'verify error message')
-     }
-     finally {
-       if (driver1 != null) {
-         await driver1.quit() // eslint-disable-line babel/no-await-in-loop
-       }
-     }
-    }
-  })
-
-  it('should init successfully with an existing devices', async () => {
-    for (let cap of validCaps) {
-      try {
-        driver1 = wd.promiseChainRemote(remote)
-        const sessionId = await driver1.init(cap)// eslint-disable-line babel/no-await-in-loop
-        debug.log(sessionId)
-        assert.isNotNull(sessionId)
-      }
-      catch (err) {
-        debug.error('capabilities', err)
-      }
-      finally {
-        if (driver1 != null) {
-          await driver1.quit()  // eslint-disable-line babel/no-await-in-loop
-        }
-      }
-    }
-  })
-
-  it('should not be able to use a utilizing device', async () => {
-    driver1 = wd.promiseChainRemote(remote)
-    let sessionID = await driver1.init(cap1)
-    assert.isNotNull(sessionID)
-    driver2 = wd.promiseChainRemote(remote)
-    await driver2.init(cap1).then((sessionId) => {
-      assert.isNull(sessionId)
-    })
-    .catch((err) => {
-      assert.include(err.toString(), 'The environment you requested was unavailable')
+    const jobs = invalidCaps.map((cap) => initFailedScenario(cap))
+    const vals = await Promise.all(jobs)
+    vals.forEach((value) => {
+      assert.typeOf(value, 'error')
     })
   })
 
-  it('should be able to init two existing different devices sequentially', async () => {
-    driver1 = wd.promiseChainRemote(remote)
-    let sessionId = await driver1.init(cap1)
-    assert.isNotNull(sessionId)
-    debug.log('capabilities', cap1.deviceName + sessionId)
-    driver2 = wd.promiseChainRemote(remote)
-    let sessionId2 = await driver2.init(cap2)
-    assert.isNotNull(sessionId2)
-    debug.log('capabilities', cap2.deviceName + sessionId2)
+  it('should init successfully with existing devices parallel', async () => {
+    const jobs = onlineCaps.map((cap) => initSuccessfulScenario(cap))
+    const vals = await Promise.all(jobs)
+    vals.forEach((value) => {
+      debug.log('capabilities', value)
+      assert.isArray(value)
+      assert.isString(value[0])
+    })
   })
 
-  it('should be able to run two existing different devices parallel', async () => {
-    driver1 = wd.promiseChainRemote(remote)
-    driver2 = wd.promiseChainRemote(remote)
-    const [sessionId1, sessionId2] = await Promise.all([
-      driver1.init(cap1),
-      driver2.init(cap2)
-    ])
-    assert.isNotNull(sessionId1)
-    assert.isNotNull(sessionId2)
+  it('should init successfully while init hundred of non-existing devices', async () => {
+    const successfullJobs = onlineCaps.map((cap) => initSuccessfulScenario(cap))
+    const failedJobs = nonExistingCaps.map((cap) => initFailedScenario(cap))
+    const jobs = successfullJobs.concat(failedJobs)
+    const start = Date.now()
+    await Promise.all(jobs)
+    const end = Date.now()
+    const duration = end - start
+    debug.log('capabilities', 'init both online and invalid devices take(ms): ' + duration)
   })
 
 })

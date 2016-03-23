@@ -14,7 +14,7 @@ const accountTest = {
 const accountStaging = {
   apiUrl: 'https://api-staging.kobiton.com/',
   hubUrl: 'api-staging.kobiton.com',
-  emailOrUsername: 'ktest2',
+  emailOrUsername: 'staging_test1',
   password: 'mario8x@123'
 }
 const accountProduction = {
@@ -24,7 +24,13 @@ const accountProduction = {
   password: 'mario8x@123'
 }
 const remote = {}
-const caps = []
+const onlineCaps = []
+const testerCaps = [{
+  deviceName: 'Nexus 5',
+  browserName: 'chrome',
+  platformName: 'Android',
+  platformVersion: '6.0.1'}
+]
 
 const sendRequest = ({
   method = 'GET', url, qs = {}, headers = {}, body = {}, json = true, token}) => {
@@ -61,15 +67,14 @@ const sendRequest = ({
   })
 }
 
-exports.login = login
-async function login() {
-  const {emailOrUsername, password, apiUrl} = getAccount()
+exports.login = async () => {
+  const {emailOrUsername, password, apiUrl} = exports.getAccount()
   const url = apiUrl + api.login
   return await sendRequest({url, method: 'POST', body: {emailOrUsername, password}})
 }
 
-const getDevices = async (token) => {
-  const account = getAccount()
+exports.getDevices = async (token) => {
+  const account = exports.getAccount()
   let options = {
     method: 'GET',
     url: account.apiUrl + api.devices,
@@ -87,8 +92,7 @@ const getDevices = async (token) => {
   return await sendRequest(options)
 }
 
-exports.getAccount = getAccount
-function getAccount() {
+exports.getAccount = () => {
   let account
   switch (process.env.REMOTE) {
     case 'staging':
@@ -102,21 +106,19 @@ function getAccount() {
   }
   return account;
 }
-
 exports.initServer = async () => {
   try {
-    const account = getAccount()
+    const account = exports.getAccount()
     debug.log('helpers', 'initServer')
-    const loginAccount = await login()
+    const loginAccount = await exports.login()
     //init remote information for testing
     remote.protocol = 'http'
     remote.host = account.hubUrl
     remote.auth = account.emailOrUsername + ':' + loginAccount.user.apiKey
     remote.port = 80
-    const devices = await getDevices(loginAccount.token)
+    const devices = await exports.getDevices(loginAccount.token)
     devices.data.forEach((device) => {
       if (device.onlineCount > 0) {
-        exports.availableDevices.push(device)
         //init online caps for testing
         let cap = {
           browserName: 'chrome',
@@ -124,8 +126,8 @@ exports.initServer = async () => {
           platformVersion: device.platformVersion,
           deviceName: device.deviceName
         }
-        debug.log('helpers', 'initSerer: online caps:' + cap.deviceName)
-        caps.push(cap)
+        debug.log('helpers', 'initServer: online caps:' + cap.deviceName)
+        onlineCaps.push(cap)
       }
     })
   }
@@ -133,18 +135,18 @@ exports.initServer = async () => {
     throw new Error(error.message)
   }
 }
-exports.availableDevices = []
 
 exports.getRemote = () => {
   return remote
 }
 
 exports.getOnlineCaps = () => {
-  return caps
+  return onlineCaps
+  //return testerCaps
 }
 
 exports.getValidCaps = () => {
-  let caps = []
+  const caps = []
   caps.push(exports.getOnlineCaps()[0])
   return caps
 }

@@ -1,3 +1,8 @@
+#### Precondition
+Install gulp
+```bash
+*$ npm install --global gulp-cli
+```
 #### Init
 Access [Kobition](https://kobiton.com) to get *username* and *password*
 
