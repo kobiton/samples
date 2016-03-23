@@ -37,10 +37,7 @@ describe('Verify capabilities', () => {
   }
 
   afterEach(async () => {
-    const jobs = []
-    drivers.forEach((value) => {
-      jobs.push(setup.quitDriver(value))
-    })
+    const jobs = drivers.map((driver) => setup.quitDriver(driver))
     await Promise.all(jobs)
   })
 
@@ -49,23 +46,17 @@ describe('Verify capabilities', () => {
   })
 
   it('should init failed with non existing devices', async () => {
-    const jobs = []
-    for (let cap of invalidCaps) {
-      jobs.push(initFailedScenario(cap))
-    }
+    const jobs = invalidCaps.map((cap) => initFailedScenario(cap))
     const vals = await Promise.all(jobs)
-    vals.forEach(async (value) => {
+    vals.forEach((value) => {
       assert.typeOf(value, 'error')
     })
   })
 
   it('should init successfully with existing devices parallel', async () => {
-    const jobs = []
-    for (let cap of onlineCaps) {
-      jobs.push(initSuccessfulScenario(cap))
-    }
+    const jobs = onlineCaps.map((cap) => initSuccessfulScenario(cap))
     const vals = await Promise.all(jobs)
-    vals.forEach(async (value) => {
+    vals.forEach((value) => {
       debug.log('capabilities', value)
       assert.isArray(value)
       assert.isString(value[0])
@@ -73,14 +64,9 @@ describe('Verify capabilities', () => {
   })
 
   it('should init successfully while init hundred of non-existing devices', async () => {
-    const jobs = []
-    for (let cap of onlineCaps) {
-      jobs.push(initSuccessfulScenario(cap))
-    }
-
-    for (let cap of nonExistingCaps) {
-      jobs.push(initFailedScenario(cap))
-    }
+    const successfullJobs = onlineCaps.map((cap) => initSuccessfulScenario(cap))
+    const failedJobs = nonExistingCaps.map((cap) => initFailedScenario(cap))
+    const jobs = successfullJobs.concat(failedJobs)
     const start = Date.now()
     await Promise.all(jobs)
     const end = Date.now()

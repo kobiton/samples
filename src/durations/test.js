@@ -20,9 +20,6 @@ exports.runTestShortDuration = async (cap) => {
       assert.include(getMsg, search)
     }
   }
-  catch (err) {
-    throw err
-  }
   finally {
     setup.quitDriver(driver)
   }
@@ -42,9 +39,6 @@ exports.runTestLongDuration = async (cap) => {
         .title()
       assert.include(getMsg, search)
     }
-  }
-  catch (err) {
-    throw err
   }
   finally {
     setup.quitDriver(driver)
