@@ -2,18 +2,27 @@ import {assert} from 'chai'
 import wd from 'wd'
 import setup from '../helpers/setup'
 import {debug} from '@kobiton/core-util'
-import servers from '../helpers/servers'
+import initEnv from '../helpers/init-environment'
 import {invalidCaps, nonExistCapConfig} from './data'
+import BPromise from 'bluebird'
 
 describe('Verify capabilities', () => {
-  const remote = servers.getRemote()
-  const onlineCaps = servers.getOnlineCaps()
+
+  let onlineDevices
+  let server
+
+  before(async () => {
+    const env = await initEnv(global._mocha.env)
+    server = env.kobitonServer
+    onlineDevices = env.onlineDevices
+  })
+
   const nonExistingCaps = new Array(nonExistCapConfig.threadCount).fill(nonExistCapConfig.cap)
   let drivers = []
 
-  const initFailedScenario = async (cap) => {
+  async function initFailedScenario(cap) {
     try {
-      const driver = wd.promiseChainRemote(remote)
+      const driver = wd.promiseChainRemote(server)
       const sessionid = await driver.init(cap)
       if (sessionid != null) {
         throw new Error('should init failed: ' + cap.deviceName)
@@ -24,9 +33,9 @@ describe('Verify capabilities', () => {
     }
   }
 
-  const initSuccessfulScenario = async (cap) => {
+  async function initSuccessfulScenario(cap) {
     try {
-      const driver = wd.promiseChainRemote(remote)
+      const driver = wd.promiseChainRemote(server)
       drivers.push(driver)
       return await driver.init(cap)
     }
@@ -46,16 +55,14 @@ describe('Verify capabilities', () => {
   })
 
   it('should init failed with non existing devices', async () => {
-    const jobs = invalidCaps.map((cap) => initFailedScenario(cap))
-    const vals = await Promise.all(jobs)
+    const vals = await BPromise.all(invalidCaps.map((cap) => initFailedScenario(cap)))
     vals.forEach((value) => {
       assert.typeOf(value, 'error')
     })
   })
 
   it('should init successfully with existing devices parallel', async () => {
-    const jobs = onlineCaps.map((cap) => initSuccessfulScenario(cap))
-    const vals = await Promise.all(jobs)
+    const vals = await BPromise.all(onlineDevices.map((cap) => initSuccessfulScenario(cap)))
     vals.forEach((value) => {
       debug.log('capabilities', value)
       assert.isArray(value)
@@ -64,11 +71,12 @@ describe('Verify capabilities', () => {
   })
 
   it('should init successfully while init hundred of non-existing devices', async () => {
-    const successfullJobs = onlineCaps.map((cap) => initSuccessfulScenario(cap))
+    assert.isAtLeast(onlineDevices.length, 1, 'Expected 1 online device')
+    const successfullJobs = onlineDevices.map((cap) => initSuccessfulScenario(cap))
     const failedJobs = nonExistingCaps.map((cap) => initFailedScenario(cap))
     const jobs = successfullJobs.concat(failedJobs)
     const start = Date.now()
-    await Promise.all(jobs)
+    await BPromise.all(jobs)
     const end = Date.now()
     const duration = end - start
     debug.log('capabilities', 'init both online and invalid devices take(ms): ' + duration)

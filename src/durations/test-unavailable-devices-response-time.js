@@ -1,5 +1,5 @@
 import 'babel-polyfill'
-import {login, getAccount} from '../helpers/servers'
+import {getUserInfo, getAccount} from '../helpers/portal-api'
 import {assert} from 'chai'
 import request from 'request'
 import _ from 'lodash'
@@ -8,7 +8,7 @@ import BPromise from 'bluebird'
 describe.only('Response time for large number of tests on unavailable devices', () => {
   let send
   beforeEach(async () => {
-    const resBody = await login()
+    const resBody = await getUserInfo()
     const {username, apiKey} = resBody.user
     send = _send.bind(undefined, username, apiKey)
   })
@@ -31,14 +31,14 @@ describe.only('Response time for large number of tests on unavailable devices', 
 
     batches.push(run(400, acceptableDuration))
     await BPromise.delay(2000)
-    
+
     await BPromise.all(batches)
   })
 
   function run(times, maxWait) {
     const requests = _.times(times, send)
     return Promise.all(requests).then((responses) => {
-      for(const res of responses) {
+      for (const res of responses) {
         assert.equal(res.status, 404, `Response body: ${res.resBody}`)
         assert.isTrue(res.resBody.error)
         assert.isBelow(res.duration, maxWait)
@@ -71,7 +71,6 @@ function _send(username, apiKey) {
 
         const end = Date.now()
         resolve({status: res.statusCode, resBody: jsonBody, duration: end - start})
-      }
-    )      
+      })
   })
 }
