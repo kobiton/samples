@@ -1,34 +1,45 @@
-#### Precondition
-Install gulp
-```bash
-*$ npm install --global gulp-cli
-```
-#### Init
+### Prerequisites
+ * Install local packages:  `npm install`
+
+### Init
 Access [Kobition](https://kobiton.com) to get *username* and *password*
 
-Open `src/helpers/servers.js`
+Open `src/helpers/portal-api.js`
 * Replace *username* and *password* into account_test
 
-#### Tests
-Run all test
+### Tests - Regression
+
+#### 1. Run all tests on test environment
 ```bash
-gulp
+npm run gulp test:test
 ```
 
-Run tests with the same caps and different caps sequentially:
-
+#### 2. Run all tests on staging environment
 ```bash
-gulp test-sequence-one-device
+npm run gulp test:staging
 ```
 
-Run tests with different caps concurrently:
-
+#### 3. Run all tests on production environment
 ```bash
-gulp test-all-devices
+npm run gulp test:production
 ```
 
-Run tests to verify capabilities:
+### Tests - Development
 
+#### 1. Run subset of tests on test environment
 ```bash
-gulp test-capabilities
+npm run gulp test:test -- --android
+npm run gulp test:test -- --ios
+```
+
+#### 2. Run subset of tests on staging environment
+```bash
+npm run gulp test:staging --  --android
+npm run gulp test:staging --  --ios
+```
+
+#### 3. Run subset of tests on production environment
+```bash
+npm run gulp test:production --  --android
+npm run gulp test:production --  --ios
 ```
