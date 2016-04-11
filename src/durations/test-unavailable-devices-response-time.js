@@ -5,6 +5,9 @@ import request from 'request'
 import _ from 'lodash'
 import BPromise from 'bluebird'
 
+const apiHost = getAccount().apiUrl.replace(/https/i, 'http').replace(/\/$/, '')
+const API_URL = `${apiHost}/wd/hub/session`
+
 describe.only('Response time for large number of tests on unavailable devices', () => {
   let send
   beforeEach(async () => {
@@ -13,24 +16,21 @@ describe.only('Response time for large number of tests on unavailable devices', 
     send = _send.bind(undefined, username, apiKey)
   })
 
-  it('should be below 10s for 500 test requests', () => {
-    return run(500, 10000)
-  })
-
-  it('should be below 15s for 1000 test requests (in batches)', async () => {
+  it('should be below 10s (each request) for several batches of 300 requests', async () => {
     const acceptableDuration = 10000
+    const numOfRequest = 300
+    const minimumBreakTime = 5000
     const batches = []
 
-    batches.push(run(300, acceptableDuration))
+    batches.push(run(numOfRequest, acceptableDuration))
 
     // Give server a little break
-    await BPromise.delay(2000)
+    await BPromise.delay(minimumBreakTime)
 
-    batches.push(run(300, acceptableDuration))
-    await BPromise.delay(2000)
+    batches.push(run(numOfRequest, acceptableDuration))
+    await BPromise.delay(minimumBreakTime)
 
-    batches.push(run(400, acceptableDuration))
-    await BPromise.delay(2000)
+    batches.push(run(numOfRequest, acceptableDuration))
 
     await BPromise.all(batches)
   })
@@ -48,12 +48,12 @@ describe.only('Response time for large number of tests on unavailable devices', 
 })
 
 function _send(username, apiKey) {
-  return new Promise((resolve, reject) => {
+  return new BPromise((resolve, reject) => {
     const auth = new Buffer(`${username}:${apiKey}`).toString('base64')
     const start = Date.now()
     request.post(
       {
-        url: `${getAccount().apiUrl.replace(/\/$/, '')}/wd/hub/session`,
+        url: API_URL,
         headers: {
           Authorization: `Basic ${auth}`
         },
