@@ -51,7 +51,7 @@ exports.getOnlineDevices = async (token) => {
   }
   const devices = await network.sendRequest(request)
   const onlineDevices = devices.data
-    .filter((d) => d.availableCount === 1)
+    .filter((d) => d.availableCount > 0)
     .map((d) => ({
       'browserName': browsername,
       'platformName': d.platformName,
