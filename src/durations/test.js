@@ -8,11 +8,11 @@ exports.launch = async (server, desiredCapabilities, searchTerms) => {
       await driver // eslint-disable-line babel/no-await-in-loop
         .get('https://www.google.com')
         .sleep(5000)
-        .waitForElementByName('q', 10000)
+        .waitForElementById('lst-ib', 10000)
         .sleep(3000)
         .sendKeys(search)
         .sleep(3000)
-        .waitForElementByName('btnG', 10000)
+        .waitForElementByXPath("//button[@aria-label='Google Search']", 10000)
         .click()
         .sleep(3000)
         .hasElementByXPath("//div[@id='hdtb-msb']//*[text()='All']")
