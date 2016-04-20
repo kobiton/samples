@@ -38,11 +38,22 @@ describe('Run script with at least three online devices', () => {
 
   async function run(data, maximumDuration, msg) {
     const start = Date.now()
-    const jobs = onlineDevices.map((cap) => test.launch(server, cap, data))
-    await BPromise.all(jobs)
+    const jobs = onlineDevices
+      .map((cap) => test.launch(server, cap, data))
+      .map((promise) => promise.then(onSuccess, onError))
+    const finishedJobs = await BPromise.all(jobs)
+    const successCount = finishedJobs.reduce((sum, ok) => (sum + ok), 0)
     const end = Date.now()
     const durationInSeconds = (end - start) / 1000
+    assert.equal(successCount, onlineDevices.length, 'Expected all devices are run successfully')
     assert.isAtLeast(durationInSeconds, maximumDuration, msg)
+
+    function onSuccess() {
+      return 1
+    }
+    function onError() {
+      return 0
+    }
   }
 
 })

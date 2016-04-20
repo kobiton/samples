@@ -8,6 +8,6 @@ exports.hugeListSearchTerms = generateTerms(120)
 
 function generateTerms(times) {
   return _.times(times,
-    () => `${Faker.Name.findName()}, ${Faker.Company.companyName()}`
+    () => Faker.Name.findName()
   )
 }

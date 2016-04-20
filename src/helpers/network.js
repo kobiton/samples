@@ -4,14 +4,14 @@ import BPromise from 'bluebird'
 
 exports.sendRequest = async (options) => {
   const finalOptions = {method: 'GET', json: true, body: {}, ...options}
-  debug.log('helpers', `sendRequest ${finalOptions.method}: ${finalOptions.url}`)
+  debug.log('sendRequest()', `${finalOptions.method}: ${finalOptions.url}`)
 
   const [response, body] = await requestAsync(finalOptions)
   if (response.statusCode !== 200) {
-    debug.error('helpers', new Error(finalOptions.body.message))
+    debug.error('sendRequest()', new Error(finalOptions.body.message))
     throw new Error(finalOptions.body.message)
   }
-  debug.log('helpers', `response: ${JSON.stringify(body)}`)
+  debug.log('response()', `${JSON.stringify(body)}`)
   return body
 }
 

@@ -60,7 +60,7 @@ exports.getOnlineDevices = async (token) => {
     })
   )
 
-  debug.log('helpers', `onlineDevices: ${JSON.stringify(onlineDevices)}`)
+  debug.log('getOnlineDevices()', `${JSON.stringify(onlineDevices)}`)
   return onlineDevices
 }
 
