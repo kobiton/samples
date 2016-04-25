@@ -2,28 +2,23 @@ import 'babel-polyfill'
 import 'colors'
 import {debug} from '@kobiton/core-util'
 import wd from 'wd'
-import servers from '../helpers/servers'
 
-exports.wait = (t) => {
-  return new Promise((resolve) => setTimeout(resolve, t));
-
-}
 exports.quitDriver = async (driver) => {
   if (driver != null) {
     try {
       await driver.quit()
     }
     catch (err) {
-      debug.error('capabilities', err)
+      debug.error('quitDriver()', err)
     }
   }
 }
-exports.createDriver = async (desiredCaps) => {
-  const driver = wd.promiseChainRemote(servers.getRemote())
-  driver.on('status', (info) => debug.log('helpers', info.cyan))
-  driver.on('command', (meth, path, data) => debug.log('helpers',
+exports.createDriver = async (server, desiredCaps) => {
+  const driver = wd.promiseChainRemote(server)
+  driver.on('status', (info) => debug.log('status:', info.cyan))
+  driver.on('command', (meth, path, data) => debug.log('command:',
   ' >', meth.yellow, path.grey, data || ''))
-  driver.on('http', (meth, path, data) => debug.log('helpers',
+  driver.on('http', (meth, path, data) => debug.log('http:',
   ' >', meth.magenta, path, (data || '').grey))
 
   // Mocha doesn't show error data in its report
@@ -32,7 +27,7 @@ exports.createDriver = async (desiredCaps) => {
   }
   catch (error) {
     if (error.data) {
-      debug.error('helpers', error)
+      debug.error('createDriver()', error)
     }
     throw error
   }

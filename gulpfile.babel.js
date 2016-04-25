@@ -2,84 +2,62 @@ import 'babel-polyfill'
 import gulp from 'gulp'
 import mocha from 'gulp-mocha'
 import {debug} from '@kobiton/core-util'
-import servers from './src/helpers/servers'
+import moment from 'moment'
+import BPromise from 'bluebird'
 
-process.env.REMOTE = 'test'
-const mochaOption = {
-  timeout: 900000,
-  clearRequireCache: true,
-  reporter: 'mochawesome',
-  reporterOptions: {
-    reportDir: 'reports/' + process.env.REMOTE,
-    reportName: process.env.REMOTE,
-    reportTitle: 'Kobiton Test',
-    inlineAssets: true
-  }
-}
+debug.enable('*')
+global._mocha = {}
+const env = process.env.NODE_ENV || 'test'
 const scenarios = {
   'test-capabilities': 'src/capabilities/test.js',
-  'test-first-device': 'src/durations/test-first-device.js',
-  'test-second-device': 'src/durations/test-second-device.js',
-  'test-all-devices': 'src/durations/test-all-devices.js',
-  'test-response-time': 'src/durations/test-unavailable-devices-response-time.js'
+  'test-multiple-devices': 'src/durations/test-multiple-devices.js',
+  'test-response-time': 'src/durations/test-unavailable-devices-response-time.js',
+  'test-session-duration': 'src/durations/test-session-duration.js'
 }
-debug.enable('test|capabilities|durations|helpers')
-// Common Function
-const runAllScenarios = () => {
-  return new Promise((resolve) => {
-    gulp.src(Object.values(scenarios), {read: false})
-        .pipe(mocha(mochaOption))
-        .once('error', (err) => {
-          debug.error('test', err)
-        })
-        .once('end', (result) => {
-          debug.log('test', 'run all scenario done')
-        })
+
+function runAllScenarios(env) {
+  return runMocha(env, Object.values(scenarios))
+}
+
+function runScenario(env, name) {
+  return runMocha(env, scenarios[name])
+}
+
+function runMocha(env, srcFiles) {
+  return new BPromise((resolve, reject) => {
+    global._mocha.env = env
+    const mochaOption = {
+      timeout: moment.duration(6, 'hours').as('milliseconds'),
+      clearRequireCache: true,
+      reporter: 'mochawesome',
+      reporterOptions: {
+        globals: ['_mocha'],
+        reportDir: 'reports/' + env,
+        reportName: `${moment().format('YYYY-MM-DD-HH-mm')}`,
+        reportTitle: 'Kobiton Test',
+        inlineAssets: true
+      }
+    }
+    gulp.src(srcFiles, {read: false})
+    .pipe(mocha(mochaOption))
+    .once('error', reject)
+    .once('end', () => process.exit())
   })
 }
 
-const runScenario = (name) => {
-  return new Promise((resolve) => {
-    gulp.src(scenarios[name], {read: false})
-         .pipe(mocha(mochaOption))
-         .once('error', (err) => {
-           debug.error('test', err)
-         })
-         .once('end', (result) => {
-           debug.log('test', `run scenario ${name} done`)
-         })
+for (const env of ['test', 'staging', 'production']) {
+  gulp.task(`test:${env}`, (cb) => {
+    runAllScenarios(env).then(cb, cb)
   })
 }
 
-const envs = ['test', 'staging', 'production']
-envs.forEach((env) => {
-  // Define test precondition
-  gulp.task(`init-${env}`, async () => {
-    debug.log('test', `init-${env}`)
-    process.env.REMOTE = env
-    mochaOption.reporterOptions.reportName = env
-    mochaOption.reporterOptions.reportDir = 'reports/' + env
-    return servers.initServer()
-  })
-  // Define run all test on specific environment
-  gulp.task(`${env}`, [`init-${env}`], () => {
-    debug.log('test', 'run all scenarios on:' + env)
-    return runAllScenarios()
-  })
-})
-
-// Define run all test on specific environment
-gulp.task('default', ['test'])
+// The default task (called when you run `gulp` from cli)
+gulp.task('default', ['test:test'])
 
 // Define run test with a specific scenario on test environment
 Object.keys(scenarios).forEach((key) => {
-  gulp.task(`${key}`, ['init-test'], () => {
-    debug.log('test', 'run scenario ' + key)
-    return runScenario(key)
+  gulp.task(`${key}`, (cb) => {
+    debug.log('test', 'run scenario: ' + key)
+    runScenario(env, key).then(cb, cb)
   })
-})
-
-gulp.task('test-sequence-one-device', ['init-test'], async () => {
-  await runScenario('test-first-device')
-  await runScenario('test-second-device')
 })
