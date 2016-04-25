@@ -3,7 +3,8 @@ import {debug} from '@kobiton/core-util'
 
 const api = {
   login: 'v1/users/login',
-  devices: 'v1/devices/search'
+  devices: 'v1/devices/search',
+  sessions: 'v1/sessions'
 }
 const accountTest = {
   apiUrl: 'https://api-test.kobiton.com/',
@@ -33,7 +34,37 @@ exports.getUserInfo = async () => {
     method: 'POST',
     body: {emailOrUsername, password}})
 }
+exports.getSession = async ({token, sessionid}) => {
+  const {apiUrl} = getAccount()
+  let request = {
+    method: 'GET',
+    url: `${apiUrl}${api.sessions}/${sessionid}`,
+    headers: {
+      'authorization': `Bearer ${token}`,
+      'content-type': 'application/json'
+    }
+  }
+  const session = await network.sendRequest(request)
+  return session
+}
 
+exports.getSessions = async ({token, page, size}) => {
+  const {apiUrl} = getAccount()
+  let request = {
+    method: 'GET',
+    url: `${apiUrl}${api.sessions}`,
+    qs: {
+      page,
+      size
+    },
+    headers: {
+      'authorization': `Bearer ${token}`,
+      'content-type': 'application/json'
+    }
+  }
+  const sessions = await network.sendRequest(request)
+  return sessions.data
+}
 exports.getOnlineDevices = async (token) => {
   const testingType = getTestingType()
   const platform = `${testingType}`.includes('android') ? 'android' : 'ios'

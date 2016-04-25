@@ -6,16 +6,13 @@ import moment from 'moment'
 import BPromise from 'bluebird'
 
 debug.enable('*')
-
 global._mocha = {}
 const env = process.env.NODE_ENV || 'test'
-const MINUTE = 60 * 1000
-const HOUR = 60 * MINUTE
-
 const scenarios = {
   'test-capabilities': 'src/capabilities/test.js',
   'test-multiple-devices': 'src/durations/test-multiple-devices.js',
-  'test-response-time': 'src/durations/test-unavailable-devices-response-time.js'
+  'test-response-time': 'src/durations/test-unavailable-devices-response-time.js',
+  'test-session-duration': 'src/durations/test-session-duration.js'
 }
 
 function runAllScenarios(env) {
@@ -28,23 +25,23 @@ function runScenario(env, name) {
 
 function runMocha(env, srcFiles) {
   return new BPromise((resolve, reject) => {
-  global._mocha.env = env
-  const mochaOption = {
-   timeout: 6 * HOUR,
-   clearRequireCache: true,
-   reporter: 'mochawesome',
-   reporterOptions: {
-     globals: ['_mocha'],
-     reportDir: 'reports/' + env,
-     reportName: `${moment().format('YYYY-MM-DD-HH-mm')}`,
-     reportTitle: 'Kobiton Test',
-     inlineAssets: true
-   }
-  }
-  gulp.src(srcFiles, {read: false})
+    global._mocha.env = env
+    const mochaOption = {
+      timeout: moment.duration(6, 'hours').as('milliseconds'),
+      clearRequireCache: true,
+      reporter: 'mochawesome',
+      reporterOptions: {
+        globals: ['_mocha'],
+        reportDir: 'reports/' + env,
+        reportName: `${moment().format('YYYY-MM-DD-HH-mm')}`,
+        reportTitle: 'Kobiton Test',
+        inlineAssets: true
+      }
+    }
+    gulp.src(srcFiles, {read: false})
     .pipe(mocha(mochaOption))
     .once('error', reject)
-    .once('end', () => {process.exit()})
+    .once('end', () => process.exit())
   })
 }
 

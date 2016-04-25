@@ -12,7 +12,7 @@ describe('Verify capabilities', () => {
   let server
 
   before(async () => {
-    const env = await initEnv(global._mocha.env)
+    const env = await initEnv()
     server = env.kobitonServer
     onlineDevices = env.onlineDevices
   })
