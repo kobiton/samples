@@ -6,6 +6,12 @@ const api = {
   devices: 'v1/devices/search',
   sessions: 'v1/sessions'
 }
+const accountLocal = {
+  apiUrl: 'http://localhost:3000/',
+  hubUrl: 'localhost:3000',
+  emailOrUsername: 'tester',
+  password: '123456'
+}
 const accountTest = {
   apiUrl: 'https://api-test.kobiton.com/',
   hubUrl: 'api-test.kobiton.com',
@@ -101,8 +107,10 @@ function getAccount() {
       return accountStaging
     case 'production':
       return accountProduction
-    default :
+    case 'test':
       return accountTest
+    default :
+      return accountLocal
   }
 }
 

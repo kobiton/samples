@@ -45,7 +45,7 @@ function runMocha(env, srcFiles) {
   })
 }
 
-for (const env of ['test', 'staging', 'production']) {
+for (const env of ['local', 'test', 'staging', 'production']) {
   gulp.task(`test:${env}`, (cb) => {
     runAllScenarios(env).then(cb, cb)
   })
