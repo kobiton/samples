@@ -1,0 +1,110 @@
+<html>
+
+<head>
+  <title>Kobiton Summary Report</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTExIDc5LjE1ODMyNSwgMjAxNS8wOS8xMC0wMToxMDoyMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NUFDRTA3RENFMkFBMTFFNTg5OEZFNzVEQ0RFOTA5RjMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NUFDRTA3RERFMkFBMTFFNTg5OEZFNzVEQ0RFOTA5RjMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1QUNFMDdEQUUyQUExMUU1ODk4RkU3NURDREU5MDlGMyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1QUNFMDdEQkUyQUExMUU1ODk4RkU3NURDREU5MDlGMyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqjIbEQAAABgUExURQOT1RMSLSgXSAOf5QQFC0wrhgJnlTQdXDohaEMmeAKBugJaglcxm2E3rQJ+tgwHFQKGwQJ1qV41pgOg6C4aUgJ5rgOOzQJzpgAUHQKJxgJunx8SODYfYQOp9Gc6twAAAKI/ec8AAAD4SURBVHjaxJPBcoMwDESNEcEJEEMwhADy/v9f1kBKq9RJppd2T7LnjUcrrRXeSP0RUPqgI2CrpbgQ0HCQ2oHl2mfAtBY+AeoFYAmEF9wGaOAaAXLA+M+qiAB6BxzoLIGszIwLrcEGEYFq7ouxvj6zSSc+06s5HLgmOQdKJhdaQJOmKbcpqwF5rhPagcvSWjjyXQPsOjHp4huADfASwDtAvEC/BKo70D5r0k7ahAWgW1223BOcsPmgjjt6mSjqeZSjzsqj0euyiMhaDIpPRXNrfqx73tY9Y7hF8jDveTDxwIjIHSLAV2gn4CFRMvaVBUYZ+3/+mx8CDAD5Fm633e7VTAAAAABJRU5ErkJggg==">
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    html {
+      overflow: hidden;
+    }
+
+    body {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMTI4MCA4MDAiPjxkZWZzPjxzdHlsZT4uYXtmaWxsOnVybCgjYSk7fS5ie2ZpbGw6IzUxMmRhODt9LmN7ZmlsbDp1cmwoI2IpO30uZHtmaWxsOnVybCgjYyk7fS5le29wYWNpdHk6MC4zODtpc29sYXRpb246aXNvbGF0ZTt9PC9zdHlsZT48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIxMDA4LjI3IiB5MT0iNDA4LjI3IiB4Mj0iOTU1Ljg0IiB5Mj0iNDM2LjE0IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDEsIDAsIDAsIC0xLCAwLCA4MDIpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNDUyN2EwIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMzExYjkyIi8+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgxPSIzOTkuNTQiIHkxPSIzMTcuMjciIHgyPSI0MjMuNSIgeTI9IjM3Ni41OCIgeGxpbms6aHJlZj0iI2EiLz48bGluZWFyR3JhZGllbnQgaWQ9ImMiIHgxPSI3MTAuMDMiIHkxPSI1NzQuMiIgeDI9IjY2OS4zOCIgeTI9IjU4NC4zNCIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAtMSwgMCwgODAyKSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzUxMmRhOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzQ1MjdhMCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjx0aXRsZT5iYWNrZ3JvdW5kYmNrPC90aXRsZT48cG9seWdvbiBjbGFzcz0iYSIgcG9pbnRzPSIxMTAyLjggMCA3NjAuMSA4MDAgMTI4MCA4MDAgMTI4MCAwIDExMDIuOCAwIi8+PHBvbHlnb24gY2xhc3M9ImIiIHBvaW50cz0iMTI4MCA5NyA4NTYuNyA4MDAgMTI4MCA4MDAgMTI4MCAwIDEyODAgOTciLz48cG9seWdvbiBjbGFzcz0iYyIgcG9pbnRzPSIwIDI1My4xIDg1MC43IDU4OC42IDc2MC4xIDgwMCAwIDgwMCAwIDI1My4xIi8+PHBvbHlnb24gY2xhc3M9ImQiIHBvaW50cz0iNjc2LjQgMCA2MDUuNyA0OTIgODUwLjcgNTg4LjYgMTEwMi44IDAgNjc2LjQgMCIvPjxwb2x5Z29uIGNsYXNzPSJiIiBwb2ludHM9IjY3Ni40IDAgNjA1LjcgNTI2IDAgMjg3LjEgMCAwIDY3Ni40IDAiLz48cmVjdCBjbGFzcz0iZSIgd2lkdGg9IjEyODAiIGhlaWdodD0iODAwIi8+PC9zdmc+);
+      background-size: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="margin-left: 10px; margin-right: 10px;">
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container-fluid">
+        <a class="navbar-brand active" href="/" data-toggle="tooltip" title="Home">Home</a>
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/test" data-toggle="tooltip" title="Test">Test</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staging" data-toggle="tooltip" title="Staging">Staging</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/production" data-toggle="tooltip" title="Production">Production</a>
+          </li>
+        </ul>
+        <form class="navbar-form navbar-left" role="search" action="?qs" method="get">
+          <div class="form-group">
+            <input type="text"  id ="qs" name="qs" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default">Search</button>
+        </form>
+      </div>
+    </nav>
+    <div class="jumbotron" style="padding-top: 20px; padding-bottom: 5px;">
+      <div class="container-fluid">
+        <ul class="list-group">
+          <% if(results === undefined || results.length == 0){ %>
+              <h3 class="list-group-item" style="text-align:center;">No Results Found</h3>
+          <% } else {%>
+
+          <% results.forEach( function( result ) { %>
+            <li class="list-group-item">
+              <a data-toggle="tooltip" title=<%= result.name  %> href=<%= prefix %><%= result.name %>><%= result.name  %></a>
+            </li>
+            <% }) %>
+        </ul>
+    </div>
+  </div>
+    <% if (pageCount > 1) { %>
+      <div style="text-align:center;">
+      <ul class="pagination">
+        <% if (currentPage > 1) { %>
+          <li><a href=<%= prefix %>?page=1>&laquo;</a></li>
+            <% } %>
+            <% var i = 1;
+            if (currentPage > 10) {
+            i = +currentPage - 9;
+            } %>
+            <% if (i !== 1) { %>
+          <li class="disabled"><a href="#">...</a></li>
+            <% } %>
+            <% for (i; i <= pageCount; i++) { %>
+            <% if (currentPage == i) { %>
+          <li class="active"><span><%= i %> <span class="sr-only">(current)</span></span>
+          </li>
+            <% } else { %>
+          <li>
+            <% if (qs === undefined ) {%>
+                <a href=<%= prefix %>?page=<%= i %>>
+            <% } else {%>
+                <a href=<%= prefix %>?page=<%= i %>&amp;qs=<%= qs %>>
+            <% }%>
+            <%= i %>
+            </a>
+          </li>
+            <% } %>
+            <% if (i == (+currentPage + 9)) { %>
+          <li class="disabled"><a href="#">...</a></li>
+            <% break; } %>
+            <% } %>
+            <% if (currentPage != pageCount) { %>
+          <li><a href=<%= prefix %>?page=<%= pageCount %>>&raquo;</a></li>
+        <% } %>
+      </ul>
+    </div>
+    <% }}%>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

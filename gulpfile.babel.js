@@ -2,8 +2,10 @@ import 'babel-polyfill'
 import gulp from 'gulp'
 import mocha from 'gulp-mocha'
 import {debug} from '@kobiton/core-util'
+import {build, nodemon, copy, Paths} from '@kobiton/core-build'
 import moment from 'moment'
 import BPromise from 'bluebird'
+import server from 'gulp-express'
 
 debug.enable('*')
 global._mocha = {}
@@ -53,6 +55,13 @@ for (const env of ['local', 'test', 'staging', 'production']) {
 
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['test:test'])
+
+// Define task to view reports on http://localhost:3000/
+gulp.task('copy-report-asset', copy(['src/report-viewer/**/*.html'], 'build/report-viewer'))
+gulp.task('build-report', ['copy-report-asset'], build('src/report-viewer/**/*.js', 'build/report-viewer'))
+gulp.task('report-viewer', ['build-report'], () => {
+  server.run(['build/report-viewer/server.js'])
+})
 
 // Define run test with a specific scenario on test environment
 Object.keys(scenarios).forEach((key) => {
