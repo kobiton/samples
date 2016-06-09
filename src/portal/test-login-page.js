@@ -1,10 +1,10 @@
 import {assert} from 'chai'
-import LoginPage from './page-objects/login'
-import {testerAccount} from './data'
+import LoginPage from '../core/portal-pages/login'
+import {testerAccount} from './core/data'
 
 describe('Verify Login Page', () => {
   const loginPage = new LoginPage()
-  
+
   it('should be display login ui', () => {
     loginPage.open()
     assert.isTrue(loginPage.usernameLbl.isVisible())
@@ -23,7 +23,7 @@ describe('Verify Login Page', () => {
     const sessionsPg = loginPage.login(testerAccount)
     assert.isTrue(sessionsPg.firstNameCharacter.isVisible())
     assert.isTrue(sessionsPg.nameLbl.isVisible())
-    assert.isTrue(sessionsPg.profileTester.isVisible())
+    assert.isTrue(sessionsPg.profileTesterLbl.isVisible())
     sessionsPg.logout()
   })
 

@@ -1,4 +1,4 @@
-import {getAccount} from '../helpers/user-info'
+import {getAccount} from '../../core/user-info'
 import faker from 'Faker'
 
 const account = getAccount()

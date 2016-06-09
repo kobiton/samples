@@ -1,6 +1,6 @@
 import {assert} from 'chai'
-import ForgotPasswordPage from './page-objects/forgot-password'
-import {testerAccount} from './data'
+import ForgotPasswordPage from '../core/portal-pages/forgot-password'
+import {testerAccount} from './core/data'
 
 describe('Verify Forgot Password Page', () => {
   const forgotPwdPage = new ForgotPasswordPage()

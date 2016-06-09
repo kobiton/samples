@@ -9,8 +9,10 @@ const defaultElements = {
   //Profile menu elements
   firstNameCharacter: '#app > div > div > div:nth-child(3) > div:nth-child(1) > div > div > div > div > div:nth-child(1) > div:nth-child(1)', //eslint-disable-line
   nameLbl: '#app > div > div > div:nth-child(3) > div:nth-child(1) > div > div > div > div > div:nth-child(1) > div:nth-child(2)', // eslint-disable-line
-  profileTester: 'span=Tester',
-  profileDeviceOwner: 'span=Device Owner',
+  profileTesterLbl: 'span=Tester',
+  profileDeviceOwnerLbl: 'span=Device Owner',
+  profileTester: 'div=Tester',
+  profileDeviceOwner: 'div=Device Owner',
   profileBtn: '#app  button',
   logoutBtn: 'body div:nth-child(4) div div div div div div:nth-child(10) span',
   Profile: 'span=Profile',

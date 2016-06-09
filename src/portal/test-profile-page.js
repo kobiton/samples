@@ -1,6 +1,6 @@
 import {assert} from 'chai'
-import LoginPage from './page-objects/login'
-import {testerAccount, generateUser} from './data'
+import LoginPage from '../core/portal-pages/login'
+import {testerAccount, generateUser} from './core/data'
 
 describe('Verify My Devices Page', () => {
   const loginPage = new LoginPage()

@@ -73,6 +73,7 @@ See reports at http://localhost:8080/
 ### Portal Test
 
 * Start test on three browsers (Firefox, Chrome and PhantomJS)
+* Currently, default browser is Chrome
 * Run test with a specific scenario on test/ staging/ production environment
 ```bash
 $ npm run test-portal

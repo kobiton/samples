@@ -1,6 +1,6 @@
 import 'babel-polyfill'
 import moment from 'moment'
-import {getAccount} from '../helpers/user-info'
+import {getAccount} from '../../core/user-info'
 
 global._mocha = {}
 const env = process.env.NODE_ENV || 'test'

@@ -1,12 +1,12 @@
 import {assert} from 'chai'
-import DesktopLoginPage from '../desktop/page-objects/login'
-import PortalLoginPage from '../portal/page-objects/login'
-import {getAccount} from '../helpers/user-info'
-import * as portal from '../helpers/portal-api'
+import DesktopLoginPage from '../core/desktop-pages/login'
+import PortalLoginPage from '../core/portal-pages/login'
+import {getAccount} from '../core/user-info'
+import * as portal from '../core/portal-api'
 import {debug} from '@kobiton/core-util'
-import initEnv from '../helpers/init-environment'
-import {actual} from './_data'
-import * as setup from '../helpers/setup'
+import initEnv from '../core/init-environment'
+import {actual} from './core/data'
+import * as setup from '../core/setup'
 
 describe('full e2e suite', () => {
   let desktopLoginPage

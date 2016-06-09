@@ -1,5 +1,5 @@
 import BPromise from 'bluebird'
-import {createDriver, quitDriver} from '../helpers/setup'
+import {createDriver, quitDriver} from '../../core/setup'
 
 export async function launch(server, desiredCapabilities, searchTerms) {
   let driver

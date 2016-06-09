@@ -1,6 +1,6 @@
 import {assert} from 'chai'
-import RegisterPage from './page-objects/register'
-import {testerAccount, generateUser} from './data'
+import RegisterPage from '../core/portal-pages/register'
+import {testerAccount, generateUser} from './core/data'
 
 describe('Verify Register Page', () => {
   const registerPage = new RegisterPage()

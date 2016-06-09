@@ -1,6 +1,6 @@
 import {assert} from 'chai'
-import LoginPage from './page-objects/login'
-import {testerAccount, getScript} from './data'
+import LoginPage from '../core/portal-pages/login'
+import {testerAccount, getScript} from './core/data'
 import diff from 'fast-diff'
 import {debug} from '@kobiton/core-util'
 

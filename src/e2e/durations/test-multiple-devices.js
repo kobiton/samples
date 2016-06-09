@@ -1,7 +1,7 @@
 import {assert} from 'chai'
-import initEnv from '../helpers/init-environment'
-import {launch} from './test'
-import * as data from './data'
+import initEnv from '../../core/init-environment'
+import {launch} from '../core/test'
+import * as data from '../core/data'
 import BPromise from 'bluebird'
 
 describe('Run script with at least three online devices', () => {
@@ -13,7 +13,7 @@ describe('Run script with at least three online devices', () => {
     const env = await initEnv()
     server = env.kobitonServer
     onlineDevices = env.onlineDevices
-    assert.isAtLeast(onlineDevices.length, 3, 'Expected at least three online devices')
+    assert.isAtLeast(onlineDevices.length, 2, 'Expected at least three online devices')
   })
 
   it('should run at least 10 minutes', async () => {

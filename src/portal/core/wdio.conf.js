@@ -1,6 +1,6 @@
 import 'babel-polyfill'
 import moment from 'moment'
-import {getAccount} from '../helpers/user-info'
+import {getAccount} from '../../core/user-info'
 
 global._mocha = {}
 const env = process.env.NODE_ENV || 'test'
@@ -16,7 +16,7 @@ exports.config = {
   capabilities: [
     {
       maxInstances: 5,
-      browserName: 'phantomjs'
+      browserName: 'chrome'
     }
   ],
   sync: true,
@@ -24,7 +24,7 @@ exports.config = {
   coloredLogs: true,
   screenshotPath: reportFolder,
   baseUrl: account.portalUrl,
-  waitforTimeout: 60000,
+  waitforTimeout: 15000,
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
   services: ['selenium-standalone'],

@@ -1,5 +1,5 @@
-import {desktopApp} from '../../helpers/setup'
-import {killKobitonApp} from '../../helpers/exec'
+import {desktopApp} from '../setup'
+import {killKobitonApp} from '../exec'
 import {debug} from '@kobiton/core-util'
 
 const defaultElements = {

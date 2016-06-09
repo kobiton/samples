@@ -13,10 +13,10 @@ global._mocha = {}
 const env = process.env.NODE_ENV || 'test'
 
 const scenarios = {
-  'test-capabilities': 'src/capabilities/test.js',
-  'test-multiple-devices': 'src/durations/test-multiple-devices.js',
-  'test-response-time': 'src/durations/test-unavailable-devices-response-time.js',
-  'test-session-duration': 'src/durations/test-session-duration.js',
+  'test-capabilities': 'src/e2e/capabilities/test.js',
+  'test-multiple-devices': 'src/e2e/durations/test-multiple-devices.js',
+  'test-response-time': 'src/api/test-unavailable-devices-response-time.js',
+  'test-session-duration': 'src/e2e/durations/test-session-duration.js',
   'test-desktop': 'src/desktop/test-desktop.js',
 }
 
@@ -77,16 +77,16 @@ Object.keys(scenarios).forEach((key) => {
   })
 })
 
-gulp.task('build-helpers', build(['src/helpers/*'], 'build/helpers'))
+gulp.task('build-core', build(['src/core/**/*.js'], 'build/core'))
 gulp.task('build-portal', build('src/portal/**/*.js', 'build/portal'))
-gulp.task('test-portal', ['build-helpers', 'build-portal'], () => {
-  return gulp.src('build/portal/wdio.conf.js', {read: false})
+gulp.task('test-portal', ['build-core', 'build-portal'], () => {
+  return gulp.src('build/portal/core/wdio.conf.js', {read: false})
   .pipe(webdriver())
 })
 // Define task for e2e test
 gulp.task('build-e2e', build('src/e2e/**/*.js', 'build/e2e'))
 gulp.task('build-desktop', build('src/desktop/**/*.js', 'build/desktop'))
-gulp.task('test-e2e',['build-e2e','build-portal','build-helpers', 'build-desktop'], () => {
-  return gulp.src('build/e2e/wdio.conf.js', {read: false})
+gulp.task('test-e2e',['build-e2e','build-portal','build-core', 'build-desktop'], () => {
+  return gulp.src('build/e2e/core/wdio.conf.js', {read: false})
   .pipe(webdriver())
 })

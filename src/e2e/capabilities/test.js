@@ -1,8 +1,8 @@
 import {assert} from 'chai'
 import wd from 'wd'
-import {quitDriver} from '../helpers/setup'
+import {quitDriver} from '../../core/setup'
 import {debug} from '@kobiton/core-util'
-import initEnv from '../helpers/init-environment'
+import initEnv from '../../core/init-environment'
 import BPromise from 'bluebird'
 
 describe('Verify capabilities', () => {

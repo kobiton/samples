@@ -1,5 +1,5 @@
-import LoginPage from './page-objects/login'
-import {getAccount} from '../helpers/user-info'
+import LoginPage from '../core/desktop-pages/login'
+import {getAccount} from '../core/user-info'
 import {debug} from '@kobiton/core-util'
 
 describe('Verify desktop application', () => {

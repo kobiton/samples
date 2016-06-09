@@ -5,7 +5,7 @@ const defaultElements = {
   platformHeader: 'div=Platform',
   timeHeader: 'div=Time',
   durationHeader: 'div=Duration',
-  noTestSessionLbl: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div > div > div.rmq-15e5f91f', //eslint-disable-line
+  noTestSessionLbl: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div > div:nth-child(2)', //eslint-disable-line
   sessionRows: '#app div[style="margin-top: 1px;"] > div > div.row',
   sessionFirstRow: '#app div[style="margin-top: 1px;"] > div > div.row:nth-child(2)',
   loadMoreSessionsLbl: 'span=Load more sessions',
