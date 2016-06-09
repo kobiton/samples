@@ -1,40 +1,53 @@
-import network from './network'
+import sendRequest from './network'
 import {debug} from '@kobiton/core-util'
+import {getAccount} from './user-info'
 
 const api = {
   login: 'v1/users/login',
-  devices: 'v1/devices/search'
-}
-const accountTest = {
-  apiUrl: 'https://api-test.kobiton.com/',
-  hubUrl: 'api-test.kobiton.com',
-  emailOrUsername: 'api_test1',
-  password: 'mario8x@123'
-}
-const accountStaging = {
-  apiUrl: 'https://api-staging.kobiton.com/',
-  hubUrl: 'api-staging.kobiton.com',
-  emailOrUsername: 'staging_test1',
-  password: 'mario8x@123'
-}
-const accountProduction = {
-  apiUrl: 'https://api.kobiton.com/',
-  hubUrl: 'api.kobiton.com',
-  emailOrUsername: 'production_test1',
-  password: 'mario8x@123'
+  devices: 'v1/devices/search',
+  sessions: 'v1/sessions'
 }
 
-exports.getAccount = getAccount
-
-exports.getUserInfo = async () => {
+export async function getUserInfo() {
   const {emailOrUsername, password, apiUrl} = getAccount()
-  return await network.sendRequest({
+  return await sendRequest({
     url: `${apiUrl}${api.login}`,
     method: 'POST',
     body: {emailOrUsername, password}})
 }
 
-exports.getOnlineDevices = async (token) => {
+export async function getSession({token, sessionid}) {
+  const {apiUrl} = getAccount()
+  return await sendRequest({
+    method: 'GET',
+    url: `${apiUrl}${api.sessions}/${sessionid}`,
+    headers: {
+      'authorization': `Bearer ${token}`,
+      'content-type': 'application/json'
+    }
+  })
+}
+
+export async function getSessions({token, page, size}) {
+  const {apiUrl} = getAccount()
+  const result = await sendRequest(
+    {
+      method: 'GET',
+      url: `${apiUrl}${api.sessions}`,
+      qs: {
+        page,
+        size
+      },
+      headers: {
+        'authorization': `Bearer ${token}`,
+        'content-type': 'application/json'
+      }
+    }
+  )
+  return result.data
+}
+
+export async function getOnlineDevices(token) {
   const testingType = getTestingType()
   const platform = `${testingType}`.includes('android') ? 'android' : 'ios'
   const browsername = `${testingType}`.includes('android') ? 'chrome' : 'safari'
@@ -49,7 +62,7 @@ exports.getOnlineDevices = async (token) => {
       'authorization': `Bearer ${token}`
     }
   }
-  const devices = await network.sendRequest(request)
+  const devices = await sendRequest(request)
   const onlineDevices = devices.data
     .filter((d) => d.availableCount > 0)
     .map((d) => ({
@@ -59,20 +72,8 @@ exports.getOnlineDevices = async (token) => {
       'deviceName': d.deviceName
     })
   )
-
   debug.log('getOnlineDevices()', `${JSON.stringify(onlineDevices)}`)
   return onlineDevices
-}
-
-function getAccount() {
-  switch (global._mocha.env) {
-    case 'staging':
-      return accountStaging
-    case 'production':
-      return accountProduction
-    default :
-      return accountTest
-  }
 }
 
 function getTestingType() {

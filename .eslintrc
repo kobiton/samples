@@ -1,11 +1,15 @@
 parser: babel-eslint
-extends: standard
-plugins: ["babel"]
+extends:
+  - standard
+plugins:
+  - babel
+  - import
 env:
   node: true
   mocha: true
 globals:
   createDriver: true
+  browser: true
 rules:
   eqeqeq: 0
   no-var: 2
@@ -32,3 +36,15 @@ rules:
   babel/object-shorthand: 2
   babel/arrow-parens: 2
   babel/no-await-in-loop: 1
+
+  # Import
+  import/no-unresolved: [2, {commonjs: true, amd: true}]
+  import/named: 2
+  import/namespace: 2
+  import/default: 2
+  import/export: 2
+  import/no-named-as-default: 2
+  import/no-commonjs: 0
+  import/no-amd: 2
+  import/imports-first: 2
+  import/no-duplicates: 2

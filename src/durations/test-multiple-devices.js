@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import initEnv from '../helpers/init-environment'
-import test from './test'
-import data from './data'
+import {launch} from './test'
+import * as data from './data'
 import BPromise from 'bluebird'
 
 describe('Run script with at least three online devices', () => {
@@ -10,7 +10,7 @@ describe('Run script with at least three online devices', () => {
   let server
 
   before(async () => {
-    const env = await initEnv(global._mocha.env)
+    const env = await initEnv()
     server = env.kobitonServer
     onlineDevices = env.onlineDevices
     assert.isAtLeast(onlineDevices.length, 3, 'Expected at least three online devices')
@@ -39,7 +39,7 @@ describe('Run script with at least three online devices', () => {
   async function run(data, maximumDuration, msg) {
     const start = Date.now()
     const jobs = onlineDevices
-      .map((cap) => test.launch(server, cap, data))
+      .map((cap) => launch(server, cap, data))
       .map((promise) => promise.then(onSuccess, onError))
     const finishedJobs = await BPromise.all(jobs)
     const successCount = finishedJobs.reduce((sum, ok) => (sum + ok), 0)

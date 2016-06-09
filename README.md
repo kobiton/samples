@@ -43,3 +43,39 @@ npm run gulp test:staging --  --ios
 npm run gulp test:production --  --android
 npm run gulp test:production --  --ios
 ```
+
+#### 4. Run test with a specific scenario on test/ staging/ production environment
+Examples:
+```bash
+npm run gulp test-multiple-devices — —ios
+npm run gulp test-multiple-devices — —android
+NODE_ENV=staging npm run gulp test-multiple-devices — —ios
+NODE_ENV=staging npm run gulp test-multiple-devices — —android
+NODE_ENV=production npm run gulp test-multiple-devices — —ios
+NODE_ENV=production npm run gulp test-multiple-devices — —android
+```
+
+### Reports
+
+#### 1. Default port is 3000
+```bash
+$ npm run gulp report-viewer
+
+See reports at http://localhost:3000/
+```
+#### 2. Use custom port
+```bash
+$ KOBITON_PORT=8080 npm run gulp report-viewer
+
+See reports at http://localhost:8080/
+```
+
+### Portal Test
+
+* Start test on three browsers (Firefox, Chrome and PhantomJS)
+* Run test with a specific scenario on test/ staging/ production environment
+```bash
+$ npm run test-portal
+$ NODE_ENV=staging npm run test-portal
+$ NODE_ENV=production npm run test-portal
+```

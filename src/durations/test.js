@@ -1,10 +1,10 @@
 import BPromise from 'bluebird'
-import setup from '../helpers/setup'
+import {createDriver, quitDriver} from '../helpers/setup'
 
-exports.launch = async (server, desiredCapabilities, searchTerms) => {
+export async function launch(server, desiredCapabilities, searchTerms) {
   let driver
   try {
-    driver = await setup.createDriver(server, desiredCapabilities)
+    driver = await createDriver(server, desiredCapabilities)
     await BPromise.each(searchTerms, (search) => {
       return driver
         .get('https://www.google.com')
@@ -39,6 +39,6 @@ exports.launch = async (server, desiredCapabilities, searchTerms) => {
     })
   }
   finally {
-    await setup.quitDriver(driver)
+    await quitDriver(driver)
   }
 }
