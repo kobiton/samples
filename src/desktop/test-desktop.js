@@ -1,6 +1,5 @@
 import LoginPage from '../core/desktop-pages/login'
 import {getAccount} from '../core/user-info'
-import {debug} from '@kobiton/core-util'
 
 describe('Verify desktop application', () => {
   let loginPage
@@ -26,7 +25,5 @@ describe('Verify desktop application', () => {
 
   it('should deactivate a device', async() => {
     await devicesPage.deactivateDevice()
-    const listDevices = await devicesPage.getListDevices()
-    debug.log('List Devices:', listDevices)
   })
 })

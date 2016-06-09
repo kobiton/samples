@@ -60,11 +60,11 @@ for (const env of ['local', 'test', 'staging', 'production']) {
 gulp.task('default', ['test:test'])
 
 // Define task to view reports on http://localhost:3000/
-gulp.task('copy-report-asset', copy(['src/report-viewer/**/*.html', 'src/report-viewer/**/*.ejs'], 'build/report-viewer'))
-gulp.task('build-report', ['copy-report-asset'], build('src/report-viewer/**/*.js', 'build/report-viewer'))
+gulp.task('copy-report-asset', copy(['src/support/report-viewer/**/*.html', 'src/support/report-viewer/**/*.ejs'], 'build/support/report-viewer'))
+gulp.task('build-report', ['copy-report-asset'], build('src/support/report-viewer/**/*.js', 'build/support/report-viewer'))
 gulp.task('report-viewer', ['build-report'], () => {
-  server.run(['build/report-viewer/server.js'])
-  gulp.watch('src/report-viewer/*', () => {
+  server.run(['build/support/report-viewer/server.js'])
+  gulp.watch('src/support/report-viewer/*', () => {
        gulp.run('report-viewer')
    })
 })
