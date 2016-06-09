@@ -6,15 +6,18 @@ import {build, nodemon, copy, Paths} from '@kobiton/core-build'
 import moment from 'moment'
 import BPromise from 'bluebird'
 import server from 'gulp-express'
+import webdriver from 'gulp-webdriver'
 
 debug.enable('*')
 global._mocha = {}
 const env = process.env.NODE_ENV || 'test'
+
 const scenarios = {
-  'test-capabilities': 'src/capabilities/test.js',
-  'test-multiple-devices': 'src/durations/test-multiple-devices.js',
-  'test-response-time': 'src/durations/test-unavailable-devices-response-time.js',
-  'test-session-duration': 'src/durations/test-session-duration.js'
+  'test-capabilities': 'src/e2e/capabilities/test.js',
+  'test-multiple-devices': 'src/e2e/durations/test-multiple-devices.js',
+  'test-response-time': 'src/api/test-unavailable-devices-response-time.js',
+  'test-session-duration': 'src/e2e/durations/test-session-duration.js',
+  'test-desktop': 'src/desktop/test-desktop.js',
 }
 
 function runAllScenarios(env) {
@@ -57,10 +60,13 @@ for (const env of ['local', 'test', 'staging', 'production']) {
 gulp.task('default', ['test:test'])
 
 // Define task to view reports on http://localhost:3000/
-gulp.task('copy-report-asset', copy(['src/report-viewer/**/*.html'], 'build/report-viewer'))
-gulp.task('build-report', ['copy-report-asset'], build('src/report-viewer/**/*.js', 'build/report-viewer'))
+gulp.task('copy-report-asset', copy(['src/support/report-viewer/**/*.html', 'src/support/report-viewer/**/*.ejs'], 'build/support/report-viewer'))
+gulp.task('build-report', ['copy-report-asset'], build('src/support/report-viewer/**/*.js', 'build/support/report-viewer'))
 gulp.task('report-viewer', ['build-report'], () => {
-  server.run(['build/report-viewer/server.js'])
+  server.run(['build/support/report-viewer/server.js'])
+  gulp.watch('src/support/report-viewer/*', () => {
+       gulp.run('report-viewer')
+   })
 })
 
 // Define run test with a specific scenario on test environment
@@ -69,4 +75,18 @@ Object.keys(scenarios).forEach((key) => {
     debug.log('test', 'run scenario: ' + key)
     runScenario(env, key).then(cb, cb)
   })
+})
+
+gulp.task('build-core', build(['src/core/**/*.js'], 'build/core'))
+gulp.task('build-portal', build('src/portal/**/*.js', 'build/portal'))
+gulp.task('test-portal', ['build-core', 'build-portal'], () => {
+  return gulp.src('build/portal/core/wdio.conf.js', {read: false})
+  .pipe(webdriver())
+})
+// Define task for e2e test
+gulp.task('build-e2e', build('src/e2e/**/*.js', 'build/e2e'))
+gulp.task('build-desktop', build('src/desktop/**/*.js', 'build/desktop'))
+gulp.task('test-e2e',['build-e2e','build-portal','build-core', 'build-desktop'], () => {
+  return gulp.src('build/e2e/core/wdio.conf.js', {read: false})
+  .pipe(webdriver())
 })

@@ -9,6 +9,7 @@ env:
   mocha: true
 globals:
   createDriver: true
+  browser: true
 rules:
   eqeqeq: 0
   no-var: 2
