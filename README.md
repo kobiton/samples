@@ -1,82 +1,88 @@
+
 ### Prerequisites
  * Install local packages:  `npm install`
 
-### Init
-Access [Kobition](https://kobiton.com) to get *username* and *password*
+### Register an account on specific environment
+ * Test: https://portal-test.kobiton.com
+ * Staging: https://portal-staging.kobiton.com
+ * Production: https://portal.kobiton.com
+ * Open `src/core/user-info.js` and replace *username* and *password* into environment which want to test.
+ * Currently, we configured a default account for each of environment
 
-Open `src/helpers/portal-api.js`
-* Replace *username* and *password* into account_test
+### Run test on specific environment
+ * int environement: NODE_ENV = test/staging/production (default is test)
+ * Examples:
 
-### Tests - Regression
+  ```bash
+  npm run gulp test-multiple-devices -- —ios
+  NODE_ENV=staging npm run gulp test-multiple-devices -- —ios
+  NODE_ENV=production npm run gulp test-multiple-devices -- —ios
+  ```
 
-#### 1. Run all tests on test environment
-```bash
-npm run gulp test:test
-```
+### Connect android/ios devices to desktop app
+ * Android: http://confluence-incubator.kms-technology.com/pages/viewpage.action?pageId=1376891
+ * Ios: http://confluence-incubator.kms-technology.com/display/KRYP/How+to+configurate+environment+to+Kobiton+app+recognize++iOS+devices
 
-#### 2. Run all tests on staging environment
-```bash
-npm run gulp test:staging
-```
+### Run a specific test suites (api, portal, desktop, e2e)
+#### 1.Api
+ * Test response time
 
-#### 3. Run all tests on production environment
-```bash
-npm run gulp test:production
-```
+   ```bash
+   npm run gulp test-response-time
+   ```
 
-### Tests - Development
+#### 2. portal
+ * Test portal web
+ * Configure browser which want to test in /src/portal/core/wdio.conf.js
+ * Currently, default browser is Chrome
+ 
+   ```bash
+   npm run gulp test-portal
+   ```
 
-#### 1. Run subset of tests on test environment
-```bash
-npm run gulp test:test -- --android
-npm run gulp test:test -- --ios
-```
+#### 3. desktop
+ * Download and manual install desktop app on which environment you want to test
 
-#### 2. Run subset of tests on staging environment
-```bash
-npm run gulp test:staging --  --android
-npm run gulp test:staging --  --ios
-```
+   ```bash
+   npm run gulp test-desktop
+   ```
 
-#### 3. Run subset of tests on production environment
-```bash
-npm run gulp test:production --  --android
-npm run gulp test:production --  --ios
-```
+#### 4. e2e
+ * Test all devices
 
-#### 4. Run test with a specific scenario on test/ staging/ production environment
-Examples:
-```bash
-npm run gulp test-multiple-devices — —ios
-npm run gulp test-multiple-devices — —android
-NODE_ENV=staging npm run gulp test-multiple-devices — —ios
-NODE_ENV=staging npm run gulp test-multiple-devices — —android
-NODE_ENV=production npm run gulp test-multiple-devices — —ios
-NODE_ENV=production npm run gulp test-multiple-devices — —android
-```
+   ```bash
+   npm run gulp test-capabilities
+   npm run gulp test-session-duration
+   npm run gulp test-multiple-devices
+   ```
 
-### Reports
+* Test android devices
 
+  ```bash
+  npm run gulp test-capabilities -- -android
+  npm run gulp test-session-duration -- -android
+  npm run gulp test-multiple-devices -- -android
+  ```
+
+* Test ios devices
+
+  ```bash
+  npm run gulp test-capabilities -- -ios
+  npm run gulp test-session-duration -- -ios
+  npm run gulp test-multiple-devices -- -ios
+  ```
+
+### Review test report result
 #### 1. Default port is 3000
-```bash
-$ npm run gulp report-viewer
 
-See reports at http://localhost:3000/
-```
+  ```bash
+  $ npm run gulp report-viewer
+  See reports at http://localhost:3000/
+  ```
+
 #### 2. Use custom port
-```bash
-$ KOBITON_PORT=8080 npm run gulp report-viewer
 
-See reports at http://localhost:8080/
-```
-
-### Portal Test
-
-* Start test on three browsers (Firefox, Chrome and PhantomJS)
-* Currently, default browser is Chrome
-* Run test with a specific scenario on test/ staging/ production environment
-```bash
-$ npm run test-portal
-$ NODE_ENV=staging npm run test-portal
-$ NODE_ENV=production npm run test-portal
-```
+  ```bash
+  $ KOBITON_PORT=8080 npm run gulp report-viewer
+  See reports at http://localhost:8080/
+  ```
