@@ -39,7 +39,7 @@ export default class Page {
     //Display main process log
     this.client.getMainProcessLogs().then(function (logs) {
       for (const log of logs) {
-        debug.log('desktop-page:log ' + log)
+        debug.log('desktop-page:Log ', log)
       }
       //Display render log
       this.client.getRenderProcessLogs().then(function (logs) {

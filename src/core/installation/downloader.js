@@ -4,7 +4,6 @@ import DownloadProcess from './download-process'
 import {getAccount} from '../../core/user-info'
 import * as exec from '../../core/exec'
 import {spawn} from 'child_process'
-import fs from 'fs'
 
 const appName = 'Kobiton.app'
 const mountedPath = '/Volumes/Kobiton/'
@@ -32,10 +31,10 @@ export function downloadApp() {
 export function installApp(file) {
   return new BPromise(async (resolve, reject) => {
     try {
-      await executeAttachImage('hdiutil', ['attach', `${file}`])
-      await exec.executeCommand(`sleep 5`)
+      executeAttachImage('hdiutil', ['attach', `${file}`])
+      await exec.executeCommand('sleep 5')
       await exec.executeCommand(`cp -R ${mountedPath}${appName} ${destPath}`)
-      await exec.executeCommand(`hdiutil detach ${mountedPath}`)
+      executeDetachImage('hdiutil', ['detach', `${mountedPath}`])
       resolve()
     }
     catch (e) {
@@ -61,16 +60,30 @@ export async function cleanUpData() {
   await BPromise.all(jobs)
 }
 
-export async function executeAttachImage(cmd, args) {
-  debug.log('executeAttachImage', `cmd: ${cmd} , args: ${args}`)
-  return await new BPromise((resolve, reject) => {
-    const ls = spawn(cmd, args)
-    ls.stdout.on('data', (data) => {
-      const path = data.toString().includes('Kobiton')
-      if (path) resolve(data.toString())
+function executeAttachImage(cmd, args) {
+  executeSpawnCommand(cmd, args, 'Kobiton')
+}
+
+function executeDetachImage(cmd, args) {
+  executeSpawnCommand(cmd, args, 'ejected')
+}
+
+function executeSpawnCommand(cmd, args, expectedStdoutLine) {
+  debug.log('executeSpawnCommand', `cmd: ${cmd} , args: ${args}`)
+  return new BPromise((resolve, reject) => {
+    const cmdProcess = spawn(cmd, args)
+    cmdProcess.stderr.on('data', (data) => {
+      reject(data.toString())
     })
-    ls.stderr.on('data', (data) => {
-      resolve(data.toString())
-    })
+    cmdProcess.stdout.on('data', onData)
+
+    function onData(data) {
+      const line = data.toString()
+      const found = line.includes(expectedStdoutLine)
+      if (found) {
+        cmdProcess.stdout.removeListener('data', onData)
+        resolve(line)
+      }
+    }
   })
 }
