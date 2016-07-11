@@ -12,10 +12,13 @@ const destPath = '/Applications'
 export function downloadApp() {
   return new BPromise((resolve, reject) => {
     const download = new DownloadProcess()
-    const account = getAccount()
-    debug.log('Download file:', account.appOSXUrl)
-    download.download(account.appOSXUrl)
-    download
+    let downloadUrl = process.env.KOBITON_DESKTOP_APP_URL || ''
+    if (downloadUrl == '') {
+      const account = getAccount()
+      downloadUrl = account.appOSXUrl
+      debug.log('Download file:', downloadUrl)
+    }
+    download.download(downloadUrl)
       .on('progress', (state) => debug.log('Progress', JSON.stringify(state)))
       .on('finish', (file) => {
         debug.log('setup', `Finished download file ${file}`)

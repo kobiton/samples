@@ -10,7 +10,8 @@ const reportFolder = `reports/portal/${env}/${moment().format('YYYY-MM-DD-HH-mm'
 
 exports.config = {
   specs: [
-    'build/portal/test-*-page.js'
+    'build/portal/test-*-page.js',
+    'build/portal/responsive/test-*-page.js'
   ],
   maxInstances: 10,
   capabilities: [

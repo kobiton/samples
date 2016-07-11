@@ -5,11 +5,15 @@ const defaultElements = {
   platformHeader: 'div=Platform',
   timeHeader: 'div=Time',
   durationHeader: 'div=Duration',
-  noTestSessionLbl: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div > div:nth-child(2)', //eslint-disable-line
+  logoText: "//h1[text()='Kobiton']",
+  noTestSessionLabel: "//div[text()='You currently have no test session.']",
   sessionRows: '#app div[style="margin-top: 1px;"] > div > div.row',
   sessionFirstRow: '#app div[style="margin-top: 1px;"] > div > div.row:nth-child(2)',
   loadMoreSessionsLbl: 'span=Load more sessions',
-  loadMoreSessionsBtn: '//*[@id="app"]/div/div/div[2]/div[2]/div/div/div/div/div/button'//eslint-disable-line
+  loadMoreSessionsButton: "//span[text()='Load more sessions']/../..",
+  sessionsLink: "//span[text()='Sessions']",
+  cloudDevicesLink: "//span[text()='Cloud Devices']",
+  automationSettingLnk: "//span[text()='Automation Settings']"
 
 }
 

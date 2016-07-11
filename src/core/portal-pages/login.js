@@ -14,8 +14,8 @@ const defaultElements = {
   forgotPasswordLnk: 'div=Forgot password?',
   registerNowLnk: 'div=Register now',
   logoImgHeader: '#app > div > div > div > div > div > div > div:nth-child(1) > div > img',
-  form: '#app form',
-  formContent: 'form > div > div:nth-child(1)'
+  sessionsLnk: "//a[@href='/me/sessions']",
+  form: '#app form'
 }
 
 export default class LoginPage extends Page {
@@ -33,16 +33,26 @@ export default class LoginPage extends Page {
     browser.setValue(this.elements.passwordTxt, password)
     //This click to activate the login button because there is an exsiting issue
     //when fill in enough information for username and password then button login don't enable
-    browser.click(this.elements.formContent)
+    browser.click(this.elements.usernameTxt)
     browser.waitForEnabled(this.elements.loginBtn)
     //phantom js can't click on the loginbtn so i use this way to submit form
     browser.submitForm(this.elements.form)
+
+    browser.waitForExist(this.elements.loadingRunning)
     browser.waitForExist(this.elements.loadingHidden)
-    browser.isExisting(this.elements.loadingHidden)
-    return new SessionsPage()
+    
+    const isSuccessful = browser.getUrl().indexOf('sessions') >= 0
+    if (isSuccessful) {
+      return new SessionsPage()
+    }
+    debug.log('The session link not exist')
+    return this
   }
 
-  open() {
-    super.open('login')
+  open(option) {
+    debug.log('viewports', `Simulate ${JSON.stringify(option)}`)
+    super.open('login', option)
+    browser.waitForExist(this.elements.loadingHidden)
   }
+
 }

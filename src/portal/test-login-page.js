@@ -1,6 +1,7 @@
 import {assert} from 'chai'
 import LoginPage from '../core/portal-pages/login'
 import {testerAccount} from './core/data'
+import SessionsPage from '../core/portal-pages/sessions'
 
 describe('Verify Login Page', () => {
   const loginPage = new LoginPage()
@@ -20,17 +21,30 @@ describe('Verify Login Page', () => {
 
   it('should login successfully with a registered tester account', () => {
     loginPage.open()
-    const sessionsPg = loginPage.login(testerAccount)
-    assert.isTrue(sessionsPg.firstNameCharacter.isVisible())
-    assert.isTrue(sessionsPg.nameLbl.isVisible())
-    assert.isTrue(sessionsPg.profileTesterLbl.isVisible())
-    sessionsPg.logout()
+    let sessionsPage
+    try {
+      sessionsPage = loginPage.login(testerAccount)
+      assert.instanceOf(sessionsPage, SessionsPage)
+
+      assert.isTrue(sessionsPage.firstNameCharacter.isVisible())
+      assert.isTrue(sessionsPage.nameLbl.isVisible())
+      assert.isTrue(sessionsPage.profileTesterLbl.isVisible())
+    }
+    finally {
+      if (sessionsPage && sessionsPage.logout) {
+        sessionsPage.logout()
+      }
+    }
   })
 
   it('should login failed with an un-registered account', () => {
     const invalidAccount = {username: 'invTester', password: 'never@mind'}
     loginPage.open()
-    loginPage.login(invalidAccount)
-    assert.isTrue(loginPage.messageFailedLbl.isVisible())
+    const page = loginPage.login(invalidAccount)
+    assert.instanceOf(page, LoginPage)
+
+    assert.isTrue(page.messageFailedLbl.isVisible())
+   
   })
+  
 })

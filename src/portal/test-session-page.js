@@ -20,11 +20,11 @@ describe('Verify Sessions Page', () => {
   })
 
   it('should scroll to the bottom', () => {
-    assert.isTrue(sessionsPage.loadMoreSessionsBtn.isExisting())
+    assert.isTrue(sessionsPage.loadMoreSessionsButton.isExisting())
     const loadMoreLocation = sessionsPage.loadMoreSessionsLbl.getLocation()
     sessionsPage.loadMoreSessionsLbl.scroll(loadMoreLocation.x, loadMoreLocation.y)
-    sessionsPage.loadMoreSessionsBtn.click()
-    assert.isTrue(sessionsPage.loadMoreSessionsBtn.isVisible())
+    sessionsPage.loadMoreSessionsButton.click()
+    assert.isTrue(sessionsPage.loadMoreSessionsButton.isVisible())
     assert.isTrue(sessionsPage.loadMoreSessionsLbl.isVisible())
   })
 })

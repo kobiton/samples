@@ -16,7 +16,7 @@ const accountTest = {
   appWin32Url: `${appUrl}kobiton-win32-test.exe`,
   appWin64Url: `${appUrl}kobiton-win64-test.exe`,
   hubUrl: 'api-test.kobiton.com',
-  emailOrUsername: 'api_test1',
+  emailOrUsername: 'api_test4',
   password: 'mario8x@123'
 }
 const accountStaging = {

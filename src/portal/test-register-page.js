@@ -59,7 +59,7 @@ describe('Verify Register Page', () => {
     assert.isTrue(sessionPage.deviceHeader.isVisible())
     assert.isTrue(sessionPage.platformHeader.isVisible())
     assert.isTrue(sessionPage.timeHeader.isVisible())
-    const actualMsg = sessionPage.noTestSessionLbl.getText()
+    const actualMsg = sessionPage.noTestSessionLabel.getText()
     assert.equal(actualMsg, 'You currently have no test session.')
   })
 })
