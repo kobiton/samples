@@ -3,11 +3,15 @@ import 'colors'
 import {debug} from '@kobiton/core-util'
 import wd from 'wd'
 import {Application} from 'spectron'
+import BPromise from 'bluebird'
 
 export async function quitDriver(driver) {
   if (driver != null) {
     try {
+      debug.log('setup:quitDriver ', '')
       await driver.quit()
+      // Ensure the device becomes available on system
+      await BPromise.delay(10000)
     }
     catch (err) {
       debug.error('quitDriver()', err)
@@ -44,8 +48,10 @@ function getDesktopPath() {
 
 function initDesktop(options = {}) {
   options.path = getDesktopPath()
+  // Default timeout to wait for ChromeDriver to start
   options.startTimeout = 3000
-  options.waitTimeout = 120000
+  // Default time out for each of action on element
+  options.waitTimeout = 60000
   debug.log('setup:execPath ', process.execPath)
   debug.log('setup:cwd ', process.cwd())
   return new Application(options)

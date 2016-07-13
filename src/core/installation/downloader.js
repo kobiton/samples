@@ -12,13 +12,11 @@ const destPath = '/Applications'
 export function downloadApp() {
   return new BPromise((resolve, reject) => {
     const download = new DownloadProcess()
-    let downloadUrl = process.env.KOBITON_DESKTOP_APP_URL || ''
-    if (downloadUrl == '') {
-      const account = getAccount()
-      downloadUrl = account.appOSXUrl
-      debug.log('Download file:', downloadUrl)
-    }
+    const downloadUrl = process.env.KOBITON_DESKTOP_APP_URL ||
+                      getAccount().appOSXUrl
+    debug.log('Download file:', downloadUrl)
     download.download(downloadUrl)
+    download
       .on('progress', (state) => debug.log('Progress', JSON.stringify(state)))
       .on('finish', (file) => {
         debug.log('setup', `Finished download file ${file}`)
@@ -49,18 +47,6 @@ export function installApp(file) {
 export async function removeApp() {
   const filePath = `${destPath}/${appName}`
   await exec.executeCommand(`rm -rf ${filePath}`)
-}
-
-export async function cleanUpData() {
-  let username = await exec.executeCommand('whoami')
-  username = username.trim()
-  const files = ['user.data', 'devices.data']
-  const jobs = []
-  for (const file of files) {
-    const path = `/Users/${username}/Library/Application Support/Kobiton/${file}`
-    jobs.push(exec.executeCommand(`rm -rf "${path}"`))
-  }
-  await BPromise.all(jobs)
 }
 
 function executeAttachImage(cmd, args) {

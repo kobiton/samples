@@ -1,25 +1,25 @@
-import Page from './page'
+import AuthenticatedPage from './authenticated'
 
 const defaultElements = {
-  deviceLbl: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div:nth-child(1)', //eslint-disable-line
-  todayTimeLbl: 'div=Today',
-  thisWeekTimeLbl: 'div=This week', //eslint-disable-line
-  installImg: '#app div:nth-child(1) > div:nth-child(1) > img',
-  installLbl: 'span*=1. Install the Kobiton Desktop App',
-  connectDeviceImg: '#app div:nth-child(2) > div:nth-child(1) > img',
-  connectDeviceLbl: 'span*=2. Connect devices to your computer',
-  activateDeviceImg: '#app div:nth-child(3) > div:nth-child(1) > img',
-  activateDeviceLbl: 'span*=3. Activate to start leasing devices',
-  win32Lnk: '#app div:nth-child(1) > div:nth-child(2) > span > div > a:nth-child(1)',
-  win64Lnk: '#app div:nth-child(1) > div:nth-child(2) > span > div > a:nth-child(2)',
-  OSXLnk: '#app div:nth-child(1) > div:nth-child(2) > span > div > a:nth-child(3)',
-  findOutMoreLnk: '#app div:nth-child(3) > div:nth-child(2) > span > div > a',
-  kobiton32Lnk: 'body > div:nth-child(4) > div > div > div > div > div > div:nth-child(1)',
-  kobiton64Lnk: 'body > div:nth-child(4) > div > div > div > div > div > div:nth-child(2)',
-  kobitonOSXLnk: 'body > div:nth-child(4) > div > div > div > div > div > div:nth-child(3)'
+  deviceLabel: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div:nth-child(1)', // eslint-disable-line max-len
+  todayTimeLabel: 'div=Today',
+  thisWeekTimeLabel: 'div=This week',
+  installImage: '(//img)[2]',
+  installLabel: 'span*=1. Install the Kobiton Desktop App',
+  connectDeviceImage: '(//img)[3]',
+  connectDeviceLabel: 'span*=2. Connect devices to your computer',
+  activateDeviceImage: '(//img)[4]',
+  activateDeviceLabel: 'span*=3. Activate to start leasing devices',
+  win32Link: '//a[contains(.,"Win 32")]',
+  win64Link: '//a[contains(.,"Win 64")]',
+  OSXLink: '//a[contains(.,"OSX")]',
+  findOutMoreLink: '//a[contains(.,"Find out more")]',
+  kobitonWin32Link: 'body > div:nth-child(4) > div > div > div > div > div > div:nth-child(1)',
+  kobitonWin64Link: 'body > div:nth-child(4) > div > div > div > div > div > div:nth-child(2)',
+  kobitonOSXLink: 'body > div:nth-child(4) > div > div > div > div > div > div:nth-child(3)'
 }
 
-export default class MyDevicesPage extends Page {
+export default class MyDevicesPage extends AuthenticatedPage {
   constructor(elements = {}) {
     const totalElements = {...defaultElements, ...elements}
     super(totalElements)

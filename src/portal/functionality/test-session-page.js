@@ -1,6 +1,6 @@
 import {assert} from 'chai'
-import LoginPage from '../core/portal-pages/login'
-import {testerAccount} from './core/data'
+import LoginPage from '../../core/portal-pages/login'
+import {testerAccount} from '../core/data'
 
 describe('Verify Sessions Page', () => {
   const loginPage = new LoginPage()

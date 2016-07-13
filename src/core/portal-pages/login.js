@@ -3,17 +3,17 @@ import SessionsPage from './sessions'
 import {debug} from '@kobiton/core-util'
 
 const defaultElements = {
-  usernameLbl: 'form > div > div:nth-child(1) > div:nth-child(1) > div > label',
-  usernameTxt: 'input[name="emailOrUsername"]',
-  passwordLbl: 'form > div > div:nth-child(1) > div:nth-child(2) > div > label',
-  passwordTxt: 'input[name="password"]',
-  loginBtn: '#app form button',
-  rememberMeLbl: 'form > div > div:nth-child(2) > div > span',
-  rememberMeChk: 'input[name="remember"]',
-  messageFailedLbl: '#app div:nth-child(1) > form > span',
-  forgotPasswordLnk: 'div=Forgot password?',
-  registerNowLnk: 'div=Register now',
-  logoImgHeader: '#app > div > div > div > div > div > div > div:nth-child(1) > div > img',
+  usernameLabel: '//input[@name="emailOrUsername"]/../label',
+  usernameTextInput: 'input[name="emailOrUsername"]',
+  passwordLabel: '//input[@name="password"]/../label',
+  passwordTextInput: 'input[name="password"]',
+  loginButton: '#app form button',
+  rememberMeLabel: '//span[contains(.,"Remember me")]',
+  rememberMeCheck: 'input[name="remember"]',
+  messageFailedLabel: '//form/span',
+  forgotPasswordLink: 'div=Forgot password?',
+  registerNowLink: 'div=Register now',
+  logoImageHeader: '//img',
   sessionsLnk: "//a[@href='/me/sessions']",
   form: '#app form'
 }
@@ -26,21 +26,20 @@ export default class LoginPage extends Page {
 
   login({username, password}) {
     debug.log('login', `${username} and ${password}`)
-    browser.waitForExist(this.elements.usernameTxt)
-    browser.clearElement(this.elements.usernameTxt)
-    browser.setValue(this.elements.usernameTxt, username)
-    browser.clearElement(this.elements.passwordTxt)
-    browser.setValue(this.elements.passwordTxt, password)
-    //This click to activate the login button because there is an exsiting issue
-    //when fill in enough information for username and password then button login don't enable
-    browser.click(this.elements.usernameTxt)
-    browser.waitForEnabled(this.elements.loginBtn)
-    //phantom js can't click on the loginbtn so i use this way to submit form
-    browser.submitForm(this.elements.form)
-
-    browser.waitForExist(this.elements.loadingRunning)
-    browser.waitForExist(this.elements.loadingHidden)
-    
+    this.usernameTextInput.waitForExist()
+    this.usernameTextInput.clearElement()
+    this.usernameTextInput.setValue(username)
+    this.passwordTextInput.clearElement()
+    this.passwordTextInput.setValue(password)
+    this.loginButton.click()
+    // click login button then submit form because of the known issue:
+    // https://trello.com/c/ZeL2ilpT/816-portal-chrome-firefox-login-could-not-click-on-login-button-after-input-username-and-password
+    // TODO: remove 2 lines below when the trello card above is fixed
+    this.loginButton.waitForEnabled()
+    this.form.submitForm()
+    this.waitForLoadingProgressRunning()
+    this.waitForLoadingProgressDone()
+    this._waitForPageLoaded()
     const isSuccessful = browser.getUrl().indexOf('sessions') >= 0
     if (isSuccessful) {
       return new SessionsPage()
@@ -53,6 +52,19 @@ export default class LoginPage extends Page {
     debug.log('viewports', `Simulate ${JSON.stringify(option)}`)
     super.open('login', option)
     browser.waitForExist(this.elements.loadingHidden)
+  }
+
+  isLoggedIn() {
+    return !browser.isVisible(this.elements.usernameTextInput)
+  }
+
+ /**
+  * This function is to wait for page transition after click login button
+  * it could be loginPage or sessionPage
+  */
+  _waitForPageLoaded() {
+    const locator = '//span[text()="Invalid email and/or password" or text()="Sessions"]'
+    browser.waitForExist(locator)
   }
 
 }

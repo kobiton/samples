@@ -1,28 +1,22 @@
 import Page from './page'
-import SessionsPage from './sessions'
-import CloudDevicesPage from './cloud-devices'
-import AutomationSettingsPage from './automation-settings'
-import DeviceOwnerPage from './my-devices'
-import ProfilePage from './profile'
-import {debug} from '@kobiton/core-util'
 
 const defaultElements = {
-  //Profile menu elements
-  firstNameCharacter: '#app > div > div > div:nth-child(3) > div:nth-child(1) > div > div > div > div > div:nth-child(1) > div:nth-child(1)',
-  nameLbl: '#app > div > div > div:nth-child(3) > div:nth-child(1) > div > div > div > div > div:nth-child(1) > div:nth-child(2)', // eslint-disable-line
-  profileTesterLbl: 'span=Tester',
-  profileDeviceOwnerLbl: 'span=Device Owner',
-  profileTester: 'div=Tester',
-  profileDeviceOwner: 'div=Device Owner',
-  profileBtn: '#app  button',
-  logoutBtn: "//span[@type='button']//div[text()='Logout']",
-  Profile: 'span=Profile',
-  //Navigation Element
-  logoImg: '#app div.row > div.col-xs-9 > a:nth-child(1) > img',
+  // Profile menu elements
+  firstNameCharacter: '#app > div > div > div:nth-child(3) > div:nth-child(1) > div > div > div > div > div:nth-child(1) > div:nth-child(1)', // eslint-disable-line max-len
+  nameLabel: '#app > div > div > div:nth-child(3) > div:nth-child(1) > div > div > div > div > div:nth-child(1) > div:nth-child(2)', // eslint-disable-line max-len
+  profileTesterLabel: 'span=Tester',
+  profileDeviceOwnerLabel: 'span=Device Owner',
+  profileTesterLink: 'div=Tester',
+  profileDeviceOwnerLink: 'div=Device Owner',
+  profileButton: '//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div/div/div[2]/div/div[1]/button',
+  logoutButton: '(//span[@type="button"])[4]',
+  profileLink: 'span=Profile',
+  // Navigation Element
+  logoImage: '//img[contains(@src,"svg")]',
   kobitonHeader: "//h2[text()='Kobiton']",
-  sessionsLink: '=Sessions',
-  cloudDevicesLink: '=Cloud Devices',
-  automationSettingLnk: '=Automation Settings',
+  sessionsLink: '//span[text()="Sessions"]',
+  cloudDevicesLink: '//span[text()="Cloud Devices"]',
+  automationSettingLink: '//span[text()="Automation Settings"]',
   profileIcon: "//span[text()='Tester' or text()='Device Owner']/../../div[@size='40']"
 }
 
@@ -36,7 +30,6 @@ export default class AuthenticatedPage extends Page {
     super(totalElements)
   }
 
-
   _clickProfileIcon() {
     this.profileIcon.waitForEnabled()
     this.profileIcon.click()
@@ -46,9 +39,9 @@ export default class AuthenticatedPage extends Page {
    */
   logout() {
     this._clickProfileIcon()
-    this.logoutBtn.waitForEnabled()
-    this.logoutBtn.click()
-    browser.waitForEnabled(this.elements.loadingHidden)
+    this.logoutButton.waitForEnabled()
+    this.logoutButton.click()
+    this.waitForLoadingProgressDone()
     this.kobitonHeader.waitForEnabled()
   }
 
@@ -59,37 +52,52 @@ export default class AuthenticatedPage extends Page {
   }
 
   selectDeviceOwner() {
-    this._clickProfileIcon();
-    this.profileDeviceOwner.click()
-    this.loadingHidden.isExisting()
+    this.profileButton.click()
+    this.profileDeviceOwnerLink.click()
+    this.waitForLoadingProgressDone()
+    // DeviceOwnerPage extend AuthenticatedPage
+    // Use inline require to prevent circular dependencies
+    const DeviceOwnerPage = require('./my-devices')
     return new DeviceOwnerPage()
   }
 
   selectProfile() {
     this._clickProfileIcon()
-    this.Profile.click()
-    this.loadingHidden.isExisting()
+    this.profileLink.click()
+    this.waitForLoadingProgressDone()
+    // ProfilePage extend AuthenticatedPage
+    // Use inline require to prevent circular dependencies
+    const ProfilePage = require('./profile')
     return new ProfilePage()
   }
 
-/**
- * These functions below are for navigation elements
- */
-  clickSessionsLink() {
+  /**
+   * These functions below are for navigation elements
+   */
+  gotoSessionsPage() {
     this.sessionsLink.click()
-    this.loadingHidden.isExisting()
+    this.waitForLoadingProgressDone()
+    // SessionsPage extend AuthenticatedPage
+    // Use inline require to prevent circular dependencies
+    const SessionsPage = require('./sessions')
     return new SessionsPage()
   }
 
-  clickCloudDevicesLink() {
+  gotoCloudDevicesPage() {
     this.cloudDevicesLink.click()
-    this.loadingHidden.isExisting()
+    this.waitForLoadingProgressDone()
+    // CloudDevicesPage extend AuthenticatedPage,
+    // Use inline require to prevent circular dependencies
+    const CloudDevicesPage = require('./cloud-devices')
     return new CloudDevicesPage()
   }
 
-  clickAutomationSettingLink() {
-    this.automationSettingLnk.click()
-    this.loadingHidden.isExisting()
+  gotoAutomationSettingsPage() {
+    this.automationSettingLink.click()
+    this.waitForLoadingProgressDone()
+    // AutomationSettingsPage extend AuthenticatedPage,
+    // Use inline require to prevent circular dependencies
+    const AutomationSettingsPage = require('./automation-settings')
     return new AutomationSettingsPage()
   }
 }

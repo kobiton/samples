@@ -7,66 +7,63 @@ import viewports from '../core/viewport'
 import {getUserInfo} from '../../core/portal-api'
 import {normalize} from '../core/helpers/xpath'
 
-describe('Login Page', () => {
+describe('Verify Login Page Responsive', () => {
   const portstraitMode = true
   const landscapeMode = false
   const loginPage = new LoginPage()
   let fullNameElement
-  
+
   before(async () => {
     const userInfo = await getUserInfo()
     let normalizedUsername = normalize(userInfo.user.name);
     fullNameElement = `//div[text()=${normalizedUsername}]`
   })
-  
-  it('should display login ui properly', () => {
-    testLoginUI(portstraitMode)
-    testLoginUI(landscapeMode)
-  })
 
-  it('should login successfully with view port', () => {
-    testViewPortsLogin(portstraitMode)
-    testViewPortsLogin(landscapeMode)
-  })
+  Object.keys(viewports).forEach((viewport) => {
+    const dimension = viewports[viewport]
 
-  function testLoginUI(isPortrait) {
-    Object.keys(viewports).forEach((viewport) => {
-      const dimension = viewports[viewport]
-      loginPage.open({...dimension, isPortrait})
-      assert.isTrue(loginPage.usernameLbl.isVisible())
-      assert.isTrue(loginPage.usernameTxt.isVisible())
-      assert.isTrue(loginPage.passwordLbl.isVisible())
-      assert.isTrue(loginPage.passwordTxt.isVisible())
-      assert.isTrue(loginPage.loginBtn.isVisible())
-      assert.isTrue(loginPage.rememberMeLbl.isVisible())
-      assert.isTrue(loginPage.forgotPasswordLnk.isVisible())
-      assert.isTrue(loginPage.registerNowLnk.isVisible())
-      assert.isTrue(loginPage.rememberMeChk.isExisting())
+    it(`should display login ui properly ${viewport}`, () => {
+      testLoginUI(dimension, portstraitMode)
+      testLoginUI(dimension, landscapeMode)
     })
+
+    it(`should login successfully with view port ${viewport}`, () => {
+      testViewPortsLogin(dimension, portstraitMode)
+      testViewPortsLogin(dimension, landscapeMode)
+    })
+  })
+
+  function testLoginUI(dimension, isPortrait) {
+    loginPage.open({...dimension, isPortrait})
+    assert.isTrue(loginPage.usernameLabel.isVisible())
+    assert.isTrue(loginPage.usernameTextInput.isVisible())
+    assert.isTrue(loginPage.passwordLabel.isVisible())
+    assert.isTrue(loginPage.passwordTextInput.isVisible())
+    assert.isTrue(loginPage.loginButton.isVisible())
+    assert.isTrue(loginPage.rememberMeLabel.isVisible())
+    assert.isTrue(loginPage.forgotPasswordLink.isVisible())
+    assert.isTrue(loginPage.registerNowLink.isVisible())
+    assert.isTrue(loginPage.rememberMeCheck.isExisting())
   }
-  
-  function testViewPortsLogin(isPortrait = true) {
+
+  function testViewPortsLogin(dimension, isPortrait = true) {
     const viewPortMode = isPortrait ? 'Portstrait' : 'Landscape'
     const verifyHandler = isPortrait ? verifyPortraitMode : verifyLandscapeMode
-    debug.log('test', `Verify on viewport orientation - ${viewPortMode}`)
+    debug.log('test-login-page:responsive ', `Verify on viewport orientation - ${viewPortMode}`)
 
-    Object.keys(viewports).forEach((viewport) => {
-      let sessionsPage
-      try {
-        const dimension = viewports[viewport]
-        debug.log('viewports', `Simulate '${viewport}' ${JSON.stringify(dimension)}`)
-        const options = {...dimension, isPortrait}
-        loginPage.open(options)
-        sessionsPage = loginPage.login(testerAccount)
-        assert.instanceOf(sessionsPage, SessionsPage)
-        verifyHandler(sessionsPage, dimension)
+    let sessionsPage
+    try {
+      const options = {...dimension, isPortrait}
+      loginPage.open(options)
+      sessionsPage = loginPage.login(testerAccount)
+      assert.instanceOf(sessionsPage, SessionsPage)
+      verifyHandler(sessionsPage, dimension)
+    }
+    finally {
+      if (sessionsPage && sessionsPage.logout) {
+        sessionsPage.logout()
       }
-      finally {
-        if (sessionsPage && sessionsPage.logout) {
-          sessionsPage.logout()
-        }
-      }
-    })
+    }
   }
 
   function verifyPortraitMode(page, {width, height}) {
@@ -77,7 +74,6 @@ describe('Login Page', () => {
       verifySmallViewports(page)
     }
   }
-
 
   function verifyLandscapeMode(page, {width, height}) {
     const _width = height
@@ -96,28 +92,27 @@ describe('Login Page', () => {
   function verifySmallViewports(sessionsPage) {
     assert.isFalse(browser.isVisible(fullNameElement))
     assert.isFalse(sessionsPage.logoText.isVisible())
-    assert.isFalse(sessionsPage.profileTesterLbl.isVisible())
+    assert.isFalse(sessionsPage.profileTesterLabel.isVisible())
     assert.isFalse(sessionsPage.sessionsLink.isVisible())
     assert.isFalse(sessionsPage.cloudDevicesLink.isVisible())
-    assert.isFalse(sessionsPage.automationSettingLnk.isVisible())
+    assert.isFalse(sessionsPage.automationSettingLink.isVisible())
   }
 
   function verifyMiddleViewports(sessionsPage) {
     assert.isTrue(browser.isVisible(fullNameElement))
     assert.isTrue(sessionsPage.logoText.isVisible())
-    assert.isTrue(sessionsPage.profileTesterLbl.isVisible())
+    assert.isTrue(sessionsPage.profileTesterLabel.isVisible())
     assert.isFalse(sessionsPage.sessionsLink.isVisible())
     assert.isFalse(sessionsPage.cloudDevicesLink.isVisible())
-    assert.isFalse(sessionsPage.automationSettingLnk.isVisible())
+    assert.isFalse(sessionsPage.automationSettingLink.isVisible())
   }
 
   function verifyLargeViewports(sessionsPage) {
     assert.isTrue(browser.isVisible(fullNameElement))
     assert.isTrue(sessionsPage.logoText.isVisible())
-    assert.isTrue(sessionsPage.profileTesterLbl.isVisible())
+    assert.isTrue(sessionsPage.profileTesterLabel.isVisible())
     assert.isTrue(sessionsPage.sessionsLink.isVisible())
     assert.isTrue(sessionsPage.cloudDevicesLink.isVisible())
-    assert.isTrue(sessionsPage.automationSettingLnk.isVisible())
+    assert.isTrue(sessionsPage.automationSettingLink.isVisible())
   }
-  
 })

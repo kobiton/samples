@@ -1,18 +1,17 @@
-import Page from './page'
+import AuthenticatedPage from './authenticated'
 
 const defaultElements = {
-  emailTxt: 'input[name="email"]',
-  fullNameTxt: 'input[name="name"]',
-  currentPassTxt: 'input[name="password"]',
-  newPassTxt: 'input[name="newPassword"]',
-  confirmPassTxt: 'input[name="passwordConfirmation"]',
-  updateBtn: '#app form button',
-  notificationLbl: 'div:nth-child(2) > span > div > div > div:nth-child(2) > span',
-  form: '#app form',
-  fomrContent: 'form > div:nth-child(8)'
+  emailTextInput: 'input[name="email"]',
+  fullNameTextInput: 'input[name="name"]',
+  currentPasswordTextInput: 'input[name="password"]',
+  newPasswordTextInput: 'input[name="newPassword"]',
+  confirmPasswordTextInput: 'input[name="passwordConfirmation"]',
+  updateButton: '#app form button',
+  notificationLabel: 'div:nth-child(2) > span > div > div > div:nth-child(2) > span',
+  form: '#app form'
 }
 
-export default class MyDevicesPage extends Page {
+export default class ProfilePage extends AuthenticatedPage {
   constructor(elements = {}) {
     const totalElements = {...defaultElements, ...elements}
     super(totalElements)
@@ -23,36 +22,16 @@ export default class MyDevicesPage extends Page {
   }
 
   updateProfile({email, fullname, currentPassword, newPassword, confirmPassword}) {
-    this.emailTxt.setValue(email)
-    this.fullNameTxt.setValue(fullname)
-    this.currentPassTxt.setValue(currentPassword)
-    this.newPassTxt.setValue(newPassword)
-    this.confirmPassTxt.setValue(confirmPassword)
-    //This click to activate the login button because there is an exsiting issue
-    //when fill in enough information for username and password then button login don't enable
-    this.fomrContent.click()
-    this.updateBtn.waitForEnabled()
-    //phantom js can't click on the updateBtn so i use this way to submit form
-    this.form.submitForm()
-    this.loadingHidden.isExisting()
-  }
-
-  updateInvalidEmail({email}) {
-    this.emailTxt.setValue(email)
-    this.updateBtn.waitForEnabled()
-    this.updateBtn.click()
-    this.loadingHidden.isExisting()
-  }
-
-  updateInvalidPass({currentPass, newPass, confirmPass}) {
-    this.currentPassTxt.setValue(currentPass)
-    this.newPassTxt.setValue(newPass)
-    this.confirmPassTxt.setValue(confirmPass)
-    //This click to activate the login button because there is an exsiting issue
-    //when fill in enough information for username and password then button login don't enable
-    this.fomrContent.click()
-    this.updateBtn.waitForEnabled()
-    //phantom js can't click on the updateBtn so i use this way to submit form
+    if (email) this.emailTextInput.setValue(email)
+    if (fullname) this.fullNameTextInput.setValue(fullname)
+    if (currentPassword) this.currentPasswordTextInput.setValue(currentPassword)
+    if (newPassword) this.newPasswordTextInput.setValue(newPassword)
+    if (confirmPassword) this.confirmPasswordTextInput.setValue(confirmPassword)
+    this.updateButton.click()
+    // click update button then submit form because of the known issue:
+    // https://trello.com/c/ZeL2ilpT/816-portal-chrome-firefox-login-could-not-click-on-login-button-after-input-username-and-password
+    // TODO: remove 2 lines below when the trello card above is fixed
+    this.updateButton.waitForEnabled()
     this.form.submitForm()
     this.loadingHidden.isExisting()
   }

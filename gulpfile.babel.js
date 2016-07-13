@@ -13,12 +13,10 @@ global._mocha = {}
 const env = process.env.NODE_ENV || 'test'
 
 const scenarios = {
-  'test-capabilities': 'src/e2e/capabilities/test.js',
   'test-multiple-devices': 'src/e2e/durations/test-multiple-devices.js',
   'test-response-time': 'src/api/test-unavailable-devices-response-time.js',
-  'test-session-duration': 'src/e2e/durations/test-session-duration.js',
-  'test-desktop': 'src/desktop/test-desktop.js',
-  'install-desktop-app': 'src/desktop/install-desktop-app.js',
+  'test-desktop': 'src/desktop/test-*-page.js',
+  'install-desktop-app': 'src/desktop/install-desktop-app.js'
 }
 
 function runAllScenarios(env) {

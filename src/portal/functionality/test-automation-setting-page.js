@@ -1,6 +1,6 @@
 import {assert} from 'chai'
-import LoginPage from '../core/portal-pages/login'
-import {testerAccount, getScript} from './core/data'
+import LoginPage from '../../core/portal-pages/login'
+import {testerAccount, getScript} from '../core/data'
 import diff from 'fast-diff'
 import {debug} from '@kobiton/core-util'
 
@@ -19,23 +19,23 @@ describe('Verify Automation Settings Page', () => {
     loginPage.windowHandleMaximize()
     loginPage.open()
     const sessionsPage = loginPage.login(testerAccount)
-    automationSettingPage = sessionsPage.clickAutomationSettingLink()
+    automationSettingPage = sessionsPage.gotoAutomationSettingsPage()
   })
 
   it('should display device configurations page ui', () => {
     automationSettingPage.open()
-    automationSettingPage.loadingHidden.isExisting()
-    // verify elements
-    assert.isTrue(automationSettingPage.apiKeyCopyBtn.isVisible())
-    assert.isTrue(automationSettingPage.regeneerateApiKeyBtn.isVisible())
-    assert.isTrue(automationSettingPage.deviceConfigurationCopyBtn.isVisible())
+    automationSettingPage.waitForLoadingProgressDone()
+    // Verify elements
+    assert.isTrue(automationSettingPage.apiKeyCopyButton.isVisible())
+    assert.isTrue(automationSettingPage.regeneerateApiKeyButton.isVisible())
+    assert.isTrue(automationSettingPage.deviceConfigurationCopyButton.isVisible())
     assert.isTrue(automationSettingPage.languageText.isVisible())
     assert.isTrue(automationSettingPage.platFormText.isVisible())
     assert.isTrue(automationSettingPage.deviceText.isVisible())
     assert.isTrue(automationSettingPage.platformVersionText.isVisible())
     assert.isTrue(automationSettingPage.orientationText.isVisible())
     assert.isTrue(automationSettingPage.browserText.isVisible())
-    // verify texts
+    // Verify texts
     assert.equal(titleHeader, automationSettingPage.titleHeader.getText())
     assert.equal(apiKeyHeader, automationSettingPage.apiKeyHeader.getText())
     assert.equal(serverHeader, automationSettingPage.serverHeader.getText())
@@ -64,7 +64,7 @@ describe('Verify Automation Settings Page', () => {
       let expectedScript = getScript(language, scriptConfig)
       expectedScript = expectedScript.replace(/\n\r\s/, ' ').trim()
       actualScript = actualScript.replace(/\n\r\s/, ' ').trim()
-      // verify actual script and expected script
+      // Verify actual script and expected script
       const results = diff(actualScript, expectedScript)
       debug.log('Verify Automation Settings Page', 'actual: ' + actualScript)
       debug.log('Verify Automation Settings Page', 'expect: ' + expectedScript)

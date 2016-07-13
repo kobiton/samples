@@ -1,22 +1,20 @@
-import Page from './page'
+import AuthenticatedPage from './authenticated'
 
 const defaultElements = {
-  platformLbl: 'div=Platform',
-  platformSelectBtn: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(1) svg', //eslint-disable-line
-  androidPlatformOption: 'span=Android',
+  platformLabel: 'div=Platform',
+  platformSelectButton: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(1) svg', //eslint-disable-line max-len
   iOSPlatformOption: 'span=iOS',
-  platformVersionLbl: 'div=Platform version',
-  platformVersionSelectbtn: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(2) svg', //eslint-disable-line
-  browserLbl: 'div=Browser',
-  browserSelectBtn: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(3) svg', //eslint-disable-line
-  sortByLbl: 'div=Sort by',
-  sortBySelectBtn: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(4) svg', //eslint-disable-line
+  platformVersionLabel: 'div=Platform version',
+  platformVersionSelectButton: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(2) svg', //eslint-disable-line max-len
+  browserSelectButton: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(3) svg', // eslint-disable-line max-len
+  sortByLabel: 'div=Sort by',
+  sortBySelectButton: '#app > div > div > div:nth-child(3) > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(4) svg', // eslint-disable-line max-len
   availableHeader: 'span=Available',
   utilizedHeader: 'span=Utilized',
   offlineHeader: 'span=Offline'
 }
 
-export default class CloudDevicesPage extends Page {
+export default class CloudDevicesPage extends AuthenticatedPage {
   constructor(elements = {}) {
     const totalElements = {...defaultElements, ...elements}
     super(totalElements)
@@ -51,16 +49,16 @@ export default class CloudDevicesPage extends Page {
   }
 
   selectAndroidPlatform() {
-    this.loadingHidden.isExisting()
-    this.platformSelectBtn.click()
+    this.waitForLoadingProgressDone()
+    this.platformSelectButton.click()
     this.androidPlatformOption.click()
-    this.loadingHidden.isExisting()
+    this.waitForLoadingProgressDone()
   }
 
   selectiOSPlatform() {
-    this.loadingHidden.isExisting()
-    this.platformSelectBtn.click()
+    this.waitForLoadingProgressDone()
+    this.platformSelectButton.click()
     this.iOSPlatformOption.click()
-    this.loadingHidden.isExisting()
+    this.waitForLoadingProgressDone()
   }
 }

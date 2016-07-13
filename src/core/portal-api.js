@@ -1,6 +1,7 @@
 import sendRequest from './network'
 import {debug} from '@kobiton/core-util'
 import {getAccount} from './user-info'
+import {pick} from 'lodash'
 
 const api = {
   login: 'v1/users/login',
@@ -47,12 +48,11 @@ export async function getSessions({token, page, size}) {
   return result.data
 }
 
-export async function getOnlineDevices(token) {
+export async function getDevices(token) {
   const testingType = getTestingType()
-  const platform = `${testingType}`.includes('android') ? 'android' : 'ios'
-  const browsername = `${testingType}`.includes('android') ? 'chrome' : 'safari'
+  const platform = testingType.includes('android') ? 'android' : 'ios'
   const {apiUrl} = getAccount()
-  let request = {
+  return await sendRequest({
     method: 'GET',
     url: `${apiUrl}${api.devices}`,
     qs: {
@@ -61,18 +61,21 @@ export async function getOnlineDevices(token) {
     headers: {
       'authorization': `Bearer ${token}`
     }
-  }
-  const devices = await sendRequest(request)
+  })
+}
+
+export async function getOnlineDevices(token) {
+  const devices = await getDevices(token)
+  const testingType = getTestingType()
+  const browserName = testingType.includes('android') ? 'chrome' : 'safari'
   const onlineDevices = devices.data
     .filter((d) => d.availableCount > 0)
-    .map((d) => ({
-      'browserName': browsername,
-      'platformName': d.platformName,
-      'platformVersion': d.platformVersion,
-      'deviceName': d.deviceName
-    })
+    .map((d) => {
+      const pickDevice = pick(d, 'platformName', 'platformVersion', 'deviceName', 'modelName')
+      return {...pickDevice, browserName}
+    }
   )
-  debug.log('getOnlineDevices()', `${JSON.stringify(onlineDevices)}`)
+  debug.log('portal-api:getOnlineDevices() ', `${JSON.stringify(onlineDevices)}`)
   return onlineDevices
 }
 

@@ -1,5 +1,5 @@
 import {getAccount} from '../../core/user-info'
-import faker from 'Faker'
+import faker from 'faker'
 
 const account = getAccount()
 
@@ -13,13 +13,13 @@ export function getScript(language, config) {
 }
 
 export function generateUser() {
-  const username = `${faker.Internet.userName()}${String(faker.random.number(10000))}`
-  const password = 'mario8x@123'
+  const username = `${faker.internet.userName()}${String(faker.random.number(10000))}`
+  const password = faker.internet.password()
   return {
-    fullname: faker.Name.findName(),
+    fullname: faker.name.findName(),
     username,
     password,
-    email: faker.Internet.email(username)
+    email: faker.internet.email(username)
   }
 }
 
