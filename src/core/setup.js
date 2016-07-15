@@ -8,7 +8,7 @@ import BPromise from 'bluebird'
 export async function quitDriver(driver) {
   if (driver != null) {
     try {
-      debug.log('setup:quitDriver ', '')
+      debug.log('setup', 'quitDriver')
       await driver.quit()
       // Ensure the device becomes available on system
       await BPromise.delay(10000)
