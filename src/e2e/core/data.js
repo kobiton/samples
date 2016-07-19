@@ -1,11 +1,11 @@
 import _ from 'lodash'
 import faker from 'faker'
 
-// Each loop time takes approximately two minutes
-export const smallListSearchTerms = generateTerms(5)
-export const shortListSearchTerms = generateTerms(30)
-export const longListSearchTerms = generateTerms(60)
-export const hugeListSearchTerms = generateTerms(120)
+// Each loop takes approximately 45 seconds
+export const smallListSearchTerms = generateTerms(150) // ~ 1.5 hours
+export const shortListSearchTerms = generateTerms(250) // ~ 3 hours
+export const longListSearchTerms = generateTerms(350) // ~ 4 hours
+export const hugeListSearchTerms = generateTerms(450) // ~ 5 hours
 
 export const desiredCapabilities = {
   getPortrait: (cap) => ({...cap, deviceOrientation: 'portrait'}),

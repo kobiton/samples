@@ -4,7 +4,7 @@ import {launch} from '../core/test'
 import * as data from '../core/data'
 import BPromise from 'bluebird'
 
-describe('Run script with at least three online devices', () => {
+describe('Run tests on multiple devices in parallel', () => {
 
   let onlineDevices
   let server
@@ -13,28 +13,34 @@ describe('Run script with at least three online devices', () => {
     const env = await initEnv()
     server = env.kobitonServer
     onlineDevices = env.onlineDevices
-    assert.isAtLeast(onlineDevices.length, 2, 'Expected at least three online devices')
+    assert.isAtLeast(onlineDevices.length, 2, 'Expected at least two online devices')
   })
 
-  it('should run at least 10 minutes', async () => {
-    const maximumDuration = 60 * 1.5 * data.smallListSearchTerms.length
-    await run(data.smallListSearchTerms, maximumDuration, 'Expected at least 10 minutes')
+  it('should run in 1.5 hours', async () => {
+    const expectedDuration = _calculateExpectedDuration(data.smallListSearchTerms.length)
+    await run(data.smallListSearchTerms, expectedDuration, 'Expected at least ~ 1 hour')
   })
 
-  it('should run at least 45 minutes', async () => {
-    const maximumDuration = 60 * 1.5 * data.shortListSearchTerms.length
-    await run(data.shortListSearchTerms, maximumDuration, 'Expected at least 45 minutes')
+  it('should run in 3 hours', async () => {
+    const expectedDuration = _calculateExpectedDuration(data.shortListSearchTerms.length)
+    await run(data.shortListSearchTerms, expectedDuration, 'Expected at least ~ 2.5 hours')
   })
 
-  it('should run at least 1.5 hours', async () => {
-    const maximumDuration = 60 * 1.5 * data.longListSearchTerms.length
-    await run(data.longListSearchTerms, maximumDuration, 'Expected at least 1.5 hours')
+  it('should run in 4 hours', async () => {
+    const expectedDuration = _calculateExpectedDuration(data.longListSearchTerms.length)
+    await run(data.longListSearchTerms, expectedDuration, 'Expected at least ~ 3 hours')
   })
 
-  it('should run at least 3 hours', async () => {
-    const maximumDuration = 60 * 1.5 * data.hugeListSearchTerms.length
-    await run(data.hugeListSearchTerms, maximumDuration, 'Expected at least 3 hours')
+  it('should run in 5 hours', async () => {
+    const expectedDuration = _calculateExpectedDuration(data.hugeListSearchTerms.length)
+    await run(data.hugeListSearchTerms, expectedDuration, 'Expected at least ~ 3.5 hours')
   })
+
+  function _calculateExpectedDuration(dataLength) {
+    // The duration for each loop is approximately 40 seconds.
+    // We expect that the test can run at least 75% per total the test duration.
+    return 60 * 0.5 * dataLength
+  }
 
   async function run(data, maximumDuration, msg) {
     const start = Date.now()
