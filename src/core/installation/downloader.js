@@ -32,10 +32,10 @@ export function downloadApp() {
 export function installApp(file) {
   return new BPromise(async (resolve, reject) => {
     try {
-      executeAttachImage('hdiutil', ['attach', `${file}`])
+      await executeAttachImage('hdiutil', ['attach', `${file}`])
       await exec.executeCommand('sleep 5')
       await exec.executeCommand(`cp -R ${mountedPath}${appName} ${destPath}`)
-      executeDetachImage('hdiutil', ['detach', `${mountedPath}`])
+      await executeDetachImage('hdiutil', ['detach', `${mountedPath}`])
       resolve()
     }
     catch (e) {

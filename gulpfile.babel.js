@@ -7,6 +7,9 @@ import moment from 'moment'
 import BPromise from 'bluebird'
 import server from 'gulp-express'
 import webdriver from 'gulp-webdriver'
+import {cleanUpDesktopResourceData} from './src/core/desktop-util'
+import * as downloader from './src/core/installation/downloader'
+import LoginPage from './src/core/desktop-pages/login'
 
 debug.enable('*')
 global._mocha = {}
@@ -16,7 +19,7 @@ const scenarios = {
   'test-multiple-devices': 'src/e2e/durations/test-multiple-devices.js',
   'test-response-time': 'src/api/test-unavailable-devices-response-time.js',
   'test-desktop': 'src/desktop/test-*-page.js',
-  'install-desktop-app': 'src/desktop/install-desktop-app.js'
+  'test-api': 'src/api/test-*-api.js'
 }
 
 function runAllScenarios(env) {
@@ -82,6 +85,38 @@ gulp.task('test-portal', ['build-core', 'build-portal'], () => {
   return gulp.src('build/portal/core/wdio.conf.js', {read: false})
   .pipe(webdriver())
 })
+
+// Define task to download and install kobiton application
+gulp.task('install-kobiton-app', async () => {
+  let loginPage
+  let error = false
+
+  try {
+    await cleanUpDesktopResourceData()
+    await downloader.removeApp()
+
+    const kobitonAppFile = await downloader.downloadApp()
+    await downloader.installApp(kobitonAppFile)
+
+    loginPage = new LoginPage()
+    await loginPage.startApplication()
+  }
+  catch (err) {
+    debug.error('gulpfile.babel:install-kobiton-app', err)
+    error = true
+  }
+  finally {
+    if (loginPage && loginPage.stopApplication) {
+      await loginPage.stopApplication()
+    }
+  }
+
+  if (error) {
+    debug.log('gulpfile.babel:install-kobiton-app', 'exit')
+    process.exit(-1)
+  }
+})
+
 // Define task for e2e test
 gulp.task('build-e2e', build('src/e2e/**/*.js', 'build/e2e'))
 gulp.task('build-desktop', build('src/desktop/**/*.js', 'build/desktop'))

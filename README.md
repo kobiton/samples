@@ -33,7 +33,7 @@
  * Run the following command to download and install the Kobiton desktop app. The script will  return error code as -1 (code: call process.exit(-1)) if any problems.
 
  ```bash
- npm run gulp install-desktop-app
+ npm run gulp install-kobiton-app
  ```
 
 #### 2. Api
@@ -41,6 +41,11 @@
 
    ```bash
    npm run gulp test-response-time
+   ```
+ * Test api functionality
+
+   ```bash
+   npm run gulp test-api
    ```
 
 #### 3. Portal

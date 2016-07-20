@@ -15,4 +15,4 @@ export default async function sendRequest(options) {
   return body
 }
 
-const requestAsync = BPromise.promisify(request, {multiArgs: true})
+export const requestAsync = BPromise.promisify(request, {multiArgs: true})
