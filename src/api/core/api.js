@@ -1,5 +1,5 @@
 import {requestAsync} from '../../core/network'
-import {getAccount} from '../../core/user-info'
+import {getAccount} from '../../core/config'
 
 /**
  * Public functions for api testing

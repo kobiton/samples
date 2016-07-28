@@ -8,4 +8,4 @@ exports.config = {...base.config, specs: [
 ]
 }
 
-debug.log('wdio.conf:portal', exports.config)
+debug.log('wdio.conf:portal', JSON.stringify(exports.config))

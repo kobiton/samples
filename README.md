@@ -2,22 +2,18 @@
 ### Prerequisites
  * Install local packages:  `npm install`
 
-### Register an account on specific environment
- * Test: https://portal-test.kobiton.com
- * Staging: https://portal-staging.kobiton.com
- * Production: https://portal.kobiton.com
- * Open `src/core/user-info.js` and replace *username* and *password* into environment which want to test.
- * Currently, we configured a default account for each of environment
-
-### Run test on specific environment
- * int environement: NODE_ENV = test/staging/production (default is test)
- * Examples:
-
-  ```bash
-  npm run gulp test-multiple-devices -- —ios
-  NODE_ENV=staging npm run gulp test-multiple-devices -- —ios
-  NODE_ENV=production npm run gulp test-multiple-devices -- —ios
-  ```
+### Change environment information
+ * There are 2 ways to adjust the enviroment infomration:
+  1. Adjust the default values in the `src/core/config.js`.file.
+  2. Specify values accordingly the following environment variables:
+  * KOBITON_HUB_HOST
+  * KOBITON_DESKTOP_APP_URL
+  * KOBITON_API_URL
+  * KOBITON_PORTAL_URL
+  * KOBITON_USERNAME_1
+  * KOBITON_USERNAME_2
+  * KOBITON_PASSWORD_1
+  * KOBITON_PASSWORD_2
 
 ### Connect android/ios devices to desktop app
  * Android: http://confluence-incubator.kms-technology.com/pages/viewpage.action?pageId=1376891
@@ -25,7 +21,7 @@
 
 ### Run a specific test suites (api, portal, desktop, e2e)
 #### 1. Download and install desktop app
- * Set download url to an environment variable KOBITON_DESKTOP_APP_URL. If the variable is not specified, the download url should be the default value from the user-info.js.
+ * Set download url to an environment variable KOBITON_DESKTOP_APP_URL. If the variable is not specified, the download url should be the default value from the config.js.
 
  ```bash
  export KOBITON_DESKTOP_APP_URL=<download-url>

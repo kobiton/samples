@@ -1,5 +1,5 @@
 import LoginPage from '../core/desktop-pages/login'
-import {getAccount} from '../core/user-info'
+import {getAccount} from '../core/config'
 import {assert} from 'chai'
 
 describe('Verify desktop application', () => {

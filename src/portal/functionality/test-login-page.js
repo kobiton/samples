@@ -1,7 +1,29 @@
 import {assert} from 'chai'
 import LoginPage from '../../core/portal-pages/login'
-import {testerAccount} from '../core/data'
+import {getAccount} from '../../core/config'
 import SessionsPage from '../../core/portal-pages/sessions'
+
+const account = getAccount()
+const invalidAccounts = [
+  {
+    'username': 'invalid',
+    'password': 'invalid'
+  },
+  {
+    'username': 'invalid2',
+    'password': 'invalid2'
+  }
+]
+const validAccounts = [
+  {
+    'username': account.emailOrUsername,
+    'password': account.password
+  },
+  {
+    'username': account.emailOrUsername2,
+    'password': account.password2
+  }
+]
 
 describe('Verify Login Page', () => {
   const loginPage = new LoginPage()
@@ -19,30 +41,34 @@ describe('Verify Login Page', () => {
     assert.isTrue(loginPage.rememberMeCheck.isExisting())
   })
 
-  it('should login successfully with a registered tester account', () => {
-    loginPage.open()
-    let sessionsPage
-    try {
-      sessionsPage = loginPage.login(testerAccount)
-      assert.instanceOf(sessionsPage, SessionsPage)
+  validAccounts.forEach((validAccount) => {
 
-      assert.isTrue(sessionsPage.firstNameCharacter.isVisible())
-      assert.isTrue(sessionsPage.nameLabel.isVisible())
-      assert.isTrue(sessionsPage.profileTesterLabel.isVisible())
-    }
-    finally {
-      if (sessionsPage && sessionsPage.logout) {
-        sessionsPage.logout()
+    it(`Should login successfully with a registered account: '${validAccount.username}'`, () => {
+      loginPage.open()
+      let sessionsPage
+      try {
+        sessionsPage = loginPage.login(validAccount)
+        assert.instanceOf(sessionsPage, SessionsPage)
+
+        assert.isTrue(sessionsPage.firstNameCharacter.isVisible())
+        assert.isTrue(sessionsPage.nameLabel.isVisible())
+        assert.isTrue(sessionsPage.profileTesterLabel.isVisible())
       }
-    }
+      finally {
+        if (sessionsPage && sessionsPage.logout) {
+          sessionsPage.logout()
+        }
+      }
+    })
   })
 
-  it('should login failed with an un-registered account', () => {
-    const invalidAccount = {username: 'invTester', password: 'never@mind'}
-    loginPage.open()
-    const page = loginPage.login(invalidAccount)
-    assert.instanceOf(page, LoginPage)
-    assert.isTrue(loginPage.messageFailedLabel.isVisible())
-  })
+  invalidAccounts.forEach((invalidAccount) => {
 
+    it(`Should login failed with an un-registered account: '${invalidAccount.username}'`, () => {
+      loginPage.open()
+      const page = loginPage.login(invalidAccount)
+      assert.instanceOf(page, LoginPage)
+      assert.isTrue(loginPage.messageFailedLabel.isVisible())
+    })
+  })
 })

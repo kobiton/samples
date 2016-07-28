@@ -1,5 +1,5 @@
 import {getUserInfo, getOnlineDevices} from './portal-api'
-import {getAccount} from './user-info'
+import {getAccount} from './config'
 
 export default async () => {
   // init environment for e2e testing

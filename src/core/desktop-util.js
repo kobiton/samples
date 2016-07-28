@@ -1,5 +1,5 @@
 import * as exec from './exec'
-import {getAccount} from './user-info'
+import {getAccount} from './config'
 import BPromise from 'bluebird'
 
 export async function cleanUpDesktopResourceData() {

@@ -1,7 +1,7 @@
 import BPromise from 'bluebird'
 import {debug} from '@kobiton/core-util'
 import DownloadProcess from './download-process'
-import {getAccount} from '../../core/user-info'
+import {getAccount} from '../../core/config'
 import * as exec from '../../core/exec'
 import {spawn} from 'child_process'
 import {once} from 'lodash'

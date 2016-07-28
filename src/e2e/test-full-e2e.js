@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import {debug} from '@kobiton/core-util'
 import E2E from './core/e2e'
 import {desiredCapabilities} from './core/data'
-import {getAccount} from '../core/user-info'
+import {getAccount} from '../core/config'
 import moment from 'moment'
 
 describe('verify full e2e', () => {

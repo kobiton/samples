@@ -1,4 +1,4 @@
-import {getAccount} from '../../core/user-info'
+import {getAccount} from '../../core/config'
 import faker from 'faker'
 
 const account = getAccount()

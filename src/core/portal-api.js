@@ -1,6 +1,6 @@
 import sendRequest from './network'
 import {debug} from '@kobiton/core-util'
-import {getAccount} from './user-info'
+import {getAccount} from './config'
 import {pick} from 'lodash'
 
 const api = {

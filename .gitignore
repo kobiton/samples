@@ -7,3 +7,4 @@ build
 mochawesome-reports
 reports
 *.log
+.vscode/**
