@@ -51,7 +51,7 @@ function initDesktop(options = {}) {
   // Default timeout to wait for ChromeDriver to start
   options.startTimeout = 3000
   // Default time out for each of action on element
-  options.waitTimeout = 60000
+  options.waitTimeout = 120000
   debug.log('setup:execPath ', process.execPath)
   debug.log('setup:cwd ', process.cwd())
   return new Application(options)

@@ -71,7 +71,7 @@ export async function getOnlineDevices(token) {
   const onlineDevices = devices.data
     .filter((d) => d.availableCount > 0)
     .map((d) => {
-      const pickDevice = pick(d, 'platformName', 'platformVersion', 'deviceName', 'modelName')
+      const pickDevice = pick(d, 'platformName', 'platformVersion', 'deviceName')
       return {...pickDevice, browserName}
     }
   )

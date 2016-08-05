@@ -61,7 +61,7 @@ describe('verify full e2e', () => {
           // verify test result
           assert.isNotNull(sessionId, 'sessionId is not null')
           session = await e2e.getSession(sessionId)
-          assert.equal('COMPLETE', session.endState)
+          assert.equal('COMPLETE', session.state)
         })
 
       it(`should display test complete session with ${key} cap on portal after run an appium test`,
@@ -100,7 +100,7 @@ describe('verify full e2e', () => {
       // verify test result
       assert.isNotNull(sessionId, 'sessionId is not null')
       session = await e2e.getSession(sessionId)
-      assert.equal('TIMEOUT', session.endState)
+      assert.equal('TIMEOUT', session.state)
     })
 
     it('should display timeout result on portal', () => {
@@ -147,7 +147,7 @@ describe('verify full e2e', () => {
         // verify test result
         assert.isNotNull(sessionId, 'sessionId is not null')
         session = await e2e.getSession(sessionId)
-        assert.isNull(session.endState)
+        assert.equal(session.state, 'START')
       })
 
     it('should display in progress result on portal', () => {
@@ -184,7 +184,7 @@ describe('verify full e2e', () => {
       // verify test result
       assert.isNotNull(sessionId, 'sessionId is not null')
       session = await e2e.getSession(sessionId)
-      assert.equal('ERROR', session.endState)
+      assert.equal('ERROR', session.state)
     })
 
     it('should display error result on portal', () => {
@@ -211,8 +211,8 @@ describe('verify full e2e', () => {
   }
 
   function _verifyHeaderDescription(actualHeader, expectedHeader) {
-    debug.log('test-full-e2e:actual header', actualHeader)
-    debug.log('test-full-e2e:expected header', expectedHeader)
+    debug.log('test-full-e2e:actual header', JSON.stringify(actualHeader))
+    debug.log('test-full-e2e:expected header', JSON.stringify(expectedHeader))
     assert.equal(actualHeader.deviceName, expectedHeader.deviceName)
     assert.equal(actualHeader.modelName, expectedHeader.modelName)
     assert.equal(actualHeader.platform, expectedHeader.platform)
@@ -220,8 +220,8 @@ describe('verify full e2e', () => {
   }
 
   function _verifyDeviceInformation(actualDeviceInfor, expectedDeviceInfor) {
-    debug.log('test-full-e2e:actual device information', actualDeviceInfor)
-    debug.log('test-full-e2e:expected device information', expectedDeviceInfor)
+    debug.log('test-full-e2e:actual device information', JSON.stringify(actualDeviceInfor))
+    debug.log('test-full-e2e:expected device information', JSON.stringify(expectedDeviceInfor))
     assert.equal(actualDeviceInfor.deviceName, expectedDeviceInfor.deviceName)
     assert.equal(actualDeviceInfor.modelName, expectedDeviceInfor.modelName)
     assert.equal(actualDeviceInfor.platformName, expectedDeviceInfor.platformName)
@@ -231,8 +231,8 @@ describe('verify full e2e', () => {
   }
 
   function _verifyDesiredCapability(actualCap, expectedCap) {
-    debug.log('test-full-e2e:actual desired cap', actualCap)
-    debug.log('test-full-e2e:expected desired cap', expectedCap)
+    debug.log('test-full-e2e:actual desired cap', JSON.stringify(actualCap))
+    debug.log('test-full-e2e:expected desired cap', JSON.stringify(expectedCap))
     assert.equal(actualCap.deviceName, expectedCap.deviceName)
     assert.equal(actualCap.platformName, expectedCap.platformName)
     assert.equal(actualCap.platformVersion, expectedCap.platformVersion)
@@ -261,7 +261,7 @@ describe('verify full e2e', () => {
       deviceName: session.executionData.actual.deviceName,
       modelName: session.executionData.actual.modelName,
       platform,
-      state: _getState(session.endState)
+      state: _getState(session.state)
     }
   }
 
@@ -276,8 +276,8 @@ describe('verify full e2e', () => {
     }
   }
 
-  function _getState(endState) {
-    switch (endState) {
+  function _getState(state) {
+    switch (state) {
       case 'COMPLETE': return 'Complete'
       case 'TIMEOUT': return 'Timeout'
       case 'ERROR': return 'Error'

@@ -23,4 +23,4 @@ exports.config = {
   }
 }
 
-debug.log('wdio.conf:e2e', exports.config)
+debug.log('wdio.conf:e2e', JSON.stringify(exports.config))
