@@ -7,7 +7,7 @@ export default async () => {
   const userInfo = await getUserInfo()
   const onlineDevices = await getOnlineDevices(userInfo.token)
   const kobitonServer = {
-    host: `${account.hubUrl}`,
+    host: `${account.hubHostName}`,
     auth: `${userInfo.user.username}:${userInfo.user.apiKey}`,
     port: 80
   }
