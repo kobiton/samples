@@ -7,7 +7,8 @@ const _account = {
   emailOrUsername: process.env.USERNAME_1 || 'api_test4',
   password: process.env.PASSWORD_1 || 'mario8x@123',
   emailOrUsername2: process.env.USERNAME_2 || 'tester',
-  password2: process.env.PASSWORD_2 || '123456'
+  password2: process.env.PASSWORD_2 || '123456',
+  hubPort: process.env.HUB_PORT || 80
 }
 export function getAccount() {
   return _account

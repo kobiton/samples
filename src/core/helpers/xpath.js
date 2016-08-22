@@ -3,6 +3,7 @@
  * It helps fixing the xpath problem
  */
 export function normalize(text) {
+  
   let boundaryQuote = "'"
   const containsSingleQuote = text.indexOf("'") >= 0
   const containsDoubleQuote = text.indexOf('"') >= 0

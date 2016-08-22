@@ -5,7 +5,7 @@ import SessionsPage from '../../core/portal-pages/sessions'
 import {testerAccount} from '../core/data'
 import viewports from '../core/viewport'
 import {getUserInfo} from '../../core/portal-api'
-import {normalize} from '../core/helpers/xpath'
+import {normalize} from '../../core/helpers/xpath'
 
 describe('Verify Login Page Responsive', () => {
   const portstraitMode = true

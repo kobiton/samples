@@ -9,7 +9,7 @@ export default async () => {
   const kobitonServer = {
     host: `${account.hubHostName}`,
     auth: `${userInfo.user.username}:${userInfo.user.apiKey}`,
-    port: 80
+    port: account.hubPort
   }
   return {
     account,
