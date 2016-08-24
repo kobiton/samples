@@ -6,7 +6,8 @@ import {pick} from 'lodash'
 const api = {
   login: 'v1/users/login',
   devices: 'v1/devices/search',
-  sessions: 'v1/sessions'
+  sessions: 'v1/sessions',
+  key: 'v1/users/key'
 }
 
 export async function getUserInfo() {
@@ -77,6 +78,44 @@ export async function getOnlineDevices(token) {
   )
   debug.log('portal-api:getOnlineDevices() ', `${JSON.stringify(onlineDevices)}`)
   return onlineDevices
+}
+
+export async function generateApiKey(token) {
+  const {apiUrl} = getAccount()
+  return await sendRequest({
+    method: 'POST',
+    url: `${apiUrl}${api.key}`,
+    headers: {
+      'authorization': `Bearer ${token}`,
+      'content-type': 'application/json'
+    }
+  })
+}
+
+export async function deleteSessionDetail({token, sessionId}) {
+  const {apiUrl} = getAccount()
+  return await sendRequest({
+    method: 'DELETE',
+    url: `${apiUrl}${api.sessions}/${sessionId}`,
+    headers: {
+      'authorization': `Bearer ${token}`,
+      'content-type': 'application/json'
+    }
+  })
+}
+
+export async function registerAccount({fullname, username, password, email}) {
+  const {apiUrl} = getAccount()
+  return await sendRequest({
+    method: 'POST',
+    url: `${apiUrl}v1/users`,
+    form: {
+      name: fullname,
+      username,
+      password,
+      email
+    }
+  })
 }
 
 function getTestingType() {
