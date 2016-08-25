@@ -49,14 +49,13 @@ export async function getSessions({token, page, size}) {
 }
 
 export async function getDevices(token) {
-  const testingType = getTestingType()
-  const platform = testingType.includes('android') ? 'android' : 'ios'
+  const platformName = getTestingType()
   const {apiUrl} = getAccount()
   return await sendRequest({
     method: 'GET',
     url: `${apiUrl}${api.devices}`,
     qs: {
-      'platformName': platform
+      'platformName': platformName
     },
     headers: {
       'authorization': `Bearer ${token}`
@@ -66,12 +65,22 @@ export async function getDevices(token) {
 
 export async function getOnlineDevices(token) {
   const devices = await getDevices(token)
-  const testingType = getTestingType()
-  const browserName = testingType.includes('android') ? 'chrome' : 'safari'
   const onlineDevices = devices.data
     .filter((d) => d.availableCount > 0)
     .map((d) => {
       const pickDevice = pick(d, 'platformName', 'platformVersion', 'deviceName')
+      const testingType = getTestingType()
+      let browserName
+      switch(testingType){
+        case 'android':
+          browserName = 'chrome'
+          break
+        case 'ios':
+          browserName = 'safari'
+          break
+        default:
+        browserName = d.platformName.includes('Android') ? 'chrome' : 'safari'
+      }
       return {...pickDevice, browserName}
     }
   )
@@ -80,10 +89,5 @@ export async function getOnlineDevices(token) {
 }
 
 function getTestingType() {
-  if (process.argv.length < 4) {
-    return 'android'
-  }
-  else {
-    return process.argv[3].replace('--', '')
-  }
+  return (process.argv.length < 4) ? '' : process.argv[3].replace('--', '')
 }
