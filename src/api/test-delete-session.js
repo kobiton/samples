@@ -19,7 +19,7 @@ describe('Verify delete session detail', () => {
   */
   async function _getSessionId({token, state = 'COMPLETE'}) {
     debug.log('test-delete-session', `${token} : ${state}`)
-    const sessions = await getSessions({token, page: 1, size: 30})
+    const sessions = await getSessions({token, page: 1, size: 20})
     const foundSession = sessions.find((session) => {
       debug.log(JSON.stringify(session))
       return session.state === state

@@ -6,7 +6,7 @@ import SessionDetailPage from '../../core/portal-pages/session-detail'
 import * as portal from '../../core/portal-api'
 import {debug} from '@kobiton/core-util'
 
-describe('Verify Automation Settings Page', () => {
+describe('Verify Session Detail Page', () => {
   const loginPage = new LoginPage()
   let sessionDetailPage = new SessionDetailPage()
   let sessionID
@@ -82,7 +82,7 @@ describe('Verify Automation Settings Page', () => {
   async function _getSession({captureScreenshots = true}) {
     const env = await initEnv()
     debug.log('test-session-detail-page: captureScreenshots', captureScreenshots)
-    const sessions = await portal.getSessions({token: env.userInfo.token, page: 1, size: 10})
+    const sessions = await portal.getSessions({token: env.userInfo.token, page: 1, size: 20})
     return sessions.find((session) => {
       return session.executionData.desired.captureScreenshots === captureScreenshots
     })
