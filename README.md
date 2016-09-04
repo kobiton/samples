@@ -6,7 +6,8 @@
  * There are 2 ways to adjust the enviroment infomration:
   1. Adjust the default values in the `src/core/config.js`.file.
   2. Specify values accordingly the following environment variables:
-  * KOBITON_HUB_HOST
+  * KOBITON_HUB_HOSTNAME
+  * KOBITON_HUB_PORT
   * KOBITON_DESKTOP_APP_URL
   * KOBITON_API_URL
   * KOBITON_PORTAL_URL
@@ -84,15 +85,15 @@
 * Test android devices
 
   ```bash
-  npm run gulp test-e2e -- -android
-  npm run gulp test-multiple-devices -- -android
+  npm run gulp test-e2e -- --android
+  npm run gulp test-multiple-devices -- --android
   ```
 
 * Test ios devices
 
   ```bash
-  npm run gulp test-e2e -- -ios
-  npm run gulp test-multiple-devices -- -ios
+  npm run gulp test-e2e -- --ios
+  npm run gulp test-multiple-devices -- --ios
   ```
 
 ### Review test report result

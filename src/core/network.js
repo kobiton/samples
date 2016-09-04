@@ -5,6 +5,7 @@ import BPromise from 'bluebird'
 export default async function sendRequest(options) {
   const finalOptions = {method: 'GET', json: true, body: {}, ...options}
   debug.log('sendRequest()', `${finalOptions.method}: ${finalOptions.url}`)
+  debug.log('sendRequest', `${JSON.stringify(finalOptions)}`)
 
   const [response, body] = await requestAsync(finalOptions)
   if (response.statusCode !== 200) {

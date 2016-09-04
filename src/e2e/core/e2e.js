@@ -120,7 +120,7 @@ export default class E2E {
       }
     }
     debug.log('e2e:getFirstFoundActivatedCap ', cap)
-    if (cap) return {...cap, deviceOrientation: 'potrait', captureScreenshots: true}
+    if (cap) return {...cap, deviceOrientation: 'portrait', captureScreenshots: true}
   }
 
   async getOnlineDevices() {

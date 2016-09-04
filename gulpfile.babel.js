@@ -17,9 +17,9 @@ const env = process.env.NODE_ENV || 'test'
 
 const scenarios = {
   'test-multiple-devices': 'src/e2e/durations/test-multiple-devices.js',
-  'test-response-time': 'src/api/test-unavailable-devices-response-time.js',
+  'test-response-time': 'src/api/performance/test-unavailable-devices-response-time.js',
   'test-desktop': 'src/desktop/test-*-page.js',
-  'test-api': 'src/api/test-*-api.js'
+  'test-api': 'src/api/test*.js'
 }
 
 function runAllScenarios(env) {

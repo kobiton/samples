@@ -8,7 +8,6 @@
     "gulp": "gulp"
   },
   "dependencies": {
-    "gm": "1.23.0",
     "@kobiton/core-build": "^1.0.0",
     "@kobiton/core-util": "^1.0.26",
     "babel-polyfill": "^6.5.0",
@@ -20,6 +19,7 @@
     "express": "^4.6.1",
     "faker": "^3.1.0",
     "fast-diff": "^1.0.1",
+    "gm": "1.23.0",
     "gulp": "^3.9.1",
     "gulp-cli": "^1.2.1",
     "gulp-express": "^0.3.5",
@@ -38,6 +38,6 @@
     "wdio-junit-reporter": "^0.1.0",
     "wdio-mocha-framework": "^0.4.0",
     "wdio-selenium-standalone-service": "^0.0.3",
-    "webdriverio": "^4.0.7"
+    "webdriverio": "^4.2.8"
   }
 }
