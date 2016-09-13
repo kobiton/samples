@@ -31,6 +31,7 @@ function generateReport(folder, prefix, req, res) {
         .map((f) => ({name: f}))
 
       if (results.length > 0) {
+        results = results.reverse()
         totalResults = results.length
         pageCount = Math.ceil(results.length / pageSize)
         resultsArrays = _.chunk(results, pageSize)
@@ -43,9 +44,6 @@ function generateReport(folder, prefix, req, res) {
         currentArrayIndex = [currentPage - 1]
         resultsList = resultsArrays[currentArrayIndex]
       }
-
-      resultsList = resultsList.sort()
-      resultsList = resultsList.reverse()
 
       res.render('index', {
         results: resultsList,
