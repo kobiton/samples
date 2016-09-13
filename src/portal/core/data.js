@@ -1,7 +1,7 @@
-import {getAccount} from '../../core/config'
+import {getConfig} from '../../core/config'
 import faker from 'faker'
 
-const account = getAccount()
+const account = getConfig()
 
 export const testerAccount = {
   username: account.emailOrUsername,

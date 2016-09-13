@@ -1,9 +1,9 @@
 import {assert} from 'chai'
 import LoginPage from '../../core/portal-pages/login'
-import {getAccount} from '../../core/config'
+import {getConfig} from '../../core/config'
 import SessionsPage from '../../core/portal-pages/sessions'
 
-const account = getAccount()
+const account = getConfig()
 const invalidAccounts = [
   {
     'username': 'invalid',

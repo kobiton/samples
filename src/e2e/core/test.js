@@ -1,65 +1,67 @@
 import BPromise from 'bluebird'
 import {createDriver, quitDriver} from '../../core/setup'
+import {debug} from '@kobiton/core-util'
+import moment from 'moment'
+import * as data from './data'
 
-export async function launch(server, desiredCapabilities, searchTerms) {
-  let driver
-  const sleepingTime = 1000
-  const testUrl = 'http://demoqa.com/'
-  try {
-    driver = await createDriver(server, desiredCapabilities)
-    await BPromise.each(searchTerms, (search) => {
-      return driver
-       .get(testUrl)
-       .sleep(sleepingTime)
-       .get(`${testUrl}about-us/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}services/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}draggable/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}droppable/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}resizable/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}selectable/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}sortable/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}accordion/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}autocomplete/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}datepicker/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}menu/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}slider/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}tooltip/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}frames-and-windows/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}tabs/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}blog/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}registration/`)
-       .sleep(sleepingTime)
-       .get(`${testUrl}contact/`)
-       .sleep(sleepingTime)
-       .elementByXPath("//input[@name='your-name']")
-       .sendKeys(search)
-       .elementByXPath("//input[@name='your-email']")
-       .sendKeys(search)
-       .elementByXPath("//input[@name='your-subject']")
-       .sendKeys(search)
-       .elementByXPath("//textarea[@name='your-message']")
-       .sendKeys(search)
-       .elementByXPath("//input[@value='Send']")
-       .click()
-    })
+const testUrl = 'http://demoqa.com/'
+const sleepingTime = 1000
+
+export async function run(server, onlineDevices, expectedDurationInHours) {
+  expectedDurationInHours = expectedDurationInHours * 3600 // Convert hours to seconds
+
+  const jobs = onlineDevices
+    .map((cap) => _launch(server, cap, expectedDurationInHours))
+    .map((promise) => promise.then(onSuccess, onError).catch((err) => err))
+
+  const finishedJobs = await BPromise.all(jobs)
+  const successCount = finishedJobs.reduce((sum, ok) => (sum + ok), 0)
+
+  function onSuccess() {
+    return 1
   }
-  finally {
+
+  function onError(err) {
+    debug.error('run', err)
+    return 0
+  }
+
+  return successCount
+}
+
+async function _launch(server, desiredCapabilities, expectedDuration) {
+  let driver
+  let duration = 0,
+    startedAt, endedAt
+
+  try {
+    startedAt = moment.utc()
+    driver = await createDriver(server, desiredCapabilities)
+    do {
+      const searchTerm = data.generateTerm()
+      await driver
+        .get(`${testUrl}contact/`)
+        .sleep(sleepingTime)
+        .elementByXPath("//input[@name='your-name']")
+        .sendKeys(searchTerm)
+        .elementByXPath("//input[@name='your-email']")
+        .sendKeys(searchTerm)
+        .elementByXPath("//input[@name='your-subject']")
+        .sendKeys(searchTerm)
+        .elementByXPath("//textarea[@name='your-message']")
+        .sendKeys(searchTerm)
+        .elementByXPath("//input[@value='Send']")
+        .click()
+
+      endedAt = moment.utc()
+      duration = endedAt.diff(startedAt, 'seconds')
+    } while (duration < expectedDuration)
+
+    const minutes = endedAt.diff(startedAt, 'minutes')
+    debug.log('_launch', `${minutes} minutes/session`)
+  } catch (err) {
+    debug.error('_launch', err)
+  } finally {
     await quitDriver(driver)
   }
 }

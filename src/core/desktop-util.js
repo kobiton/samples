@@ -1,5 +1,5 @@
 import * as exec from './exec'
-import {getAccount} from './config'
+import {getConfig} from './config'
 import BPromise from 'bluebird'
 
 export async function cleanUpDesktopResourceData() {
@@ -14,7 +14,7 @@ export async function cleanUpDesktopResourceData() {
 async function getDesktopResourceFilePaths() {
   let username = await exec.executeCommand('whoami')
   username = username.trim()
-  const {emailOrUsername: desktopUser} = getAccount()
+  const {emailOrUsername: desktopUser} = getConfig()
   return {
     userDataFilePath: `/Users/${username}/Library/Application\ Support/Kobiton/user.data`,
     devicesDataFilePath: `/Users/${username}/Library/Application\ Support/Kobiton/data/${desktopUser}/devices.data` // eslint-disable-line max-len

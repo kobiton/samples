@@ -2,11 +2,11 @@ import {assert} from 'chai'
 import {debug} from '@kobiton/core-util'
 import E2E from './core/e2e'
 import {desiredCapabilities} from './core/data'
-import {getAccount} from '../core/config'
+import {getConfig} from '../core/config'
 import moment from 'moment'
 
 describe('verify full e2e', () => {
-  const {emailOrUsername: username, password} = getAccount()
+  const {emailOrUsername: username, password} = getConfig()
   const e2e = new E2E({username, password})
   let cap
   const completeScenarios = {

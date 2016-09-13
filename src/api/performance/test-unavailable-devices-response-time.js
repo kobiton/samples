@@ -1,12 +1,12 @@
 import 'babel-polyfill'
 import {getUserInfo} from '../core/portal-api'
-import {getAccount} from '../core/config'
+import {getConfig} from '../core/config'
 import {assert} from 'chai'
 import request from 'request'
 import _ from 'lodash'
 import BPromise from 'bluebird'
 
-const apiHost = getAccount().apiUrl.replace(/^https/i, 'http').replace(/\/$/, '')
+const apiHost = getConfig().apiUrl.replace(/^https/i, 'http').replace(/\/$/, '')
 const API_URL = `${apiHost}/wd/hub/session`
 
 describe.only('Response time for large number of tests on unavailable devices', () => {
