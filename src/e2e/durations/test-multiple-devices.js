@@ -17,8 +17,8 @@ describe('test multiple devices in parallel', () => {
     server = env.kobitonServer
     onlineDevices = env.onlineDevices
 
-    assert.equal(onlineDevices.length, 2, 'Expected at least two online devices')
-    
+    assert.isAtLeast(onlineDevices.length, 2, 'Expected at least two online devices')
+
     listDeviceNames = onlineDevices.map((d) => d.deviceName)
     debug.log('beforeEach', `start test with devices ${listDeviceNames.join()}`)
   })
