@@ -1,5 +1,6 @@
 
 ### Prerequisites
+ * Login to npmjs.com in your Terminal with account from [accounts.md](https://github.com/kobiton/docs/blob/d82f311a99719fc7518e232e1cd6f9221126b1d4/team/accounts.md)
  * Install local packages:  `npm install`
 
 ### Change environment information
@@ -15,6 +16,9 @@
   * KOBITON_USERNAME_2
   * KOBITON_PASSWORD_1
   * KOBITON_PASSWORD_2
+  * RUN_DURATION_LOOP
+  * EXPECTED_DURATION_IN_HOURS
+  * CAP_DEVICE_NAME
 
 ### Connect android/ios devices to desktop app
  * Android: http://confluence-incubator.kms-technology.com/pages/viewpage.action?pageId=1376891
@@ -95,6 +99,12 @@
   npm run gulp test-e2e -- --ios
   npm run gulp test-multiple-devices -- --ios
   ```
+
+  * Test one device with expected duration and loop times
+
+    ```bash
+  CAP_DEVICE_NAME="Device Name"  EXPECTED_DURATION_IN_HOURS=5 RUN_DURATION_LOOP=10 npm run gulp test-one-device
+    ```  
 
 ### Review test report result
 #### 1. Default port is 3000

@@ -1,7 +1,7 @@
 import BPromise from 'bluebird'
 import {debug} from '@kobiton/core-util'
 import DownloadProcess from './download-process'
-import {getAccount} from '../../core/config'
+import {getConfig} from '../../core/config'
 import * as exec from '../../core/exec'
 import {spawn} from 'child_process'
 import {once} from 'lodash'
@@ -14,7 +14,7 @@ export function downloadApp() {
   return new BPromise((resolve, reject) => {
     const download = new DownloadProcess()
     const downloadUrl = process.env.KOBITON_DESKTOP_APP_URL ||
-                      getAccount().appOSXUrl
+                      getConfig().appOSXUrl
     debug.log('Download file:', downloadUrl)
     download.download(downloadUrl)
     download

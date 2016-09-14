@@ -1,9 +1,9 @@
 import {getUserInfo, getOnlineDevices} from './portal-api'
-import {getAccount} from './config'
+import {getConfig} from './config'
 
 export default async () => {
   // init environment for e2e testing
-  const account = getAccount()
+  const account = getConfig()
   const userInfo = await getUserInfo()
   const onlineDevices = await getOnlineDevices(userInfo.token)
   const kobitonServer = {

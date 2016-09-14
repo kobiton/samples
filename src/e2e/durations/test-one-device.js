@@ -8,29 +8,26 @@ import {run} from '../core/test'
 const {runDurationLoop, expectedDurationInHours} = getConfig()
 let onlineDevices
 let server
-let listDeviceNames
 
-describe('test multiple devices in parallel', () => {
+describe('test one device', () => {
 
   beforeEach(async() => {
     const env = await initEnv()
     server = env.kobitonServer
-    onlineDevices = env.onlineDevices
-
-    assert.isAtLeast(onlineDevices.length, 2, 'Expected at least two online devices')
-
-    listDeviceNames = onlineDevices.map((d) => d.deviceName)
-    debug.log('beforeEach', `start test with devices ${listDeviceNames.join()}`)
+    onlineDevices = env.onlineDevices.slice(0, 1)
+    
+    assert.equal(onlineDevices.length, 1, 'Expected at least 1 online device')
+    debug.log('beforeEach', `start test with device ${onlineDevices[0].deviceName}`)
   })
 
   for (let i = 0; i < runDurationLoop; i++) {
-    it(`should run test in ${expectedDurationInHours} hours [${i+1}/${runDurationLoop}]`, async() => {
+    it(`should run test in ${expectedDurationInHours} [${i+1}/${runDurationLoop}]`, async() => {
       const startedAt = moment.utc()
       const results = await run(server, onlineDevices, expectedDurationInHours)
       const endedAt = moment.utc()
       const durationInMinutes = endedAt.diff(startedAt, 'minutes')
 
-      assert.equal(results, onlineDevices.length, `Expected ${onlineDevices.length} devices are run successfully`)
+      assert.equal(results, onlineDevices.length, 'Expected one device is run successfully')
       assert.isAtLeast(expectedDurationInHours * 60, durationInMinutes, `Expected run in ${durationInMinutes} minutes`)
     })
   }

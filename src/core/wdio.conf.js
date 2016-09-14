@@ -1,11 +1,11 @@
 import 'babel-polyfill'
 import moment from 'moment'
-import {getAccount} from './config'
+import {getConfig} from './config'
 
 global._mocha = {}
 const env = process.env.NODE_ENV || 'test'
 global._mocha.env = env
-const account = getAccount()
+const account = getConfig()
 const reportFolder = `reports/portal/${env}/${moment().format('YYYY-MM-DD-HH-mm')}`
 
 exports.config = {

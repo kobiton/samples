@@ -1,6 +1,6 @@
 import sendRequest from './network'
 import {debug} from '@kobiton/core-util'
-import {getAccount} from './config'
+import {getConfig} from './config'
 import {pick} from 'lodash'
 
 const api = {
@@ -11,7 +11,7 @@ const api = {
 }
 
 export async function getUserInfo() {
-  const {emailOrUsername, password, apiUrl} = getAccount()
+  const {emailOrUsername, password, apiUrl} = getConfig()
   return await sendRequest({
     url: `${apiUrl}${api.login}`,
     method: 'POST',
@@ -19,7 +19,7 @@ export async function getUserInfo() {
 }
 
 export async function getSession({token, sessionid}) {
-  const {apiUrl} = getAccount()
+  const {apiUrl} = getConfig()
   return await sendRequest({
     method: 'GET',
     url: `${apiUrl}${api.sessions}/${sessionid}`,
@@ -31,7 +31,7 @@ export async function getSession({token, sessionid}) {
 }
 
 export async function getSessions({token, page, size}) {
-  const {apiUrl} = getAccount()
+  const {apiUrl} = getConfig()
   const result = await sendRequest(
     {
       method: 'GET',
@@ -51,7 +51,7 @@ export async function getSessions({token, page, size}) {
 
 export async function getDevices(token) {
   const platformName = getTestingType()
-  const {apiUrl} = getAccount()
+  const {apiUrl} = getConfig()
   return await sendRequest({
     method: 'GET',
     url: `${apiUrl}${api.devices}`,
@@ -66,31 +66,42 @@ export async function getDevices(token) {
 
 export async function getOnlineDevices(token) {
   const devices = await getDevices(token)
+  const {filterDevice} =  getConfig()
   const onlineDevices = devices.data
-    .filter((d) => d.availableCount > 0)
-    .map((d) => {
-      const pickDevice = pick(d, 'platformName', 'platformVersion', 'deviceName')
-      const testingType = getTestingType()
-      let browserName
-      switch(testingType){
-        case 'android':
-          browserName = 'chrome'
-          break
-        case 'ios':
-          browserName = 'safari'
-          break
-        default:
+    .filter((d) => {
+    return (filterDevice) ? d.availableCount > 0 && d.deviceName === filterDevice : d.availableCount > 0
+  })
+  .map((d) => {
+    const {platformName, platformVersion, deviceName} = d
+    const pickDevice = pick(d, 'platformName', 'platformVersion', 'deviceName')
+    const testingType = getTestingType()
+    let browserName
+    switch (testingType) {
+      case 'android':
+        browserName = 'chrome'
+        break
+      case 'ios':
+        browserName = 'safari'
+        break
+      default:
         browserName = d.platformName.includes('Android') ? 'chrome' : 'safari'
-      }
-      return {...pickDevice, browserName}
     }
-  )
+    const desiredCaps = Object.assign(pickDevice, {
+      browserName,
+      'deviceOrientation': 'portrait',
+      'captureScreenshots': true
+    })
+    return desiredCaps
+  })
   debug.log('portal-api:getOnlineDevices() ', `${JSON.stringify(onlineDevices)}`)
+
   return onlineDevices
 }
 
+
+
 export async function generateApiKey(token) {
-  const {apiUrl} = getAccount()
+  const {apiUrl} = getConfig()
   return await sendRequest({
     method: 'POST',
     url: `${apiUrl}${api.key}`,
@@ -102,7 +113,7 @@ export async function generateApiKey(token) {
 }
 
 export async function deleteSessionDetail({token, sessionId}) {
-  const {apiUrl} = getAccount()
+  const {apiUrl} = getConfig()
   return await sendRequest({
     method: 'DELETE',
     url: `${apiUrl}${api.sessions}/${sessionId}`,
@@ -114,7 +125,7 @@ export async function deleteSessionDetail({token, sessionId}) {
 }
 
 export async function registerAccount({fullname, username, password, email}) {
-  const {apiUrl} = getAccount()
+  const {apiUrl} = getConfig()
   return await sendRequest({
     method: 'POST',
     url: `${apiUrl}v1/users`,

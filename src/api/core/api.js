@@ -1,11 +1,11 @@
 import {requestAsync} from '../../core/network'
-import {getAccount} from '../../core/config'
+import {getConfig} from '../../core/config'
 
 /**
  * Public functions for api testing
  */
 export async function registerAccount({fullname, username, password, email}) {
-  const {apiUrl} = getAccount()
+  const {apiUrl} = getConfig()
   return await _sendRequest({
     method: 'POST',
     url: `${apiUrl}v1/users`,

@@ -10,8 +10,6 @@ export async function quitDriver(driver) {
     try {
       debug.log('setup', 'quitDriver')
       await driver.quit()
-      // Ensure the device becomes available on system
-      await BPromise.delay(10000)
     }
     catch (err) {
       debug.error('quitDriver()', err)

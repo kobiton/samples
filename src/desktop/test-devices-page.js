@@ -1,5 +1,5 @@
 import LoginPage from '../core/desktop-pages/login'
-import {getAccount} from '../core/config'
+import {getConfig} from '../core/config'
 import {assert} from 'chai'
 
 describe('Verify desktop application', () => {
@@ -9,7 +9,7 @@ describe('Verify desktop application', () => {
   before(async () => {
     loginPage = new LoginPage()
     await loginPage.startApplication()
-    const {emailOrUsername: username, password} = getAccount()
+    const {emailOrUsername: username, password} = getConfig()
     devicesPage = await loginPage.login({username, password})
     await devicesPage.waitForAllDevicesInitializingDone()
   })
