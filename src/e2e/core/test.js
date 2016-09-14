@@ -5,7 +5,7 @@ import moment from 'moment'
 import * as data from './data'
 
 const testUrl = 'http://demoqa.com/'
-const sleepingTime = 30000
+const waitingTime = 30000
 
 export async function run(server, onlineDevices, expectedDurationInHours) {
   expectedDurationInHours = expectedDurationInHours * 3600 // Convert hours to seconds
@@ -43,7 +43,7 @@ async function _launch(server, desiredCapabilities, expectedDuration) {
       const searchTerm = data.generateTerm()
       await driver
         .get(`${testUrl}contact/`)
-        .waitForElementByXPath("//input[@name='your-name']", sleepingTime)
+        .waitForElementByXPath("//input[@name='your-name']", waitingTime)
         .sendKeys(searchTerm)
         .elementByXPath("//input[@name='your-email']")
         .sendKeys(searchTerm)
