@@ -12,17 +12,19 @@ export async function run(server, onlineDevices, expectedDurationInHours) {
 
   const jobs = onlineDevices
     .map((cap) => _launch(server, cap, expectedDurationInHours))
-    .map((promise) => promise.then(onSuccess, onError).catch((err) => err))
+    .map((promise) => promise.then(onSuccess, onError).catch((err) => {
+      debug.error('run: promise error', err)
+    }))
 
   const finishedJobs = await BPromise.all(jobs)
   const successCount = finishedJobs.reduce((sum, ok) => (sum + ok), 0)
 
-  function onSuccess() {
-    return 1
+  function onSuccess(value) {
+    return value
   }
 
   function onError(err) {
-    debug.error('run', err)
+    debug.error('run: error', err)
     return 0
   }
 
@@ -33,7 +35,7 @@ async function _launch(server, desiredCapabilities, expectedDuration) {
   let driver
   let duration = 0,
     startedAt, endedAt
-
+  let result = 1
   try {
     startedAt = moment.utc()
     driver = await createDriver(server, desiredCapabilities)
@@ -57,10 +59,12 @@ async function _launch(server, desiredCapabilities, expectedDuration) {
     } while (duration < expectedDuration)
 
     const minutes = endedAt.diff(startedAt, 'minutes')
-    debug.log('_launch', `${minutes} minutes/session`)
+    debug.log('_launch: duration', `${minutes} minutes/session`)
   } catch (err) {
-    debug.error('_launch', err)
+    result = 0
+    debug.error('_launch: error', err)
   } finally {
     await quitDriver(driver)
   }
+  return result
 }
