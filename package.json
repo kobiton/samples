@@ -23,7 +23,7 @@
     "gulp": "^3.9.1",
     "gulp-cli": "^1.2.2",
     "gulp-express": "^0.3.5",
-    "gulp-mocha": "^2.2.0",
+    "gulp-mocha": "^3.0.1",
     "gulp-webdriver": "^2.0.2",
     "is-my-json-valid": "^2.13.1",
     "mocha": "^2.5.3",
