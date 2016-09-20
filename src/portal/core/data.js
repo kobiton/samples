@@ -19,7 +19,7 @@ export function generateUser() {
     fullname: faker.name.findName(),
     username,
     password,
-    email: faker.internet.email(username)
+    email: faker.internet.email(username, '', 'kms-technology.com')
   }
 }
 

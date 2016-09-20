@@ -1,6 +1,6 @@
 import 'babel-polyfill'
-import {getUserInfo} from '../core/portal-api'
-import {getConfig} from '../core/config'
+import {getUserInfo} from '../../core/portal-api'
+import {getConfig} from '../../core/config'
 import {assert} from 'chai'
 import request from 'request'
 import _ from 'lodash'

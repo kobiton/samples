@@ -33,15 +33,15 @@ export async function run(server, onlineDevices, expectedDurationInHours) {
 
 async function _launch(server, desiredCapabilities, expectedDuration) {
   let driver
-  let duration = 0,
-    startedAt, endedAt
+  let duration = 0
+  let startedAt, endedAt
   let result = 1
   try {
     startedAt = moment.utc()
     driver = await createDriver(server, desiredCapabilities)
     do {
       const searchTerm = data.generateTerm()
-      await driver
+      await driver // eslint-disable-line babel/no-await-in-loop
         .get(`${testUrl}contact/`)
         .waitForElementByXPath("//input[@name='your-name']", waitingTime)
         .sendKeys(searchTerm)

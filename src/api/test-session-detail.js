@@ -2,7 +2,7 @@ import {debug} from '@kobiton/core-util'
 import {assert} from 'chai'
 import {getSessions, getUserInfo, deleteSessionDetail} from '../core/portal-api'
 
-describe('Verify delete session detail', () => {
+describe('Session detail:', () => {
 
   it('DELETE /sessions/sessionId should delete an already session successfully', async () => {
     const token = (await getUserInfo()).token
@@ -10,20 +10,20 @@ describe('Verify delete session detail', () => {
 
     const deleteSessionMessage = await deleteSessionDetail({token, sessionId})
 
-    debug.log('test-delete-session', JSON.stringify(deleteSessionMessage))
     assert.equal('OK', deleteSessionMessage)
   })
 
  /**
-  * This function is to get a complete sessionId
+  * This function is to get a complete/timeout/error sessionId
   */
-  async function _getSessionId({token, state = 'COMPLETE'}) {
-    debug.log('test-delete-session', `${token} : ${state}`)
+  async function _getSessionId({token}) {
+    const states = ['COMPLETE', 'TIMEOUT', 'ERROR']
     const sessions = await getSessions({token, page: 1, size: 20})
     const foundSession = sessions.find((session) => {
-      debug.log(JSON.stringify(session))
-      return session.state === state
+      debug.log('test-delete-session: session', `${session.id}: ${session.state}`)
+      return (states.includes(session.state))
     })
+    debug.log('test-delete-session:found session', JSON.stringify(foundSession))
     return foundSession.id
   }
 })

@@ -7,7 +7,8 @@ export function generateUser() {
     fullname: faker.name.findName(),
     username,
     password,
-    email: faker.internet.email(username)
+    // To protect kms smtp server from being reported as spam
+    email: faker.internet.email(username, '', 'kms-technology.com')
   }
 }
 
@@ -19,10 +20,6 @@ export const registerSchema = {
       required: true,
       type: 'object',
       properties: {
-        apiKey: {
-          required: true,
-          type: 'string'
-        },
         id: {
           required: true,
           type: 'number'

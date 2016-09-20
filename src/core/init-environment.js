@@ -1,4 +1,4 @@
-import {getUserInfo, getOnlineDevices} from './portal-api'
+import {getUserInfo, getOnlineDevices, getAPIKeys} from './portal-api'
 import {getConfig} from './config'
 
 export default async () => {
@@ -6,9 +6,13 @@ export default async () => {
   const account = getConfig()
   const userInfo = await getUserInfo()
   const onlineDevices = await getOnlineDevices(userInfo.token)
+  const listApiKeys = (await getAPIKeys(userInfo.token)).map((item) => {
+    return item.token
+  })
+
   const kobitonServer = {
     host: `${account.hubHostName}`,
-    auth: `${userInfo.user.username}:${userInfo.user.apiKey}`,
+    auth: `${userInfo.user.username}:${listApiKeys[0]}`,
     port: account.hubPort
   }
   return {
