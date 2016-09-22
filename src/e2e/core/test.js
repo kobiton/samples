@@ -4,7 +4,7 @@ import {debug} from '@kobiton/core-util'
 import moment from 'moment'
 import * as data from './data'
 
-const testUrl = 'http://demoqa.com/'
+const testUrl = 'https://portal-test.kobiton.com/register'
 const waitingTime = 30000
 
 export async function run(server, onlineDevices, expectedDurationInHours) {
@@ -42,17 +42,16 @@ async function _launch(server, desiredCapabilities, expectedDuration) {
     do {
       const searchTerm = data.generateTerm()
       await driver // eslint-disable-line babel/no-await-in-loop
-        .get(`${testUrl}contact/`)
-        .waitForElementByXPath("//input[@name='your-name']", waitingTime)
+        .get(`${testUrl}/`)
+        .waitForElementByCss('#app [data-state= "hidden"]', waitingTime)
+        .waitForElementByCss('input[name="name"]', waitingTime)
         .sendKeys(searchTerm)
-        .elementByXPath("//input[@name='your-email']")
+        .elementByCss('input[name="username"]')
         .sendKeys(searchTerm)
-        .elementByXPath("//input[@name='your-subject']")
+        .elementByCss('input[name="email"]')
         .sendKeys(searchTerm)
-        .elementByXPath("//textarea[@name='your-message']")
+        .elementByCss('input[name="password"]')
         .sendKeys(searchTerm)
-        .elementByXPath("//input[@value='Send']")
-        .click()
 
       endedAt = moment.utc()
       duration = endedAt.diff(startedAt, 'seconds')
@@ -60,10 +59,12 @@ async function _launch(server, desiredCapabilities, expectedDuration) {
 
     const minutes = endedAt.diff(startedAt, 'minutes')
     debug.log('_launch: duration', `${minutes} minutes/session`)
-  } catch (err) {
+  }
+  catch (err) {
     result = 0
     debug.error('_launch: error', err)
-  } finally {
+  }
+  finally {
     await quitDriver(driver)
   }
   return result
