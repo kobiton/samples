@@ -5,7 +5,7 @@ import {pick} from 'lodash'
 
 const api = {
   login: 'v1/users/login',
-  devices: 'v1/devices/search',
+  devices: 'v1/devices',
   sessions: 'v1/sessions',
   access_tokens: 'v1/users/access-tokens',
   access_token: 'v1/users/access-token'
@@ -85,13 +85,9 @@ export async function deleteSessionDetail({token, sessionId}) {
 
 // Devices
 export async function getDevices(token) {
-  const platformName = getTestingType()
   const {apiUrl} = getConfig()
   return await sendRequest({
     url: `${apiUrl}${api.devices}`,
-    qs: {
-      platformName
-    },
     headers: {
       'authorization': `Bearer ${token}`
     }
@@ -100,10 +96,14 @@ export async function getDevices(token) {
 
 export async function getOnlineDevices(token) {
   const devices = await getDevices(token)
+  const privateDevices = devices.privateDevices
+  const cloudDevices = devices.cloudDevices
+  const organizationDevices = devices.organizationDevices
+  const allDevices = privateDevices.concat(cloudDevices, organizationDevices)
   const {filterDevice} = getConfig()
-  const onlineDevices = devices.data
+  const onlineDevices = allDevices
     .filter((d) => {
-      return (filterDevice) ? d.availableCount > 0 && d.deviceName === filterDevice : d.availableCount > 0  // eslint-disable-line max-len
+      return (filterDevice) ? d.isOnline && d.deviceName === filterDevice : d.isOnline  // eslint-disable-line max-len
     })
   .map((d) => {
     const pickDevice = pick(d, 'platformName', 'platformVersion', 'deviceName')
