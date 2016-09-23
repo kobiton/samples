@@ -7,7 +7,7 @@ export default async () => {
   const userInfo = await getUserInfo()
   const onlineDevices = await getOnlineDevices(userInfo.token)
   const listApiKeys = (await getAPIKeys(userInfo.token)).map((item) => {
-    return item.token
+    return item.key
   })
 
   const kobitonServer = {
