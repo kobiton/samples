@@ -62,7 +62,7 @@ export default class SessionDetailPage extends AuthenticatedPage {
   }
 
   open(sessionID) {
-    super.open('me/sessions/' + sessionID)
+    super.open('sessions/' + sessionID)
   }
 
   hasScreenShot() {

@@ -7,8 +7,8 @@ const api = {
   login: 'v1/users/login',
   devices: 'v1/devices',
   sessions: 'v1/sessions',
-  access_tokens: 'v1/users/access-tokens',
-  access_token: 'v1/users/access-token'
+  api_keys: 'v1/users/keys',
+  api_key: 'v1/users/key'
 }
 
 // Account
@@ -103,7 +103,13 @@ export async function getOnlineDevices(token) {
   const {filterDevice} = getConfig()
   const onlineDevices = allDevices
     .filter((d) => {
-      return (filterDevice) ? d.isOnline && d.deviceName === filterDevice : d.isOnline  // eslint-disable-line max-len
+      if (d) {
+        return (filterDevice) ? d.isOnline && d.deviceName === filterDevice : d.isOnline  // eslint-disable-line max-len
+      }
+      else {
+        return false
+      }
+
     })
   .map((d) => {
     const pickDevice = pick(d, 'platformName', 'platformVersion', 'deviceName')
@@ -143,7 +149,7 @@ export async function deleteAPIKey({token, apiKey}) {
   const {apiUrl} = getConfig()
   return await sendRequest({
     method: 'DELETE',
-    url: `${apiUrl}${api.access_token}/${apiKey}`,
+    url: `${apiUrl}${api.api_key}/${apiKey}`,
     headers: {
       'authorization': `Bearer ${token}`,
       'content-type': 'application/json'
@@ -160,7 +166,7 @@ export async function generateAPIKey(token) {
   const {apiUrl} = getConfig()
   return await sendRequest({
     method: 'POST',
-    url: `${apiUrl}${api.access_token}`,
+    url: `${apiUrl}${api.api_key}`,
     headers: {
       'authorization': `Bearer ${token}`,
       'content-type': 'application/json'
@@ -176,7 +182,7 @@ export async function generateAPIKey(token) {
 export async function getAPIKeys(token) {
   const {apiUrl} = getConfig()
   return await sendRequest({
-    url: `${apiUrl}${api.access_tokens}`,
+    url: `${apiUrl}${api.api_keys}`,
     headers: {
       'authorization': `Bearer ${token}`,
       'content-type': 'application/json'
