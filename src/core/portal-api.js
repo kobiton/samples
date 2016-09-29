@@ -1,7 +1,6 @@
 import sendRequest from './network'
 import {debug} from '@kobiton/core-util'
 import {getConfig} from './config'
-import {pick} from 'lodash'
 
 const api = {
   login: 'v1/users/login',
@@ -95,44 +94,38 @@ export async function getDevices(token) {
 }
 
 export async function getOnlineDevices(token) {
+  const {filterDevice, deviceGroup} = getConfig()
   const devices = await getDevices(token)
-  const privateDevices = devices.privateDevices
-  const cloudDevices = devices.cloudDevices
-  const organizationDevices = devices.organizationDevices
-  const allDevices = privateDevices.concat(cloudDevices, organizationDevices)
-  const {filterDevice} = getConfig()
-  const onlineDevices = allDevices
-    .filter((d) => {
-      if (d) {
-        return (filterDevice) ? d.isOnline && d.deviceName === filterDevice : d.isOnline  // eslint-disable-line max-len
-      }
-      else {
-        return false
-      }
 
-    })
-  .map((d) => {
-    const pickDevice = pick(d, 'platformName', 'platformVersion', 'deviceName')
-    const testingType = getTestingType()
-    let browserName
-    switch (testingType) {
-      case 'android':
-        browserName = 'chrome'
-        break
-      case 'ios':
-        browserName = 'safari'
-        break
-      default:
-        browserName = d.platformName.includes('Android') ? 'chrome' : 'safari'
-    }
-    const desiredCaps = Object.assign(pickDevice, {
-      browserName,
-      'deviceOrientation': 'portrait',
-      'captureScreenshots': true
-    })
-    return desiredCaps
-  })
-  debug.log('portal-api:getOnlineDevices() ', `${JSON.stringify(onlineDevices)}`)
+  let onlineDevices
+  const privateDevices = _getOnlineDevices(devices.privateDevices)
+  const cloudDevices = _getOnlineDevices(devices.cloudDevices)
+
+  // Select onlineDevices depend on private group, cloud group or both
+  switch (deviceGroup) {
+    case 'private':
+      onlineDevices = privateDevices
+      break
+    case 'cloud':
+      onlineDevices = cloudDevices
+      break
+    default:
+      onlineDevices = (privateDevices.length) ? cloudDevices.concat(privateDevices) : cloudDevices
+  }
+
+  // Filter device depends on device name
+  onlineDevices = (filterDevice) ? onlineDevices.filter((d) => d.deviceName === filterDevice) : onlineDevices
+
+  // Filter device depends on platform name
+  const testingType = getTestingType()
+  switch (testingType) {
+    case 'android':
+      onlineDevices = onlineDevices.filter((d) => d.platformName === 'Android')
+      break
+    case 'ios':
+      onlineDevices = onlineDevices.filter((d) => d.platformName === 'iOS')
+      break
+  }
 
   return onlineDevices
 }
@@ -192,4 +185,40 @@ export async function getAPIKeys(token) {
 
 function getTestingType() {
   return (process.argv.length < 4) ? '' : process.argv[3].replace('--', '')
+}
+
+function _getOnlineDevices(listDevices) {
+  let onlineDevices = []
+  const testingType = getTestingType()
+
+  if (listDevices && listDevices.length > 0) {
+    listDevices = listDevices.filter((d) => d.isOnline === true && d.isBooked === false)
+
+    onlineDevices = listDevices
+      .map((d) => {
+        const {platformName, platformVersion, deviceName} = d
+        const pickDevice = {
+          platformName,
+          platformVersion,
+          deviceName,
+          'deviceOrientation': 'portrait',
+          'captureScreenshots': true
+        }
+
+        let browserName
+        switch (testingType) {
+          case 'android':
+            browserName = 'chrome'
+            break
+          case 'ios':
+            browserName = 'safari'
+            break
+          default:
+            browserName = (platformName === 'Android') ? 'chrome' : 'safari'
+        }
+
+        return {...pickDevice, browserName}
+      })
+  }
+  return onlineDevices
 }

@@ -18,7 +18,8 @@
   * KOBITON_PASSWORD_2
   * RUN_DURATION_LOOP
   * EXPECTED_DURATION_IN_HOURS
-  * CAP_DEVICE_NAME
+  * KOBITON_CAP_DEVICE_NAME
+  * KOBITON_DEVICE_GROUP (accept two groups private & cloud)
 
 ### Connect android/ios devices to desktop app
  * Android: http://confluence-incubator.kms-technology.com/pages/viewpage.action?pageId=1376891
@@ -103,7 +104,7 @@
   * Test one device with expected duration and loop times
 
     ```bash
-  CAP_DEVICE_NAME="Device Name"  EXPECTED_DURATION_IN_HOURS=5 RUN_DURATION_LOOP=10 npm run gulp test-one-device
+  KOBITON_CAP_DEVICE_NAME="Device Name"  EXPECTED_DURATION_IN_HOURS=5 RUN_DURATION_LOOP=10 npm run gulp test-one-device
     ```  
 
 ### Review test report result
