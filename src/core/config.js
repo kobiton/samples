@@ -9,9 +9,11 @@ const _config = {
   emailOrUsername2: process.env.KOBITON_USERNAME_2 || 'tester',
   password2: process.env.KOBITON_PASSWORD_2 || '123456',
   hubPort: process.env.KOBITON_HUB_PORT || 80,
-  runDurationLoop: process.env.RUN_DURATION_LOOP || 10,
+  runDurationLoop: process.env.RUN_LONG_DURATION_LOOP || 10,
+  shortRunLoop: process.env.RUN_SHORT_DURATION_LOOP || 1000,
   expectedDurationInHours: process.env.EXPECTED_DURATION_IN_HOURS || 5, // hours
   filterDevice: process.env.KOBITON_CAP_DEVICE_NAME,
+  deviceUDID: process.env.KOBITON_DEVICE_UDID,
   deviceGroup: process.env.KOBITON_DEVICE_GROUP || 'all'
 }
 export function getConfig() {

@@ -17,7 +17,7 @@ describe('test one device', () => {
     onlineDevices = env.onlineDevices.slice(0, 1)
 
     assert.equal(onlineDevices.length, 1, 'Expected at least 1 online device')
-    debug.log('beforeEach', `start test with device ${onlineDevices[0].deviceName}`)
+    debug.log('before', `start test with device ${onlineDevices[0].deviceName}`)
   })
 
   for (let i = 0; i < runDurationLoop; i++) {

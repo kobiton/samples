@@ -26,6 +26,7 @@
     "gulp-mocha": "^3.0.1",
     "gulp-webdriver": "^2.0.2",
     "is-my-json-valid": "^2.13.1",
+    "lint": "^1.1.2",
     "mocha": "^2.5.3",
     "mochawesome": "^1.5.2",
     "moment": "^2.15.0",
