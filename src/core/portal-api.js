@@ -94,12 +94,15 @@ export async function getDevices(token) {
 }
 
 export async function getOnlineDevices(token) {
-  const {filterDevice, deviceGroup} = getConfig()
+  let {deviceUDID, filterDevice, deviceGroup} = getConfig()
   const devices = await getDevices(token)
 
   let onlineDevices
   const privateDevices = _getOnlineDevices(devices.privateDevices)
   const cloudDevices = _getOnlineDevices(devices.cloudDevices)
+
+  // We just support UDID for private group
+  deviceGroup = (deviceUDID) ? 'private' : deviceGroup
 
   // Select onlineDevices depend on private group, cloud group or both
   switch (deviceGroup) {
@@ -113,8 +116,9 @@ export async function getOnlineDevices(token) {
       onlineDevices = (privateDevices.length) ? cloudDevices.concat(privateDevices) : cloudDevices
   }
 
-  // Filter device depends on device name
-  onlineDevices = (filterDevice) ? onlineDevices.filter((d) => d.deviceName === filterDevice) : onlineDevices
+  // Filter device depends on device name, udid
+  onlineDevices = (filterDevice) ? onlineDevices.filter((d) => d.deviceName.includes(filterDevice)) : onlineDevices
+  onlineDevices = (deviceUDID) ? onlineDevices.filter((d) => d.udid === deviceUDID) : onlineDevices
 
   // Filter device depends on platform name
   const testingType = getTestingType()
@@ -190,19 +194,19 @@ function getTestingType() {
 function _getOnlineDevices(listDevices) {
   let onlineDevices = []
   const testingType = getTestingType()
-
   if (listDevices && listDevices.length > 0) {
     listDevices = listDevices.filter((d) => d.isOnline === true && d.isBooked === false)
 
     onlineDevices = listDevices
       .map((d) => {
-        const {platformName, platformVersion, deviceName} = d
+        const {platformName, platformVersion, deviceName, udid} = d
         const pickDevice = {
           platformName,
           platformVersion,
           deviceName,
-          'deviceOrientation': 'portrait',
-          'captureScreenshots': true
+          udid,
+          deviceOrientation: 'portrait',
+          captureScreenshots: true
         }
 
         let browserName

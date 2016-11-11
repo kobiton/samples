@@ -1,4 +1,3 @@
-import 'babel-polyfill'
 import 'colors'
 import {debug} from '@kobiton/core-util'
 import wd from 'wd'
@@ -19,10 +18,10 @@ export async function quitDriver(driver) {
 
 export async function createDriver(server, desiredCaps) {
   const driver = wd.promiseChainRemote(server)
-  driver.on('status', (info) => debug.log('status:', info.cyan))
-  driver.on('command', (meth, path, data) => debug.log('command:',
+  driver.on('status', (info) => debug.log(`${new Date().toISOString()} status:`, info.cyan))
+  driver.on('command', (meth, path, data) => debug.log(`${new Date().toISOString()} command:`,
   ' >', meth.yellow, path.grey, data || ''))
-  driver.on('http', (meth, path, data) => debug.log('http:',
+  driver.on('http', (meth, path, data) => debug.log(`${new Date().toISOString()} http:`,
   ' >', meth.magenta, path, (data || '').grey))
   // Mocha doesn't show error data in its report
   try {

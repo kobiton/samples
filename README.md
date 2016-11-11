@@ -16,9 +16,11 @@
   * KOBITON_USERNAME_2
   * KOBITON_PASSWORD_1
   * KOBITON_PASSWORD_2
-  * RUN_DURATION_LOOP
+  * RUN_LONG_DURATION_LOOP
+  * RUN_SHORT_DURATION_LOOP
   * EXPECTED_DURATION_IN_HOURS
   * KOBITON_CAP_DEVICE_NAME
+  * KOBITON_DEVICE_UDID
   * KOBITON_DEVICE_GROUP (accept two groups private & cloud)
 
 ### Connect android/ios devices to desktop app
@@ -104,8 +106,8 @@
   * Test one device with expected duration and loop times
 
     ```bash
-  KOBITON_CAP_DEVICE_NAME="Device Name"  EXPECTED_DURATION_IN_HOURS=5 RUN_DURATION_LOOP=10 npm run gulp test-one-device
-    ```  
+  KOBITON_CAP_DEVICE_NAME="Device Name"  EXPECTED_DURATION_IN_HOURS=5 RUN_LONG_DURATION_LOOP=10 npm run gulp test-one-device
+    ```
 
 ### Review test report result
 #### 1. Default port is 3000

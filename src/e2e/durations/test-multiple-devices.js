@@ -20,11 +20,11 @@ describe('test multiple devices in parallel', () => {
     assert.isAtLeast(onlineDevices.length, 2, 'Expected at least two online devices')
 
     listDeviceNames = onlineDevices.map((d) => d.deviceName)
-    debug.log('beforeEach', `start test with devices ${listDeviceNames.join()}`)
+    debug.log('before', `start test with devices ${listDeviceNames.join()}`)
   })
 
   for (let i = 0; i < runDurationLoop; i++) {
-    it(`should run test in ${expectedDurationInHours} hours [${i+1}/${runDurationLoop}]`, async() => {
+    it(`should run test in ${expectedDurationInHours} hours [${i + 1}/${runDurationLoop}]`, async() => {
       const startedAt = moment.utc()
       const results = await run(server, onlineDevices, expectedDurationInHours)
       const endedAt = moment.utc()
