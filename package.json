@@ -32,13 +32,13 @@
     "moment": "^2.15.0",
     "request": "^2.74.0",
     "request-progress": "^2.0.1",
-    "spectron": "^3.3.0",
+    "spectron": "^3.4.0",
     "tmp": "0.0.28",
     "wd": "^0.3.12",
     "wdio-json-reporter": "0.0.1",
     "wdio-junit-reporter": "^0.1.0",
     "wdio-mocha-framework": "^0.4.3",
     "wdio-selenium-standalone-service": "0.0.3",
-    "webdriverio": "^4.2.14"
+    "webdriverio": "^4.4.0"
   }
 }
