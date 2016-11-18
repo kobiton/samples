@@ -1,6 +1,6 @@
 
 ### Prerequisites
- * Login to npmjs.com in your Terminal with account from [accounts.md](https://github.com/kobiton/docs/blob/d82f311a99719fc7518e232e1cd6f9221126b1d4/team/accounts.md)
+ * Login to npmjs.com in your Terminal with account from [accounts.md](https://github.com/kobiton/docs/blob/master/team/accounts.md)
  * Install local packages:  `npm install`
 
 ### Change environment information
