@@ -9,7 +9,7 @@ import server from 'gulp-express'
 import webdriver from 'gulp-webdriver'
 import {cleanUpDesktopResourceData} from './src/core/desktop-util'
 import * as downloader from './src/core/installation/downloader'
-import LoginPage from './src/core/desktop-pages/login'
+import {runManual} from './src/e2e/core/wdio-manual-test'
 
 debug.enable('*')
 global._mocha = {}
@@ -123,8 +123,19 @@ gulp.task('install-kobiton-app', async () => {
 
 // Define task for e2e test
 gulp.task('build-e2e', build('src/e2e/**/*.js', 'build/e2e'))
+
 gulp.task('build-desktop', build('src/desktop/**/*.js', 'build/desktop'))
-gulp.task('test-e2e',['build-e2e','build-portal','build-core', 'build-desktop'], () => {
+
+gulp.task('test-manual', ['build-e2e','build-portal','build-core', 'build-desktop'], async () => {
+  try {
+    await runManual()
+  }
+  catch(err) {
+    debug.error('test-manual', err)
+  }
+})
+
+gulp.task('test-e2e',['build-e2e','build-core'], () => {
   return gulp.src('build/e2e/core/wdio.conf.js', {read: false})
   .pipe(webdriver())
 })

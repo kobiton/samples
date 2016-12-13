@@ -5,7 +5,7 @@ import {debug} from '@kobiton/core-util'
 import {getConfig} from '../../core/config'
 import {run} from '../core/wdio-test'
 
-const {runDurationLoop, expectedDurationInHours} = getConfig()
+const {runDurationLoop, expectedDurationInMinutes} = getConfig()
 let onlineDevices
 let server
 
@@ -21,15 +21,16 @@ describe('wdio:test one device', () => {
   })
 
   for (let i = 0; i < runDurationLoop; i++) {
-    it(`should run test in ${expectedDurationInHours} [${i + 1}/${runDurationLoop}]`, async() => {
-      const startedAt = moment.utc()
-      const results = await run(server, onlineDevices, expectedDurationInHours)
-      const endedAt = moment.utc()
-      const durationInMinutes = endedAt.diff(startedAt, 'minutes')
+    it(`should run test in ${expectedDurationInMinutes} minutes [${i + 1}/${runDurationLoop}]`,
+      async() => {
+        const startedAt = moment.utc()
+        const results = await run(server, onlineDevices, expectedDurationInMinutes)
+        const endedAt = moment.utc()
+        const durationInMinutes = endedAt.diff(startedAt, 'minutes')
 
-      assert.equal(results, onlineDevices.length, 'Expected one device is run successfully')
-      assert.isAtLeast(durationInMinutes, expectedDurationInHours * 60,
-        `Expected run in ${durationInMinutes} minutes`)
-    })
+        assert.isAtLeast(durationInMinutes, expectedDurationInMinutes,
+          `Expected run in ${durationInMinutes} minutes`)
+        assert.equal(results, onlineDevices.length, 'Expected one device is run successfully')
+      })
   }
 })

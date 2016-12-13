@@ -83,13 +83,13 @@ export default class AuthenticatedPage extends Page {
     return new SessionsPage()
   }
 
-  gotoCloudDevicesPage() {
+  gotoDevicesPage() {
     this.cloudDevicesLink.click()
     this.waitForLoadingProgressDone()
-    // CloudDevicesPage extend AuthenticatedPage,
+    // devicesPage extend AuthenticatedPage,
     // Use inline require to prevent circular dependencies
-    const CloudDevicesPage = require('./cloud-devices')
-    return new CloudDevicesPage()
+    const DevicesPage = require('./devices')
+    return new DevicesPage()
   }
 
   gotoAutomationSettingsPage() {

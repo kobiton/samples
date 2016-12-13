@@ -7,11 +7,11 @@ import * as data from './data'
 const testUrl = 'https://portal-test.kobiton.com/register'
 const waitingTime = 30000
 
-export async function run(server, onlineDevices, expectedDurationInHours) {
-  expectedDurationInHours = expectedDurationInHours * 3600 // Convert hours to seconds
+export async function run(server, onlineDevices, expectedDurationInMinutes) {
+  const expectedDurationInSeconds = expectedDurationInMinutes * 60 // Convert minutes to seconds
 
   const jobs = onlineDevices
-    .map((cap) => _launch(server, cap, expectedDurationInHours))
+    .map((cap) => _launch(server, cap, expectedDurationInSeconds))
     .map((promise) => promise.then(onSuccess, onError).catch((err) => {
       debug.error('run: promise error', err)
     }))
@@ -20,7 +20,7 @@ export async function run(server, onlineDevices, expectedDurationInHours) {
   const successCount = finishedJobs.reduce((sum, ok) => (sum + ok), 0)
 
   function onSuccess(value) {
-    return value
+    return 1
   }
 
   function onError(err) {

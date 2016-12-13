@@ -84,7 +84,7 @@ describe('Verify Login Page Responsive', () => {
     else if (_width == 960 && _heigh == 600) {
       verifyMiddleViewports(page)
     }
-      else {
+    else {
       verifyLargeViewports(page)
     }
   }

@@ -10,15 +10,15 @@ export default async () => {
     return item.key
   })
   const kobitonServer = {
-    host: `${account.hubHostName}`,
+    host: account.hub.host,
     auth: `${userInfo.user.username}:${listApiKeys[0]}`,
-    port: account.hubPort
+    port: account.hub.port
   }
   const wdioKobitonServer = {
-    host: `${account.hubHostName}`,
-    port: account.hubPort,
-    user: `${userInfo.user.username}`,
-    key: `${listApiKeys[0]}`
+    host: account.hub.host,
+    port: account.hub.port,
+    user: userInfo.user.username,
+    key: listApiKeys[0]
   }
 
   return {

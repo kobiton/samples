@@ -5,7 +5,8 @@
   "author": "Kobiton Inc.",
   "description": "Automation test suite for Kobiton",
   "scripts": {
-    "gulp": "gulp"
+    "gulp": "gulp",
+    "lint": "eslint ./src"
   },
   "dependencies": {
     "@kobiton/core-build": "^1.0.27",
@@ -38,7 +39,10 @@
     "wdio-json-reporter": "0.0.1",
     "wdio-junit-reporter": "^0.1.0",
     "wdio-mocha-framework": "^0.4.3",
-    "wdio-selenium-standalone-service": "0.0.3",
-    "webdriverio": "^4.4.0"
+    "wdio-selenium-standalone-service": "0.0.7",
+    "webdriverio": "^4.4.0",
+    "eslint": "^3.11.1",
+    "jsonfile": "^2.4.0",
+    "selenium-standalone": "^5.8.0"
   }
 }

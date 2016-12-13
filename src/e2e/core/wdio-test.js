@@ -43,11 +43,11 @@ const createAccountPage = {
   registerError: '//*[@id="center_column"]/div'
 }
 
-const timeOut = 30000
-export async function run(server, onlineDevices, expectedDurationInHours) {
+const timeOut = 60000
+export async function run(server, onlineDevices, expectedDurationInMinutes) {
 
   const jobs = onlineDevices
-    .map((cap) => _launchWdio(server, cap, expectedDurationInHours))
+    .map((cap) => _launchWdio(server, cap, expectedDurationInMinutes))
     .map((promise) => promise.then(onSuccess, onError).catch((err) => {
       debug.error('run: promise error', err)
     }))
@@ -69,10 +69,10 @@ export async function run(server, onlineDevices, expectedDurationInHours) {
   return successCount
 }
 
-async function _launchWdio(server, desiredCapabilities, expectedDurationInHours) {
+async function _launchWdio(server, desiredCapabilities, expectedDurationInMinutes) {
   let startedAt, endedAt
   let duration = 0
-  const expectedDuration = expectedDurationInHours * 60 // Convert hours to minutes
+  const expectedDuration = expectedDurationInMinutes
   const browser = webdriverio.remote({desiredCapabilities, ...server})
   try {
     await browser.on('error', (e) => {
@@ -273,9 +273,11 @@ async function _launchWdio(server, desiredCapabilities, expectedDurationInHours)
   }
   catch (err) {
     debug.error(`${new Date().toISOString()} wdio-test:${desiredCapabilities.deviceName}`, err)
+    throw err
   }
   finally {
     if (browser) {
+      debug.log('end test')
       await browser.end()
     }
   }

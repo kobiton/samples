@@ -18,10 +18,39 @@
   * KOBITON_PASSWORD_2
   * RUN_LONG_DURATION_LOOP
   * RUN_SHORT_DURATION_LOOP
-  * EXPECTED_DURATION_IN_HOURS
+  * EXPECTED_DURATION_IN_MINUTES
   * KOBITON_CAP_DEVICE_NAME
+  * KOBITON_DEVICE_ORIENTATION
   * KOBITON_DEVICE_UDID
   * KOBITON_DEVICE_GROUP (accept two groups private & cloud)
+  * KOBITON_DEVICES_NUMBER (number of manual devices will be tested)
+  * KOBITON_MAX_BROWSER_INSTANCES (max of browser instances for each manual test run)
+  3. Specify values by using a .json configuration file
+  * KOBITON_CONFIG_FILE="config.json"
+  ex: config.json file
+
+  ```bash
+  {
+    "portalUrl": "https://portal-test.kobiton.com",
+    "apiUrl": "https://api-test.kobiton.com/",
+    "appOSXUrl": "https://s3.amazonaws.com/kobiton/nightly/kobiton-osx-test.dmg",
+    "hub": {
+      "host": "api-test.kobiton.com",
+      "port": 80
+    },
+    "emailOrUsername": "accountemail",
+    "password": "accountpassword",
+    "emailOrUsername2": "tester",
+    "password2": "123456",
+    "runDurationLoop": 20,
+    "shortRunLoop": 1000,
+    "expectedDurationInMinutes": 1,
+    "deviceOrientation": "portrait",
+    "deviceGroup": "cloud",
+    "numOfManualDevices": 4,
+    "maxBrowserInstances": 2
+  }
+  ```
 
 ### Connect android/ios devices to desktop app
  * Android: http://confluence-incubator.kms-technology.com/pages/viewpage.action?pageId=1376891
@@ -81,12 +110,23 @@
   ```bash
   REPORT_FILE='../report.xml' npm run gulp test-e2e
   ```
+ * Test mobile web by using wd
 
- * Test all devices
+ ```bash
+ npm run gulp test-manual-one-device
+ npm run gulp test-multiple-devices
+ ```
+ * Test automation feature on mobile web by using wdio
 
    ```bash
-   npm run gulp test-e2e
-   npm run gulp test-multiple-devices
+   npm run gulp test-one-device-wdio
+   npm run gulp test-multiple-devices-wdio
+   ```
+
+* Test manual feature on a device
+
+   ```bash
+   npm run gulp test-manual-one-device
    ```
 
 * Test android devices

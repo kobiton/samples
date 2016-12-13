@@ -5,21 +5,22 @@ import {getConfig} from './config'
 global._mocha = {}
 const env = process.env.NODE_ENV || 'test'
 global._mocha.env = env
-const account = getConfig()
+const config = getConfig()
 const reportFolder = `reports/portal/${env}/${moment().format('YYYY-MM-DD-HH-mm')}`
 
 exports.config = {
-  maxInstances: 10,
+  // The maximum of browsers could display each of time to run test
+  maxInstances: config.maxBrowserInstances,
   capabilities: [{
-    maxInstances: 5,
+    maxInstances: 1,
     browserName: 'chrome'
   }],
   sync: true,
   logLevel: 'verbose',
   coloredLogs: true,
   screenshotPath: 'reports/screenshot',
-  baseUrl: account.portalUrl,
-  waitforTimeout: 30000,
+  baseUrl: config.portalUrl,
+  waitforTimeout: 60000,
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
   services: ['selenium-standalone'],

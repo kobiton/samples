@@ -1,6 +1,5 @@
 import Page from './page'
-import SessionsPage from './sessions'
-import {debug} from '@kobiton/core-util'
+import DevicesPage from './devices'
 
 const defaultElements = {
   usernameLabel: '//input[@name="emailOrUsername"]/../label',
@@ -25,7 +24,6 @@ export default class LoginPage extends Page {
   }
 
   login({username, password}) {
-    debug.log('login', `${username} and ${password}`)
     this.usernameTextInput.waitForExist()
     this.usernameTextInput.clearElement()
     this.usernameTextInput.setValue(username)
@@ -37,19 +35,16 @@ export default class LoginPage extends Page {
     // TODO: remove 2 lines below when the trello card above is fixed
     this.loginButton.waitForEnabled()
     this.form.submitForm()
-    this.waitForLoadingProgressRunning()
     this.waitForLoadingProgressDone()
     this._waitForPageLoaded()
-    const isSuccessful = browser.getUrl().indexOf('sessions') >= 0
+    const isSuccessful = browser.getUrl().indexOf('devices') >= 0
     if (isSuccessful) {
-      return new SessionsPage()
+      return new DevicesPage()
     }
-    debug.log('The session link not exist')
     return this
   }
 
   open(option) {
-    debug.log('viewports', `Simulate ${JSON.stringify(option)}`)
     super.open('login', option)
     browser.waitForExist(this.elements.loadingHidden)
   }
@@ -63,7 +58,7 @@ export default class LoginPage extends Page {
   * it could be loginPage or sessionPage
   */
   _waitForPageLoaded() {
-    const locator = '//span[text()="Invalid email and/or password" or text()="Sessions"]'
+    const locator = '//span[text()="Invalid email and/or password" or text()="Devices"]'
     browser.waitForExist(locator)
   }
 

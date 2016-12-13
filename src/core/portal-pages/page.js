@@ -5,9 +5,7 @@ const defaultElements = {
 
 export default class Page {
   constructor(elements = {}) {
-    const totalElements = {...defaultElements,
-            ...elements
-    }
+    const totalElements = {...defaultElements, ...elements}
     this._elements = totalElements
     this.initElements(totalElements)
   }

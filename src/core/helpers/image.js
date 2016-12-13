@@ -1,21 +1,33 @@
 import BPromise from 'bluebird'
 import gm from 'gm'
-import {debug} from '@kobiton/core-util'
+import fs from 'fs'
 
-export async function compareImages(imagePath1, imagePath2, tolerance = 0.4) {
-  
-  try {
-    return await new BPromise((resolve, reject) => {
-      return gm.compare(imagePath1, imagePath2, tolerance, (err, isEqual, equality, raw) => {
-        if (err) {
-          throw err
-        }
-        return isEqual
-      })
+export function compareImages(imagePath1, imagePath2, tolerance = 0.4) {
+  return new BPromise((resolve, reject) => {
+    return gm.compare(imagePath1, imagePath2, tolerance, (err, isEqual, equality, raw) => {
+      if (err) {
+        reject(err)
+      }
+      else {
+        resolve(isEqual)
+      }
     })
-  }
-  catch (err) {
-    debug.error('global', err)
-    return false
-  }
+  })
+}
+
+export async function cropImage({tempImagePath, outputImagePath, width, height, x, y}) {
+  return new BPromise((resolve, reject) => {
+    gm(tempImagePath)
+      .strip()
+      .crop(width, height, x, y)
+      .write(outputImagePath, (err) => {
+        fs.unlink(tempImagePath)
+        if (err) {
+          reject(err)
+        }
+        else {
+          resolve()
+        }
+      })
+  })
 }

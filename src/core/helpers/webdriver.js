@@ -1,19 +1,16 @@
-import gm from 'gm'
-import fs from 'fs'
+import {cropImage} from './image'
 
-export function captureElement(selector, outputImagePath) {
-
-  const tempImagePath = './~wd~' + Date.now() + '.png'
-  const size = browser.getElementSize(selector)
-  const location = browser.getLocation(selector)
-  browser.saveScreenshot(tempImagePath)
-  gm(tempImagePath)
-    .strip()
-    .crop(size.width, size.height, location.x, location.y)
-    .write(outputImagePath, (error) => {
-      fs.unlink(tempImagePath)
-      if (error) {
-        throw error
-      }
-    })
+export async function captureElement(selector, imagePath) {
+  const tempImagePath = `./~wd~${Date.now()}.png`
+  const size = await browser.getElementSize(selector)
+  const location = await browser.getLocation(selector)
+  await browser.saveScreenshot(tempImagePath)
+  // Crop an image of selector only
+  await cropImage({
+    tempImagePath,
+    outputImagePath: imagePath,
+    width: size.width,
+    height: size.height,
+    x: location.x,
+    y: location.y})
 }

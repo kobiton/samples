@@ -1,5 +1,4 @@
 import sendRequest from './network'
-import {debug} from '@kobiton/core-util'
 import {getConfig} from './config'
 
 const api = {
@@ -117,7 +116,9 @@ export async function getOnlineDevices(token) {
   }
 
   // Filter device depends on device name, udid
-  onlineDevices = (filterDevice) ? onlineDevices.filter((d) => d.deviceName.includes(filterDevice)) : onlineDevices
+
+  onlineDevices = (filterDevice)
+    ? onlineDevices.filter((d) => d.deviceName.includes(filterDevice)) : onlineDevices
   onlineDevices = (deviceUDID) ? onlineDevices.filter((d) => d.udid === deviceUDID) : onlineDevices
 
   // Filter device depends on platform name
@@ -194,6 +195,8 @@ function getTestingType() {
 function _getOnlineDevices(listDevices) {
   let onlineDevices = []
   const testingType = getTestingType()
+  const {deviceOrientation} = getConfig()
+
   if (listDevices && listDevices.length > 0) {
     listDevices = listDevices.filter((d) => d.isOnline === true && d.isBooked === false)
 
@@ -205,7 +208,7 @@ function _getOnlineDevices(listDevices) {
           platformVersion,
           deviceName,
           udid,
-          deviceOrientation: 'portrait',
+          deviceOrientation,
           captureScreenshots: true
         }
 
