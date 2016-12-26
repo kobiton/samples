@@ -48,3 +48,9 @@ export const desiredCapabilities = {
   },
   getNewCommandTimeout: (cap) => ({...cap, newCommandTimeout: 60})
 }
+
+export const desiredCapabilitiesAndroidNativeApp = {
+  app: 'http://appium.github.io/appium/assets/ApiDemos-debug.apk',
+  appPackage: 'io.appium.android.apis',
+  appActivity: '.ApiDemos'
+}

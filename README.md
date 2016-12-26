@@ -52,10 +52,6 @@
   }
   ```
 
-### Connect android/ios devices to desktop app
- * Android: http://confluence-incubator.kms-technology.com/pages/viewpage.action?pageId=1376891
- * Ios: http://confluence-incubator.kms-technology.com/display/KRYP/How+to+configurate+environment+to+Kobiton+app+recognize++iOS+devices
-
 ### Run a specific test suites (api, portal, desktop, e2e)
 #### 1. Download and install desktop app
  * Set download url to an environment variable KOBITON_DESKTOP_APP_URL. If the variable is not specified, the download url should be the default value from the config.js.
@@ -115,6 +111,12 @@
  ```bash
  npm run gulp test-manual-one-device
  npm run gulp test-multiple-devices
+ ```
+ * Test Android native app by using wd
+
+ ```bash
+ npm run gulp test-one-device-android-native-app
+ npm run gulp test-multiple-devices-android-native-app
  ```
  * Test automation feature on mobile web by using wdio
 

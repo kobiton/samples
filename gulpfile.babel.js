@@ -18,6 +18,8 @@ const env = process.env.NODE_ENV || 'test'
 const scenarios = {
   'test-multiple-devices': 'src/e2e/durations/test-multiple-devices.js',
   'test-one-device': 'src/e2e/durations/test-one-device.js',
+  'test-one-device-android-native-app': 'src/e2e/durations/test-one-device-android-native-app.js',
+  'test-multiple-devices-android-native-app': 'src/e2e/durations/test-multiple-devices-android-native-app.js',
   'test-multiple-devices-wdio': 'src/e2e/mobile-web/test-multiple-devices-wdio.js',
   'test-one-device-wdio': 'src/e2e/mobile-web/test-one-device-wdio.js',
   'test-short-one-device': 'src/e2e/durations/test-short-one-device.js',
