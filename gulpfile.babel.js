@@ -1,143 +1,92 @@
 import 'babel-polyfill'
+import * as $ from '@kobiton/core-build'
+import {debug} from '@kobiton/core-util'
+import {build, nodemon, copy, Paths, clean} from '@kobiton/core-build'
+import {cleanUpDesktopResourceData} from './src/core/desktop-util'
+import createMochaConfig from './src/framework/core/mocha-conf'
+import fs from 'fs'
 import gulp from 'gulp'
 import mocha from 'gulp-mocha'
-import {debug} from '@kobiton/core-util'
-import {build, nodemon, copy, Paths} from '@kobiton/core-build'
 import moment from 'moment'
-import BPromise from 'bluebird'
+import path from 'path'
 import server from 'gulp-express'
 import webdriver from 'gulp-webdriver'
-import {cleanUpDesktopResourceData} from './src/core/desktop-util'
-import * as downloader from './src/core/installation/downloader'
-import {runManual} from './src/e2e/core/wdio-manual-test'
+import BPromise from 'bluebird'
+import * as yargs from './src/framework/core/args'
 
 debug.enable('*')
-global._mocha = {}
-const env = process.env.NODE_ENV || 'test'
 
-const scenarios = {
-  'test-multiple-devices': 'src/e2e/durations/test-multiple-devices.js',
-  'test-one-device': 'src/e2e/durations/test-one-device.js',
-  'test-one-device-android-native-app': 'src/e2e/durations/test-one-device-android-native-app.js',
-  'test-multiple-devices-android-native-app': 'src/e2e/durations/test-multiple-devices-android-native-app.js',
-  'test-multiple-devices-wdio': 'src/e2e/mobile-web/test-multiple-devices-wdio.js',
-  'test-one-device-wdio': 'src/e2e/mobile-web/test-one-device-wdio.js',
-  'test-short-one-device': 'src/e2e/durations/test-short-one-device.js',
-  'test-response-time': 'src/api/performance/test-unavailable-devices-response-time.js',
-  'test-desktop': 'src/desktop/test-*-page.js',
-  'test-api': 'src/api/test*.js'
-}
+gulp.task('default', () => yargs.help())
 
-function runAllScenarios(env) {
-  return runMocha(env, Object.values(scenarios))
-}
+let argv = yargs.parse()
 
-function runScenario(env, name) {
-  return runMocha(env, scenarios[name])
-}
+gulp.task('clean', clean([Paths.DIST, Paths.BUILD]))
+gulp.task('build', ['clean'], build(['src/**/*.js'], 'build'))
+gulp.task('run-test', ['build'], async () => {
+  let inputPath = argv.input
 
-function runMocha(env, srcFiles) {
-  return new BPromise((resolve, reject) => {
-    global._mocha.env = env
-    const mochaOption = {
-      timeout: moment.duration(6, 'hours').as('milliseconds'),
-      clearRequireCache: true,
-      reporter: 'mochawesome',
-      reporterOptions: {
-        globals: ['_mocha'],
-        reportDir: 'reports/' + env,
-        reportName: `${moment().format('YYYY-MM-DD-HH-mm')}`,
-        reportTitle: 'Kobiton Test',
-        inlineAssets: true
-      }
-    }
-    gulp.src(srcFiles, {read: false})
-    .pipe(mocha(mochaOption))
-    .once('error', reject)
-    .once('end', () => process.exit())
+  // Initialize value for test such as: default url, username, password
+  const preSetupTests = require('./build/test/setup.js')
+  await preSetupTests()
+
+  if (inputPath.includes('/browser')) {
+    return startBrowserTests('./build/test' + inputPath)
+  } else if (inputPath.includes('/console')) {
+    return startConsoleTests('./build/test' + inputPath)
+  } else {
+    return startUatTest(inputPath)
+  }
+})
+
+function startBrowserTests(inputPath) {
+  if (fs.lstatSync(inputPath).isDirectory()) {
+    inputPath = path.join(inputPath, 'wdio.conf.js')
+  }
+  const mochaOption = createMochaConfig({
+    reporter: argv.reporter,
+    reportDir: 'reports/browser'
   })
+
+  return gulp.src(inputPath, {read: false})
+          .pipe(webdriver(mochaOption))
 }
 
-for (const env of ['local', 'test', 'staging', 'production']) {
-  gulp.task(`test:${env}`, (cb) => {
-    runAllScenarios(env).then(cb, cb)
+function startConsoleTests(inputPath) {
+  if (fs.lstatSync(inputPath).isDirectory()) {
+    inputPath = path.join(inputPath, '**/*.js')
+  }
+  const mochaOption = createMochaConfig({
+    reporter: argv.reporter || 'mocha-junit-reporter',
+    mochaFile: `reports/console/${moment().format('YYYY-MM-DD-HH-mm')}.xml`,
+    reportDir: 'reports/console'
   })
+
+  return gulp.src(inputPath, {read: false})
+          .pipe(mocha(mochaOption))
 }
 
-// The default task (called when you run `gulp` from cli)
-gulp.task('default', ['test:test'])
+function startUatTest(inputPath) {
+  const mochaOption = createMochaConfig({
+    reporter: argv.reporter,
+    reportDir: 'reports/uat'
+  })
+
+  return gulp.src(inputPath, {read: false})
+          .pipe(mocha(mochaOption))
+}
 
 // Define task to view reports on http://localhost:3000/
-gulp.task('copy-report-asset', copy(['src/support/report-viewer/**/*.html', 'src/support/report-viewer/**/*.ejs'], 'build/support/report-viewer'))
-gulp.task('build-report', ['copy-report-asset'], build('src/support/report-viewer/**/*.js', 'build/support/report-viewer'))
+gulp.task('copy-report-asset',
+  copy(['src/framework/common/report/viewer/**/*.html', 'src/framework/common/report/viewer/**/*.ejs'], // eslint-disable-line max-len
+    'build/report/report-viewer'))
+gulp.task('build-report',
+  ['copy-report-asset'],
+  build('src/framework/common/report/viewer/**/*.js', 'build/report/report-viewer'))
 gulp.task('report-viewer', ['build-report'], () => {
-  server.run(['build/support/report-viewer/server.js'])
-  gulp.watch('src/support/report-viewer/*', () => {
-       gulp.run('report-viewer')
-   })
-})
-
-// Define run test with a specific scenario on test environment
-Object.keys(scenarios).forEach((key) => {
-  gulp.task(`${key}`, (cb) => {
-    debug.log('test', 'run scenario: ' + key)
-    runScenario(env, key).then(cb, cb)
+  server.run(['build/report/report-viewer/server.js'])
+  gulp.watch('src/report/report-viewer/*', () => {
+    gulp.run('report-viewer')
   })
 })
 
-gulp.task('build-core', build(['src/core/**/*.js'], 'build/core'))
-gulp.task('build-portal', build('src/portal/**/*.js', 'build/portal'))
-gulp.task('test-portal', ['build-core', 'build-portal'], () => {
-  return gulp.src('build/portal/core/wdio.conf.js', {read: false})
-  .pipe(webdriver())
-})
-
-// Define task to download and install kobiton application
-gulp.task('install-kobiton-app', async () => {
-  let loginPage
-  let error = false
-
-  try {
-    await cleanUpDesktopResourceData()
-    await downloader.removeApp()
-
-    const kobitonAppFile = await downloader.downloadApp()
-    await downloader.installApp(kobitonAppFile)
-
-    loginPage = new LoginPage()
-    await loginPage.startApplication()
-  }
-  catch (err) {
-    debug.error('gulpfile.babel:install-kobiton-app', err)
-    error = true
-  }
-  finally {
-    if (loginPage && loginPage.stopApplication) {
-      await loginPage.stopApplication()
-    }
-  }
-
-  if (error) {
-    debug.log('gulpfile.babel:install-kobiton-app', 'exit')
-    process.exit(-1)
-  }
-})
-
-// Define task for e2e test
-gulp.task('build-e2e', build('src/e2e/**/*.js', 'build/e2e'))
-
-gulp.task('build-desktop', build('src/desktop/**/*.js', 'build/desktop'))
-
-gulp.task('test-manual', ['build-e2e','build-portal','build-core', 'build-desktop'], async () => {
-  try {
-    await runManual()
-  }
-  catch(err) {
-    debug.error('test-manual', err)
-  }
-})
-
-gulp.task('test-e2e',['build-e2e','build-core'], () => {
-  return gulp.src('build/e2e/core/wdio.conf.js', {read: false})
-  .pipe(webdriver())
-})
+gulp.task('lint', $.lint())

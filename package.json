@@ -5,12 +5,13 @@
   "author": "Kobiton Inc.",
   "description": "Automation test suite for Kobiton",
   "scripts": {
-    "gulp": "gulp",
-    "lint": "eslint ./src"
+    "test": "gulp run-test",
+    "lint": "gulp lint"
   },
   "dependencies": {
     "@kobiton/core-build": "^1.0.27",
     "@kobiton/core-util": "^1.0.26",
+    "@kobiton/core-node": "^1.0.24",
     "babel-polyfill": "^6.5.0",
     "babel-register": "^6.11.6",
     "bluebird": "^3.0.6",
@@ -27,12 +28,16 @@
     "gulp-mocha": "^3.0.1",
     "gulp-webdriver": "^2.0.2",
     "is-my-json-valid": "^2.13.1",
+    "jsonfile": "^2.4.0",
     "lint": "^1.1.2",
+    "lodash": "^4.17.2",
     "mocha": "^2.5.3",
+    "mocha-junit-reporter": "^1.12.1",
     "mochawesome": "^1.5.2",
     "moment": "^2.15.0",
     "request": "^2.74.0",
     "request-progress": "^2.0.1",
+    "selenium-standalone": "^5.8.0",
     "spectron": "^3.4.0",
     "tmp": "0.0.28",
     "wd": "^0.3.12",
@@ -41,8 +46,7 @@
     "wdio-mocha-framework": "^0.4.3",
     "wdio-selenium-standalone-service": "0.0.7",
     "webdriverio": "^4.4.0",
-    "eslint": "^3.11.1",
-    "jsonfile": "^2.4.0",
-    "selenium-standalone": "^5.8.0"
+    "winston": "^2.3.0",
+    "yargs" : "^6.5.0"
   }
 }

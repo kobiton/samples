@@ -6,5 +6,6 @@ coverage
 build
 mochawesome-reports
 reports
+logs
 *.log
 .vscode/**

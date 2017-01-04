@@ -1,3 +1,4 @@
+Enter `npm test -- -h` for more options
 
 ### Prerequisites
  * Login to npmjs.com in your Terminal with account from [accounts.md](https://github.com/kobiton/docs/blob/master/team/accounts.md)
@@ -109,20 +110,17 @@
  * Test mobile web by using wd
 
  ```bash
- npm run gulp test-manual-one-device
- npm run gulp test-multiple-devices
+ npm test -- --input /console/appium/web
  ```
  * Test Android native app by using wd
 
  ```bash
- npm run gulp test-one-device-android-native-app
- npm run gulp test-multiple-devices-android-native-app
+ npm runnpm test -- --input /console/appium/native/android
  ```
  * Test automation feature on mobile web by using wdio
 
    ```bash
-   npm run gulp test-one-device-wdio
-   npm run gulp test-multiple-devices-wdio
+   npm test -- --input /console/appium/web
    ```
 
 * Test manual feature on a device

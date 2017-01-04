@@ -2,7 +2,6 @@ import 'colors'
 import {debug} from '@kobiton/core-util'
 import wd from 'wd'
 import {Application} from 'spectron'
-import BPromise from 'bluebird'
 
 export async function quitDriver(driver) {
   if (driver != null) {
