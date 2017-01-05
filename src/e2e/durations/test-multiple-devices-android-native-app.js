@@ -29,7 +29,7 @@ describe('test Android native app on multiple devices', () => {
         const endedAt = moment.utc()
         const durationInMinutes = endedAt.diff(startedAt, 'minutes')
 
-        assert.isAtLeast(expectedDurationInMinutes, durationInMinutes,
+        assert.isAtLeast(durationInMinutes, expectedDurationInMinutes,
           `Expected run in ${durationInMinutes} minutes`)
         assert.equal(results, onlineDevices.length, 'Expected one device is run successfully')
       })

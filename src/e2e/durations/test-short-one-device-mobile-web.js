@@ -15,7 +15,7 @@ describe('test loop on one device', () => {
     server = env.kobitonServer
     onlineDevice = env.onlineDevices[0]
 
-    assert.equal(env.onlineDevices.length, 1, 'Expected at least 1 online device')
+    assert.isAtLeast(env.onlineDevices.length, 1, 'Expected at least 1 online device')
     debug.log('before', `start test with device ${onlineDevice.deviceName}`)
   })
 

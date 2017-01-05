@@ -65,8 +65,12 @@ function _executeSpawnCommand(cmd, args) {
     let stdout = ''
     const rejectOnce = once(reject)
     const cmdProcess = spawn(cmd, args)
-    cmdProcess.stderr.on('data', (data) => stderr += data.toString())
-    cmdProcess.stdout.on('data', (data) => stdout += data.toString())
+    cmdProcess.stderr.on('data', (data) => {
+      stderr += data.toString()
+    })
+    cmdProcess.stdout.on('data', (data) => {
+      stdout += data.toString()
+    })
 
     cmdProcess.on('error', (err) => {
       debug.error('_executeSpawnCommand', err)

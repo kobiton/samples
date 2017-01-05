@@ -68,15 +68,15 @@ const template = (language, config) => {
     case 'Ruby':
       return `desired_caps = {
      caps: {
-       \'deviceName\':         \'${config.device}\',
-       \'platformVersion\':    \'${config.platformVersion}\',
-       \'deviceOrientation\':  \'${config.orientation}\',
-       \'browserName\':        \'${config.browser}\',
-       \'platformName\':       \'${config.platformName}\',
-       \'captureScreenshots\': True
+       'deviceName':         '${config.device}',
+       'platformVersion':    '${config.platformVersion}',
+       'deviceOrientation':  '${config.orientation}',
+       'browserName':        '${config.browser}',
+       'platformName':       '${config.platformName}',
+       'captureScreenshots': True
      },
-     \'appium_lib\': {
-     \'server_url\': \'http://${config.username}:${config.apiKey}@${config.serverUrl}/wd/hub\'
+     'appium_lib': {
+     'server_url': 'http://${config.username}:${config.apiKey}@${config.serverUrl}/wd/hub'
      }
    }`
 
@@ -84,24 +84,24 @@ const template = (language, config) => {
       return `kobitonServerUrl = "http://${config.username}:${config.apiKey}@${config.serverUrl}:80/wd/hub"
 
    desired_caps = {
-     \'deviceName\':         \'${config.device}\',
-     \'platformVersion\':    \'${config.platformVersion}\',
-     \'deviceOrientation\':  \'${config.orientation}\',
-     \'browserName\':        \'${config.browser}\',
-     \'platformName\':       \'${config.platformName}\',
-     \'captureScreenshots\': True
+     'deviceName':         '${config.device}',
+     'platformVersion':    '${config.platformVersion}',
+     'deviceOrientation':  '${config.orientation}',
+     'browserName':        '${config.browser}',
+     'platformName':       '${config.platformName}',
+     'captureScreenshots': True
    }`
 
     case 'PHP':
       return `$kobiton_server_url = "http://${config.username}:${config.apiKey}@${config.serverUrl}/wd/hub";
 
    $capabilities = array(
-     \'deviceName\' =>         \'${config.device}\',
-     \'platformVersion\' =>    \'${config.platformVersion}\',
-     \'deviceOrientation\' =>  \'${config.orientation}\',
-     \'browserName\' =>        \'${config.browser}\',
-     \'platformName\' =>       \'${config.platformName}\',
-     \'captureScreenshots\' => True
+     'deviceName' =>         '${config.device}',
+     'platformVersion' =>    '${config.platformVersion}',
+     'deviceOrientation' =>  '${config.orientation}',
+     'browserName' =>        '${config.browser}',
+     'platformName' =>       '${config.platformName}',
+     'captureScreenshots' => True
    );`
   }
 

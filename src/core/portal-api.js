@@ -195,7 +195,7 @@ function getTestingType() {
 function _getOnlineDevices(listDevices) {
   let onlineDevices = []
   const testingType = getTestingType()
-  const {deviceOrientation} = getConfig()
+  const {deviceUDID, deviceOrientation} = getConfig()
 
   if (listDevices && listDevices.length > 0) {
     listDevices = listDevices.filter((d) => d.isOnline === true && d.isBooked === false)
@@ -203,13 +203,16 @@ function _getOnlineDevices(listDevices) {
     onlineDevices = listDevices
       .map((d) => {
         const {platformName, platformVersion, deviceName, udid} = d
-        const pickDevice = {
+        let pickDevice = {
           platformName,
           platformVersion,
           deviceName,
-          udid,
           deviceOrientation,
           captureScreenshots: true
+        }
+
+        if (deviceUDID) {
+          pickDevice = {...pickDevice, udid}
         }
 
         let browserName

@@ -16,7 +16,7 @@ async function getDesktopResourceFilePaths() {
   username = username.trim()
   const {emailOrUsername: desktopUser} = getConfig()
   return {
-    userDataFilePath: `/Users/${username}/Library/Application\ Support/Kobiton/user.data`,
-    devicesDataFilePath: `/Users/${username}/Library/Application\ Support/Kobiton/data/${desktopUser}/devices.data` // eslint-disable-line max-len
+    userDataFilePath: `/Users/${username}/Library/Application Support/Kobiton/user.data`,
+    devicesDataFilePath: `/Users/${username}/Library/Application Support/Kobiton/data/${desktopUser}/devices.data` // eslint-disable-line max-len
   }
 }

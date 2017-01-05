@@ -52,5 +52,20 @@ export const desiredCapabilities = {
 export const desiredCapabilitiesAndroidNativeApp = {
   app: 'http://appium.github.io/appium/assets/ApiDemos-debug.apk',
   appPackage: 'io.appium.android.apis',
-  appActivity: '.ApiDemos'
+  appActivity: '.ApiDemos',
+  fullReset: true
+}
+
+export const desiredCapabilitiesAndroidHybridApp = {
+  app: 'https://s3.amazonaws.com/kobiton-dev/apps-test/selendroid-test-app.apk',
+  appPackage: 'io.selendroid.testapp',
+  appActivity: 'HomeScreenActivity',
+  fullReset: true
+  // source code: https://github.com/selendroid/selendroid
+}
+
+export const desiredCapabilitiesiOSNativeApp = {
+  app: 'https://s3.amazonaws.com/kobiton-dev/apps-test/UIKitCatalog-Test-Adhoc.ipa',
+  bundleId: 'com.example.apple-samplecode.UIKitCatalog',
+  fullReset: true
 }

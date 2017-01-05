@@ -3,33 +3,38 @@ import moment from 'moment'
 import initEnv from '../../core/init-environment'
 import {debug} from '@kobiton/core-util'
 import {getConfig} from '../../core/config'
-import {runAndroidNativeApp} from '../core/test'
+import {runMobileWeb} from '../core/test'
 
 const {runDurationLoop, expectedDurationInMinutes} = getConfig()
 let onlineDevices
 let server
+let listDeviceNames
 
-describe('test Android native app on one device', () => {
+describe('test multiple devices in parallel', () => {
 
-  before(async() => {
+  beforeEach(async() => {
     const env = await initEnv()
     server = env.kobitonServer
-    onlineDevices = env.onlineDevices.filter((d) => d.platformName === 'Android').slice(0, 1)
-    assert.equal(onlineDevices.length, 1, 'Expected at least 1 online device')
-    debug.log('before', `start test with device ${onlineDevices[0].deviceName}`)
+    onlineDevices = env.onlineDevices
+
+    assert.isAtLeast(onlineDevices.length, 2, 'Expected at least two online devices')
+
+    listDeviceNames = onlineDevices.map((d) => d.deviceName)
+    debug.log('before', `start test with devices ${listDeviceNames.join()}`)
   })
 
   for (let i = 0; i < runDurationLoop; i++) {
     it(`should run test in ${expectedDurationInMinutes} minutes [${i + 1}/${runDurationLoop}]`,
       async() => {
         const startedAt = moment.utc()
-        const results = await runAndroidNativeApp(server, onlineDevices, expectedDurationInMinutes)
+        const results = await runMobileWeb(server, onlineDevices, expectedDurationInMinutes)
         const endedAt = moment.utc()
         const durationInMinutes = endedAt.diff(startedAt, 'minutes')
 
         assert.isAtLeast(durationInMinutes, expectedDurationInMinutes,
           `Expected run in ${durationInMinutes} minutes`)
-        assert.equal(results, onlineDevices.length, 'Expected one device is run successfully')
+        assert.equal(results, onlineDevices.length,
+          `Expected ${onlineDevices.length} devices are run successfully`)
       })
   }
 })
