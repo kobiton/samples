@@ -19,14 +19,14 @@ describe('[appium-web] test 2 devices parallel 5 sections per device in 15 minut
   const sessionAmount = 5
   it(`Should run test in ${expectedDurationInMinutes} minutes`,
     async() => {
-      const startedAt = moment.utc()
+      const startedAt = moment()
       const results = await executeWebSession(
         targetDevices,
         {
           sessionDuration: expectedDurationInMinutes * 60,
           sessionAmount
         })
-      const endedAt = moment.utc()
+      const endedAt = moment()
       const durationInMinutes = endedAt.diff(startedAt, 'minutes')
 
       assert.isAtLeast(durationInMinutes, expectedDurationInMinutes,

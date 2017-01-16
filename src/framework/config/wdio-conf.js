@@ -1,5 +1,5 @@
 import 'babel-polyfill'
-import config from './config'
+import config from './test'
 import createMochaConfig from './mocha-conf'
 import moment from 'moment'
 
@@ -17,8 +17,8 @@ exports.config = {
   coloredLogs: true,
   screenshotPath: 'reports/screenshot',
   baseUrl: config.portalUrl,
-  waitforTimeout: moment.duration(30, 'seconds').seconds(),
-  connectionRetryTimeout: moment.duration(90, 'seconds').seconds(),
+  waitforTimeout: 30000,  // 30 seconds, can not use moment to calculate here
+  connectionRetryTimeout: 90000,  // 90 seconds
   connectionRetryCount: 3,
   services: ['selenium-standalone'],
   framework: 'mocha',

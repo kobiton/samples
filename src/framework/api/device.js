@@ -15,7 +15,7 @@ class Device extends Base {
   }
 
   async _getOnlineDevicesBy({
-    groupType,
+    groupType = 'all',
     platformName,
     platformVersion,
     deviceName

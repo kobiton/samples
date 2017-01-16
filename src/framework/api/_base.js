@@ -2,11 +2,9 @@ import {removeSlash} from '../util'
 import request from 'request'
 import BPromise from 'bluebird'
 
-export default class Base {
+const requestAsync = BPromise.promisify(request, {multiArgs: true})
 
-  constructor() {
-    this._requestAsync = BPromise.promisify(request, {multiArgs: true})
-  }
+export default class Base {
 
   setBaseUrl(url) {
     this._baseUrl = removeSlash(url)
@@ -37,15 +35,8 @@ export default class Base {
     return `${this._baseUrl}/v1/${removeSlash(path)}`
   }
 
-  _getAuthenticationHeader() {
-    return {
-      'authorization': `Bearer ${this._token}`,
-      'content-type': 'application/json'
-    }
-  }
-
   async _send({method = 'GET', json = true, path, headers, body = {}} = {}) {
-    headers = headers || {
+    const finalHeaders = headers || {
       'authorization': `Bearer ${this._token}`,
       'content-type': 'application/json'
     }
@@ -53,13 +44,13 @@ export default class Base {
       method,
       json,
       url: this._getAbsoluteUrl(path),
-      headers,
+      headers: finalHeaders,
       body
     }
 
-    const [response, resBody] = await this._requestAsync(finalOptions)
+    const [response, resBody] = await requestAsync(finalOptions)
     if (response.statusCode >= 400) {
-      const bodyMsg = (response.statusCode === 404) ? resBody : resBody.message
+      const bodyMsg = (resBody instanceof String) ? resBody : JSON.stringify(resBody)
       throw new Error(`statusCode: ${response.statusCode}, body message: ${bodyMsg}`)
     }
 

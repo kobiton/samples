@@ -1,41 +1,28 @@
 import {prepareFolder} from '../../util'
-import winston from 'winston'
+import fs from 'fs'
 import moment from 'moment'
 
 const logFolder = `logs/${moment().format('YYYY-MM-DD-HH-mm')}`
 prepareFolder(logFolder)
 
-const logLevel = 'info'
-export function writePassLog(
-  logContext,
-  value
-) {
-  const logFileName = `passed_${logContext}_${Date.now()}.log`
-  const logger = getLoggerByName(logFileName)
-  logger.log(logLevel, value)
+/**
+ * Write value message to a log file which name containing context
+ * @param  {string} logContext        context will be include in filename
+ * @param  {object/string} value      string or object, the message to write into the log file
+ */
+export function writeSuccess(logContext, value) {
+  const filename = `${logFolder}/success_${logContext || ''}.${Date.now()}.log`
+  const message = value instanceof String ? value : JSON.stringify(value)
+  fs.writeFileSync(filename, message)
 }
 
-export function writeFailedLog(
-  logContext,
-  value,
-  metadata
-) {
-  const logFileName = `failed_${logContext}_${Date.now()}.log`
-  const logger = getLoggerByName(logFileName)
-  logger.log(logLevel, value, JSON.stringify(metadata))
-}
-
-const loggerMap = {}
-function getLoggerByName(logFileName) {
-  let logger = loggerMap[logFileName]
-  if (!logger) {
-    logger = new (winston.Logger)({
-      transports: [
-        new (winston.transports.File)({filename: `${logFolder}/${logFileName}`})
-      ]
-    })
-    loggerMap[logFileName] = logger
-  }
-
-  return logger
+/**
+ * Write value message to a log file which name containing context
+ * @param  {string} logContext        context will be include in filename
+ * @param  {object/string} value      string or object, the message to write into the log file
+ */
+export function writeFailure(logContext, value) {
+  const filename = `${logFolder}/failed_${logContext || ''}.${Date.now()}.log`
+  const message = value instanceof String ? value : JSON.stringify(value)
+  fs.writeFileSync(filename, message)
 }

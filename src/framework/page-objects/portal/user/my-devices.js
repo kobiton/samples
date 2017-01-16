@@ -1,4 +1,4 @@
-import AuthenticatedPage from './base/_authenticated'
+import AuthenticatedPage from '../base'
 import DeviceLaunchedPage from './device-launched'
 
 const elements = {
@@ -16,6 +16,8 @@ const elements = {
 export default class MyDevicesPage extends AuthenticatedPage {
   constructor(specificBrowser = browser) {
     super(specificBrowser)
+
+    this._initElementsGetter(elements)
   }
 
   open() {
@@ -23,24 +25,16 @@ export default class MyDevicesPage extends AuthenticatedPage {
     return this
   }
 
-  get fistOnlineKobitonCloudDevice() {
-    return this._getElement(elements.fistOnlineKobitonCloudDevice)
-  }
-
-  get firstOnlineKobitonCloudDeviceLaunchButton() {
-    return this._getElement(elements.firstOnlineKobitonCloudDeviceLaunchButton)
-  }
-
   scrollToKobitonCloudDevices() {
-    this.fistOnlineKobitonCloudDevice.waitForEnabled()
-    this.fistOnlineKobitonCloudDevice.moveToObject()
+    this.elements.fistOnlineKobitonCloudDevice.waitForEnabled()
+    this.elements.fistOnlineKobitonCloudDevice.moveToObject()
     return this
   }
 
   launchFirstKobitonCloudDevice() {
     this.scrollToKobitonCloudDevices()
-    this.firstOnlineKobitonCloudDeviceLaunchButton.waitForEnabled()
-    this.firstOnlineKobitonCloudDeviceLaunchButton.click()
+    this.elements.firstOnlineKobitonCloudDeviceLaunchButton.waitForEnabled()
+    this.elements.firstOnlineKobitonCloudDeviceLaunchButton.click()
     this.waitForLoadingProgressDone()
 
     return new DeviceLaunchedPage(this._browser)

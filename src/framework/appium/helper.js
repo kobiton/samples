@@ -1,24 +1,15 @@
-import config from '../core/config'
+import config from '../config/test'
+import pick from 'lodash/pick'
 
-export function convertToDesiredCapabilities({
-  devices,
+export function convertToDesiredCapabilities(devices, {
   orientation = config.deviceOrientation,
   captureScreenshots = true
-}) {
+} = {}) {
   return devices
     .map((d) => {
-      const {platformName, platformVersion, deviceName, udid} = d
-      const pickDevice = {
-        platformName,
-        platformVersion,
-        deviceName,
-        udid,
-        orientation,
-        captureScreenshots
-      }
-
-      const browserName = getDefaultBrowserBy(platformName)
-      return {...pickDevice, browserName}
+      const desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName', 'udid')
+      const browserName = getDefaultBrowserBy(desiredCapFields.platformName)
+      return {...desiredCapFields, orientation, captureScreenshots, browserName}
     })
 }
 

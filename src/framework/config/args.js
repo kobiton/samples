@@ -3,14 +3,14 @@ const yargs = require('yargs')
   .options('i', {
     alias: 'input',
     demand: false,
-    default: './build/',
+    default: '/build',
     describe: 'Path to either folder or file of tests',
     type: 'string'
   })
   .options('r', {
     alias: 'reporter',
     demand: false,
-    default: 'mochawesome',
+    default: 'mocha-junit-reporter',
     describe: 'Test reporters',
     type: 'string'
   })
@@ -25,7 +25,7 @@ const yargs = require('yargs')
     alias: 'mobileTestDuration',
     demand: false,
     default: 5,
-    describe: 'Expected duration (hours)',
+    describe: 'Expected duration (minutes)',
     type: 'number'
   })
   .options('platform', {

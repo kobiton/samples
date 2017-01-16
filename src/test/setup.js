@@ -1,4 +1,4 @@
-import config from '../framework/core/config'
+import config from '../framework/config/test'
 import ApiKey from '../framework/api/key'
 import Device from '../framework/api/device'
 import UserRestApi from '../framework/api/user'

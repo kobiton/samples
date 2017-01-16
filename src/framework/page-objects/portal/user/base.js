@@ -1,4 +1,4 @@
-import Page from './_page'
+import Page from '../base'
 
 const elements = {
   firstNameCharacter: '#app > div > div > div:nth-child(3) > div:nth-child(1) > div > div > div > div > div:nth-child(1) > div:nth-child(1)', // eslint-disable-line max-len
@@ -17,46 +17,24 @@ const elements = {
 export default class AuthenticatedPage extends Page {
   constructor(specificBrowser = browser) {
     super(specificBrowser)
-  }
 
-  get profileDeviceOwnerLink() {
-    return this._getElement('settingsMenuButton', elements.settingsMenuButton)
-  }
-
-  get profileButton() {
-    return this._getElement('profileButton', elements.profileButton)
-  }
-
-  get logoutButton() {
-    return this._getElement('logoutButton', elements.logoutButton)
-  }
-
-  get profileIcon() {
-    return this._getElement('profileIcon', elements.profileIcon)
-  }
-
-  get profileMenuDropdownIcon() {
-    return this._getElement('profileMenuDropdownIcon', elements.profileMenuDropdownIcon)
-  }
-
-  get settingsMenuButton() {
-    return this._getElement('settingsMenuButton', elements.settingsMenuButton)
+    this._initElementsGetter(elements)
   }
 
   _clickProfileIcon() {
-    this.profileIcon.waitForEnabled()
-    this.profileIcon.click()
+    this.elements.profileIcon.waitForEnabled()
+    this.elements.profileIcon.click()
   }
 
   openProfileMenu() {
-    this.profileMenuDropdownIcon.waitForEnabled()
-    this.profileMenuDropdownIcon.click()
+    this.elements.profileMenuDropdownIcon.waitForEnabled()
+    this.elements.profileMenuDropdownIcon.click()
     return this
   }
 
   selectSettingMenu() {
-    this.settingsMenuButton.waitForEnabled()
-    this.settingsMenuButton.click()
+    this.elements.settingsMenuButton.waitForEnabled()
+    this.elements.settingsMenuButton.click()
     this.waitForLoadingProgressDone()
 
     return this
@@ -67,8 +45,8 @@ export default class AuthenticatedPage extends Page {
    */
   logout() {
     this._clickProfileIcon()
-    this.logoutButton.waitForEnabled()
-    this.logoutButton.click()
+    this.elements.logoutButton.waitForEnabled()
+    this.elements.logoutButton.click()
     this.waitForLoadingProgressDone()
   }
 
@@ -79,8 +57,8 @@ export default class AuthenticatedPage extends Page {
   }
 
   selectDeviceOwner() {
-    this.profileButton.click()
-    this.profileDeviceOwnerLink.click()
+    this.elements.profileButton.click()
+    this.elements.profileDeviceOwnerLink.click()
     this.waitForLoadingProgressDone()
     return this
   }

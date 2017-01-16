@@ -1,6 +1,6 @@
 import {assert} from 'chai'
-import RegisterPage from '../../framework/page-objects/portal/register'
-import APIKeysPage from '../../framework/page-objects/portal/settings/api-keys'
+import RegisterPage from '../../framework/page-objects/portal/intro/register'
+import APIKeysPage from '../../framework/page-objects/portal/user/settings/api-keys'
 import data from './data'
 
 describe('Setting / API Keys', () => {

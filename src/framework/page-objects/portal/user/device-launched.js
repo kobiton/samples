@@ -1,4 +1,4 @@
-import AuthenticatedPage from './base/_authenticated'
+import AuthenticatedPage from '../base'
 
 const elements = {
   sessionCreatedLabel: '//span[contains(.,"Session created at")]',
@@ -10,6 +10,8 @@ const elements = {
 export default class DeviceLaunchedPage extends AuthenticatedPage {
   constructor(specificBrowser = browser) {
     super(specificBrowser)
+
+    this._initElementsGetter(elements)
   }
 
   open(key) {
@@ -40,7 +42,7 @@ export default class DeviceLaunchedPage extends AuthenticatedPage {
   }
 
   getScreenShotUrls() {
-    let screenShotImages = this._getElements(elements.screenShotImages)
+    let screenShotImages = this.elements.screenShotImages
     let urls = screenShotImages.map((img) => {
       return img.getAttribute('src')
     })

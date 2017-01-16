@@ -6,7 +6,7 @@ const args = parse()
 
 const apiUrl = removeSlash(process.env.KOBITON_API_URL || 'https://api-test.kobiton.com')
 const defaultAutoTestHostName = Url.parse(apiUrl).hostname
-const defaultAutoTestPort = ((Url.parse(apiUrl).port == 443) ? 80 : Url.parse(apiUrl).port) || 80
+const defaultAutoTestPort = ((Url.parse(apiUrl).port === 443) ? 80 : Url.parse(apiUrl).port) || 80
 const config = {
   portalUrl: removeSlash(process.env.KOBITON_PORTAL_URL || 'https://portal-test.kobiton.com'),
   apiUrl,
@@ -20,7 +20,7 @@ const config = {
   emailRetainingToken: 'xRT8KJ',
 
   longTestSuiteIterationAmount: args.longTestSuiteIterationAmount || 10,
-  expectedDurationInHours: args.mobileTestDuration || 5,
+  expectedDurationInMinutes: args.mobileTestDuration || 30,
   devicePlatform: args.devicePlatform,
   deviceName: args.deviceName,
   deviceUDID: args.deviceUDID,

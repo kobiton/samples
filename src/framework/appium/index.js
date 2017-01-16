@@ -2,15 +2,15 @@ import * as webdriverio from 'webdriverio'
 import * as logger from '../common/logger'
 import {convertToDesiredCapabilities} from './helper'
 import api from '../api'
-import config from '../core/config'
+import config from '../config/test'
 import moment from 'moment'
 import BPromise from 'bluebird'
 import WebSessionTest from './web/web-session-test'
 
-const expectedInHours = config.expectedDurationInHours
-const defaultSessionDurationInSeconds = moment.duration(expectedInHours, 'hours').asSeconds()
-const defaultSessionAmout = config.longTestSuiteIterationAmount
-const timeOut = 60000
+const expectedInMinutes = config.expectedDurationInMinutes
+const defaultSessionDurationInSeconds = moment.duration(expectedInMinutes, 'minutes').asSeconds()
+const defaultSessionAmount = config.longTestSuiteIterationAmount
+const timeout = 60000
 
 const server = {
   host: config.autoTestHostname,
@@ -23,28 +23,29 @@ export async function executeWebSession(
   targetDevices,
   options = {
     sessionDuration: defaultSessionDurationInSeconds,
-    sessionAmount: defaultSessionAmout
+    sessionAmount: defaultSessionAmount
   }) {
 
-  const desiredCapabilitiesList = convertToDesiredCapabilities({
-    devices: targetDevices
-  })
+  const desiredCapabilitiesList = convertToDesiredCapabilities(targetDevices)
 
-  const startedAt = moment.utc()
-  let endedAt
-  let duration
+  const startedAt = moment()
 
   return await _execute(
     desiredCapabilitiesList,
     options,
     async (driver) => {
+      let endedAt
+      let duration
       do {
-        const webSessionTest = new WebSessionTest(driver, timeOut)
+        const webSessionTest = new WebSessionTest(driver, timeout)
         await webSessionTest.execute()
 
-        endedAt = moment.utc()
+        endedAt = moment()
         duration = endedAt.diff(startedAt, 'seconds')
       } while (duration < options.sessionDuration)
+    },
+    (err, cap) => {
+      logger.writeFailure(cap.deviceName, JSON.stringify(err))
     }
   )
 }
@@ -122,23 +123,16 @@ async function _launchSession(
       await _createSession(desiredCap, callbackJob)
     }
     catch (err) {
-      if (errorCallback) {
-        // Callback, countinue executing test
-        errorCallback(err, desiredCap.desiredCapabilities)
-      }
-      else {
-        // Write failed test, throw err, stop test immediately
-        logger.writeFailedLog(desiredCap.desiredCapabilities.deviceName, 'Error:', err)
-        throw err
-      }
+      // Callback, countinue executing test
+      errorCallback(err, desiredCap.desiredCapabilities)
     }
   }
 }
 
 async function _createSession(options, callbackJob) {
   const driver = webdriverio.remote(options)
-  await driver.on('error', (e) => {
-    logger.writeFailedLog(
+  driver.on('error', (e) => {
+    logger.writeFailure(
       `wdio-test:${options.deviceName}`,
       'Error while creating web driver',
       e

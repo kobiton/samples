@@ -6,6 +6,7 @@
   "description": "Automation test suite for Kobiton",
   "scripts": {
     "test": "gulp run-test",
+    "help": "gulp help",
     "lint": "gulp lint"
   },
   "dependencies": {
@@ -46,7 +47,6 @@
     "wdio-mocha-framework": "^0.4.3",
     "wdio-selenium-standalone-service": "0.0.7",
     "webdriverio": "^4.4.0",
-    "winston": "^2.3.0",
     "yargs" : "^6.5.0"
   }
 }

@@ -1,7 +1,7 @@
 import {assert} from 'chai'
-import LoginPage from '../../framework/page-objects/portal/login'
-import DevicePage from '../../framework/page-objects/portal/my-devices'
-import config from '../../framework/core/config'
+import LoginPage from '../../framework/page-objects/portal/intro/login'
+import DevicePage from '../../framework/page-objects/portal/user/my-devices'
+import config from '../../framework/config/test'
 
 describe('Devices / Manual', () => {
   beforeEach(() => {

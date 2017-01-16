@@ -1,4 +1,4 @@
-import config from '../core/config'
+import config from '../config/test'
 import faker from 'faker'
 import fs from 'fs'
 import moment from 'moment'

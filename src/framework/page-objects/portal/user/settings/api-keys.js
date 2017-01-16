@@ -1,4 +1,4 @@
-import AuthenticatedPage from '../base/_authenticated'
+import AuthenticatedPage from '../base'
 
 const elements = {
   apiKeySectionHeader: '//h3[contains(., "API Keys")]',
@@ -8,6 +8,8 @@ const elements = {
 export default class APIKeysPage extends AuthenticatedPage {
   constructor(specificBrowser = browser) {
     super(specificBrowser)
+
+    this._initElementsGetter(elements)
   }
 
   open() {
@@ -17,7 +19,7 @@ export default class APIKeysPage extends AuthenticatedPage {
   }
 
   getAPIKeys() {
-    let apiKeyValueDivs = this._getElements(elements.apiKeyValueDivs)
+    let apiKeyValueDivs = this.elements.apiKeyValueDivs
     let keys = apiKeyValueDivs.map((keyDiv) => keyDiv.getText())
     return keys
   }

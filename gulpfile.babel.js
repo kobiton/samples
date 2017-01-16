@@ -3,7 +3,7 @@ import * as $ from '@kobiton/core-build'
 import {debug} from '@kobiton/core-util'
 import {build, nodemon, copy, Paths, clean} from '@kobiton/core-build'
 import {cleanUpDesktopResourceData} from './src/core/desktop-util'
-import createMochaConfig from './src/framework/core/mocha-conf'
+import createMochaConfig from './src/framework/config/mocha-conf'
 import fs from 'fs'
 import gulp from 'gulp'
 import mocha from 'gulp-mocha'
@@ -12,11 +12,12 @@ import path from 'path'
 import server from 'gulp-express'
 import webdriver from 'gulp-webdriver'
 import BPromise from 'bluebird'
-import * as yargs from './src/framework/core/args'
+import * as yargs from './src/framework/config/args'
 
 debug.enable('*')
 
 gulp.task('default', () => yargs.help())
+gulp.task('help', () => yargs.help())
 
 let argv = yargs.parse()
 
@@ -42,6 +43,7 @@ function startBrowserTests(inputPath) {
   if (fs.lstatSync(inputPath).isDirectory()) {
     inputPath = path.join(inputPath, 'wdio.conf.js')
   }
+
   const mochaOption = createMochaConfig({
     reporter: argv.reporter,
     reportDir: 'reports/browser'
@@ -56,7 +58,7 @@ function startConsoleTests(inputPath) {
     inputPath = path.join(inputPath, '**/*.js')
   }
   const mochaOption = createMochaConfig({
-    reporter: argv.reporter || 'mocha-junit-reporter',
+    reporter: argv.reporter,
     mochaFile: `reports/console/${moment().format('YYYY-MM-DD-HH-mm')}.xml`,
     reportDir: 'reports/console'
   })

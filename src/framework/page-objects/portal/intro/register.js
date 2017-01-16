@@ -1,4 +1,4 @@
-import Page from './base/_page'
+import Page from '../base'
 
 const elements = {
   fullNameInput: '//input[@type="text" and @name="name"]',
@@ -13,30 +13,7 @@ export default class RegisterPage extends Page {
   constructor(specificBrowser = browser) {
     super(specificBrowser)
 
-  }
-
-  get fullNameInput() {
-    return this._getElement(elements.fullNameInput)
-  }
-
-  get userNameInput() {
-    return this._getElement(elements.userNameInput)
-  }
-
-  get emailInput() {
-    return this._getElement(elements.emailInput)
-  }
-
-  get passwordInput() {
-    return this._getElement(elements.passwordInput)
-  }
-
-  get registerSpan() {
-    return this._getElement(elements.registerSpan)
-  }
-
-  get errorSpan() {
-    return this._getElement(elements.errorSpan)
+    this._initElementsGetter(elements)
   }
 
   open(option) {
@@ -46,32 +23,32 @@ export default class RegisterPage extends Page {
   }
 
   setFullName(value) {
-    this.fullNameInput.clearElement()
-    this.fullNameInput.setValue(value)
+    this.elements.fullNameInput.clearElement()
+    this.elements.fullNameInput.setValue(value)
     return this
   }
 
   setUserName(value) {
-    this.userNameInput.clearElement()
-    this.userNameInput.setValue(value)
+    this.elements.userNameInput.clearElement()
+    this.elements.userNameInput.setValue(value)
     return this
   }
 
   setEmail(value) {
-    this.emailInput.clearElement()
-    this.emailInput.setValue(value)
+    this.elements.emailInput.clearElement()
+    this.elements.emailInput.setValue(value)
     return this
   }
 
   setPassword(value) {
-    this.passwordInput.clearElement()
-    this.passwordInput.setValue(value)
+    this.elements.passwordInput.clearElement()
+    this.elements.passwordInput.setValue(value)
     return this
   }
 
   register() {
     this._browser.waitForEnabled(elements.registerSpan)
-    this.registerSpan.click()
+    this.elements.registerSpan.click()
     this.waitForLoadingProgressDone()
     return this
   }

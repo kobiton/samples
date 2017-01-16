@@ -13,6 +13,12 @@ export default class Page {
   constructor(specificBrowser = browser) {
     this._cachedElemens = {}
     this._browser = specificBrowser
+    this._elements = {}
+    this._initElementsGetter(elements)
+  }
+
+  get elements() {
+    return this._elements
   }
 
 /**
@@ -67,6 +73,29 @@ export default class Page {
   _isPluralSelectorName(selectorName) {
     return selectorName.endsWith('s')
   }
+
+  /**
+   * Go through all of elements and create getter function for each of element
+   * @param  {object} elements [description]
+   * @return {object} element         if the element key is singular, could throw exception
+   *                                    if element not found
+   *         {array}  elements        if the element key is plural
+   */
+  _initElementsGetter(elements) {
+    Object.keys(elements).forEach((key) => {
+      Object.defineProperty(this._elements, key, {
+        get: () => {
+          if (this._isPluralSelectorName(key)) {
+            return this._getElements(elements[key])
+          }
+          else {
+            return this._getElement(elements[key])
+          }
+        }
+      })
+    })
+  }
+
 /**
  * Wait for an element exist then return an web element. This method does not cache result
  * @param   {selectorValue} is a string to identify an object

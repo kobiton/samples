@@ -1,4 +1,4 @@
-import AuthenticatedPage from '../base/_authenticated'
+import AuthenticatedPage from '../base'
 import APIKeysPage from './api-keys'
 
 const elements = {
@@ -9,6 +9,8 @@ const elements = {
 export default class AccountSettingsPage extends AuthenticatedPage {
   constructor(specificBrowser = browser) {
     super(specificBrowser)
+
+    this._initElementsGetter(elements)
   }
 
   open() {
@@ -17,7 +19,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
 
   selectAPIKeysTab() {
     this._browser.waitForEnabled(elements.apiKeysButton)
-    this._browser.click(elements.apiKeysButton)
+    this.elements.apiKeysButton.click()
     this.waitForLoadingProgressDone()
 
     return new APIKeysPage(this._browser)

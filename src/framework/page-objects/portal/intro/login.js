@@ -1,5 +1,5 @@
-import Page from './base/_page'
-import DevicesPage from './my-devices'
+import Page from '../base'
+import DevicesPage from '../user/my-devices'
 
 const elements = {
   usernameLabel: '//input[@name="emailOrUsername"]/../label',
@@ -20,36 +20,22 @@ const elements = {
 export default class LoginPage extends Page {
   constructor(specificBrowser = browser) {
     super(specificBrowser)
-  }
 
-  get usernameTextInput() {
-    return this._getElement(elements.usernameTextInput)
-  }
-
-  get passwordTextInput() {
-    return this._getElement(elements.passwordTextInput)
-  }
-
-  get loginButton() {
-    return this._getElement(elements.loginButton)
-  }
-
-  get form() {
-    return this._getElement(elements.form)
+    this._initElementsGetter(elements)
   }
 
   login({username, password}) {
-    this.usernameTextInput.waitForExist()
-    this.usernameTextInput.clearElement()
-    this.usernameTextInput.setValue(username)
-    this.passwordTextInput.clearElement()
-    this.passwordTextInput.setValue(password)
-    this.loginButton.click()
+    this.elements.usernameTextInput.waitForExist()
+    this.elements.usernameTextInput.clearElement()
+    this.elements.usernameTextInput.setValue(username)
+    this.elements.passwordTextInput.clearElement()
+    this.elements.passwordTextInput.setValue(password)
+    this.elements.loginButton.click()
     // click login button then submit form because of the known issue:
     // https://trello.com/c/ZeL2ilpT/816-portal-chrome-firefox-login-could-not-click-on-login-button-after-input-username-and-password
     // TODO: remove 2 lines below when the trello card above is fixed
-    this.loginButton.waitForEnabled()
-    this.form.submitForm()
+    this.elements.loginButton.waitForEnabled()
+    this.elements.form.submitForm()
     this.waitForLoadingProgressDone()
     this._waitForPageLoaded()
     const isSuccessful = this._browser.getUrl().indexOf('devices') >= 0

@@ -1,4 +1,4 @@
-const base = require('../../framework/core/wdio.conf')
+const base = require('../../framework/config/wdio-conf')
 
 exports.config = {
   ...base.config,
