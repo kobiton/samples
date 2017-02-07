@@ -6,8 +6,9 @@
   "description": "Automation test suite for Kobiton",
   "scripts": {
     "test": "gulp run-test",
-    "help": "gulp help",
-    "lint": "gulp lint"
+    "lint": "gulp lint",
+    "gulp": "gulp",
+    "help": "gulp help"
   },
   "dependencies": {
     "@kobiton/core-build": "^1.0.27",

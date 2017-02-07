@@ -40,6 +40,19 @@ gulp.task('run-test', ['build'], async () => {
   }
 })
 
+gulp.task('test-manual', ['build'], async () => {
+  try {
+    // Initialize value for test such as: default url, username, password
+    const preSetupTests = require('./build/test/setup.js')
+    const runManual =  require('./build/test/browser/manual/manual-setup')
+    await preSetupTests()
+    await runManual()
+  }
+  catch(err) {
+    debug.error('test-manual', err)
+  }
+})
+
 function startBrowserTests(inputPath) {
   if (fs.lstatSync(inputPath).isDirectory()) {
     inputPath = path.join(inputPath, 'wdio.conf.js')

@@ -1,5 +1,6 @@
 import {removeSlash} from '../util'
 import {parse} from './args'
+import {debug} from '@kobiton/core-util'
 import Url from 'url'
 
 const args = parse()
@@ -7,6 +8,7 @@ const args = parse()
 const apiUrl = removeSlash(process.env.KOBITON_API_URL || 'https://api-test.kobiton.com')
 const defaultAutoTestHostName = Url.parse(apiUrl).hostname
 const defaultAutoTestPort = ((Url.parse(apiUrl).port === 443) ? 80 : Url.parse(apiUrl).port) || 80
+debug.log('apiUrl', apiUrl)
 const config = {
   portalUrl: removeSlash(process.env.KOBITON_PORTAL_URL || 'https://portal-test.kobiton.com'),
   apiUrl,
@@ -19,12 +21,20 @@ const config = {
   password2: process.env.KOBITON_PASSWORD_2 || '123456',
   emailRetainingToken: 'xRT8KJ',
 
-  longTestSuiteIterationAmount: args.longTestSuiteIterationAmount || 10,
-  expectedDurationInMinutes: args.mobileTestDuration || 30,
-  devicePlatform: args.devicePlatform,
-  deviceName: args.deviceName,
-  deviceUDID: args.deviceUDID,
-  deviceOrientation: args.deviceOrientation
+  longTestSuiteIterationAmount: args.longTestSuiteIterationAmount,
+  expectedDurationInMinutes: args.mobileTestDuration,
+  device: {
+    name: args.deviceName,
+    platform: args.devicePlatform,
+    udid: args.deviceUDID,
+    orientations: args.deviceOrientation,
+    group: args.deviceGroup,
+    number: args.deviceNumbers
+  },
+  manual: {
+    screenQuality: args.screenQuality,
+    maxBrowserInstances: args.maxBrowserInstances
+  }
 }
 
 const parsedUrl = Url.parse(apiUrl)

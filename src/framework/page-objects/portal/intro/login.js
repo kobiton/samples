@@ -1,5 +1,5 @@
 import Page from '../base'
-import DevicesPage from '../user/my-devices'
+import DevicesPage from '../user/devices'
 
 const elements = {
   usernameLabel: '//input[@name="emailOrUsername"]/../label',

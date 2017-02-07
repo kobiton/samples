@@ -80,6 +80,7 @@ describe('Manual feature: ', () => {
     manualPage.pinchButton.click()
     manualPage.rotateButton.click()
     manualPage.touchButton.click()
+    // TODO: add more script to verify captured screenshot
     manualPage.takeScreenShotButton.click()
     manualPage.homeButton.click()
   }

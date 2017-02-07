@@ -39,7 +39,7 @@ export async function executeWebSession(
       let duration
       do {
         const webSessionTest = new WebSessionTest(driver, timeout)
-        await webSessionTest.execute()
+        await webSessionTest.execute() // eslint-disable-line babel/no-await-in-loop
 
         endedAt = moment()
         duration = endedAt.diff(startedAt, 'seconds')
@@ -122,7 +122,7 @@ async function _launchSession(
 ) {
   for (let i = 0; i < options.sessionAmount; i++) {
     try {
-      await createSession(desiredCap, callbackJob)
+      await createSession(desiredCap, callbackJob) // eslint-disable-line babel/no-await-in-loop
     }
     catch (err) {
       // Callback, countinue executing test

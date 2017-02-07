@@ -10,7 +10,6 @@ class Device extends Base {
     const [devicesGroups] = await this.get({
       path: subUrl.devices
     })
-
     return devicesGroups
   }
 
@@ -18,7 +17,8 @@ class Device extends Base {
     groupType = 'all',
     platformName,
     platformVersion,
-    deviceName
+    deviceName,
+    deviceNumbers
   } = {}) {
     const devicesGroups = await this._getDevices()
     let devices
@@ -49,19 +49,27 @@ class Device extends Base {
       devices = devices.filter((d) => d.deviceName.toLowerCase().includes(deviceName))
     }
 
+    if (!isNaN(deviceNumbers)) {
+      devices = devices.length > deviceNumbers ? devices.slice(0, deviceNumbers) : devices
+    }
+
     return devices
   }
 
   async getOnlineDevices({
+    groupType = 'all',
     platformName,
     platformVersion,
-    deviceName
+    deviceName,
+    deviceNumbers
   } = {}) {
+
     return await this._getOnlineDevicesBy({
+      groupType,
       platformName,
       platformVersion,
       deviceName,
-      groupType: 'all'
+      deviceNumbers
     })
   }
 

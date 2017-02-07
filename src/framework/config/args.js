@@ -56,6 +56,34 @@ const yargs = require('yargs')
     describe: 'Orientation of mobile device',
     type: 'string'
   })
+  .options('group', {
+    alias: 'deviceGroup',
+    demand: false,
+    default: 'all',
+    describe: 'Group of mobile device',
+    type: 'string'
+  })
+  .options('deviceNumbers', {
+    alias: 'deviceNumbers',
+    demand: false,
+    default: 1,
+    describe: 'number of mobile devices',
+    type: 'number'
+  })
+  .options('screenQuality', {
+    alias: 'screenQuality',
+    demand: false,
+    default: 'Medium',
+    describe: 'Screen quality of manual test',
+    type: 'string'
+  })
+  .options('maxBrowserInstances', {
+    alias: 'maxBrowserInstances',
+    demand: false,
+    default: 1,
+    describe: 'max of browser instances',
+    type: 'number'
+  })
   .help()
 
 export function help() {
