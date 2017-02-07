@@ -1,9 +1,4 @@
 import 'babel-polyfill'
-import * as $ from '@kobiton/core-build'
-import {debug} from '@kobiton/core-util'
-import {build, nodemon, copy, Paths, clean} from '@kobiton/core-build'
-import {cleanUpDesktopResourceData} from './src/core/desktop-util'
-import createMochaConfig from './src/framework/config/mocha-conf'
 import fs from 'fs'
 import gulp from 'gulp'
 import mocha from 'gulp-mocha'
@@ -12,6 +7,12 @@ import path from 'path'
 import server from 'gulp-express'
 import webdriver from 'gulp-webdriver'
 import BPromise from 'bluebird'
+import * as $ from '@kobiton/core-build'
+import {debug} from '@kobiton/core-util'
+import {build, nodemon, copy, Paths, clean} from '@kobiton/core-build'
+import {cleanUpDesktopResourceData} from './src/core/desktop-util'
+import createMochaConfig from './src/framework/config/mocha-conf'
+import mochaConfigMap from './src/test/config/config-map'
 import * as yargs from './src/framework/config/args'
 
 debug.enable('*')
@@ -44,8 +45,9 @@ function startBrowserTests(inputPath) {
     inputPath = path.join(inputPath, 'wdio.conf.js')
   }
 
-  const mochaOption = createMochaConfig({
-    reporter: argv.reporter,
+  const getMochaConfig = getMochaConfigMethod(inputPath)
+  const mochaOption = getMochaConfig({
+    reporter: argv.reporter, 
     reportDir: 'reports/browser'
   })
 
@@ -53,11 +55,19 @@ function startBrowserTests(inputPath) {
           .pipe(webdriver(mochaOption))
 }
 
+const defaultMochaConfigSrc = './src/framework/config/mocha-conf'
+function getMochaConfigMethod(inputPath) {
+  const fileName = path.basename(inputPath)
+  const mochaConfigSrc = mochaConfigMap[fileName] || defaultMochaConfigSrc
+  return require(mochaConfigSrc)
+}
+
 function startConsoleTests(inputPath) {
   if (fs.lstatSync(inputPath).isDirectory()) {
     inputPath = path.join(inputPath, '**/*.js')
   }
-  const mochaOption = createMochaConfig({
+  const getMochaConfig = getMochaConfigMethod(inputPath)
+  const mochaOption = getMochaConfig({
     reporter: argv.reporter,
     mochaFile: `reports/console/${moment().format('YYYY-MM-DD-HH-mm')}.xml`,
     reportDir: 'reports/console'

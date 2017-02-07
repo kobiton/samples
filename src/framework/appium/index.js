@@ -32,6 +32,7 @@ export async function executeWebSession(
 
   return await _execute(
     desiredCapabilitiesList,
+    _createWebSession,
     options,
     async (driver) => {
       let endedAt
@@ -59,10 +60,9 @@ export async function executeHybridAppSession() {
 }
 
 // errorCallback:
-//     + if specified, when error throw, the callback will be call
+//     when error throw, the callback will be call
 // The test will be countinue to execute
-//     + if not specified, the test would throw error and stop executing test
-async function _execute(desiredCapsList, options, callbackJob, errorCallback) {
+async function _execute(desiredCapsList, createSession, options, callbackJob, errorCallback) {
   const apiKey = await _getApiKey()
   if (!apiKey) {
     throw Error("Can't not get a valid apiKey")
@@ -71,6 +71,7 @@ async function _execute(desiredCapsList, options, callbackJob, errorCallback) {
   const jobs = desiredCapsList
     .map((desiredCapabilities) => _launchSession(
       {desiredCapabilities, ...server, key: apiKey},
+      createSession,
       options,
       callbackJob,
       errorCallback)
@@ -114,13 +115,14 @@ async function _getApiKey() {
 
 async function _launchSession(
   desiredCap,
+  createSession,
   options,
   callbackJob,
   errorCallback
 ) {
   for (let i = 0; i < options.sessionAmount; i++) {
     try {
-      await _createSession(desiredCap, callbackJob)
+      await createSession(desiredCap, callbackJob)
     }
     catch (err) {
       // Callback, countinue executing test
@@ -129,7 +131,7 @@ async function _launchSession(
   }
 }
 
-async function _createSession(options, callbackJob) {
+async function _createWebSession(options, callbackJob) {
   const driver = webdriverio.remote(options)
   driver.on('error', (e) => {
     logger.writeFailure(
