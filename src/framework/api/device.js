@@ -1,14 +1,11 @@
 import Base from './_base'
-
-const subUrl = {
-  devices: 'devices'
-}
+import config from '../config/test'
 
 class Device extends Base {
 
   async _getDevices() {
     const [devicesGroups] = await this.get({
-      path: subUrl.devices
+      path: 'devices'
     })
     return devicesGroups
   }
@@ -57,10 +54,10 @@ class Device extends Base {
   }
 
   async getOnlineDevices({
-    groupType = 'all',
-    platformName,
-    platformVersion,
-    deviceName,
+    groupType = config.device.group,
+    platformName = config.device.platform,
+    platformVersion = config.device.version,
+    deviceName = config.device.name,
     deviceNumbers
   } = {}) {
 

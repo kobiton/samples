@@ -63,7 +63,7 @@ export async function executeHybridAppSession() {
 //     when error throw, the callback will be call
 // The test will be countinue to execute
 async function _execute(desiredCapsList, createSession, options, callbackJob, errorCallback) {
-  const apiKey = await _getApiKey()
+  const apiKey = await getApiKey()
   if (!apiKey) {
     throw Error("Can't not get a valid apiKey")
   }
@@ -106,7 +106,7 @@ function _reflect(promise) {
   )
 }
 
-async function _getApiKey() {
+export async function getApiKey() {
   const allKeys = (await api.Key.getAll()).map((t) => {
     return t.key
   })
