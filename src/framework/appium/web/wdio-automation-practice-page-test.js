@@ -1,5 +1,6 @@
 import faker from 'faker'
 import {debug} from '@kobiton/core-util'
+import moment from 'moment'
 
 const createAccountPage = {
   // Authntication screen
@@ -40,15 +41,33 @@ const createAccountPage = {
   registerError: '//*[@id="center_column"]/div'
 }
 
-export default class WebSessionTest {
+export default class WdioAutomationPracticePageTest {
   constructor(browser, timeOut) {
     this._browser = browser
     this._timeOut = timeOut
   }
 
-  async execute() {
+  async executeTest(expectedDurationInMinutes) {
+    let duration = 0
+    const startedAt = moment.utc()
+    try {
+      await this._browser.init()
+      do {
+        await this._run() // eslint-disable-line babel/no-await-in-loop
+        const endedAt = moment.utc()
+        duration = endedAt.diff(startedAt, 'minutes')
+      } while (duration < expectedDurationInMinutes)
+    }
+    catch (err) {
+      throw new Error(JSON.stringify(err))
+    }
+    finally {
+      await this._browser.end()
+    }
+  }
+
+  async _run() {
     return await this._browser
-      .init()
       .url(createAccountPage.authenticationUrl)
       .getSource()
       .pause(1000)
@@ -77,10 +96,10 @@ export default class WebSessionTest {
       .getLocationInView(createAccountPage.genderOptionMrs)
       .getTagName(createAccountPage.customerLastNameText)
       .getText(createAccountPage.pageHeading).then((text) => {
-        debug.info(text)
+        debug.log('automation practice page:', text)
       })
       .getValue(createAccountPage.email).then((value) => {
-        debug.info(value)
+        debug.log('automation practice page:', value)
       })
       .getUrl()
 
@@ -164,6 +183,5 @@ export default class WebSessionTest {
       .getGridNodeDetails()
       .reload()
       .deleteCookie()
-      .end()
   }
 }

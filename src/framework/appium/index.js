@@ -5,7 +5,7 @@ import api from '../api'
 import config from '../config/test'
 import moment from 'moment'
 import BPromise from 'bluebird'
-import WebSessionTest from './web/web-session-test'
+import WebSessionTest from './web/wdio-automation-practice-page-test'
 
 const expectedInMinutes = config.expectedDurationInMinutes
 const defaultSessionDurationInSeconds = moment.duration(expectedInMinutes, 'minutes').asSeconds()

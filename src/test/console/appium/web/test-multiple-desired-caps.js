@@ -18,6 +18,7 @@ setTimeout(async () => {
   const onlineCaps = await getOnlineCaps({
     deviceNumbers: config.device.number
   })
+  const timeout = 30000 // milliseconds
 
   describe('[appium-web]: multiple desired capabilities', async () => {
 
@@ -28,7 +29,7 @@ setTimeout(async () => {
         Object.keys(completeScenarios).forEach((key) => {
           it(`${key}`, async () => {
             const getCap = completeScenarios[key]
-            await executeDesiredCapabilitiesTest({desiredCapabilities: getCap(cap), timeout: 10000})
+            await executeDesiredCapabilitiesTest({desiredCapabilities: getCap(cap), timeout})
           })
         })
       })
