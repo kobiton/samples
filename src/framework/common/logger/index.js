@@ -1,9 +1,12 @@
-import {prepareFolder} from '../../util'
 import fs from 'fs'
 import moment from 'moment'
+import winston from 'winston'
+import {prepareFolder} from '../../util'
 
 const logFolder = `logs/${moment().format('YYYY-MM-DD-HH-mm')}`
 prepareFolder(logFolder)
+
+winston.handleExceptions(new winston.transports.File({filename: `${logFolder}/error.log`}))
 
 /**
  * Write value message to a log file which name containing context
@@ -25,4 +28,13 @@ export function writeFailure(logContext, value) {
   const filename = `${logFolder}/failed_${logContext || ''}.${Date.now()}.log`
   const message = value instanceof String ? value : JSON.stringify(value)
   fs.writeFileSync(filename, message)
+}
+
+export function writeLog(message, value, {logFileName = 'debug.log'} = {}) {
+  const fullLogPath = `${logFolder}/${logFileName || ''}`
+  let metadata = ''
+  if (value) {
+    metadata = value instanceof String ? value : JSON.stringify(value)
+  }
+  fs.appendFileSync(fullLogPath, `${message} : ${metadata} \n`)
 }

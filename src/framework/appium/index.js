@@ -1,23 +1,16 @@
 import * as webdriverio from 'webdriverio'
 import * as logger from '../common/logger'
 import {convertToDesiredCapabilities} from './helper'
-import api from '../api'
 import config from '../config/test'
 import moment from 'moment'
 import BPromise from 'bluebird'
 import WebSessionTest from './web/wdio-automation-practice-page-test'
+import {createWebDriver} from './driver'
 
 const expectedInMinutes = config.expectedDurationInMinutes
 const defaultSessionDurationInSeconds = moment.duration(expectedInMinutes, 'minutes').asSeconds()
 const defaultSessionAmount = config.longTestSuiteIterationAmount
 const timeout = 60000
-
-const server = {
-  host: config.autoTestHostname,
-  port: config.autoTestPort,
-  user: config.username1,
-  key: null // api key, will fetched when execute test
-}
 
 export async function executeWebSession(
   targetDevices,
@@ -32,14 +25,14 @@ export async function executeWebSession(
 
   return await _execute(
     desiredCapabilitiesList,
-    _createWebSession,
+    createWebDriver,
     options,
     async (driver) => {
       let endedAt
       let duration
       do {
         const webSessionTest = new WebSessionTest(driver, timeout)
-        await webSessionTest.execute() // eslint-disable-line babel/no-await-in-loop
+        await webSessionTest.execute()
 
         endedAt = moment()
         duration = endedAt.diff(startedAt, 'seconds')
@@ -51,26 +44,14 @@ export async function executeWebSession(
   )
 }
 
-export async function executeNativeAppSession() {
-
-}
-
-export async function executeHybridAppSession() {
-
-}
-
 // errorCallback:
-//     when error throw, the callback will be call
+//     + if specified, when error throw, the callback will be call
 // The test will be countinue to execute
+//     + if not specified, the test would throw error and stop executing test
 async function _execute(desiredCapsList, createSession, options, callbackJob, errorCallback) {
-  const apiKey = await getApiKey()
-  if (!apiKey) {
-    throw Error("Can't not get a valid apiKey")
-  }
-
   const jobs = desiredCapsList
     .map((desiredCapabilities) => _launchSession(
-      {desiredCapabilities, ...server, key: apiKey},
+      desiredCapabilities,
       createSession,
       options,
       callbackJob,
@@ -106,13 +87,6 @@ function _reflect(promise) {
   )
 }
 
-export async function getApiKey() {
-  const allKeys = (await api.Key.getAll()).map((t) => {
-    return t.key
-  })
-  return allKeys[0]
-}
-
 async function _launchSession(
   desiredCap,
   createSession,
@@ -122,34 +96,11 @@ async function _launchSession(
 ) {
   for (let i = 0; i < options.sessionAmount; i++) {
     try {
-      await createSession(desiredCap, callbackJob) // eslint-disable-line babel/no-await-in-loop
+      await createSession(desiredCap, callbackJob)
     }
     catch (err) {
       // Callback, countinue executing test
       errorCallback(err, desiredCap.desiredCapabilities)
-    }
-  }
-}
-
-async function _createWebSession(options, callbackJob) {
-  const driver = webdriverio.remote(options)
-  driver.on('error', (e) => {
-    logger.writeFailure(
-      `wdio-test:${options.deviceName}`,
-      'Error while creating web driver',
-      e
-    )
-  })
-
-  try {
-    await callbackJob(driver)
-  }
-  finally {
-    if (driver) {
-      try {
-        await driver.end()
-      }
-      catch (ignored) {}
     }
   }
 }
