@@ -8,7 +8,7 @@ const sessionAmount = 1
 
 setTimeout(async () => {
   const onlineCaps = await Device.getOnlineDevices({
-    platformName:'Android',
+    platformName: 'Android',
     deviceNumbers: config.device.number
   })
   describe('[appium-app] : android-hybrid', async () => {
@@ -22,9 +22,9 @@ setTimeout(async () => {
               sessionAmount
             })
           assert.equal(successfulResult, 1, 'Expected one device is run successfully')
+        })
       })
     })
   })
-})
   run()
 }, 1000)

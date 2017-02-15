@@ -1,8 +1,10 @@
 import * as webdriverio from 'webdriverio'
-import WdioAutomationPracticePageTest from './wdio-automation-practice-page-test'
-import WdioKobitonPageTest from './wdio-kobiton-page-test'
+import AutomationPracticePage from './automation-practice-page'
+import KobitonPage from './kobiton-page'
+import RandomPage from './random-page.js'
+import BPromise from 'bluebird'
 import config from '../../config/test'
-import {getApiKey} from '../'
+import {getApiKey} from '../helper'
 
 const server = {
   host: config.autoTestHostname,
@@ -14,13 +16,46 @@ const server = {
 export async function executeDesiredCapabilitiesTest({desiredCapabilities, timeout}) {
   server.key = await getApiKey()
   const browser = webdriverio.remote({desiredCapabilities, ...server})
-  const wdioKobitonPageTest = new WdioKobitonPageTest(browser, timeout)
-  return await wdioKobitonPageTest.executeTest(1)
+  const kobitonPage = new KobitonPage(browser, timeout)
+  return await kobitonPage.executeTest(1)
 }
 
 export async function executeJsonwiredTest({desiredCapabilities, timeout}) {
   server.key = await getApiKey()
   const browser = webdriverio.remote({desiredCapabilities, ...server})
-  const wdioAutomationPracticeTest = new WdioAutomationPracticePageTest(browser, timeout)
-  return await wdioAutomationPracticeTest.executeTest(1)
+  const automationPracticePage = new AutomationPracticePage(browser, timeout)
+  return await automationPracticePage.executeTest(1)
+}
+
+export async function
+executeMultipleDevicesParallelTest({desiredCapsList, durationInMinutes, timeout}) {
+  const jobs = desiredCapsList
+  .map((desiredCapabilities) => _launchSession({
+    desiredCapabilities,
+    durationInMinutes,
+    timeout
+  }))
+  .map((promise) => _reflect(promise))
+
+  const finishedJobs = await BPromise.all(jobs)
+
+  return finishedJobs
+}
+
+async function _launchSession({desiredCapabilities, durationInMinutes, timeout}) {
+  server.key = await getApiKey()
+  const browser = webdriverio.remote({desiredCapabilities, ...server})
+  const randomPage = new RandomPage(browser, timeout)
+  await randomPage.executeTest(durationInMinutes)
+}
+
+function _reflect(promise) {
+  return promise.then(
+    function (value) {
+      return {value, status: 'resolved'}
+    },
+    function (err) {
+      return {err, status: 'rejected'}
+    }
+  )
 }

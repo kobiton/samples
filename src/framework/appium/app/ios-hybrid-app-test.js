@@ -1,4 +1,3 @@
-import BPromise from 'bluebird'
 import * as logger from '../../../framework/common/logger'
 
 export default class IosHybridAppTest {
@@ -19,8 +18,8 @@ export default class IosHybridAppTest {
         .sendKeys('test hybrid')
         .waitForElementByCss('button#bookmarkBtn')
         .click()
-      }
-    catch(err) {
+    }
+    catch (err) {
       logger.writeLog('Test support hybrid iOS app is failed by:', err)
     }
   }

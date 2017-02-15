@@ -73,9 +73,11 @@ export default class AndroidNativeAppTest {
         .elementByXPath("//android.widget.TextView[@content-desc='Bouncing Balls']")
         .click()
         .elementById('container')
-        .flick(this.getRandomInt(1, 1000), this.getRandomInt(-200, 200), this.getRandomInt(100, 1000))
+        .flick(this.getRandomInt(1, 1000),
+          this.getRandomInt(-200, 200), this.getRandomInt(100, 1000))
         .sleep(5)
-        .flick(this.getRandomInt(-200, 200), this.getRandomInt(-1000, 0), this.getRandomInt(100, 1000))
+        .flick(this.getRandomInt(-200, 200),
+          this.getRandomInt(-1000, 0), this.getRandomInt(100, 1000))
         .back()
         .back()
         .getOrientation()

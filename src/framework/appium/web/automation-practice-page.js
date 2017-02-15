@@ -2,7 +2,7 @@ import faker from 'faker'
 import {debug} from '@kobiton/core-util'
 import moment from 'moment'
 
-const createAccountPage = {
+const elements = {
   // Authntication screen
   authenticationUrl: 'http://automationpractice.com/index.php?controller=authentication&back=my-account',
   emailCreateText: '#email_create',
@@ -41,7 +41,7 @@ const createAccountPage = {
   registerError: '//*[@id="center_column"]/div'
 }
 
-export default class WdioAutomationPracticePageTest {
+export default class AutomationPracticePage {
   constructor(browser, timeOut) {
     this._browser = browser
     this._timeOut = timeOut
@@ -68,47 +68,47 @@ export default class WdioAutomationPracticePageTest {
 
   async _run() {
     return await this._browser
-      .url(createAccountPage.authenticationUrl)
+      .url(elements.authenticationUrl)
       .getSource()
       .pause(1000)
-      .addValue(createAccountPage.searchText, 't-shirt')
+      .addValue(elements.searchText, 't-shirt')
       .keys(' woman')
-      .hold(createAccountPage.searchText)
+      .hold(elements.searchText)
       .hideDeviceKeyboard()
-      .click(createAccountPage.searchButton)
+      .click(elements.searchButton)
       .timeoutsImplicitWait(this._timeOut)
       .back()
       .forward()
       .back()
-      .setValue(createAccountPage.emailCreateText, faker.internet.email())
-      .click(createAccountPage.createAnAccountButton)
+      .setValue(elements.emailCreateText, faker.internet.email())
+      .click(elements.createAnAccountButton)
       .timeouts('page load', this._timeOut)
       .getTitle()
       .cookie()
       .setCookie({name: 'test', value: '123'})
 
       // Property: get an attribute from a DOM-element based on the selector and attribute name
-      .getAttribute(createAccountPage.customerLastNameText, 'type')
-      .getCssProperty(createAccountPage.registerButton, 'color')
-      .getElementSize(createAccountPage.customerLastNameText)
-      .getHTML(createAccountPage.customerLastNameText)
-      .getLocation(createAccountPage.customerLastNameText)
-      .getLocationInView(createAccountPage.genderOptionMrs)
-      .getTagName(createAccountPage.customerLastNameText)
-      .getText(createAccountPage.pageHeading).then((text) => {
+      .getAttribute(elements.customerLastNameText, 'type')
+      .getCssProperty(elements.registerButton, 'color')
+      .getElementSize(elements.customerLastNameText)
+      .getHTML(elements.customerLastNameText)
+      .getLocation(elements.customerLastNameText)
+      .getLocationInView(elements.genderOptionMrs)
+      .getTagName(elements.customerLastNameText)
+      .getText(elements.pageHeading).then((text) => {
         debug.log('automation practice page:', text)
       })
-      .getValue(createAccountPage.email).then((value) => {
+      .getValue(elements.email).then((value) => {
         debug.log('automation practice page:', value)
       })
       .getUrl()
 
       // State: get status of a DOM-element based on the selector
-      .isEnabled(createAccountPage.customerLastNameText)
-      .isExisting(createAccountPage.customerLastNameText)
-      .isSelected(createAccountPage.customerLastNameText)
-      .isVisible(createAccountPage.customerLastNameText)
-      .isVisibleWithinViewport(createAccountPage.email)
+      .isEnabled(elements.customerLastNameText)
+      .isExisting(elements.customerLastNameText)
+      .isSelected(elements.customerLastNameText)
+      .isVisible(elements.customerLastNameText)
+      .isVisibleWithinViewport(elements.email)
 
       // Mobile: do mobile actions
       .isLocked()
@@ -120,57 +120,57 @@ export default class WdioAutomationPracticePageTest {
       .buttonUp(2)
 
       // Actions: do action on an object found by given selector
-      .click(createAccountPage.genderOptionMrs)
-      .waitForSelected(createAccountPage.genderOptionMrs, this._timeOut)
-      .clearElement(createAccountPage.email)
-      .selectByAttribute(createAccountPage.dateOfBirthSelect, 'value', '2')
-      .selectByIndex(createAccountPage.monthOfBirthSelect, 4)
-      .selectByValue(createAccountPage.yearOfBirthSelect, '1991')
-      .waitForExist(createAccountPage.customerFirstNameText, this._timeOut)
-      .setValue(createAccountPage.customerFirstNameText, faker.name.firstName())
-      .setValue(createAccountPage.customerLastNameText, faker.name.lastName())
-      .setValue(createAccountPage.passwordText, faker.internet.password())
-      .selectByIndex(createAccountPage.dateOfBirthSelect, 3)
-      .selectByValue(createAccountPage.monthOfBirthSelect, '3')
-      .selectByValue(createAccountPage.yearOfBirthSelect, '1980')
-      .click(createAccountPage.newsLetterCheckbox)
-      .click(createAccountPage.specialOfferCheckbox)
-      .setValue(createAccountPage.firstAddressText, faker.address.streetAddress())
-      .setValue(createAccountPage.cityText, faker.address.city())
-      .selectByVisibleText(createAccountPage.stateSelect, faker.address.state())
-      .setValue(createAccountPage.zipCodeText, faker.address.zipCode())
+      .click(elements.genderOptionMrs)
+      .waitForSelected(elements.genderOptionMrs, this._timeOut)
+      .clearElement(elements.email)
+      .selectByAttribute(elements.dateOfBirthSelect, 'value', '2')
+      .selectByIndex(elements.monthOfBirthSelect, 4)
+      .selectByValue(elements.yearOfBirthSelect, '1991')
+      .waitForExist(elements.customerFirstNameText, this._timeOut)
+      .setValue(elements.customerFirstNameText, faker.name.firstName())
+      .setValue(elements.customerLastNameText, faker.name.lastName())
+      .setValue(elements.passwordText, faker.internet.password())
+      .selectByIndex(elements.dateOfBirthSelect, 3)
+      .selectByValue(elements.monthOfBirthSelect, '3')
+      .selectByValue(elements.yearOfBirthSelect, '1980')
+      .click(elements.newsLetterCheckbox)
+      .click(elements.specialOfferCheckbox)
+      .setValue(elements.firstAddressText, faker.address.streetAddress())
+      .setValue(elements.cityText, faker.address.city())
+      .selectByVisibleText(elements.stateSelect, faker.address.state())
+      .setValue(elements.zipCodeText, faker.address.zipCode())
       .selectorExecute('//input', (divs, message) => {
         return `${divs.length}message`
       }, 'input on the page')
       .selectorExecuteAsync('//div', (divs, message, callback) => {
         callback(divs.length + message)
       }, 'divs on the page')
-      .submitForm(createAccountPage.accountCreationForm)
-      .waitForExist(createAccountPage.createAnAccountButton, this._timeOut)
-      .setValue(createAccountPage.emailCreateText, faker.internet.email())
-      .click(createAccountPage.createAnAccountButton)
-      .waitForEnabled(createAccountPage.customerFirstNameText, this._timeOut)
-      .click(createAccountPage.registerButton)
-      .waitForVisible(createAccountPage.registerError, this._timeOut)
+      .submitForm(elements.accountCreationForm)
+      .waitForExist(elements.createAnAccountButton, this._timeOut)
+      .setValue(elements.emailCreateText, faker.internet.email())
+      .click(elements.createAnAccountButton)
+      .waitForEnabled(elements.customerFirstNameText, this._timeOut)
+      .click(elements.registerButton)
+      .waitForVisible(elements.registerError, this._timeOut)
       .frame()
       .frameParent()
-      .waitForValue(createAccountPage.email, this._timeOut)
+      .waitForValue(elements.email, this._timeOut)
       .screenshot()
       .pause(this._timeOut)
       .saveScreenshot('./reports/test/screenshot.png')
-      .scroll(createAccountPage.address1, 85, 195)
+      .scroll(elements.address1, 85, 195)
 
       // Protocol
-      .elements(createAccountPage.tagForm)
-      .elementActive(createAccountPage.genderOptionMrs).then((elemActive) => {
+      .elements(elements.tagForm)
+      .elementActive(elements.genderOptionMrs).then((elemActive) => {
         this._browser.elementIdClick(elemActive.value.ELEMENT)
       })
-      .element(createAccountPage.email).then((element) => {
+      .element(elements.email).then((element) => {
         this._browser
           .elementIdClear(element.value.ELEMENT)
           .elementIdDisplayed(element.value.ELEMENT)
           .elementIdCssProperty(element.value.ELEMENT, 'background-color')
-          .elementIdElement(element.value.ELEMENT, createAccountPage.email)
+          .elementIdElement(element.value.ELEMENT, elements.email)
           .elementIdName(element.value.ELEMENT)
           .elementIdValue(element.value.ELEMENT, 'test')
       })

@@ -35,7 +35,7 @@ export default class AndroidHybridAppTest {
       .elementById('goBack')
       .click()
     }
-    catch(err) {
+    catch (err) {
       logger.writeLog('Test support hybrid android app is failed by:', err)
     }
   }

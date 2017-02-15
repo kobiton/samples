@@ -145,8 +145,8 @@ export default class IosNativeAppTest {
         .execute('mobile: scroll', [{direction: 'right}])
         .execute('mobile: scroll', [{direction: 'left'}])
         **/
-      }
-    catch(err) {
+    }
+    catch (err) {
       logger.writeLog('Test support native iOS app is failed by:', err)
     }
   }

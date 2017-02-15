@@ -17,14 +17,14 @@ const yargs = require('yargs')
   .options('tsLoopAmount', {
     alias: 'longTestSuiteIterationAmount',
     demand: false,
-    default: 10,
+    default: 2,
     describe: 'test suite iteration amount',
     type: 'number'
   })
   .options('duration', {
     alias: 'mobileTestDuration',
     demand: false,
-    default: 5,
+    default: 1,
     describe: 'Expected duration (minutes)',
     type: 'number'
   })
@@ -62,6 +62,13 @@ const yargs = require('yargs')
     default: 'all',
     describe: 'Group of mobile device',
     type: 'string'
+  })
+  .options('captureScreenshots', {
+    alias: 'captureScreenshots',
+    demand: false,
+    default: false,
+    describe: 'capture screenshot of device',
+    type: 'boolean'
   })
   .options('deviceNumbers', {
     alias: 'deviceNumbers',

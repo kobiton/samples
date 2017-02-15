@@ -29,7 +29,8 @@ const config = {
     udid: args.deviceUDID,
     orientation: args.deviceOrientation,
     group: args.deviceGroup,
-    number: args.deviceNumbers
+    number: args.deviceNumbers,
+    captureScreenshots: args.captureScreenshots
   },
   manual: {
     screenQuality: args.screenQuality,

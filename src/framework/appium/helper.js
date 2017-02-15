@@ -7,7 +7,7 @@ let apiKey
 
 export function convertToDesiredCapabilities(devices, {
   deviceOrientation = config.device.orientation,
-  captureScreenshots = true
+  captureScreenshots = config.device.captureScreenshots
 } = {}) {
   return devices
     .map((d) => {
@@ -19,7 +19,7 @@ export function convertToDesiredCapabilities(devices, {
 
 export function convertToDesiredCapabilitiesApp(appInfor, devices, {
   deviceOrientation = config.deviceOrientation,
-  captureScreenshots = true
+  captureScreenshots = config.device.captureScreenshots
 } = {}) {
   return devices
     .map((d) => {
@@ -54,16 +54,19 @@ function getDefaultBrowserBy(platformName) {
 function getDeviceGroup(device) {
   if (device.isCloud) {
     return 'KOBITON'
-  } else if (device.isMyOrg) {
+  }
+  else if (device.isMyOrg) {
     return 'ORGANIZATION'
-  } else if (device.isMyOwn) {
+  }
+  else if (device.isMyOwn) {
     return 'PERSONAL'
-  } else {
-      throw new Error('This device doesn\'t belong any group')
+  }
+  else {
+    throw new Error('This device doesn\'t belong any group')
   }
 }
 
-export async function _getApiKey() {
+export async function getApiKey() {
   const allKeys = (await Key.getAll()).map((t) => {
     return t.key
   })
@@ -76,7 +79,7 @@ export async function _getApiKey() {
 }
 
 export async function createServerConfig() {
-  apiKey = await _getApiKey()
+  apiKey = await getApiKey()
   return {
     host: config.autoTestHostname,
     auth: `${config.username1}:${apiKey}`,
