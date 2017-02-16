@@ -19,7 +19,7 @@ export default class APIKeysPage extends AuthenticatedPage {
   }
 
   getAPIKeys() {
-    let apiKeyValueDivs = this.elements.apiKeyValueDivs
+    let apiKeyValueDivs = this.getElements(elements.apiKeyValueDivs)
     let keys = apiKeyValueDivs.map((keyDiv) => keyDiv.getText())
     return keys
   }

@@ -1,10 +1,10 @@
 import fs from 'fs'
 import moment from 'moment'
 import winston from 'winston'
-import {prepareFolder} from '../../util'
+import {prepareFolderSync} from '../../util'
 
 const logFolder = `logs/${moment().format('YYYY-MM-DD-HH-mm')}`
-prepareFolder(logFolder)
+prepareFolderSync(logFolder)
 
 winston.handleExceptions(new winston.transports.File({filename: `${logFolder}/error.log`}))
 

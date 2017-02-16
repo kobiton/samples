@@ -33,6 +33,7 @@
     "jsonfile": "^2.4.0",
     "lint": "^1.1.2",
     "lodash": "^4.17.2",
+    "mkdirp": "^0.5.1",
     "mocha": "^2.5.3",
     "mocha-junit-reporter": "^1.12.1",
     "mochawesome": "^1.5.2",

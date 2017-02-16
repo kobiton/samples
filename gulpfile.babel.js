@@ -25,33 +25,45 @@ let argv = yargs.parse()
 gulp.task('clean', clean([Paths.DIST, Paths.BUILD]))
 gulp.task('build', ['clean'], build(['src/**/*.js'], 'build'))
 gulp.task('run-test', ['build'], async () => {
-  let inputPath = argv.input
-
   // Initialize value for test such as: default url, username, password
   const preSetupTests = require('./build/test/setup.js')
   await preSetupTests()
 
-  if (inputPath.includes('/browser')) {
-    return startBrowserTests('./build/test' + inputPath)
-  } else if (inputPath.includes('/console')) {
-    return startConsoleTests('./build/test' + inputPath)
+  //Execute test base on 'task' then 'input'
+  let taskName = argv.task
+  if (taskName) {
+    return executeDefinedTask(taskName)
   } else {
-    return startUatTest(inputPath)
+    let inputPath = argv.input
+    if (inputPath.includes('/browser')) {
+      return startBrowserTests('./build/test' + inputPath)
+    } else if (inputPath.includes('/console')) {
+      return startConsoleTests('./build/test' + inputPath)
+    } else {
+      return startUatTest(inputPath)
+    }
   }
+
 })
 
-gulp.task('test-manual', ['build'], async () => {
-  try {
-    // Initialize value for test such as: default url, username, password
-    const preSetupTests = require('./build/test/setup.js')
-    const runManual =  require('./build/test/browser/manual/manual-setup')
-    await preSetupTests()
-    await runManual()
+async function executeDefinedTask(taskName) {
+  switch (taskName) {
+    case 'test-manual':
+      try {
+        const runManual = require('./build/test/browser/manual/manual-setup')
+        await runManual()
+      }
+      catch(err) {
+        debug.error('test-manual', err)
+      }
+    break
+    case 'summary-metrics':
+      const metrics = require('./build/framework/common/metrics')
+      await metrics.summaryMetrics()
+      await clean([metrics.metricsRawDataFolder])()
+    break
   }
-  catch(err) {
-    debug.error('test-manual', err)
-  }
-})
+}
 
 function startBrowserTests(inputPath) {
   if (fs.lstatSync(inputPath).isDirectory()) {

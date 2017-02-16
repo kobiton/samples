@@ -77,20 +77,14 @@ export default class Page {
   /**
    * Go through all of elements and create getter function for each of element
    * @param  {object} elements [description]
-   * @return {object} element         if the element key is singular, could throw exception
-   *                                    if element not found
-   *         {array}  elements        if the element key is plural
+   * @return {object} element   could throw exception
+   *                             if element not found
    */
   _initElementsGetter(elements) {
     Object.keys(elements).forEach((key) => {
       Object.defineProperty(this._elements, key, {
         get: () => {
-          if (this._isPluralSelectorName(key)) {
-            return this._getElements(elements[key])
-          }
-          else {
-            return this._getElement(elements[key])
-          }
+          return this._getElement(elements[key])
         }
       })
     })
@@ -117,7 +111,7 @@ export default class Page {
  * @param   {selector} is a string to identify objects
  * @returns {element} return an array of web element objects
  */
-  _getElements(selectorValue) {
+  getElements(selectorValue) {
     let elements = []
     let response = this._browser.elements(selectorValue)
 

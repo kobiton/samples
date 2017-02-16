@@ -1,5 +1,12 @@
 const yargs = require('yargs')
   .usage('npm test -- [options]')
+  .options('t', {
+    alias: 'task',
+    demand: false,
+    default: null,
+    describe: 'Name of the task to be executed',
+    type: 'string'
+  })
   .options('i', {
     alias: 'input',
     demand: false,
