@@ -15,6 +15,7 @@ class Device extends Base {
     platformName,
     platformVersion,
     deviceName,
+    deviceUDID,
     deviceNumbers
   } = {}) {
     const devicesGroups = await this._getDevices()
@@ -46,6 +47,10 @@ class Device extends Base {
       devices = devices.filter((d) => d.deviceName.toLowerCase().includes(deviceName))
     }
 
+    if (deviceUDID) {
+      devices = devices.filter((d) => d.udid === deviceUDID)
+    }
+
     if (!isNaN(deviceNumbers)) {
       devices = devices.length > deviceNumbers ? devices.slice(0, deviceNumbers) : devices
     }
@@ -58,6 +63,7 @@ class Device extends Base {
     platformName = config.device.platform,
     platformVersion = config.device.version,
     deviceName = config.device.name,
+    deviceUDID = config.device.udid,
     deviceNumbers
   } = {}) {
 
@@ -66,6 +72,7 @@ class Device extends Base {
       platformName,
       platformVersion,
       deviceName,
+      deviceUDID,
       deviceNumbers
     })
   }
