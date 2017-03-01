@@ -3,28 +3,26 @@ import Device from '../../../../framework/api/device'
 import config from '../../../../framework/config/test'
 import {executeAndroidHybridApp} from '../../../../framework/appium/app'
 
-const expectedDurationInMinutes = config.expectedDurationInMinutes
-const sessionAmount = 1
+const runLoop = config.longTestSuiteIterationAmount
 
 setTimeout(async () => {
   const onlineCaps = await Device.getOnlineDevices({
-    platformName: 'Android',
-    deviceNumbers: config.device.number
+    platformName: 'Android'
   })
+  assert.isAtLeast(onlineCaps.length, 1, 'Expected at least 1 online devices')
   describe('[appium-app] : android-hybrid', async () => {
-    onlineCaps.forEach((device) => {
-      describe(`${device.deviceName} : ${device.platformVersion} `, async () => {
-        it(`should run test in ${expectedDurationInMinutes} minutes`, async () => {
-          const successfulResult = await executeAndroidHybridApp(
-            [device],
-            {
-              sessionDuration: expectedDurationInMinutes * 60,
-              sessionAmount
-            })
-          assert.equal(successfulResult, 1, 'Expected one device is run successfully')
-        })
+    for (let n = 0; n < onlineCaps.length; n++) {
+      let udid = (onlineCaps[n].udid) ? `with ${onlineCaps[n].udid}` : ''
+      describe(`[${n + 1}]${onlineCaps[n].deviceName} ${udid}:${onlineCaps[n].platformVersion}`,
+      async () => {
+        for (let i = 0; i < runLoop; i++) {
+          it(`should run successfully test in loop ${i + 1}/${runLoop}`, async () => {
+            const successfulResult = await executeAndroidHybridApp([onlineCaps[n]])
+            assert.equal(successfulResult, 1, 'Expected one device is run successfully')
+          })
+        }
       })
-    })
+    }
   })
   run()
 }, 1000)

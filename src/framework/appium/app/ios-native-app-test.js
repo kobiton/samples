@@ -32,10 +32,6 @@ export default class IosNativeAppTest {
         .currentContext()
         .contexts()
         .context('NATIVE_APP')
-        .availableIMEEngines()
-        .activeIMEEngine()
-        .deactivateIMEEngine()
-        .activeIMEEngine()
         .element('xpath', '//UIAStaticText[@name="Activity Indicators"]').then((ele) => {
           this._driver
           .isEnabled(ele)
@@ -148,6 +144,7 @@ export default class IosNativeAppTest {
     }
     catch (err) {
       logger.writeLog('Test support native iOS app is failed by:', err)
+      throw err
     }
   }
 }

@@ -1,11 +1,12 @@
 import * as webdriverio from 'webdriverio'
 import AutomationPracticePage from './automation-practice-page'
 import KobitonPage from './kobiton-page'
-import RandomPage from './random-page.js'
+import RandomPage from './random-page'
 import BPromise from 'bluebird'
 import config from '../../config/test'
 import {getApiKey} from '../helper'
 
+const duration = config.expectedDurationInMinutes
 const server = {
   host: config.autoTestHostname,
   port: config.autoTestPort,
@@ -24,7 +25,14 @@ export async function executeJsonwiredTest({desiredCapabilities, timeout}) {
   server.key = await getApiKey()
   const browser = webdriverio.remote({desiredCapabilities, ...server})
   const automationPracticePage = new AutomationPracticePage(browser, timeout)
-  return await automationPracticePage.executeTest(1)
+  return await automationPracticePage.executeTest(duration)
+}
+
+export async function executeKobitonPageTest({desiredCapabilities, timeout}) {
+  server.key = await getApiKey()
+  const browser = webdriverio.remote({desiredCapabilities, ...server})
+  const kobitonPage = new KobitonPage(browser, timeout)
+  return await kobitonPage.executeTest(duration)
 }
 
 export async function

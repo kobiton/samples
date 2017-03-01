@@ -21,6 +21,7 @@ export default class IosHybridAppTest {
     }
     catch (err) {
       logger.writeLog('Test support hybrid iOS app is failed by:', err)
+      throw err
     }
   }
 }

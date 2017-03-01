@@ -64,7 +64,7 @@ class Device extends Base {
     platformVersion = config.device.version,
     deviceName = config.device.name,
     deviceUDID = config.device.udid,
-    deviceNumbers
+    deviceNumbers = config.device.number
   } = {}) {
 
     return await this._getOnlineDevicesBy({

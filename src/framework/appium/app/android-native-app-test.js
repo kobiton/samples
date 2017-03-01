@@ -15,6 +15,7 @@ export default class AndroidNativeAppTest {
     try {
       await this._driver // eslint-disable-line babel/no-await-in-loop
         .elementByXPath("//android.widget.TextView[@content-desc='App']")
+        .waitForElementByXPath("//android.widget.TextView[@content-desc='App']", waitingTime)
         .sleep(10)
         .noop()
         .click()
@@ -87,23 +88,8 @@ export default class AndroidNativeAppTest {
         .openNotifications()
         .logTypes()
         .currentContext()
-        .lockDevice()
-        .unlockDevice()
-        .lock() // we must unlock Settings from device
-        .unlock()
-        // .eval('window.location.href')
-        .toggleWiFiOnDevice()
-        .toggleWiFi()
         .getNetworkConnection()
         .setNetworkConnection(1)
-        .toggleLocationServicesOnDevice()
-        .toggleLocationServices()
-        .back()
-        .toggleDataOnDevice()
-        .back()
-        .toggleData()
-        .toggleWiFiOnDevice()
-        .toggleWiFi()
         .startActivity({
           appPackage: 'io.appium.android.apis',
           appActivity: '.accessibility.AccessibilityNodeProviderActivity'
@@ -114,9 +100,25 @@ export default class AndroidNativeAppTest {
         .backgroundApp(5)
         .getSessionId()
 
+        /** List supported apis but we can not run in spite of our setting
+          .lockDevice()
+          .unlockDevice()
+          .lock()
+          .unlock()
+          .toggleWiFiOnDevice()
+          .toggleWiFi()
+          .toggleLocationServicesOnDevice()
+          .toggleLocationServices()
+          .back()
+          .toggleDataOnDevice()
+          .back()
+          .toggleData()
+        **/
+
         /** TODO: List of unsupported apis
          .status()
          .altSessionCapabilities({'platformName': 'android'})
+         .eval('window.location.href')
          .alertText()
          .dismissAlert()
          .session()
@@ -129,11 +131,14 @@ export default class AndroidNativeAppTest {
          .setLocalStorageKey()
          .getLocalStorageKey()
          .activatedIMEEngine()
+         .toggleWiFiOnDevice()
+         .toggleWiFi()
          **/
 
     }
-    catch(err) {
+    catch (err) {
       logger.writeLog('Test support native android app is failed by:', err)
+      throw err
     }
   }
 }

@@ -17,26 +17,24 @@ export default class AndroidHybridAppTest {
       .click()
       .source()
       .contexts()
-      .elementById('name_input')
-      .text()
-      .elementById('name_input')
-      .clear()
-      .elementById('name_input')
-      .sendKeys('test hybrid 2')
-      .elementById('name_input')
-      .getAttribute('enabled')
-      .elementById('name_input')
-      .text()
-      .elementByXPath("//android.widget.Button[@content-desc='Send me your name!']")
+      .context('NATIVE_APP') // here is in native app
+      .elementByXPath('//android.widget.TableRow')
       .click()
-      .elementByXPath("//android.view.View[@content-desc='Your name is:']")
-      .getAttribute('checked')
-      .context('HYBRID_APP')
-      .elementById('goBack')
+      .source()
+      .elementByXPath("//android.widget.EditText[@content-desc='Enter your name here!']")
+      .text()
+      .elementByXPath("//android.widget.EditText[@content-desc='Enter your name here!']")
+      .clear()
+      .elementByXPath("//android.widget.EditText[@content-desc='']")
+      .sendKeys('test hybrid 2')
+      .elementByXPath("//android.widget.EditText[@content-desc='test hybrid 2']")
+      .getAttribute('enabled')
+      .elementByXPath("//android.widget.Button[@content-desc='Send me your name!']")
       .click()
     }
     catch (err) {
       logger.writeLog('Test support hybrid android app is failed by:', err)
+      throw err
     }
   }
 }

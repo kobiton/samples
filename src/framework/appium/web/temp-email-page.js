@@ -35,9 +35,6 @@ export default class TempEmailPage {
         duration = endedAt.diff(startedAt, 'minutes')
       } while (duration < expectedDurationInMinutes)
     }
-    catch (err) {
-      throw err
-    }
     finally {
       await this._browser.end()
     }

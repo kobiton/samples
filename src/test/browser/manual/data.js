@@ -1,7 +1,11 @@
 import jsonfile from 'jsonfile'
+import moment from 'moment'
 import BaseData from '../../_data'
+import {prepareFolderSync} from '../../../framework/util'
 
-const file = 'reports/onlineDevices.json'
+const onlineDeviceFolder = `onlineDevices/${moment().format('YYYY-MM-DD-HH-mm')}`
+const file = 'onlineDevices.json'
+prepareFolderSync(onlineDeviceFolder)
 
 class ManualData extends BaseData {
 

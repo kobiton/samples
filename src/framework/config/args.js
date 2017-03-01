@@ -24,14 +24,14 @@ const yargs = require('yargs')
   .options('tsLoopAmount', {
     alias: 'longTestSuiteIterationAmount',
     demand: false,
-    default: 2,
+    default: 1,
     describe: 'test suite iteration amount',
     type: 'number'
   })
   .options('duration', {
     alias: 'mobileTestDuration',
     demand: false,
-    default: 1,
+    default: 2,
     describe: 'Expected duration (minutes)',
     type: 'number'
   })
@@ -80,7 +80,7 @@ const yargs = require('yargs')
   .options('numbers', {
     alias: 'deviceNumbers',
     demand: false,
-    default: 2,
+    default: 1000, // default is get all online devices of group
     describe: 'number of mobile devices',
     type: 'number'
   })

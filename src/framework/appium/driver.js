@@ -30,7 +30,7 @@ export async function createAppDriver(caps, callbackJob) {
   const driver = await createDriver(serverConfig, caps)
   driver.on('error', (e) => {
     logger.writeLog(
-      `info cap:${caps}, Error while creating native driver`, e
+      `info cap:${caps}, Error while creating apps driver`, e
     )
   })
   if (driver !== null) {

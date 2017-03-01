@@ -28,9 +28,6 @@ export default class WdioKobitonPageTest {
         duration = endedAt.diff(startedAt, 'minutes')
       } while (duration < expectedDurationInMinutes)
     }
-    catch (err) {
-      throw new Error(`duration: ${duration} - ${JSON.stringify(err)}`)
-    }
     finally {
       await this._browser.end()
     }

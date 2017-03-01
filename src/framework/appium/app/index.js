@@ -7,12 +7,10 @@ import AndroidNativeAppTest from './android-native-app-test'
 import AndroidHybridAppTest from './android-hybrid-app-test'
 import IosNativeAppTest from './ios-native-app-test'
 import IosHybridAppTest from './ios-hybrid-app-test'
-import {createAppDriver} from '../../appium/driver'
+import {createAppDriver, quitDriver} from '../../appium/driver'
 
-const expectedInMinutes = config.expectedDurationInMinutes
-const defaultSessionDurationInSeconds = moment.duration(expectedInMinutes, 'minutes').asSeconds()
+const defaultSessionDurationInSeconds = config.expectedDurationInMinutes * 60
 const defaultSessionAmount = config.longTestSuiteIterationAmount
-const timeout = 60000
 const desiredCapabilitiesAndroidNativeApp = {
   app: 'http://appium.github.io/appium/assets/ApiDemos-debug.apk',
   appPackage: 'io.appium.android.apis',
@@ -42,7 +40,8 @@ export async function executeAndroidNativeApp(
     sessionAmount: defaultSessionAmount
   }) {
 
-  const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(desiredCapabilitiesAndroidNativeApp, targetDevices)
+  const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
+    desiredCapabilitiesAndroidNativeApp, targetDevices)
   const startedAt = moment()
 
   return await _execute(
@@ -52,13 +51,18 @@ export async function executeAndroidNativeApp(
     async (driver) => {
       let endedAt
       let duration
-      do {
+      try {
         const androidNativeAppTest = new AndroidNativeAppTest(driver)
-        await androidNativeAppTest.executeAndroidNativeTest()
-
-        endedAt = moment()
-        duration = endedAt.diff(startedAt, 'seconds')
-      } while (duration < options.sessionDuration)
+        do {
+          // eslint-disable-next-line babel/no-await-in-loop
+          await androidNativeAppTest.executeAndroidNativeTest()
+          endedAt = moment()
+          duration = endedAt.diff(startedAt, 'seconds')
+        } while (duration < options.sessionDuration)
+      }
+      finally {
+        await quitDriver(driver)
+      }
     },
     (err, cap) => {
       logger.writeFailure(cap.deviceName, JSON.stringify(err))
@@ -73,7 +77,8 @@ export async function executeIOSNativeApp(
     sessionAmount: defaultSessionAmount
   }) {
 
-  const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(desiredCapabilitiesiOSNativeApp, targetDevices)
+  const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
+    desiredCapabilitiesiOSNativeApp, targetDevices)
   const startedAt = moment()
 
   return await _execute(
@@ -83,13 +88,18 @@ export async function executeIOSNativeApp(
     async (driver) => {
       let endedAt
       let duration
-      do {
+      try {
         const iOSNativeAppTest = new IosNativeAppTest(driver)
-        await iOSNativeAppTest.executeIosNativeTest()
-
-        endedAt = moment()
-        duration = endedAt.diff(startedAt, 'seconds')
-      } while (duration < options.sessionDuration)
+        do {
+        // eslint-disable-next-line babel/no-await-in-loop
+          await iOSNativeAppTest.executeIosNativeTest()
+          endedAt = moment()
+          duration = endedAt.diff(startedAt, 'seconds')
+        } while (duration < options.sessionDuration)
+      }
+      finally {
+        await quitDriver(driver)
+      }
     },
     (err, cap) => {
       logger.writeFailure(cap.deviceName, JSON.stringify(err))
@@ -103,7 +113,8 @@ export async function executeAndroidHybridApp(
     sessionAmount: defaultSessionAmount
   }) {
 
-  const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(desiredCapabilitiesAndroidHybridApp, targetDevices)
+  const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
+    desiredCapabilitiesAndroidHybridApp, targetDevices)
   const startedAt = moment()
 
   return await _execute(
@@ -113,13 +124,18 @@ export async function executeAndroidHybridApp(
     async (driver) => {
       let endedAt
       let duration
-      do {
+      try {
         const androidHybridAppTest = new AndroidHybridAppTest(driver)
-        await androidHybridAppTest.executeAndroidHybridTest()
-
-        endedAt = moment()
-        duration = endedAt.diff(startedAt, 'seconds')
-      } while (duration < options.sessionDuration)
+        do {
+          // eslint-disable-next-line babel/no-await-in-loop
+          await androidHybridAppTest.executeAndroidHybridTest()
+          endedAt = moment()
+          duration = endedAt.diff(startedAt, 'seconds')
+        } while (duration < options.sessionDuration)
+      }
+      finally {
+        await quitDriver(driver)
+      }
     },
     (err, cap) => {
       logger.writeFailure(cap.deviceName, JSON.stringify(err))
@@ -133,7 +149,8 @@ export async function executeIOSHybridApp(
     sessionAmount: defaultSessionAmount
   }) {
 
-  const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(desiredCapabilitiesiOSHybridApp, targetDevices)
+  const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
+    desiredCapabilitiesiOSHybridApp, targetDevices)
   const startedAt = moment()
 
   return await _execute(
@@ -143,13 +160,19 @@ export async function executeIOSHybridApp(
     async (driver) => {
       let endedAt
       let duration
-      do {
+      try {
         const iOSHybridAppTest = new IosHybridAppTest(driver)
-        await iOSHybridAppTest.executeIosHybridTest()
+        do {
+          // eslint-disable-next-line babel/no-await-in-loop
+          await iOSHybridAppTest.executeIosHybridTest()
 
-        endedAt = moment()
-        duration = endedAt.diff(startedAt, 'seconds')
-      } while (duration < options.sessionDuration)
+          endedAt = moment()
+          duration = endedAt.diff(startedAt, 'seconds')
+        } while (duration < options.sessionDuration)
+      }
+      finally {
+        await quitDriver(driver)
+      }
     },
     (err, cap) => {
       logger.writeFailure(cap.deviceName, JSON.stringify(err))
@@ -207,13 +230,11 @@ async function _launchSession(
   callbackJob,
   errorCallback
 ) {
-  for (let i = 0; i < options.sessionAmount; i++) {
-    try {
-      await createSession(desiredCap, callbackJob)
-    }
-    catch (err) {
-      // Callback, countinue executing test
-      errorCallback(err, desiredCap.desiredCapabilities)
-    }
+  try {
+    await createSession(desiredCap, callbackJob)
+  }
+  catch (err) {
+    // Callback, countinue executing test
+    errorCallback(err, desiredCap.desiredCapabilities)
   }
 }
