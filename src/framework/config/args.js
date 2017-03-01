@@ -42,14 +42,14 @@ const yargs = require('yargs')
     describe: 'Specific device for mobile',
     type: 'string'
   })
-  .options('deviceName', {
+  .options('name', {
     alias: 'deviceName',
     demand: false,
     default: null,
     describe: 'Specify device name to run test',
     type: 'string'
   })
-  .options('deviceUDID', {
+  .options('udid', {
     alias: 'deviceUDID',
     demand: false,
     default: null,
@@ -70,28 +70,28 @@ const yargs = require('yargs')
     describe: 'Group of mobile device',
     type: 'string'
   })
-  .options('captureScreenshots', {
+  .options('screenshots', {
     alias: 'captureScreenshots',
     demand: false,
     default: false,
     describe: 'capture screenshot of device',
     type: 'boolean'
   })
-  .options('deviceNumbers', {
+  .options('numbers', {
     alias: 'deviceNumbers',
     demand: false,
-    default: 1,
+    default: 2,
     describe: 'number of mobile devices',
     type: 'number'
   })
-  .options('screenQuality', {
+  .options('quality', {
     alias: 'screenQuality',
     demand: false,
     default: 'Medium',
     describe: 'Screen quality of manual test',
     type: 'string'
   })
-  .options('maxBrowserInstances', {
+  .options('maxBrowser', {
     alias: 'maxBrowserInstances',
     demand: false,
     default: 1,
