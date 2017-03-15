@@ -51,3 +51,21 @@
     npm run test -- --input /console/appium/app/test-device-android-hybrid-app.js
     npm run test -- --input /console/appium/app/test-device-ios-hybrid-app.js
   ```
+
+#### 3. Java: Jsonwired protocol
+
+#### Install maven
+
+  ```bash
+  brew install maven
+  ```
+#### Configuration
+* To configure test environment: deviceName, platformName, kobitonServerUrl. Need to edit file `src/test/console/java/testng.xml`
+* To change Selenium version: edit file `src/test/java/pom.xml` (2.53.1 or 3.1.0)
+#### Run test
+
+  ```bash
+  cd /src/test/console/java
+  mvn test
+  ```
+TODO: make a gulp task to run jsonwired for java

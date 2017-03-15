@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Json Wired Protocol" parallel="tests" thread-count="2">
+    <!-- <parameter name = "kobitonServerUrl" value = "http://localhost:4723/wd/hub"/> -->
+    <parameter name = "kobitonServerUrl" value = "http://api_test4:f8d14784-85b5-46a4-8a5c-da8ab22c2068@api-test.kobiton.com/wd/hub"/>
+    <parameter name="deviceGroup" value="ORGANIZATION"/>
+
+    <test name="Android: json wired protocol">
+        <parameter name = "platformName" value = "Android"/>
+        <parameter name = "deviceName" value = "Nexus 6"/>
+        <classes>
+            <class name="web.JsonWiredProtocolTest">
+              <methods>
+                <include name="testNewSession"/>
+                <include name="testSetTimeouts"/>
+                <include name="testNavigation"/>
+                <include name="testElementState"/>
+                <include name="testElementInteraction"/>
+                <include name="testScreenCapture"/>
+                <include name="testCookies"/>
+                <include name="testTouchActions"/>
+                <include name="testDocumentHandling"/>
+                <include name="testUserPrompts"/>
+                <include name="testCommandContexts"/>
+              </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="iOS: json wired protocol">
+        <parameter name = "platformName" value = "iOS"/>
+        <parameter name = "deviceName" value = "iPhone 5s"/>
+        <classes>
+            <class name="web.JsonWiredProtocolTest">
+              <methods>
+                <include name="testNewSession"/>
+                <include name="testSetTimeouts"/>
+                <include name="testNavigation"/>
+                <include name="testElementState"/>
+                <include name="testElementInteraction"/>
+                <include name="testScreenCapture"/>
+                <include name="testCookies"/>
+                <include name="testTouchActions"/>
+                <include name="testDocumentHandling"/>
+                <include name="testUserPrompts"/>
+                <include name="testCommandContexts"/>
+              </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
