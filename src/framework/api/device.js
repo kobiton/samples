@@ -15,14 +15,17 @@ class Device extends Base {
     platformName,
     platformVersion,
     deviceName,
-    deviceUDID,
-    deviceNumbers
+    deviceNumbers,
+    indexBegin,
+    indexFinish,
+    arrayUDID
   } = {}) {
     const devicesGroups = await this._getDevices()
     let devices
+    let useUDID = []
     switch (groupType) {
       case 'private':
-        devices = devicesGroups.privateDevices
+        devices = devicesGroups.privateDevices.sort((a, b) => a.id - b.id)
         break
       case 'cloud':
         devices = devicesGroups.cloudDevices
@@ -47,13 +50,22 @@ class Device extends Base {
       devices = devices.filter((d) => d.deviceName.toLowerCase().includes(deviceName))
     }
 
-    if (deviceUDID) {
-      devices = devices.filter((d) => d.udid === deviceUDID)
-    }
-
     if (!isNaN(deviceNumbers)) {
       devices = devices.length > deviceNumbers ? devices.slice(0, deviceNumbers) : devices
     }
+
+    if (arrayUDID) {
+      const udids = arrayUDID.split(',')
+      for (const udid of udids) {
+        let specificDevice = devices.filter((d) => d.udid === udid)
+        if (specificDevice.length !== 0) {
+          useUDID.push(specificDevice[0])
+        }
+      }
+      devices = useUDID
+    }
+
+    devices = devices.slice(indexBegin, indexFinish)
 
     return devices
   }
@@ -63,8 +75,10 @@ class Device extends Base {
     platformName = config.device.platform,
     platformVersion = config.device.version,
     deviceName = config.device.name,
-    deviceUDID = config.device.udid,
-    deviceNumbers = config.device.number
+    deviceNumbers = config.device.number,
+    indexBegin = config.device.indexBegin,
+    indexFinish = config.device.indexFinish,
+    arrayUDID = config.device.arrayUDID
   } = {}) {
 
     return await this._getOnlineDevicesBy({
@@ -72,8 +86,10 @@ class Device extends Base {
       platformName,
       platformVersion,
       deviceName,
-      deviceUDID,
-      deviceNumbers
+      deviceNumbers,
+      indexBegin,
+      indexFinish,
+      arrayUDID
     })
   }
 

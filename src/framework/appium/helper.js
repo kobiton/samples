@@ -63,7 +63,7 @@ function getDefaultBrowserBy(platformName) {
 }
 
 function getDeviceGroup(device) {
-  if (device.isCloud) {
+  if (device.isCloud || (device.isCloud && device.udid === null)) {
     return 'KOBITON'
   }
   else if (device.isMyOrg) {

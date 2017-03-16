@@ -1,6 +1,7 @@
 import * as webdriverio from 'webdriverio'
 import AutomationPracticePage from './automation-practice-page'
 import KobitonPage from './kobiton-page'
+import MailinatorPage from './mailinator-page'
 import RandomPage from './random-page'
 import BPromise from 'bluebird'
 import config from '../../config/test'
@@ -17,8 +18,8 @@ const server = {
 export async function executeDesiredCapabilitiesTest({desiredCapabilities, timeout}) {
   server.key = await getApiKey()
   const browser = webdriverio.remote({desiredCapabilities, ...server})
-  const kobitonPage = new KobitonPage(browser, timeout)
-  return await kobitonPage.executeTest(1)
+  const mailinatorPage = new MailinatorPage(browser, timeout)
+  return await mailinatorPage.executeTest(1)
 }
 
 export async function executeJsonwiredTest({desiredCapabilities, timeout}) {
@@ -33,6 +34,13 @@ export async function executeKobitonPageTest({desiredCapabilities, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
   const kobitonPage = new KobitonPage(browser, timeout)
   return await kobitonPage.executeTest(duration)
+}
+
+export async function executeMailinatorPageTest({desiredCapabilities, timeout}) {
+  server.key = await getApiKey()
+  const browser = webdriverio.remote({desiredCapabilities, ...server})
+  const mailinatorPage = new MailinatorPage(browser, timeout)
+  return await mailinatorPage.executeTest(duration)
 }
 
 export async function

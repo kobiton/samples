@@ -26,11 +26,13 @@ const config = {
   device: {
     name: args.deviceName,
     platform: args.devicePlatform,
-    udid: args.deviceUDID,
     orientation: args.deviceOrientation,
     group: args.deviceGroup,
     number: args.deviceNumbers,
-    captureScreenshots: args.captureScreenshots
+    captureScreenshots: args.captureScreenshots,
+    indexBegin: args.indexBegin,
+    indexFinish: args.indexFinish,
+    arrayUDID: args.arrayUDID
   },
   manual: {
     screenQuality: args.screenQuality,

@@ -49,13 +49,6 @@ const yargs = require('yargs')
     describe: 'Specify device name to run test',
     type: 'string'
   })
-  .options('udid', {
-    alias: 'deviceUDID',
-    demand: false,
-    default: null,
-    describe: 'Specific device UUID to run test',
-    type: 'string'
-  })
   .options('orientation', {
     alias: 'deviceOrientation',
     demand: false,
@@ -82,6 +75,27 @@ const yargs = require('yargs')
     demand: false,
     default: 1000, // default is get all online devices of group
     describe: 'number of mobile devices',
+    type: 'number'
+  })
+  .options('arrayUDID', {
+    alias: 'arrayUDID',
+    demand: false,
+    default: null,
+    describe: 'Array UDID of specific devices to test',
+    type: 'string'
+  })
+  .options('indexBegin', {
+    alias: 'indexBegin',
+    demand: false,
+    default: 0,
+    describe: 'index begin to get device in a sorted array device',
+    type: 'number'
+  })
+  .options('indexFinish', {
+    alias: 'indexFinish',
+    demand: false,
+    default: 1000, // default is get all online devices
+    describe: 'index finish to get device in a sorted array device',
     type: 'number'
   })
   .options('quality', {

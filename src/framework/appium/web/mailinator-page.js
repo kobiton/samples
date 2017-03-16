@@ -31,6 +31,9 @@ export default class MailinatorPage {
         duration = endedAt.diff(startedAt, 'minutes')
       } while (duration < expectedDurationInMinutes)
     }
+    catch (err) {
+      throw (JSON.stringify(err))
+    }
     finally {
       await this._browser.end()
     }
