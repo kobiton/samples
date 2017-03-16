@@ -69,3 +69,5 @@
   mvn test
   ```
 TODO: make a gulp task to run jsonwired for java
+
+TODO: add manual for C#

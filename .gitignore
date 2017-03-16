@@ -11,7 +11,6 @@ logs
 .vscode/**
 src/test/console/java/target
 src/test/console/java/.idea/
-
 src/test/console/java/screenshot.png
 src/test/console/dotnet/Jsonwired/obj/**
 src/test/console/dotnet/Jsonwired/bin/**
