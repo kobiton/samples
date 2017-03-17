@@ -17,7 +17,7 @@ const yargs = require('yargs')
   .options('r', {
     alias: 'reporter',
     demand: false,
-    default: 'mocha-junit-reporter',
+    default: null,
     describe: 'Test reporters',
     type: 'string'
   })

@@ -1,13 +1,14 @@
 import moment from 'moment'
+import MochaTestCaseReporter from '../common/metrics/mocha-testcase-reporter'
 
 export default function createMochaConfig(config = {}) {
   return {
     colors: true,
     slow: 100,
-    reporter: config.reporter,
+    reporter: config.reporter || MochaTestCaseReporter,
     reporterOptions: {
       reportDir: 'reports/' || config.reportDir,
-      reportName: `${moment().format('YYYY-MM-DD-HH-mm')}` || config.reportName,
+      reportName: config.reportName || `${moment().format('YYYY-MM-DD-HH-mm')}`,
       reportTitle: 'Kobiton Test',
       inlineAssets: true,
       mochaFile: config.mochaFile

@@ -6,7 +6,10 @@ import {prepareFolderSync} from '../../util'
 const logFolder = `logs/${moment().format('YYYY-MM-DD-HH-mm')}`
 prepareFolderSync(logFolder)
 
-winston.handleExceptions(new winston.transports.File({filename: `${logFolder}/error.log`}))
+winston.handleExceptions([
+  new winston.transports.File({filename: `${logFolder}/error.log`}),
+  new winston.transports.Console()
+])
 
 /**
  * Write value message to a log file which name containing context

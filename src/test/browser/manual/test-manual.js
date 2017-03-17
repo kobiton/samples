@@ -2,7 +2,6 @@ import {assert} from 'chai'
 import moment from 'moment'
 import {debug} from '@kobiton/core-util'
 import ManualData from './data'
-import Metrics from '../../../framework/common/metrics'
 import LoginPage from '../../../framework/page-objects/portal/intro/login'
 import config from '../../../framework/config/test'
 import {writeSuccess} from '../../../framework/common/logger'
@@ -30,7 +29,6 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     const numOfOnlineDevices =
       devicesPage.getTotalOnlineDevices({group: deviceGroup, deviceName})
     assert.isAtLeast(numOfOnlineDevices, 1, `Expected at least one online ${deviceName} device`)
-    Metrics.addConcurrentDeviceValue({testCaseName: 'Manual feature'}, 2)
   })
 
   after(() => {
@@ -74,7 +72,6 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
       endedAt = moment.utc()
       duration = endedAt.diff(startedAt, 'minutes')
     } while (duration < expectedDuration)
-    Metrics.addTestDuration({deviceName, platformVersion}, duration)
   })
 
   it('should have average fps less than or equal 10', () => {
@@ -82,7 +79,6 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     // This log is to write fps to log file
     writeSuccess(`${deviceName}-${platformVersion}-${averageFps}`, averageFps)
     debug.log('writeSuccess in testcase, averageFps', averageFps)
-    Metrics.addFps({deviceName, platformVersion}, averageFps)
     debug.log('test-manual: average fps', `${deviceName}-${platformVersion}-${averageFps}`)
     assert.isAtMost(averageFps, 10,
         `${deviceName}:${platformVersion} has average fps ${averageFps}`)

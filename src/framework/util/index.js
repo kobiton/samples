@@ -50,3 +50,13 @@ export function getChildFiles(folderPath, {ignoreSystemFiles = true} = {}) {
 
   return childFiles
 }
+
+export function extractEmmbedMetadata(text) {
+  try {
+    const jsonText = text.match(/{.*}/)
+    return JSON.parse(jsonText) || {}
+  }
+  catch (ignored) {
+    return {}
+  }
+}

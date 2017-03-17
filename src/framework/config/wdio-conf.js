@@ -1,7 +1,8 @@
 import 'babel-polyfill'
+import moment from 'moment'
 import config from './test'
 import createMochaConfig from './mocha-conf'
-import moment from 'moment'
+import WdioTestCaseReporter from '../common/metrics/wdio-testcase-reporter'
 
 const reportFolder = `reports/browser/${moment().format('YYYY-MM-DD-HH-mm')}`
 
@@ -22,7 +23,7 @@ exports.config = {
   connectionRetryCount: 3,
   services: ['selenium-standalone'],
   framework: 'mocha',
-  reporters: ['dot', 'junit', 'json'],
+  reporters: config.report.reporter || ['dot', 'junit', 'json', WdioTestCaseReporter],
   mochaOpts: mochaOptions,
   reporterOptions: {
     compilers: ['js:babel-core/register'],

@@ -41,7 +41,8 @@ export async function executeAndroidNativeApp(
   }) {
 
   const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
-    desiredCapabilitiesAndroidNativeApp, targetDevices)
+    desiredCapabilitiesAndroidNativeApp,
+    targetDevices)
   const startedAt = moment()
 
   return await _execute(
@@ -78,7 +79,8 @@ export async function executeIOSNativeApp(
   }) {
 
   const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
-    desiredCapabilitiesiOSNativeApp, targetDevices)
+    desiredCapabilitiesiOSNativeApp,
+    targetDevices)
   const startedAt = moment()
 
   return await _execute(
@@ -114,7 +116,8 @@ export async function executeAndroidHybridApp(
   }) {
 
   const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
-    desiredCapabilitiesAndroidHybridApp, targetDevices)
+    desiredCapabilitiesAndroidHybridApp,
+    targetDevices)
   const startedAt = moment()
 
   return await _execute(
@@ -150,7 +153,8 @@ export async function executeIOSHybridApp(
   }) {
 
   const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
-    desiredCapabilitiesiOSHybridApp, targetDevices)
+    desiredCapabilitiesiOSHybridApp,
+    targetDevices)
   const startedAt = moment()
 
   return await _execute(
