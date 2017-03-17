@@ -95,6 +95,7 @@ function startConsoleTests(inputPath) {
   })
 
   return gulp.src(inputPath, {read: false})
+          .pipe(plumber())
           .pipe(mocha(mochaOption))
 }
 

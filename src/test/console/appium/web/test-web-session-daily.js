@@ -14,12 +14,17 @@ setTimeout(async () => {
   describe('[appium-web] : Mailinator page', async () => {
     for (let n = 0; n < onlineCaps.length; n++) {
       let id = (onlineCaps[n].udid) ? `${onlineCaps[n].udid}` : ''
+      const metadata = {
+        ...onlineCaps[n]
+      }
       describe(`[${n + 1}]${onlineCaps[n].deviceName} ${id}: ${onlineCaps[n].platformVersion}`,
       async () => {
         for (let i = 0; i < runLoop; i++) {
-          it(`should run successfully test in loop ${i + 1}/${runLoop}`, async () => {
-            await executeMailinatorPageTest({desiredCapabilities: onlineCaps[n], timeout})
-          })
+          it(`should successfully in loop ${i + 1}/${runLoop} ${JSON.stringify(metadata)}`,
+            async () => {
+              await executeMailinatorPageTest({desiredCapabilities: onlineCaps[n], timeout})
+            }
+          )
         }
       })
       run()
