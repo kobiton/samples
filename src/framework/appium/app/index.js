@@ -34,14 +34,14 @@ const desiredCapabilitiesiOSHybridApp = {
 }
 
 export async function executeAndroidNativeApp(
-  targetDevices,
+  timestamps, targetDevices,
   options = {
     sessionDuration: defaultSessionDurationInSeconds,
     sessionAmount: defaultSessionAmount
   }) {
 
   const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
-    desiredCapabilitiesAndroidNativeApp,
+    timestamps, desiredCapabilitiesAndroidNativeApp,
     targetDevices)
   const startedAt = moment()
 
@@ -72,14 +72,14 @@ export async function executeAndroidNativeApp(
 }
 
 export async function executeIOSNativeApp(
-  targetDevices,
+  timestamps, targetDevices,
   options = {
     sessionDuration: defaultSessionDurationInSeconds,
     sessionAmount: defaultSessionAmount
   }) {
 
   const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
-    desiredCapabilitiesiOSNativeApp,
+    timestamps, desiredCapabilitiesiOSNativeApp,
     targetDevices)
   const startedAt = moment()
 
@@ -109,14 +109,14 @@ export async function executeIOSNativeApp(
   )
 }
 export async function executeAndroidHybridApp(
-  targetDevices,
+  timestamps, targetDevices,
   options = {
     sessionDuration: defaultSessionDurationInSeconds,
     sessionAmount: defaultSessionAmount
   }) {
 
   const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
-    desiredCapabilitiesAndroidHybridApp,
+    timestamps, desiredCapabilitiesAndroidHybridApp,
     targetDevices)
   const startedAt = moment()
 

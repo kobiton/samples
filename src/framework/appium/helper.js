@@ -2,39 +2,37 @@ import config from '../config/test'
 import pick from 'lodash/pick'
 import Key from '../api/key'
 import api from '../api'
-import moment from 'moment'
 
 let apiKey
-let point = moment().format('YYYY-MM-DD-HH-mm')
 
-export function convertToDesiredCapabilities(devices, {
+export function convertToDesiredCapabilities(timestamp, devices, {
   deviceOrientation = config.device.orientation,
   captureScreenshots = config.device.captureScreenshots
 } = {}) {
   return devices
     .map((d) => {
       const desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName', 'udid')
-      let deviceGroup = (d.udid) ? '' : getDeviceGroup(d)
+      let deviceGroup = getDeviceGroup(d)
       const sessionName =
-      (d.udid) ? `Auto web on ${d.udid}` : 'Auto web session'
-      const sessionDescription = `Auto web session on device ${d.deviceName} at ${point}`
+      (d.udid) ? `${timestamp} - Auto web on ${d.udid}` : `${timestamp} - Auto web session`
+      const sessionDescription = `Auto web session on device ${d.deviceName}`
       const browserName = getDefaultBrowserBy(desiredCapFields.platformName)
       return {...desiredCapFields, deviceOrientation, captureScreenshots,
         browserName, deviceGroup, sessionName, sessionDescription}
     })
 }
 
-export function convertToDesiredCapabilitiesApp(appInfor, devices, {
+export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
   deviceOrientation = config.deviceOrientation,
   captureScreenshots = config.device.captureScreenshots
 } = {}) {
   return devices
     .map((d) => {
-      let desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName')
-      let deviceGroup = (d.udid) ? '' : getDeviceGroup(d)
+      let desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName', 'udid')
+      let deviceGroup = getDeviceGroup(d)
       const sessionName =
-      (d.udid) ? `Auto app session on ${d.udid}` : 'Auto app session'
-      const sessionDescription = `Auto app session on device ${d.deviceName} at ${point}`
+      (d.udid) ? `${timestamp} - Auto app session on ${d.udid}` : `${timestamp} - Auto app session`
+      const sessionDescription = `Auto app session on device ${d.deviceName}`
       const desiredCapApp = Object.assign(appInfor, desiredCapFields)
       return {...desiredCapApp, deviceOrientation,
         captureScreenshots, deviceGroup, sessionName, sessionDescription}
@@ -63,7 +61,7 @@ function getDefaultBrowserBy(platformName) {
 }
 
 function getDeviceGroup(device) {
-  if (device.isCloud && device.udid === null) {
+  if (device.isCloud && (device.udid === null || !device.udid)) {
     return 'KOBITON'
   }
   else if (device.isMyOrg) {

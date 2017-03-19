@@ -13,5 +13,6 @@ export default {
   'test-device-android-hybrid-app.js': './build/test/config/mocha-delay.js',
   'test-device-android-native-app.js': './build/test/config/mocha-delay.js',
   'test-device-ios-hybrid-app.js': './build/test/config/mocha-delay.js',
-  'test-device-ios-native-app.js': './build/test/config/mocha-delay.js'
+  'test-device-ios-native-app.js': './build/test/config/mocha-delay.js',
+  'test-desirecap.js': './build/test/config/mocha-delay.js'
 }

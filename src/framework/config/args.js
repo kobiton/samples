@@ -31,7 +31,7 @@ const yargs = require('yargs')
   .options('duration', {
     alias: 'mobileTestDuration',
     demand: false,
-    default: 2,
+    default: 1,
     describe: 'Expected duration (minutes)',
     type: 'number'
   })
@@ -59,7 +59,7 @@ const yargs = require('yargs')
   .options('group', {
     alias: 'deviceGroup',
     demand: false,
-    default: 'all',
+    default: 'cloud',
     describe: 'Group of mobile device',
     type: 'string'
   })
