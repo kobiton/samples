@@ -15,6 +15,13 @@
  * REPORT_DB_PORT
  * REPORT_DB_NAME
 
+  #Tips:
+    1. You can create a file that contain all environment setter command, each time terminal is open, you just run command
+      ```bash
+      source <path_to_file>
+      ```
+    2. If you're using iTerm, set all environment in .bash_profile file.
+
 ### Change arguments information
 #### Run help
   ```bash

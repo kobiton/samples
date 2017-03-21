@@ -20,8 +20,7 @@ setTimeout(async () => {
       describe(`[${n + 1}] ${id} ${onlineCaps[n].deviceName}: ${onlineCaps[n].platformVersion}`,
       async () => {
         for (let i = 0; i < runLoop; i++) {
-          it(`${timestamps} - should run successfully test in loop ${i + 1}/${runLoop}
-             ${JSON.stringify(metadata)}`, async () => {
+          it(`${timestamps} - Loop ${i + 1}/${runLoop} ${JSON.stringify(metadata)}`, async () => {
             await executeMailinatorPageTest({desiredCapabilities: onlineCaps[n], timeout})
           })
         }

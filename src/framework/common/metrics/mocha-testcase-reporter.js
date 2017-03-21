@@ -13,6 +13,7 @@ export default class MochaTestCaseReporter extends mocha.reporters.Base {
 
     runner.on('suite', (suite) => {
       if (suite.title !== '') {
+        debug.log('Suite: ', suite.title)
         const suiteModel = {
           title: suite.title,
           parentTitle: suite.parent.title,
@@ -23,6 +24,7 @@ export default class MochaTestCaseReporter extends mocha.reporters.Base {
       }
     })
     .on('test', (test) => {
+      debug.log('   Test case: ', test.title)
       const tcModel = this._createTestCaseModel(test)
       tcModel.start = new Date()
       this._testCases.push(tcModel)

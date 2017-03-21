@@ -41,7 +41,7 @@ export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
 
 export async function getOnlineCaps({deviceNumbers}) {
   const devices = await api.Device.getOnlineDevices({deviceNumbers})
-  return convertToDesiredCapabilities(devices)
+  return convertToDesiredCapabilities(new Date(), devices)
 }
 
 function getDefaultBrowserBy(platformName) {
