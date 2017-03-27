@@ -5,6 +5,7 @@
   "author": "Kobiton Inc.",
   "description": "Automation test suite for Kobiton",
   "scripts": {
+    "build": "gulp build",
     "test": "gulp run-test",
     "lint": "gulp lint",
     "gulp": "gulp",
@@ -50,7 +51,7 @@
     "wdio-junit-reporter": "^0.1.0",
     "wdio-mocha-framework": "^0.4.3",
     "wdio-selenium-standalone-service": "0.0.7",
-    "webdriverio": "^4.4.0",
+    "webdriverio": "^4.6.2",
     "winston": "^2.3.1",
     "yargs" : "^6.5.0"
   }

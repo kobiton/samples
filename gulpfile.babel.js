@@ -23,7 +23,7 @@ let argv = yargs.parse()
 
 gulp.task('clean', clean([Paths.DIST, Paths.BUILD]))
 gulp.task('build', ['clean'], build(['src/**/*.js'], 'build'))
-gulp.task('run-test', ['build'], async () => {
+gulp.task('run-test', async () => {
   // Initialize value for test such as: default url, username, password
   const preSetupTests = require('./build/test/setup.js')
   await preSetupTests()
