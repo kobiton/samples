@@ -5,7 +5,7 @@ export default function createConfig({reporter, reportDir, reportName, mochaFile
   const defaultConfig = createMochaConfig()
   return {
     ...defaultConfig,
-    reporter: reportName || MochaTestCaseReporter,
+    reporter: reporter || MochaTestCaseReporter,
     delay: true
   }
 }

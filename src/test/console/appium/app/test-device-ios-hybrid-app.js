@@ -18,11 +18,11 @@ setTimeout(async () => {
       describe(`[${n + 1}]${onlineCaps[n].deviceName} ${udid}:${onlineCaps[n].platformVersion}`,
       async () => {
         for (let i = 0; i < runLoop; i++) {
-          it(`${timestamps} - should run successfully test in loop ${i + 1}/${runLoop}`,
-            async () => {
-              const successfulResult = await executeIOSHybridApp(timestamps, [onlineCaps[n]])
-              assert.equal(successfulResult, 1, 'Expected one device is run successfully')
-            })
+          const metadata = {...onlineCaps[n]}
+          it(`${timestamps} - Loop ${i + 1}/${runLoop} ${JSON.stringify(metadata)}`, async () => {
+            const successfulResult = await executeIOSHybridApp(timestamps, [onlineCaps[n]])
+            assert.equal(successfulResult, 1, 'Expected one device is run successfully')
+          })
         }
       })
     }
