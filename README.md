@@ -22,6 +22,11 @@
       ```
     2. If you're using iTerm, set all environment in .bash_profile file.
 
+### Build script
+  ```bash
+  npm run build
+  ```
+
 ### Change arguments information
 #### Run help
   ```bash

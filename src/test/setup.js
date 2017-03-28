@@ -12,17 +12,16 @@ if (!request.Request.callbackOverrided) {
 
   const originInit = request.Request.prototype.init
   request.Request.prototype.init = function (options) {
-    originInit.call(this, options)
-
     const self = this
+    originInit.call(self, options)
+
     if (self.callback) {
       const _originCallback = self._callback
 
       self._callback = function (err, response, body) { // eslint-disable-line handle-callback-err
         if (body && body.message) {
-          body.value = {
-            message: body.message
-          }
+          body.value = body.value || {}
+          body.value.message = body.message
         }
         return _originCallback.apply(self, arguments)
       }
