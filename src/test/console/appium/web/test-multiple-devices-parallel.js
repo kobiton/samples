@@ -1,4 +1,3 @@
-import {assert} from 'chai'
 import {getOnlineCaps} from '../../../../framework/appium/helper'
 import config from '../../../../framework/config/test'
 import {executeMultipleDevicesParallelTest} from '../../../../framework/appium/web'
@@ -17,7 +16,6 @@ setTimeout(async () => {
         let listTestResults
 
         before(async () => {
-          assert.isAtLeast(onlineCaps.length, 2, 'should have atleast 2 online devices')
           // Run test here to get the result of all devices
           listTestResults = await executeMultipleDevicesParallelTest({
             desiredCapsList: onlineCaps,

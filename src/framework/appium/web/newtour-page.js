@@ -23,7 +23,7 @@ export default class NewTourPage {
         const word = faker.lorem.word()
         await this._browser // eslint-disable-line babel/no-await-in-loop
           .waitForExist(elements.addressInput, this._timeout)
-          .setValue(elements.nameInput, word)
+          .setValue(elements.addressInput, word)
         const endedAt = moment.utc()
         duration = endedAt.diff(startedAt, 'minutes')
       } while (duration < expectedDurationInMinutes)

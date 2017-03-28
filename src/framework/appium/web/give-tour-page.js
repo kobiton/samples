@@ -3,9 +3,9 @@ import faker from 'faker'
 
 const elements = {
   url: 'http://givetour.com/Account/Login',
-  emailInput: '//input[@id="signin_email"]',
-  passwordInput: '//input[@id="signin_password"]',
-  rememberMeCheckbox: '//input[@id="remember_me2"]'
+  emailInput: '//input[@name="UserName"]',
+  passwordInput: '//input[@name="Password"]',
+  rememberMeCheckbox: '//input[@name="rememberme"]'
 }
 
 export default class GiveTourPage {
