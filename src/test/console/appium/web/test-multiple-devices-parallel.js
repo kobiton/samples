@@ -32,7 +32,6 @@ setTimeout(async () => {
           })
         }
       })
-    run()
   }
-
+  run()
 }, 1000)
