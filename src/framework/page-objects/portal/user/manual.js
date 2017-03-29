@@ -21,7 +21,8 @@ const elements = {
   reConnectingStatus: '//div[normalize-space(text())="Re-connecting ..."]',
   exitButton: '//*[@id="app"]//button[div/span[contains(.,"Exit")]]',
   canvasScreen: '//div[@data-radium="true"]/canvas[@tabindex="10000"]',
-  screenQuality: '//div[text()="High Quality" or text()="Medium Quality" or text()="Low Quality"]',
+  // eslint-disable-next-line max-len
+  screenQuality: '//div[div[text()="High Quality" or text()="Medium Quality" or text()="Low Quality"]]',
   highQuality: '//div[text()="High"]',
   mediumQuality: '//div[text()="Medium"]',
   lowQuality: '//div[text()="Low"]',

@@ -17,7 +17,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   let manualPage
   let startedAt, endedAt
   let duration = 0
-  const initilizingTimeout = 120000 // ˜12 minutes
+  const initilizingTimeout = 120000 // 2 minutes
   const expectedDuration = expectedDurationInMinutes
   startedAt = moment.utc()
 
