@@ -1,4 +1,5 @@
 import {assert} from 'chai'
+import {debug} from '@kobiton/core-util'
 import moment from 'moment'
 import Device from '../../../../framework/api/device'
 import config from '../../../../framework/config/test'
@@ -8,20 +9,26 @@ const runLoop = config.longTestSuiteIterationAmount
 const timestamps = moment().format('YYYYMMDDHHmmss')
 
 setTimeout(async () => {
-  const onlineCaps = await Device.getOnlineDevices({
+  const neededDevices = await Device.getOnlineDevices({
     platformName: 'Android'
   })
-  assert.isAtLeast(onlineCaps.length, 1, 'Expected at least 1 online devices')
+  assert.isAtLeast(neededDevices.length, 1, 'Expected at least 1 online devices')
   describe('[appium-app] : android-hybrid', async () => {
-    for (let n = 0; n < onlineCaps.length; n++) {
-      let udid = (onlineCaps[n].udid) ? `with ${onlineCaps[n].udid}` : ''
-      describe(`[${n + 1}]${onlineCaps[n].deviceName} ${udid}:${onlineCaps[n].platformVersion}`,
+    for (const device of neededDevices) {
+      let id = (device.udid) ? `with udid ${device.udid}` : ''
+      describe(`Test ${device.deviceName}: ${device.platformVersion} ${id}`,
       async () => {
+        const metadata = {...device} // Clones the object
         for (let i = 0; i < runLoop; i++) {
-          const metadata = {...onlineCaps[n]}
           it(`${timestamps} - Loop ${i + 1}/${runLoop} ${JSON.stringify(metadata)}`, async () => {
-            const successfulResult = await executeAndroidHybridApp(timestamps, [onlineCaps[n]])
-            assert.equal(successfulResult, 1, 'Expected one device is run successfully')
+            const deviceIsOnline = await Device.isOnlineDevice(device)
+            if (deviceIsOnline) {
+              const successfulResult = await executeAndroidHybridApp(timestamps, [device])
+              assert.equal(successfulResult, 1, 'Expected one device is run successfully')
+            }
+            else {
+              debug.log(`Device ${device.deviceName} is not online to run`)
+            }
           })
         }
       })

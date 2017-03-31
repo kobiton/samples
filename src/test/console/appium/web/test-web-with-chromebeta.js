@@ -1,19 +1,19 @@
-import {assert} from 'chai'
 import {debug} from '@kobiton/core-util'
+import {assert} from 'chai'
 import moment from 'moment'
 import Device from '../../../../framework/api/device'
 import config from '../../../../framework/config/test'
-import {executeIOSHybridApp} from '../../../../framework/appium/app'
+import {executeMailinatorPageTest} from '../../../../framework/appium/web/index'
+import {convertToDesiredCapabilities} from '../../../../framework/appium/helper'
 
+const timeout = 60000 // milliseconds
 const runLoop = config.longTestSuiteIterationAmount
 const timestamps = moment().format('YYYYMMDDHHmmss')
 
 setTimeout(async () => {
-  const neededDevices = await Device.getOnlineDevices({
-    platformName: 'iOS'
-  })
+  const neededDevices = await Device.getOnlineDevices()
   assert.isAtLeast(neededDevices.length, 1, 'Expected at least 1 online devices')
-  describe('[appium-app] : iOS - hybrid', async () => {
+  describe('[appium-web] : Mailinator page', async () => {
     for (const device of neededDevices) {
       let id = (device.udid) ? `with udid ${device.udid}` : ''
       describe(`Test ${device.deviceName}: ${device.platformVersion} ${id}`,
@@ -23,8 +23,9 @@ setTimeout(async () => {
           it(`${timestamps} - Loop ${i + 1}/${runLoop} ${JSON.stringify(metadata)}`, async () => {
             const deviceIsOnline = await Device.isOnlineDevice(device)
             if (deviceIsOnline) {
-              const successfulResult = await executeIOSHybridApp(timestamps, [device])
-              assert.equal(successfulResult, 1, 'Expected one device is run successfully')
+              let onlineCaps = await convertToDesiredCapabilities(timestamps, device)
+              onlineCaps[0].browserName = 'chromebeta'
+              await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
             }
             else {
               debug.log(`Device ${device.deviceName} is not online to run`)

@@ -28,7 +28,6 @@ export default class AndroidNativeAppTest {
         .elementById('saved')
         .click()
         .clear()
-        .hideKeyboard()
         .currentContext()
         .contexts()
         .context('NATIVE_APP')
@@ -54,8 +53,9 @@ export default class AndroidNativeAppTest {
         .back()
         .back()
         .back()
-        .elementByXPath("//*[@content-desc='Accessibility']").text()
         .waitForElementByXPath("//*[@content-desc='Accessibility']")
+        .elementByXPath("//*[@content-desc='Accessibility']").text()
+        .elementByXPath("//*[@content-desc='Accessibility']")
         .click()
         .back()
         .source()
@@ -65,13 +65,13 @@ export default class AndroidNativeAppTest {
         .elementById('list')
         .flick(300, 700, 200)
         .getWindowSize()
-        .elementByXPath("//*[@content-desc='Accessibility']")
+        .waitForElementByXPath("//*[@content-desc='Accessibility']")
         .type('Tab')
         .back()
         .back()
-        .elementByXPath("//android.widget.TextView[@content-desc='Animation']")
+        .waitForElementByXPath("//android.widget.TextView[@content-desc='Animation']")
         .click()
-        .elementByXPath("//android.widget.TextView[@content-desc='Bouncing Balls']")
+        .waitForElementByXPath("//android.widget.TextView[@content-desc='Bouncing Balls']")
         .click()
         .elementById('container')
         .flick(this.getRandomInt(1, 1000),
@@ -88,8 +88,6 @@ export default class AndroidNativeAppTest {
         .openNotifications()
         .logTypes()
         .currentContext()
-        .getNetworkConnection()
-        .setNetworkConnection(1)
         .startActivity({
           appPackage: 'io.appium.android.apis',
           appActivity: '.accessibility.AccessibilityNodeProviderActivity'
@@ -101,6 +99,8 @@ export default class AndroidNativeAppTest {
         .getSessionId()
 
         /** List supported apis but we can not run in spite of our setting
+          .getNetworkConnection()
+          .setNetworkConnection(1)
           .lockDevice()
           .unlockDevice()
           .lock()
@@ -116,6 +116,7 @@ export default class AndroidNativeAppTest {
         **/
 
         /** TODO: List of unsupported apis
+         .hideKeyboard()
          .status()
          .altSessionCapabilities({'platformName': 'android'})
          .eval('window.location.href')

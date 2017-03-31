@@ -11,7 +11,7 @@ class Device extends Base {
   }
 
   async _getOnlineDevicesBy({
-    groupType = 'cloud',
+    groupType = 'all',
     platformName,
     platformVersion,
     deviceName,
@@ -22,7 +22,7 @@ class Device extends Base {
   } = {}) {
     const devicesGroups = await this._getDevices()
     let devices
-    let useUDID = []
+    let devicesByUDID = []
     switch (groupType) {
       case 'private':
         devices = devicesGroups.privateDevices.sort((a, b) => a.id - b.id)
@@ -33,41 +33,65 @@ class Device extends Base {
       default:
         devices = devicesGroups.cloudDevices.concat(devicesGroups.privateDevices)
     }
-
-    devices = devices.filter((d) => d.isOnline && !d.isBooked)
-
     if (platformName) {
       platformName = platformName.toLowerCase()
       devices = devices.filter((d) => d.platformName.toLowerCase() === platformName)
     }
 
-    if (platformVersion) {
-      devices = devices.filter((d) => d.platformVersion.includes(platformVersion))
+    if (indexBegin) {
+      devices = devices.slice(indexBegin, indexFinish)
     }
+    else {
+      devices = devices.filter((d) => d.isOnline && !d.isBooked)
 
-    if (deviceName) {
-      deviceName = deviceName.toLowerCase()
-      devices = devices.filter((d) => d.deviceName.toLowerCase().includes(deviceName))
-    }
-
-    if (!isNaN(deviceNumbers)) {
-      devices = devices.length > deviceNumbers ? devices.slice(0, deviceNumbers) : devices
-    }
-
-    if (arrayUDID) {
-      const udids = arrayUDID.split(',')
-      for (const udid of udids) {
-        let specificDevice = devices.filter((d) => d.udid === udid)
-        if (specificDevice.length !== 0) {
-          useUDID.push(specificDevice[0])
-        }
+      if (platformVersion) {
+        devices = devices.filter((d) => d.platformVersion.includes(platformVersion))
       }
-      devices = useUDID
+
+      if (deviceName) {
+        deviceName = deviceName.toLowerCase()
+        devices = devices.filter((d) => d.deviceName.toLowerCase().includes(deviceName))
+      }
+
+      if (!isNaN(deviceNumbers)) {
+        devices = devices.length > deviceNumbers ? devices.slice(0, deviceNumbers) : devices
+      }
+
+      if (arrayUDID) {
+        const udids = arrayUDID.split(',')
+        for (const udid of udids) {
+          let specificDevice = devices.filter((d) => d.udid === udid)
+          if (specificDevice.length > 0) {
+            devicesByUDID.push(specificDevice[0])
+          }
+        }
+        devices = devicesByUDID
+      }
     }
-
-    devices = devices.slice(indexBegin, indexFinish)
-
     return devices
+  }
+
+  async isOnlineDevice(device) {
+    const groupType = (device.udid) ? 'private' : 'cloud'
+    let platformName = device.platformName
+    const platformVersion = device.platformVersion
+    let deviceName = device.deviceName
+    const arrayUDID = (device.udid) ? device.udid : ''
+    const deviceNumbers = 1
+    const indexBegin = null
+    const indexFinish = null
+    const onlineDevices = await this._getOnlineDevicesBy({
+      groupType,
+      platformName,
+      platformVersion,
+      deviceName,
+      deviceNumbers,
+      indexBegin,
+      indexFinish,
+      arrayUDID
+    })
+    const isOnline = (onlineDevices.length > 0)
+    return isOnline
   }
 
   async getOnlineDevices({

@@ -17,12 +17,17 @@ export default class MailinatorPage {
     let duration = 0
     const startedAt = moment.utc()
     try {
-      await this._browser
-        .init()
-        .url(elements.url)
+      try {
+        await this._browser
+          .init()
+      }
+      catch (e) {
+        throw new Error('Init browser failed.' + e.message)
+      }
       do {
         const word = faker.lorem.word()
         await this._browser // eslint-disable-line babel/no-await-in-loop
+          .url(elements.url)
           .waitForExist(elements.emailInput, this._timeout)
           .setValue(elements.emailInput, word)
           .waitForExist(elements.passwordInput, this._timeout)

@@ -146,14 +146,14 @@ export async function executeAndroidHybridApp(
   )
 }
 export async function executeIOSHybridApp(
-  targetDevices,
+  timestamps, targetDevices,
   options = {
     sessionDuration: defaultSessionDurationInSeconds,
     sessionAmount: defaultSessionAmount
   }) {
 
   const desiredCapabilitiesList = convertToDesiredCapabilitiesApp(
-    desiredCapabilitiesiOSHybridApp,
+    timestamps, desiredCapabilitiesiOSHybridApp,
     targetDevices)
   const startedAt = moment()
 
