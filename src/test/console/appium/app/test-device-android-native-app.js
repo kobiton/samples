@@ -20,7 +20,8 @@ setTimeout(async () => {
       async () => {
         const metadata = {...device} // Clones the object
         for (let i = 0; i < runLoop; i++) {
-          it(`${timestamps} - Loop ${i + 1}/${runLoop} ${JSON.stringify(metadata)}`, async () => {
+          it(`${timestamps} - Loop ${i + 1}/${runLoop} ${JSON.stringify(metadata)}`,
+          async function() { // Use function instead of arrow function to call skip()
             const deviceIsOnline = await Device.isOnlineDevice(device)
             if (deviceIsOnline) {
               const successfulResult = await executeAndroidNativeApp(timestamps, [device])
@@ -28,6 +29,7 @@ setTimeout(async () => {
             }
             else {
               debug.log(`Device ${device.deviceName} is not online to run`)
+              this.skip()
             }
           })
         }
