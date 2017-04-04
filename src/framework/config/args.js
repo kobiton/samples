@@ -87,14 +87,14 @@ const yargs = require('yargs')
   .options('indexBegin', {
     alias: 'indexBegin',
     demand: false,
-    default: null,
+    default: -1,
     describe: 'index begin to get device in a sorted array device',
     type: 'number'
   })
   .options('indexFinish', {
     alias: 'indexFinish',
     demand: false,
-    default: null,
+    default: 1000,
     describe: 'index finish to get device in a sorted array device',
     type: 'number'
   })

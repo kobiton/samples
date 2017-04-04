@@ -38,7 +38,7 @@ class Device extends Base {
       devices = devices.filter((d) => d.platformName.toLowerCase() === platformName)
     }
 
-    if (indexBegin) {
+    if (indexBegin !== -1) {
       devices = devices.slice(indexBegin, indexFinish)
     }
     else {
@@ -78,8 +78,8 @@ class Device extends Base {
     let deviceName = device.deviceName
     const arrayUDID = (device.udid) ? device.udid : ''
     const deviceNumbers = 1
-    const indexBegin = null
-    const indexFinish = null
+    const indexBegin = -1
+    const indexFinish = 1000
     const onlineDevices = await this._getOnlineDevicesBy({
       groupType,
       platformName,

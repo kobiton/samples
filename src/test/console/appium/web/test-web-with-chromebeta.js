@@ -24,7 +24,7 @@ setTimeout(async () => {
           async function () { // Use function instead of arrow function to call skip()
             const deviceIsOnline = await Device.isOnlineDevice(device)
             if (deviceIsOnline) {
-              let onlineCaps = await convertToDesiredCapabilities(timestamps, device)
+              let onlineCaps = await convertToDesiredCapabilities(timestamps, [device])
               onlineCaps[0].browserName = 'chromebeta'
               await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
             }

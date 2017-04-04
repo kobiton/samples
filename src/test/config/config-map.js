@@ -14,5 +14,6 @@ export default {
   'test-device-android-native-app.js': './build/test/config/mocha-delay.js',
   'test-device-ios-hybrid-app.js': './build/test/config/mocha-delay.js',
   'test-device-ios-native-app.js': './build/test/config/mocha-delay.js',
-  'test-desirecap.js': './build/test/config/mocha-delay.js'
+  'test-desirecap.js': './build/test/config/mocha-delay.js',
+  'test-web-with-chromebeta.js': './build/test/config/mocha-delay.js'
 }
