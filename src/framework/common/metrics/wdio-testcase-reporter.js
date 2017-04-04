@@ -84,21 +84,22 @@ class WdioTestCaseReporter extends EventEmitter {
       for (let specId of Object.keys(runnerInfo.specs)) {
         const spec = runnerInfo.specs[specId]
 
-        for (let suiteName of Object.keys(spec.suites)) {
-          const suite = spec.suites[suiteName]
+        for (let suiteUid of Object.keys(spec.suites)) {
+          const suite = spec.suites[suiteUid]
 
-          for (let testName of Object.keys(suite.tests)) {
-            const testCase = this._getTestCase(suiteName, testName)
+          for (let testUid of Object.keys(suite.tests)) {
+            const testName = suite.tests[testUid].title
+            const testCase = this._getTestCase(suite.title, testName)
 
             if (testCase) {
-              const rawTestCase = suite.tests[testName]
+              const rawTestCase = suite.tests[testUid]
               testCase.start = rawTestCase.start
               testCase.end = rawTestCase.end
               testCase.duration = rawTestCase.duration
-              testCase.state = rawTestCase.state
+              testCase.state = this._getState(rawTestCase)
               testCase.error = rawTestCase.error
 
-              const parentSuite = this._suitesMap[suiteName] || {}
+              const parentSuite = this._suitesMap[suite.title] || {}
               testCase.metadata = {
                 ...parentSuite.metadata,
                 ...testCase.metadata
@@ -126,6 +127,16 @@ class WdioTestCaseReporter extends EventEmitter {
 
       done && done()
     })
+  }
+
+  _getState(rawTestCase) {
+    let state = rawTestCase.state
+
+    if (state === 'pending') {
+      state = 'skipped'
+    }
+
+    return state
   }
 }
 

@@ -71,7 +71,7 @@ export default class MochaTestCaseReporter extends mocha.reporters.Base {
         const testCase = this._getTestCase(rawTestCase.parentTitle, rawTestCase.title)
         if (testCase) {
           testCase.duration = rawTestCase.duration
-          testCase.state = rawTestCase.state
+          testCase.state = this._getState(rawTestCase)
           testCase.error = this._errorJSON(rawTestCase.err)
 
           const parentSuite = this._suitesMap[rawTestCase.parentTitle] || {}
@@ -94,6 +94,16 @@ export default class MochaTestCaseReporter extends mocha.reporters.Base {
       return result
     })
     return filterResults[0]
+  }
+
+  _getState(rawTestCase) {
+    let state = rawTestCase.state
+
+    if (rawTestCase.pending) {
+      state = 'skipped'
+    }
+
+    return state
   }
 
   _extractTestCases(runner) {

@@ -49,7 +49,7 @@
     "wd": "^1.1.1",
     "wdio-json-reporter": "0.0.1",
     "wdio-junit-reporter": "^0.1.0",
-    "wdio-mocha-framework": "^0.4.3",
+    "wdio-mocha-framework": "^0.5.9",
     "wdio-selenium-standalone-service": "0.0.7",
     "webdriverio": "4.6.2",
     "winston": "^2.3.1",
