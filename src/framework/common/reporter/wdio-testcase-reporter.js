@@ -1,14 +1,15 @@
 import {EventEmitter} from 'events'
 import {debug} from '@kobiton/core-util'
-import db from './db/index'
+import api from './api'
+import config from '../../config/test'
 import {extractEmmbedMetadata} from '../../util'
 
 class WdioTestCaseReporter extends EventEmitter {
-  constructor(baseReporter, config, options = {}) {
+  constructor(baseReporter, baseConfig, options = {}) {
     super()
 
     this._baseReporter = baseReporter
-    this._config = config
+    this._config = baseConfig
     this._options = options
     this._report = {
       reportName: this._options.reportName,
@@ -32,11 +33,12 @@ class WdioTestCaseReporter extends EventEmitter {
         const tcModel = this._createTestCaseModel(test)
         this._testCases.push(tcModel)
       })
-      .on('end', (test) => {
+      .on('end', async (test) => {
         this._integrateExecutionData()
-        this._writeReportData(() => {
-          db.closeConnection()
-        })
+        await api.TestCase.add(this._testCases)
+          .catch((err) => {
+            debug.log('Add test case failed:', err.message)
+          })
       })
   }
 
@@ -46,11 +48,12 @@ class WdioTestCaseReporter extends EventEmitter {
       testCaseName: test.title,
       specHash: test.specHash,
       file: test.file,
-      state: null, // result will be fill on end event
+      state: null, // result will be filled on end event
+      environment: config.environment,
       parents: this._getAllParents(test.parent),
       metadata: extractEmmbedMetadata(test.title),
       runner: test.runner,
-      error: null // wil be fill on end event
+      error: null // wil be filled on end event
     }
 
     return tcModel
@@ -119,21 +122,19 @@ class WdioTestCaseReporter extends EventEmitter {
     return filterResults[0]
   }
 
-  _writeReportData(done) {
-    db.TestCase.create(this._testCases, (err) => {
-      if (err) {
-        debug.error('_writeReportData save error: ', err.message)
-      }
-
-      done && done()
-    })
-  }
-
   _getState(rawTestCase) {
     let state = rawTestCase.state
 
-    if (state === 'pending') {
-      state = 'skipped'
+    switch (state) {
+      case 'pass':
+        state = 'passed'
+        break
+      case 'fail':
+        state = 'failed'
+        break
+      case 'pending':
+        state = 'skipped'
+        break
     }
 
     return state

@@ -1,10 +1,11 @@
 import {debug} from '@kobiton/core-util'
 import mocha from 'mocha'
-import db from './db/index'
+import api from './api'
+import config from '../../config/test'
 import {extractEmmbedMetadata} from '../../util'
 
 export default class MochaTestCaseReporter extends mocha.reporters.Base {
-  constructor(runner, config) {
+  constructor(runner, baseConfig) {
     super(runner)
 
     this._runner = runner
@@ -29,12 +30,12 @@ export default class MochaTestCaseReporter extends mocha.reporters.Base {
       tcModel.start = new Date()
       this._testCases.push(tcModel)
     })
-    .on('end', () => {
+    .on('end', async () => {
       this._integrateExecutionData()
-      this._writeReportData(() => {
-        db.closeConnection()
-        this.epilogue()
-      })
+      await api.TestCase.add(this._testCases)
+        .catch((err) => {
+          debug.log('Add test case failed:', err.message)
+        })
     })
   }
 
@@ -42,7 +43,8 @@ export default class MochaTestCaseReporter extends mocha.reporters.Base {
     const tcModel = {
       testCaseName: test.title,
       specHash: test.specHash,
-      result: null, // result will be fill on end event
+      state: null, // result will be filled on end event
+      environment: config.environment,
       parents: this._getAllParents(test.parent.title),
       metadata: extractEmmbedMetadata(test.title),
       file: test.file
@@ -129,15 +131,6 @@ export default class MochaTestCaseReporter extends mocha.reporters.Base {
     }
 
     return testCasesQueue
-  }
-
-  _writeReportData(done) {
-    db.TestCase.create(this._testCases, (err) => {
-      if (err) {
-        debug.error('_writeReportData save error: ', err.message)
-      }
-      done && done()
-    })
   }
 
   /**

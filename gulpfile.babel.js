@@ -99,18 +99,4 @@ function startConsoleTests(inputPath) {
           .pipe(mocha(mochaOption))
 }
 
-// Define task to view reports on http://localhost:3000/
-gulp.task('copy-report-asset',
-  copy(['src/framework/common/report/viewer/**/*.html', 'src/framework/common/report/viewer/**/*.ejs'], // eslint-disable-line max-len
-    'build/report/report-viewer'))
-gulp.task('build-report',
-  ['copy-report-asset'],
-  build('src/framework/common/report/viewer/**/*.js', 'build/report/report-viewer'))
-gulp.task('report-viewer', ['build-report'], () => {
-  server.run(['build/report/report-viewer/server.js'])
-  gulp.watch('src/report/report-viewer/*', () => {
-    gulp.run('report-viewer')
-  })
-})
-
 gulp.task('lint', $.lint())

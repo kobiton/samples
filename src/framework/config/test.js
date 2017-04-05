@@ -7,13 +7,6 @@ const args = parse()
 const apiUrl = removeSlash(process.env.KOBITON_API_URL)
 const defaultAutoTestHostName = Url.parse(apiUrl).hostname
 const defaultAutoTestPort = ((Url.parse(apiUrl).port === 443) ? 80 : Url.parse(apiUrl).port) || 80
-const dbConnection = {
-  username: process.env.REPORT_DB_USERNAME,
-  password: process.env.REPORT_DB_PASSWORD,
-  host: process.env.REPORT_DB_HOST,
-  port: process.env.REPORT_DB_PORT,
-  dbName: process.env.REPORT_DB_NAME
-}
 
 const config = {
   portalUrl: removeSlash(process.env.KOBITON_PORTAL_URL),
@@ -26,9 +19,6 @@ const config = {
   username2: process.env.KOBITON_USERNAME_2,
   password2: process.env.KOBITON_PASSWORD_2,
   emailRetainingToken: process.env.KOBITON_EMAIL_RETAINING_TOKEN,
-  testDb: {
-    connectionUri: `mongodb://${dbConnection.username}:${dbConnection.password}@${dbConnection.host}:${dbConnection.port}/${dbConnection.dbName}`
-  },
   longTestSuiteIterationAmount: args.longTestSuiteIterationAmount,
   expectedDurationInMinutes: args.mobileTestDuration,
   device: {
@@ -48,12 +38,23 @@ const config = {
   },
   report: {
     reporter: args.reporter,
-    name: args.reportName
+    name: args.reportName,
+    serverUrl: process.env.KOBITON_REPORT_SERVER_URL,
+    serverSecretKey: process.env.KOBITON_REPORT_SECRET_KEY
   }
 }
 
 const parsedUrl = Url.parse(apiUrl)
 config.autoTestHostname = parsedUrl.hostname
 config.autoTestPort = (parsedUrl.protocol === 'https' ? 80 : parsedUrl.port) || 80
+
+let environment = 'PRODUCTION'
+if (config.autoTestHostname.includes('-staging')) {
+  environment = 'STAGING'
+}
+else if (config.autoTestHostname.includes('-test')) {
+  environment = 'TEST'
+}
+config.environment = environment
 
 export default config

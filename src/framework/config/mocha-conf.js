@@ -1,5 +1,5 @@
 import moment from 'moment'
-import MochaTestCaseReporter from '../common/metrics/mocha-testcase-reporter'
+import MochaTestCaseReporter from '../common/reporter/mocha-testcase-reporter'
 
 export default function createMochaConfig(config = {}) {
   return {

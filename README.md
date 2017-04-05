@@ -1,6 +1,5 @@
 ### Prerequisites
  * Install local packages:  `npm install`
- * Please make sure test mongo database was initialized, and set db connection throught environment variable
  * KOBITON_API_URL
  * KOBITON_PORTAL_URL
  * KOBITON_DESKTOP_APP_URL
@@ -9,11 +8,8 @@
  * KOBITON_USERNAME_2
  * KOBITON_PASSWORD_2
  * KOBITON_EMAIL_RETAINING_TOKEN
- * REPORT_DB_USERNAME
- * REPORT_DB_PASSWORD
- * REPORT_DB_HOST
- * REPORT_DB_PORT
- * REPORT_DB_NAME
+ * KOBITON_REPORT_SERVER_URL
+ * KOBITON_REPORT_SECRET_KEY
 
   #Tips:
     1. You can create a file that contain all environment setter command, each time terminal is open, you just run command

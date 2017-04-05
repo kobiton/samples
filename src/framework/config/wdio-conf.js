@@ -2,7 +2,7 @@ import 'babel-polyfill'
 import moment from 'moment'
 import config from './test'
 import createMochaConfig from './mocha-conf'
-import WdioTestCaseReporter from '../common/metrics/wdio-testcase-reporter'
+import WdioTestCaseReporter from '../common/reporter/wdio-testcase-reporter'
 
 const reportFolder = `reports/browser/${moment().format('YYYY-MM-DD-HH-mm')}`
 
