@@ -77,7 +77,7 @@ class Device extends Base {
     const platformVersion = device.platformVersion
     let deviceName = device.deviceName
     const arrayUDID = (device.udid) ? device.udid : ''
-    const deviceNumbers = 1
+    const deviceNumbers = config.device.number
     const indexBegin = -1
     const indexFinish = 1000
     const onlineDevices = await this._getOnlineDevicesBy({
