@@ -2,7 +2,7 @@ import {debug} from '@kobiton/core-util'
 import mocha from 'mocha'
 import api from './api'
 import config from '../../config/test'
-import {extractEmmbedMetadata} from '../../util'
+import {extractEmmbedMetadata, errorToJSON} from '../../util'
 
 export default class MochaTestCaseReporter extends mocha.reporters.Base {
   constructor(runner, baseConfig) {
@@ -74,7 +74,7 @@ export default class MochaTestCaseReporter extends mocha.reporters.Base {
         if (testCase) {
           testCase.duration = rawTestCase.duration
           testCase.state = this._getState(rawTestCase)
-          testCase.error = this._errorJSON(rawTestCase.err)
+          testCase.error = errorToJSON(rawTestCase.err)
 
           const parentSuite = this._suitesMap[rawTestCase.parentTitle] || {}
           testCase.metadata = {
@@ -102,7 +102,7 @@ export default class MochaTestCaseReporter extends mocha.reporters.Base {
     let state = rawTestCase.state
 
     if (rawTestCase.pending) {
-      state = 'skipped'
+      state = 'busy'
     }
 
     return state
@@ -131,22 +131,5 @@ export default class MochaTestCaseReporter extends mocha.reporters.Base {
     }
 
     return testCasesQueue
-  }
-
-  /**
-  * Transform `error` into a JSON object.
-  *
-  * @api private
-  * @param {Error} err
-  * @return {Object}
-  */
-  _errorJSON(err) {
-    const res = {}
-    if (err) {
-      Object.getOwnPropertyNames(err).forEach(function (key) {
-        res[key] = err[key]
-      }, err)
-    }
-    return res
   }
 }

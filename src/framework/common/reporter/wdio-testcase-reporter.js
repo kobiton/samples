@@ -133,7 +133,7 @@ class WdioTestCaseReporter extends EventEmitter {
         state = 'failed'
         break
       case 'pending':
-        state = 'skipped'
+        state = 'busy'
         break
     }
 

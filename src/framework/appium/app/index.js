@@ -8,6 +8,7 @@ import AndroidHybridAppTest from './android-hybrid-app-test'
 import IosNativeAppTest from './ios-native-app-test'
 import IosHybridAppTest from './ios-hybrid-app-test'
 import {createAppDriver, quitDriver} from '../../appium/driver'
+import {errorToJSON} from '../../util'
 
 const defaultSessionDurationInSeconds = config.expectedDurationInMinutes * 60
 const defaultSessionAmount = config.longTestSuiteIterationAmount
@@ -45,7 +46,7 @@ export async function executeAndroidNativeApp(
     targetDevices)
   const startedAt = moment()
 
-  return await _execute(
+  return await execute(
     desiredCapabilitiesList,
     createAppDriver,
     options,
@@ -65,9 +66,7 @@ export async function executeAndroidNativeApp(
         await quitDriver(driver)
       }
     },
-    (err, cap) => {
-      logger.writeFailure(cap.deviceName, JSON.stringify(err))
-    }
+    logError
   )
 }
 
@@ -83,7 +82,7 @@ export async function executeIOSNativeApp(
     targetDevices)
   const startedAt = moment()
 
-  return await _execute(
+  return await execute(
     desiredCapabilitiesList,
     createAppDriver,
     options,
@@ -103,9 +102,7 @@ export async function executeIOSNativeApp(
         await quitDriver(driver)
       }
     },
-    (err, cap) => {
-      logger.writeFailure(cap.deviceName, JSON.stringify(err))
-    }
+    logError
   )
 }
 export async function executeAndroidHybridApp(
@@ -120,7 +117,7 @@ export async function executeAndroidHybridApp(
     targetDevices)
   const startedAt = moment()
 
-  return await _execute(
+  return await execute(
     desiredCapabilitiesList,
     createAppDriver,
     options,
@@ -140,9 +137,7 @@ export async function executeAndroidHybridApp(
         await quitDriver(driver)
       }
     },
-    (err, cap) => {
-      logger.writeFailure(cap.deviceName, JSON.stringify(err))
-    }
+    logError
   )
 }
 export async function executeIOSHybridApp(
@@ -157,7 +152,7 @@ export async function executeIOSHybridApp(
     targetDevices)
   const startedAt = moment()
 
-  return await _execute(
+  return await execute(
     desiredCapabilitiesList,
     createAppDriver,
     options,
@@ -178,45 +173,58 @@ export async function executeIOSHybridApp(
         await quitDriver(driver)
       }
     },
-    (err, cap) => {
-      logger.writeFailure(cap.deviceName, JSON.stringify(err))
-    }
+    logError
   )
+}
+
+function logError(err, cap) {
+  if (cap && cap.deviceName) {
+    logger.writeFailure(cap.deviceName, errorToJSON(err))
+  }
+  throw err
 }
 
 // errorCallback:
 //     + if specified, when error throw, the callback will be call
 // The test will be countinue to execute
 //     + if not specified, the test would throw error and stop executing test
-async function _execute(desiredCapsList, createSession, options, callbackJob, errorCallback) {
+async function execute(desiredCapsList, createSession, options, callbackJob, errorCallback) {
   const jobs = desiredCapsList
-    .map((desiredCapabilities) => _launchSession(
+    .map((desiredCapabilities) => launchSession(
       desiredCapabilities,
       createSession,
       options,
       callbackJob,
       errorCallback)
     )
-    .map((promise) => _reflect(promise).then(onComplete))
+    .map((promise) => reflect(promise).then(onComplete))
 
   const finishedJobs = await BPromise.all(jobs)
-  const successCount = finishedJobs.reduce((sum, ok) => {
-    return (sum + ok)
-  }, 0)
-
-  function onComplete(result) {
-    if (result.status === 'resolved') {
-      return 1
+  const errors = []
+  let resolvedJobsCount = 0
+  finishedJobs.forEach((job) => {
+    if (job.resolved) {
+      resolvedJobsCount++
     }
-    else {
-      return 0
+    if (job.err) {
+      errors.push(job.err)
+    }
+  })
+
+  function onComplete({status, err}) {
+    return {
+      resolved: status === 'resolved',
+      err
     }
   }
 
-  return successCount
+  return {
+    resolvedJobs: resolvedJobsCount,
+    errors
+  }
 }
 
-function _reflect(promise) {
+function reflect(promise) {
   return promise.then(
     function (value) {
       return {value, status: 'resolved'}
@@ -227,7 +235,7 @@ function _reflect(promise) {
   )
 }
 
-async function _launchSession(
+async function launchSession(
   desiredCap,
   createSession,
   options,
@@ -239,6 +247,6 @@ async function _launchSession(
   }
   catch (err) {
     // Callback, countinue executing test
-    errorCallback(err, desiredCap.desiredCapabilities)
+    errorCallback(err, desiredCap)
   }
 }

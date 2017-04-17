@@ -60,3 +60,13 @@ export function extractEmmbedMetadata(text) {
     return {}
   }
 }
+
+export function errorToJSON(err) {
+  const res = {}
+  if (err) {
+    Object.getOwnPropertyNames(err).forEach(function (key) {
+      res[key] = err[key]
+    }, err)
+  }
+  return res
+}

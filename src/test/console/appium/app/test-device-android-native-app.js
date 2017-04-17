@@ -1,6 +1,6 @@
 import {assert} from 'chai'
-import {debug} from '@kobiton/core-util'
 import moment from 'moment'
+import {executeAppTest} from './executor'
 import Device from '../../../../framework/api/device'
 import config from '../../../../framework/config/test'
 import {executeAndroidNativeApp} from '../../../../framework/appium/app'
@@ -14,27 +14,7 @@ setTimeout(async () => {
   })
   assert.isAtLeast(neededDevices.length, 1, 'Expected at least 1 online devices')
   describe('[appium-app] : android-native', async () => {
-    for (const device of neededDevices) {
-      let id = (device.udid) ? `with udid ${device.udid}` : ''
-      describe(`Test ${device.deviceName}: ${device.platformVersion} ${id}`,
-      async () => {
-        const metadata = {...device} // Clones the object
-        for (let i = 0; i < runLoop; i++) {
-          it(`${timestamps} - Loop ${i + 1}/${runLoop} ${JSON.stringify(metadata)}`,
-          async function() { // Use function instead of arrow function to call skip()
-            const deviceIsOnline = await Device.isOnlineDevice(device)
-            if (deviceIsOnline) {
-              const successfulResult = await executeAndroidNativeApp(timestamps, [device])
-              assert.equal(successfulResult, 1, 'Expected one device is run successfully')
-            }
-            else {
-              debug.log(`Device ${device.deviceName} is not online to run`)
-              this.skip()
-            }
-          })
-        }
-      })
-    }
+    await executeAppTest(executeAndroidNativeApp, {timestamps, devices: neededDevices, runLoop})
   })
   run()
 }, 1000)
