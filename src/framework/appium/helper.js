@@ -23,7 +23,7 @@ export function convertToDesiredCapabilities(timestamp, devices, {
 }
 
 export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
-  deviceOrientation = config.deviceOrientation,
+  deviceOrientation = config.device.orientation,
   captureScreenshots = config.device.captureScreenshots
 } = {}) {
   return devices
@@ -64,11 +64,8 @@ function getDeviceGroup(device) {
   if (device.isCloud && (device.udid === null || !device.udid)) {
     return 'KOBITON'
   }
-  else if (device.isMyOrg) {
+  else if (device.isMyOrg || device.isMyOwn) {
     return 'ORGANIZATION'
-  }
-  else if (device.isMyOwn) {
-    return 'PERSONAL'
   }
   else {
     throw new Error('This device doesn\'t belong any group')

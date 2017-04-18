@@ -6,7 +6,7 @@ import config from '../../../../framework/config/test'
 import {executeMailinatorPageTest} from '../../../../framework/appium/web/index'
 import {convertToDesiredCapabilities} from '../../../../framework/appium/helper'
 
-const timeout = 60000 // milliseconds
+const timeout = 90000 // milliseconds
 const runLoop = config.longTestSuiteIterationAmount
 const timestamps = moment().format('YYYYMMDDHHmmss')
 
