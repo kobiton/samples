@@ -5,7 +5,7 @@ import {debug} from '@kobiton/core-util'
 const elements = {
   group: {
     favorite: '//h3[contains(., "Favorite Devices")]/../../following-sibling::div/div',
-    cloud: '//h3[contains(., "Cloud Devices")]/../../following-sibling::div/div',
+    cloud: '//div[span//h3[contains(., "Cloud Devices")]]/../following-sibling::div/div/div',
     private: '//h3[contains(., "Private Devices")]/../../following-sibling::div/div'
   },
   device: {

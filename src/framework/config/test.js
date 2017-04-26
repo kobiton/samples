@@ -1,8 +1,19 @@
 import {removeSlash} from '../util'
 import {parse} from './args'
 import Url from 'url'
+import {assert} from 'chai'
 
 const args = parse()
+
+// Required test environments
+assert.isDefined(process.env.KOBITON_USERNAME_1,
+  'should configure test environment KOBITON_USERNAME_1')
+assert.isDefined(process.env.KOBITON_PASSWORD_1,
+  'should configure test environment KOBITON_PASSWORD_1')
+assert.isDefined(process.env.KOBITON_API_URL,
+  'should configure test environment KOBITON_API_URL')
+assert.isDefined(process.env.KOBITON_PORTAL_URL,
+  'should configure test environment KOBITON_PORTAL_URL')
 
 const apiUrl = removeSlash(process.env.KOBITON_API_URL)
 const defaultAutoTestHostName = Url.parse(apiUrl).hostname
