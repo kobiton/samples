@@ -22,7 +22,8 @@ gulp.task('help', () => yargs.help())
 let argv = yargs.parse()
 
 gulp.task('clean', clean([Paths.DIST, Paths.BUILD]))
-gulp.task('build', ['clean'], build(['src/**/*.js'], 'build'))
+gulp.task('copy-external-tests', ['clean'], copy(['src/test/console/**/!(*.js)'], 'build/test/console/'))
+gulp.task('build', ['copy-external-tests'], build(['src/**/*.js'], 'build'))
 gulp.task('run-test', async () => {
   // Initialize value for test such as: default url, username, password
   const preSetupTests = require('./build/test/setup.js')
@@ -48,15 +49,27 @@ gulp.task('run-test', async () => {
 async function executeDefinedTask(taskName) {
   switch (taskName) {
     case 'test-manual':
-      try {
-        const runManual = require('./build/test/browser/manual/manual-setup')
-        await runManual()
-      }
-      catch(err) {
-        debug.error('test-manual', err)
-      }
-    break
+      return await startManualTest()
+      break
+    case 'test-ruby':
+      return await startRubyTest()
+      break
   }
+}
+
+async function startManualTest() {
+  try {
+    const runManual = require('./build/test/browser/manual/manual-setup')
+    await runManual()
+  }
+  catch(err) {
+    debug.error('test-manual', err)
+  }
+}
+
+async function startRubyTest() {
+  const JSExecutor = require('./build/test/console/ruby/JSExecutor')
+  await JSExecutor.executeRubyTest()
 }
 
 function startBrowserTests(inputPath) {

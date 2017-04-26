@@ -21,7 +21,7 @@ setTimeout(async () => {
         const metadata = {...device} // Clones the object
         for (let i = 0; i < runLoop; i++) {
           it(`${timestamps} - Loop ${i + 1}/${runLoop} ${JSON.stringify(metadata)}`,
-          async function() { // Use function instead of arrow function to call skip()
+          async function () { // Use function instead of arrow function to call skip()
             const deviceIsOnline = await Device.isOnlineDevice(device)
             if (deviceIsOnline) {
               const onlineCaps = await convertToDesiredCapabilities(timestamps, [device])

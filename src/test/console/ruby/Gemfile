@@ -1,0 +1,8 @@
+# filename: Gemfile
+
+source 'https://rubygems.org'
+
+gem 'appium_lib', '9.4.1'
+gem "test-unit", "3.1.5"
+gem 'appium_console', '~> 1.0.1'
+gem 'rest-client', '~> 2.0.1'
