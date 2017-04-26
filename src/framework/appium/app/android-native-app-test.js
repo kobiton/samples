@@ -1,6 +1,6 @@
 import * as logger from '../../../framework/common/logger'
 
-const waitingTime = 30000
+const waitingTime = 60000
 
 export default class AndroidNativeAppTest {
   constructor(driver) {
@@ -14,8 +14,8 @@ export default class AndroidNativeAppTest {
   async executeAndroidNativeTest() {
     try {
       await this._driver // eslint-disable-line babel/no-await-in-loop
-        .elementByXPath("//android.widget.TextView[@content-desc='App']")
         .waitForElementByXPath("//android.widget.TextView[@content-desc='App']", waitingTime)
+        .elementByXPath("//android.widget.TextView[@content-desc='App']")
         .sleep(10)
         .noop()
         .click()
@@ -25,9 +25,6 @@ export default class AndroidNativeAppTest {
         .flick(0, -700, 200)
         .elementByXPath("//android.widget.TextView[@content-desc='Soft Input Modes']")
         .click()
-        .elementById('saved')
-        .click()
-        .clear()
         .currentContext()
         .contexts()
         .context('NATIVE_APP')
@@ -35,15 +32,6 @@ export default class AndroidNativeAppTest {
         .activeIMEEngine()
         .deactivateIMEEngine()
         .activeIMEEngine()
-        .elementByClassName('android.widget.TextView')
-        .elementByClassNameOrNull('android.widget.TextView')
-        .element('xpath', "//android.widget.TextView[@content-desc='Resize mode:']").then((ele) => {
-          this._driver
-          .isEnabled(ele)
-          .isSelected(ele)
-          .getAttribute(ele)
-        })
-        .elements('xpath', '//android.widget.TextView')
         .sessions()
         .sessionCapabilities()
         .setCommandTimeout(waitingTime)
@@ -53,89 +41,6 @@ export default class AndroidNativeAppTest {
         .back()
         .back()
         .back()
-        .waitForElementByXPath("//*[@content-desc='Accessibility']")
-        .elementByXPath("//*[@content-desc='Accessibility']").text()
-        .elementByXPath("//*[@content-desc='Accessibility']")
-        .click()
-        .back()
-        .source()
-        .hasElementById('list')
-        .elementById('list')
-        .flick(0, -700, 200)
-        .elementById('list')
-        .flick(300, 700, 200)
-        .getWindowSize()
-        .waitForElementByXPath("//*[@content-desc='Accessibility']")
-        .type('Tab')
-        .back()
-        .back()
-        .waitForElementByXPath("//android.widget.TextView[@content-desc='Animation']")
-        .click()
-        .waitForElementByXPath("//android.widget.TextView[@content-desc='Bouncing Balls']")
-        .click()
-        .elementById('container')
-        .flick(this.getRandomInt(1, 1000),
-          this.getRandomInt(-200, 200), this.getRandomInt(100, 1000))
-        .sleep(5)
-        .flick(this.getRandomInt(-200, 200),
-          this.getRandomInt(-1000, 0), this.getRandomInt(100, 1000))
-        .back()
-        .back()
-        .getOrientation()
-        .setOrientation('PORTRAIT')
-        .setOrientation('LANDSCAPE')
-        .setOrientation('PORTRAIT')
-        .openNotifications()
-        .logTypes()
-        .currentContext()
-        .startActivity({
-          appPackage: 'io.appium.android.apis',
-          appActivity: '.accessibility.AccessibilityNodeProviderActivity'
-        })
-        .launchApp('com.android.chrome')
-        .closeApp()
-        .resetApp()
-        .backgroundApp(5)
-        .getSessionId()
-
-        /** List supported apis but we can not run in spite of our setting
-          .getNetworkConnection()
-          .setNetworkConnection(1)
-          .lockDevice()
-          .unlockDevice()
-          .lock()
-          .unlock()
-          .toggleWiFiOnDevice()
-          .toggleWiFi()
-          .toggleLocationServicesOnDevice()
-          .toggleLocationServices()
-          .back()
-          .toggleDataOnDevice()
-          .back()
-          .toggleData()
-        **/
-
-        /** TODO: List of unsupported apis
-         .hideKeyboard()
-         .status()
-         .altSessionCapabilities({'platformName': 'android'})
-         .eval('window.location.href')
-         .alertText()
-         .dismissAlert()
-         .session()
-         .getAppStrings()
-         .timeouts()
-         .alertText()
-         .session()
-         .forward()
-         .getWindowPosition()
-         .setLocalStorageKey()
-         .getLocalStorageKey()
-         .activatedIMEEngine()
-         .toggleWiFiOnDevice()
-         .toggleWiFi()
-         **/
-
     }
     catch (err) {
       logger.writeLog('Test support native android app is failed by:', err)
