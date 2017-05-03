@@ -1,19 +1,23 @@
-import {removeSlash} from '../util'
+import {debug} from '@kobiton/core-util'
 import {parse} from './args'
+import {removeSlash} from '../util'
 import Url from 'url'
-import {assert} from 'chai'
 
 const args = parse()
 
-// Required test environments
-assert.isDefined(process.env.KOBITON_USERNAME_1,
-  'should configure test environment KOBITON_USERNAME_1')
-assert.isDefined(process.env.KOBITON_PASSWORD_1,
-  'should configure test environment KOBITON_PASSWORD_1')
-assert.isDefined(process.env.KOBITON_API_URL,
-  'should configure test environment KOBITON_API_URL')
-assert.isDefined(process.env.KOBITON_PORTAL_URL,
-  'should configure test environment KOBITON_PORTAL_URL')
+const envVariablesToCheck = ['KOBITON_USERNAME_1',
+  'KOBITON_PASSWORD_1',
+  'KOBITON_API_URL',
+  'KOBITON_PORTAL_URL',
+  'KOBITON_EMAIL_RETAINING_TOKEN',
+  'KOBITON_REPORT_SERVER_URL',
+  'KOBITON_REPORT_SECRET_KEY'
+]
+for (const envName of envVariablesToCheck) {
+  if (!process.env[envName]) {
+    debug.log(`WARNING: environemnt ${envName} is not defined. `)
+  }
+}
 
 const apiUrl = removeSlash(process.env.KOBITON_API_URL)
 const defaultAutoTestHostName = Url.parse(apiUrl).hostname
