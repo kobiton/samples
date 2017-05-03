@@ -142,6 +142,15 @@ class Device extends Base {
       groupType: 'cloud'
     })
   }
+
+  async getDevice(udid) {
+    const groups = await this._getDevices()
+    const allDevices = groups.privateDevices
+    const matches = allDevices.filter((d) => {
+      return d.udid === udid
+    })
+    return matches[0]
+  }
 }
 
 export default new Device()
