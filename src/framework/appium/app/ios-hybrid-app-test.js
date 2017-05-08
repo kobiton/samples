@@ -1,4 +1,5 @@
 import * as logger from '../../../framework/common/logger'
+import {debug} from '@kobiton/core-util'
 
 export default class IosHybridAppTest {
   constructor(driver) {
@@ -20,6 +21,7 @@ export default class IosHybridAppTest {
         .click()
     }
     catch (err) {
+      debug.error('ios_hybrid_app', err)
       logger.writeLog('Test support hybrid iOS app is failed by:', err)
       throw err
     }

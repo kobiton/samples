@@ -1,4 +1,5 @@
 import * as logger from '../../../framework/common/logger'
+import {debug} from '@kobiton/core-util'
 
 export default class AndroidHybridAppTest {
   constructor(driver) {
@@ -33,6 +34,7 @@ export default class AndroidHybridAppTest {
       .click()
     }
     catch (err) {
+      debug.error('android_hybrid_app', err)
       logger.writeLog('Test support hybrid android app is failed by:', err)
       throw err
     }

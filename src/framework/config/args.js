@@ -112,6 +112,13 @@ const yargs = require('yargs')
     describe: 'max of browser instances',
     type: 'number'
   })
+  .options('logs', {
+    alias: 'pushLogs',
+    demand: false,
+    default: false,
+    describe: 'whether we push logs to server',
+    type: 'boolean'
+  })
   .help()
 
 export function help() {

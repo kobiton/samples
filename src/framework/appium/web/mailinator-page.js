@@ -1,5 +1,6 @@
 import moment from 'moment'
 import faker from 'faker'
+import {debug} from '@kobiton/core-util'
 
 const elements = {
   url: 'https://www.mailinator.com/login.jsp',
@@ -30,6 +31,9 @@ export default class MailinatorPage {
         const endedAt = moment.utc()
         duration = endedAt.diff(startedAt, 'minutes')
       } while (duration < expectedDurationInMinutes)
+    }
+    catch (err) {
+      debug.error('auto_web', err)
     }
     finally {
       await this._browser.end()

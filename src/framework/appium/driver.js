@@ -1,5 +1,6 @@
 import * as logger from '../../framework/common/logger'
 import {createServerConfig} from './helper'
+import {debug} from '@kobiton/core-util'
 import wd from 'wd'
 
 export async function quitDriver(driver) {
@@ -19,6 +20,7 @@ export async function createDriver(server, desiredCaps) {
   }
   catch (error) {
     if (error.data) {
+      debug.error('create_driver', error)
       logger.writeLog('createDriver()', error)
     }
   }

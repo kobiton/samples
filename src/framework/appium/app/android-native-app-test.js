@@ -1,4 +1,5 @@
 import * as logger from '../../../framework/common/logger'
+import {debug} from '@kobiton/core-util'
 
 const waitingTime = 60000
 
@@ -26,6 +27,7 @@ export default class AndroidNativeAppTest {
         .back()
     }
     catch (err) {
+      debug.error('android_native_app', err)
       logger.writeLog('Test support native android app is failed by:', err)
       throw err
     }

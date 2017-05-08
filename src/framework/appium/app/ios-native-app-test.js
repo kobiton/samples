@@ -1,4 +1,5 @@
 import * as logger from '../../../framework/common/logger'
+import {debug} from '@kobiton/core-util'
 
 const waitingTime = 60000
 
@@ -24,6 +25,7 @@ export default class IosNativeAppTest {
         .back()
     }
     catch (err) {
+      debug.error('ios_native_app', err)
       logger.writeLog('Test support native iOS app is failed by:', err)
       throw err
     }

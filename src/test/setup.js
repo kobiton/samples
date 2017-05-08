@@ -1,3 +1,4 @@
+import {debug} from '@kobiton/core-util'
 import request from 'request'
 import config from '../framework/config/test'
 import ApiKey from '../framework/api/key'
@@ -24,7 +25,7 @@ if (!request.Request.callbackOverrided) {
           body.value.message = body.message
         }
         return _originCallback.apply(self, arguments)
-      }
+      } 
     }
   }
 }
@@ -46,4 +47,13 @@ export default async function init() {
   Device.setBaseUrl(config.apiUrl)
   Device.setLoginAccount(config.username1, config.password1)
   Device.setToken(token)
+
+  if(config.log.pushLog) {
+    debug.enable('*',
+    {
+      logstash: `${config.log.serverUrl}`,
+      environment: 'staging-as-test',
+      component: 'regression'
+    })
+  }
 }

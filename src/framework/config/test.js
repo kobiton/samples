@@ -11,7 +11,8 @@ const envVariablesToCheck = ['KOBITON_USERNAME_1',
   'KOBITON_PORTAL_URL',
   'KOBITON_EMAIL_RETAINING_TOKEN',
   'KOBITON_REPORT_SERVER_URL',
-  'KOBITON_REPORT_SECRET_KEY'
+  'KOBITON_REPORT_SECRET_KEY',
+  'KOBITON_LOGS_SERVER_URL'
 ]
 for (const envName of envVariablesToCheck) {
   if (!process.env[envName]) {
@@ -56,6 +57,10 @@ const config = {
     name: args.reportName,
     serverUrl: process.env.KOBITON_REPORT_SERVER_URL,
     serverSecretKey: process.env.KOBITON_REPORT_SECRET_KEY
+  },
+  log: {
+    serverUrl: process.env.KOBITON_LOGS_SERVER_URL,
+    pushLog: args.logs
   }
 }
 
