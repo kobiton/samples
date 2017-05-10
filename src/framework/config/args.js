@@ -119,6 +119,20 @@ const yargs = require('yargs')
     describe: 'whether we push logs to server',
     type: 'boolean'
   })
+  .options('busyDeviceRetryInterval', {
+    alias: 'onDeviceBusyRetryInterval',
+    demand: false,
+    default: 600,
+    describe: 'interval in seconds',
+    type: 'number'
+  })
+  .options('busyDeviceRetry', {
+    alias: 'onBusyDeviceRetryTimes',
+    demand: false,
+    default: 3,
+    describe: 'interval in seconds',
+    type: 'number'
+  })
   .help()
 
 export function help() {

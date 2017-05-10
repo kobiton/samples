@@ -54,6 +54,9 @@ async function executeDefinedTask(taskName) {
     case 'test-ruby':
       return await startRubyTest()
       break
+    case 'health-check':
+      return await startHealthCheck(argv.input)
+      break
   }
 }
 
@@ -70,6 +73,18 @@ async function startManualTest() {
 async function startRubyTest() {
   const JSExecutor = require('./build/test/console/ruby/JSExecutor')
   await JSExecutor.executeRubyTest()
+}
+
+async function startHealthCheck(type) {
+  const healthChecker = require('./build/health-check')
+  switch (type) {
+    case 'daily-web':
+      return healthChecker.executeWebCheck()
+    case 'android-app':
+      return healthChecker.executeAndroidAppCheck()
+    case 'ios-app':
+      return healthChecker.executeIOSAppCheck()
+  }
 }
 
 function startBrowserTests(inputPath) {

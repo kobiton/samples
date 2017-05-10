@@ -27,6 +27,17 @@ class Key extends Base {
     })
     return allKeys
   }
+
+  async getApiKey() {
+    const allKeys = await this.getAll()
+
+    if (allKeys.length > 0) {
+      return allKeys[0].key
+    }
+    else {
+      throw Error('No valid api key found.')
+    }
+  }
 }
 
 export default new Key()

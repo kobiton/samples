@@ -80,7 +80,7 @@ export async function getApiKey() {
     return allKeys[0]
   }
   else {
-    throw Error('Can\'t not get a valid apiKey')
+    throw Error('Can not get a valid apiKey')
   }
 }
 

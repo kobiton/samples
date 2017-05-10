@@ -61,6 +61,10 @@ const config = {
   log: {
     serverUrl: process.env.KOBITON_LOGS_SERVER_URL,
     pushLog: args.logs
+  },
+  healthCheck: {
+    onDeviceBusyRetryInterval: args.onDeviceBusyRetryInterval * 1000,
+    maxRetry: args.onBusyDeviceRetryTimes
   }
 }
 
