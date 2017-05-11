@@ -42,9 +42,11 @@ def executeTests()
 
       exec "gem uninstall #{LIB_NAME} -a -I"
       exec "bundle update"
-      webPassed = exec "#{RUBY} ../AndroidWebTest.rb"
-      appPassed = exec "#{RUBY} ../AndroidAppTest.rb"
-      passed = webPassed && appPassed
+      androidWebPassed = exec "#{RUBY} ../AndroidWebTest.rb"
+      iOSWebPassed = exec "#{RUBY} ../IOSWebTest.rb"
+      androidAppPassed = exec "#{RUBY} ../AndroidAppTest.rb"
+      iosAppPassed = exec "#{RUBY} ../iOSAppTest.rb"
+      passed = androidWebPassed && iOSWebPassed && androidAppPassed && iosAppPassed
 
       if !passed
         failedGemFiles.push(file)

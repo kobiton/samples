@@ -35,12 +35,14 @@ def generateGemFiles(gemName, numberOfVersion)
   end
 
   # Generate gemfile for each version
+  gemFilesDir = 'gemfiles'
+  Dir.mkdir gemFilesDir if !File.directory? gemFilesDir
   selectedVersions.each do |version|
     fileName = "Gemfile_#{version}"
     fileContent = gemFileTemplate.sub '<bundle-version>', version
 
-    filePath = "gemfiles/#{fileName}"
-    puts "gemfiles/#{fileName}"
+    filePath = "#{gemFilesDir}/#{fileName}"
+    puts filePath
     writeFile filePath, fileContent
   end
 end
