@@ -9,7 +9,7 @@ const desiredCapabilitiesiOSNativeApp = {
   fullReset: true
 }
 
-export default class AndroidAppTest extends BaseTest {
+export default class IOSAppTest extends BaseTest {
   async execute(device, timeout) {
     const desiredCapabilities = this._getCap(device)
 
