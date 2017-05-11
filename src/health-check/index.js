@@ -33,7 +33,7 @@ class HealthChecker {
     if (attemp) {
       debug.log(`RETRY BUSY DEVICE ${attemp}/${testConfig.healthCheck.maxRetry}`)
     }
-    const checkedDeviceUUIDs = [...checkedUUIDs]
+    let checkedDeviceUUIDs = [...checkedUUIDs]
 
     let device = await this._pickDevice(devices, checkedDeviceUUIDs)
     while (device) {
@@ -51,7 +51,7 @@ class HealthChecker {
 
     if (unavailableDevices.length) {
       const offlineDevices = unavailableDevices.filter((d) => !d.isOnline)
-      checkedDeviceUUIDs.push(...offlineDevices)
+      checkedDeviceUUIDs = checkedDeviceUUIDs.concat(offlineDevices.map((d) => d.udid))
       this._reportUnavailableDevice(offlineDevices, testScript)
 
       const busyDevices = unavailableDevices.filter((d) => d.isBooked && d.isOnline)
