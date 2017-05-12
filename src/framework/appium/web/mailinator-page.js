@@ -34,6 +34,7 @@ export default class MailinatorPage {
     }
     catch (err) {
       debug.error('auto_web', err)
+      throw err
     }
     finally {
       await this._browser.end()
