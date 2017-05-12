@@ -26,18 +26,20 @@
     * KOBITON_REPORT_SERVER_URL
     * KOBITON_REPORT_SECRET_KEY
 
-  ##### 1. Tips: You can create a file that contain all environment setter command as below
+  ##### Tips: You can create a file that contain all environment setter command as below
       
     * export KOBITON_API_URL='<api_url>'
     * export KOBITON_PORTAL_URL='<portal_url>'
     * export KOBITON_USERNAME_1='<username>'
     * export KOBITON_PASSWORD_1='<password>'
 
-    2. Run command to set variable environment when you open terminal
-       ```bash
-       source <path_to_file>
-       ```
-    3. If you're using iTerm, set all environment in .bash_profile file.
+  Run command to set variable environment when you open terminal
+
+    ```bash
+      source <path_to_file>
+    ```
+
+  If you're using iTerm, set all environment in .bash_profile file.
 
 ### Build script
   ```bash
@@ -50,7 +52,7 @@
   yarn run help
   ```
 
-#### 2. If you want mocha/wdio use specific reporter instead of default reporter, please use argument --reporter
+#### 2. If you want mocha/wdio to use specific reporter instead of default reporter, please use argument --reporter
 e.g: yarn test -- --input /console/api/test-register.js --reporter spec
 
 #### 3. Get online devices belong to private group, default is devices on cloud group
@@ -75,14 +77,13 @@ Append argument: --longTestSuiteIterationAmount <number_of_loop>
 Append argument: --mobileTestDuration <minutes>
 
 ### Run a specific test suites
-#### 1. Api
- * Test api functionality
+#### Api
 
    ```bash
    yarn test -- --input /console/api
    ```
 
-#### 2. E2e
+#### E2e
 
 ##### Test manual:
 
@@ -133,7 +134,7 @@ Append argument: --mobileTestDuration <minutes>
     yarn run test -- --input /console/appium/web/test-web-session-daily.js --platform iOS
   ```
 
-#### 3. Java: Jsonwired protocol
+#### Java: Jsonwired protocol
 
 ##### Install maven
 
@@ -141,7 +142,7 @@ Append argument: --mobileTestDuration <minutes>
   brew install maven
   ```
 ##### Configuration
-* To configure test environment: deviceName, platformName, kobitonServerUrl. Need to edit file `src/test/console/java/testng.xml`
+* To configure test environment: deviceName, platformName, kobitonServerUrl you will need to edit file `src/test/console/java/testng.xml`
 * To change Selenium version: edit file `src/test/java/pom.xml` (2.53.1 or 3.1.0)
 ##### Run test
 
@@ -149,6 +150,4 @@ Append argument: --mobileTestDuration <minutes>
   cd /src/test/console/java
   mvn test
   ```
-TODO: make a gulp task to run jsonwired for java
 
-TODO: add manual for C#

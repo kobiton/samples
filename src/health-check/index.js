@@ -39,8 +39,11 @@ class HealthChecker {
     while (device) {
       checkedDeviceUUIDs.push(device.udid)
       debug.log(`Check on: ${device.deviceName} udid: ${device.udid}`)
+      // eslint-disable-next-line babel/no-await-in-loop
       const results = await runner.execute([device], testScript)
+      // eslint-disable-next-line babel/no-await-in-loop
       await report(results)
+      // eslint-disable-next-line babel/no-await-in-loop
       device = await this._pickDevice(devices, checkedDeviceUUIDs)
     }
 
