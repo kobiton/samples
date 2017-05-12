@@ -12,7 +12,7 @@
   ##### Login private registry with username/password/email in [Document] (https://github.com/kobiton/docs/blob/master/team/accounts.md#npm)
     `$ npm login`
 
-  ##### Install local packages:  
+  ##### Install local packages:
   `$ yarn install`
 
     * KOBITON_API_URL
@@ -26,8 +26,7 @@
     * KOBITON_REPORT_SERVER_URL
     * KOBITON_REPORT_SECRET_KEY
 
-  ##### Tips: You can create a file that contain all environment setter command as below
-      
+  ##### 1. Tips: You can create a file that contain all environment setter command as below
     * export KOBITON_API_URL='<api_url>'
     * export KOBITON_PORTAL_URL='<portal_url>'
     * export KOBITON_USERNAME_1='<username>'
@@ -134,20 +133,33 @@ Append argument: --mobileTestDuration <minutes>
     yarn run test -- --input /console/appium/web/test-web-session-daily.js --platform iOS
   ```
 
-#### Java: Jsonwired protocol
-
-##### Install maven
-
+### Device health-check
+#### Android web:
   ```bash
-  brew install maven
+    yarn run test -- --task health-check --input daily-web  --platform Android
   ```
-##### Configuration
-* To configure test environment: deviceName, platformName, kobitonServerUrl you will need to edit file `src/test/console/java/testng.xml`
-* To change Selenium version: edit file `src/test/java/pom.xml` (2.53.1 or 3.1.0)
+
+#### iOS web:
+  ```bash
+    yarn run test -- --task health-check --input daily-web  --platform iOS
+  ```
+
+#### Android app:
+  ```bash
+    npm run test -- --task health-check --input android-app  --platform Android
+  ```
+
+#### iOS app:
+  ```bash
+    npm run test -- --task health-check --input ios-app  --platform iOS
+  ```
+
+### Automation test on multiple language
+#### Ruby
+#### Prerequisites
+* Install Ruby via RVM
 ##### Run test
-
   ```bash
-  cd /src/test/console/java
-  mvn test
+  yarn test -- --task test-ruby
   ```
-
+#####
