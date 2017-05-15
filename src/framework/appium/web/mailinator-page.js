@@ -4,8 +4,8 @@ import {debug} from '@kobiton/core-util'
 
 const elements = {
   url: 'https://www.mailinator.com/login.jsp',
-  emailInput: '//input[@id="loginEmail"]',
-  passwordInput: '//input[@id="loginPassword"]'
+  emailInput: '//input[@type="text" and contains(@id,"email")]',
+  passwordInput: '//input[@type="password" and contains(@id,"password")]'
 }
 
 export default class MailinatorPage {
