@@ -85,24 +85,23 @@ class HealthChecker {
   async _reportUnavailableDevice(devices, testScript) {
     const results = []
     for (const device of devices) {
-      let errMessage = ''
+      let state = 'failed'
+      let err = null
       if (!device.isOnline) {
-        errMessage = 'Device is offline'
+        err = {errMessage: 'Device is offline'}
       }
       else if (device.isBooked) {
-        errMessage = 'Device is busy. Can not book.'
+        state = 'busy'
       }
-      debug.log(`${device.deviceName} - udid: ${device.udid} : ${errMessage}`)
+      debug.log(`${device.deviceName} - udid: ${device.udid} : ${state} - ${JSON.stringify(err)}`)
 
       const result = runner.createResult({
         testCaseName: testScript.constructor.name,
         device,
         startedAt: moment(),
         finishedAt: moment(),
-        state: 'failed',
-        err: {
-          message: errMessage
-        }
+        state,
+        err
       })
       results.push(result)
     }
