@@ -88,7 +88,7 @@ class HealthChecker {
       let state = 'failed'
       let err = null
       if (!device.isOnline) {
-        err = {errMessage: 'Device is offline'}
+        err = {message: 'Device is offline'}
       }
       else if (device.isBooked) {
         state = 'busy'
