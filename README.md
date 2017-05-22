@@ -26,14 +26,13 @@
     * KOBITON_REPORT_SERVER_URL
     * KOBITON_REPORT_SECRET_KEY
 
-  ##### 1. Tips: You can create a file that contain all environment setter command as below
+  ##### Tips: You can create a file that contains all environment setter commands as below:
     * export KOBITON_API_URL='<api_url>'
     * export KOBITON_PORTAL_URL='<portal_url>'
     * export KOBITON_USERNAME_1='<username>'
     * export KOBITON_PASSWORD_1='<password>'
 
-  Run command to set variable environment when you open terminal
-
+  Run command to set variable environment
     ```bash
       source <path_to_file>
     ```
@@ -146,12 +145,12 @@ Append argument: --mobileTestDuration <minutes>
 
 #### Android app:
   ```bash
-    npm run test -- --task health-check --input android-app  --platform Android
+    yarn run test -- --task health-check --input android-app  --platform Android
   ```
 
 #### iOS app:
   ```bash
-    npm run test -- --task health-check --input ios-app  --platform iOS
+    yarn run test -- --task health-check --input ios-app  --platform iOS
   ```
 
 ### Automation test on multiple language
