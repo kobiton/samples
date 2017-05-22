@@ -1,0 +1,28 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile 'joda-time:joda-time:2.2'
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
+    compile 'com.google.code.gson:gson:2.8.0'
+
+    compile 'io.appium:java-client:4.1.2'
+
+    compile 'org.testng:testng:6.10'
+    compile 'junit:junit:4.12'
+
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    compile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.0.0-M4'
+}
+
+test {
+  useTestNG {
+    suites "src/test/resources/testng.xml"
+  }
+}

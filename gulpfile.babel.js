@@ -50,13 +50,12 @@ async function executeDefinedTask(taskName) {
   switch (taskName) {
     case 'test-manual':
       return await startManualTest()
-      break
     case 'test-ruby':
       return await startRubyTest()
-      break
+    case 'test-java':
+      return startJavaTest()
     case 'health-check':
       return await startHealthCheck(argv.input)
-      break
   }
 }
 
@@ -71,8 +70,13 @@ async function startManualTest() {
 }
 
 async function startRubyTest() {
-  const JSExecutor = require('./build/test/console/ruby/JSExecutor')
-  await JSExecutor.executeRubyTest()
+  const RubyExecutor = require('./build/test/console/ruby/RubyExecutor')
+  await RubyExecutor.executeRubyTest()
+}
+
+async function startJavaTest() {
+  const JavaExecutor = require('./build/test/console/java/JavaExecutor')
+  await JavaExecutor.executeJavaTest()
 }
 
 async function startHealthCheck(type) {

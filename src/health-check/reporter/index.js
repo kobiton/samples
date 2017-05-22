@@ -1,6 +1,6 @@
 import moment from 'moment'
-import testServerReporter from './test-server'
 import testConfig from '../../framework/config/test'
+import apiReporter from '../../framework/common/reporter/api'
 
 export async function report(results) {
   const testCases = results.map((rs) => {
@@ -20,6 +20,5 @@ export async function report(results) {
     }
   })
 
-  const reporter = testServerReporter
-  await reporter.add(testCases)
+  await apiReporter.TestCase.add(testCases)
 }

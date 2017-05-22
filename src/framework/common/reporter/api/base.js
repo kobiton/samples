@@ -1,14 +1,13 @@
 import BPromise from 'bluebird'
 import request from 'request'
-import testConfig from '../../framework/config/test'
-import {removeSlash} from '../../framework/util'
+import config from '../../../config/test'
 
 const requestAsync = BPromise.promisify(request, {multiArgs: true})
 
-class TestServerReporter {
+export default class BaseAPI {
   async _send({method = 'GET', json = true, url, headers, body = {}} = {}) {
     const finalHeaders = headers || {
-      'token': testConfig.report.serverSecretKey,
+      'token': config.report.serverSecretKey,
       'content-type': 'application/json'
     }
     const finalOptions = {
@@ -27,14 +26,4 @@ class TestServerReporter {
 
     return [resBody, response]
   }
-
-  async add(testCases) {
-    return this._send({
-      method: 'POST',
-      url: `${removeSlash(testConfig.report.serverUrl)}/test-cases`,
-      body: testCases
-    })
-  }
 }
-
-export default new TestServerReporter()
