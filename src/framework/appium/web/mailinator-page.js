@@ -5,7 +5,11 @@ import {debug} from '@kobiton/core-util'
 const elements = {
   url: 'https://www.mailinator.com/login.jsp',
   emailInput: '//input[@type="text" and contains(@id,"email")]',
-  passwordInput: '//input[@type="password" and contains(@id,"password")]'
+  passwordInput: '//input[@type="password" and contains(@id,"password")]',
+  errorMessage1: '//div[contains(.,"ERR_INTERNET_DISCONNECTED")]',
+  errorMessage2: '//div[contains(.,"ERR_TIMED_OUT")]',
+  erorrMessage3: '//div[contains(.,"not connected to the Internet")]',
+  errorMessage4: '//div[contains(.,"HTTP Status 403")]'
 }
 
 export default class MailinatorPage {
@@ -34,10 +38,34 @@ export default class MailinatorPage {
     }
     catch (err) {
       debug.error('auto_web', err)
-      throw err
+
+      const isNetworkErr = this._isBrowserContainAny([
+        elements.errorMessage1,
+        elements.errorMessage2,
+        elements.errorMessage3,
+        elements.errorMessage4
+      ])
+
+      if (isNetworkErr) {
+        throw new Error('There is an issue network on this device')
+      }
+      else {
+        throw err
+      }
     }
     finally {
       await this._browser.end()
     }
+  }
+
+  _isBrowserContainAny(elements) {
+    let isContain = false
+    for (const ele in elements) {
+      isContain = this._browser.isVisible(ele)
+      if (isContain) {
+        break
+      }
+    }
+    return isContain
   }
 }
