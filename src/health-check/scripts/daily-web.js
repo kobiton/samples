@@ -5,7 +5,7 @@ import {convertToDesiredCapabilities} from '../../framework/appium/helper'
 import MailinatorPage from '../../framework/appium/web/mailinator-page'
 
 export default class DailyWebTest extends BaseTest {
-  async execute(device, timeout) {
+  async execute(device, timeout = 60000) {
     const desiredCapabilities = this._getCap(device)
     const server = await this._getServerConfig()
     const browser = webdriverio.remote({desiredCapabilities, ...server})
