@@ -54,6 +54,8 @@ async function executeDefinedTask(taskName) {
       return await startRubyTest()
     case 'test-java':
       return startJavaTest()
+    case 'test-dotnet':
+      return startDotNetTest()
     case 'health-check':
       return await startHealthCheck(argv.input)
   }
@@ -77,6 +79,11 @@ async function startRubyTest() {
 async function startJavaTest() {
   const JavaExecutor = require('./build/test/console/java/JavaExecutor')
   await JavaExecutor.executeJavaTest()
+}
+
+async function startDotNetTest() {
+  const dotNetExecutor = require('./build/test/console/dotnet/DotNetExecutor')
+  await dotNetExecutor.executeDotNetTest()
 }
 
 async function startHealthCheck(type) {

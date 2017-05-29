@@ -162,3 +162,26 @@ Append argument: --mobileTestDuration <minutes>
   yarn test -- --task test-ruby
   ```
 #####
+
+#### Java
+#### Prerequisites
+* JDK 1.8+ installed
+* gradle installed
+##### Run test
+  ```bash
+  yarn test -- --task test-java
+  ```
+#####
+
+#### .Net
+#### Prerequisites
+##### 1. Window
+* .Net framework 4.5+ installed
+* MSBuild included in PATH
+##### 2. Linux, Mac
+* Mono Framework installed
+##### Run test
+  ```bash
+  yarn test -- --task test-dotnet
+  ```
+#####
