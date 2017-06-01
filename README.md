@@ -159,7 +159,7 @@ Append argument: --mobileTestDuration <minutes>
 * Install Ruby via RVM
 ##### Run test
   ```bash
-  yarn test -- --task test-ruby
+  yarn test -- --task multi-version-check --input ruby
   ```
 #####
 
@@ -169,7 +169,7 @@ Append argument: --mobileTestDuration <minutes>
 * gradle installed
 ##### Run test
   ```bash
-  yarn test -- --task test-java
+  yarn test -- --task multi-version-check --input java
   ```
 #####
 
@@ -182,6 +182,16 @@ Append argument: --mobileTestDuration <minutes>
 * Mono Framework installed
 ##### Run test
   ```bash
-  yarn test -- --task test-dotnet
+  yarn test -- --task multi-version-check --input dotnet
+  ```
+#####
+
+#### NodeJS
+#### Prerequisites
+* Node installed
+* yarn installed
+##### Run test
+  ```bash
+  yarn test -- --task multi-version-check --input nodejs
   ```
 #####

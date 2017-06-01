@@ -8,7 +8,7 @@ import reporterAPI from '../../../framework/common/reporter/api'
 const LIB_NAME = 'io.appium:java-client'
 const NUMBER_OF_VERSION = 1
 
-export async function executeJavaTest(dirPath) {
+export async function execute(dirPath) {
   const targetDir = dirPath || __dirname
 
   fs.unlinkSync(`${targetDir}/build.gradle`)
@@ -53,7 +53,6 @@ export async function executeJavaTest(dirPath) {
           libVersion: v,
           checkedDate: moment().toDate(),
           state: ls.status === 0 ? 'passed' : 'failed',
-          output: ls.output,
           stdout: ls.stdout,
           stderr: ls.stderr,
           error: ls.error

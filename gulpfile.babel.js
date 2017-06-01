@@ -50,12 +50,8 @@ async function executeDefinedTask(taskName) {
   switch (taskName) {
     case 'test-manual':
       return await startManualTest()
-    case 'test-ruby':
-      return await startRubyTest()
-    case 'test-java':
-      return startJavaTest()
-    case 'test-dotnet':
-      return startDotNetTest()
+    case 'multi-version-check':
+      return startMultipleVersionCheck(argv.input)
     case 'health-check':
       return await startHealthCheck(argv.input)
   }
@@ -71,19 +67,21 @@ async function startManualTest() {
   }
 }
 
-async function startRubyTest() {
-  const RubyExecutor = require('./build/test/console/ruby/RubyExecutor')
-  await RubyExecutor.executeRubyTest()
-}
+async function startMultipleVersionCheck(language) {
+  const languageExecutorMap = {
+    ruby: './build/test/console/ruby/RubyExecutor',
+    java: './build/test/console/java/JavaExecutor',
+    dotnet: './build/test/console/dotnet/DotNetExecutor',
+    nodejs: './build/test/console/nodejs/NodejsExecutor',
+  }
 
-async function startJavaTest() {
-  const JavaExecutor = require('./build/test/console/java/JavaExecutor')
-  await JavaExecutor.executeJavaTest()
-}
-
-async function startDotNetTest() {
-  const dotNetExecutor = require('./build/test/console/dotnet/DotNetExecutor')
-  await dotNetExecutor.executeDotNetTest()
+  if (language && languageExecutorMap[language]) {
+    debug.log('startMultipleVersionCheck language:', language)
+    const executor = require(languageExecutorMap[language])
+    await executor.execute()
+  } else {
+    throw new Error(`Not valid language: ${language}` )
+  }
 }
 
 async function startHealthCheck(type) {

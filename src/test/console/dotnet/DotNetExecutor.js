@@ -10,7 +10,7 @@ const requestAsync = BPromise.promisify(request, {multiArgs: true})
 
 const LIB_NAME = 'appium.webdriver'
 
-export async function executeDotNetTest(dirPath) {
+export async function execute(dirPath) {
   const targetDir = dirPath || __dirname
   const executableFile = `${targetDir}/MobileAutomation/bin/Debug/MobileAutomation.exe`
 
@@ -37,7 +37,6 @@ export async function executeDotNetTest(dirPath) {
     libVersion: latestVersion,
     checkedDate: moment().toDate(),
     state: ls.status === 0 ? 'passed' : 'failed',
-    output: ls.output,
     stdout: ls.stdout,
     stderr: ls.stderr,
     error: ls.error
