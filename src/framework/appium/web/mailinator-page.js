@@ -5,12 +5,13 @@ import {debug} from '@kobiton/core-util'
 const elements = {
   url: 'https://www.mailinator.com/login.jsp',
   emailInput: '//input[@type="text" and contains(@id,"email")]',
-  passwordInput: '//input[@type="password" and contains(@id,"password")]',
-  errorMessage1: '//div[contains(.,"ERR_INTERNET_DISCONNECTED")]',
-  errorMessage2: '//div[contains(.,"ERR_TIMED_OUT")]',
-  erorrMessage3: '//div[contains(.,"not connected to the Internet")]',
-  errorMessage4: '//div[contains(.,"HTTP Status 403")]'
+  passwordInput: '//input[@type="password" and contains(@id,"password")]'
 }
+const networkErrorMessages = ["//div[contains(.,'ERR_INTERNET_DISCONNECTED')]",
+  "//div[contains(.,'ERR_TIMED_OUT')]",
+  "//p[contains(.,'not connected to the Internet')]",
+  "//div[contains(.,'ERR_ADDRESS_UNREACHABLE')]",
+  "//div[contains(.,'HTTP Status 403')]"]
 
 export default class MailinatorPage {
   constructor(browser, timeout) {
@@ -38,14 +39,7 @@ export default class MailinatorPage {
     }
     catch (err) {
       debug.error('auto_web', err)
-
-      const isNetworkErr = this._isBrowserContainAny([
-        elements.errorMessage1,
-        elements.errorMessage2,
-        elements.errorMessage3,
-        elements.errorMessage4
-      ])
-
+      const isNetworkErr = await this._isBrowserContainAny(networkErrorMessages)
       if (isNetworkErr) {
         throw new Error('There is an issue network on this device')
       }
@@ -58,10 +52,11 @@ export default class MailinatorPage {
     }
   }
 
-  _isBrowserContainAny(elements) {
+  async _isBrowserContainAny(errorMessages) {
     let isContain = false
-    for (const ele in elements) {
-      isContain = this._browser.isVisible(ele)
+    for (let i in errorMessages) {
+      // eslint-disable-next-line babel/no-await-in-loop
+      isContain = await this._browser.isVisible(errorMessages[i])
       if (isContain) {
         break
       }
@@ -69,3 +64,4 @@ export default class MailinatorPage {
     return isContain
   }
 }
+

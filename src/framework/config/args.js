@@ -66,7 +66,7 @@ const yargs = require('yargs')
   .options('screenshots', {
     alias: 'captureScreenshots',
     demand: false,
-    default: false,
+    default: true,
     describe: 'capture screenshot of device',
     type: 'boolean'
   })
