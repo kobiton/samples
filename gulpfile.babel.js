@@ -73,13 +73,15 @@ async function startMultipleVersionCheck(language) {
     java: './build/test/console/java/JavaExecutor',
     dotnet: './build/test/console/dotnet/DotNetExecutor',
     nodejs: './build/test/console/nodejs/NodejsExecutor',
+    python: './build/test/console/python/PythonExecutor'
   }
 
   if (language && languageExecutorMap[language]) {
     debug.log('startMultipleVersionCheck language:', language)
     const executor = require(languageExecutorMap[language])
     await executor.execute()
-  } else {
+  }
+  else {
     throw new Error(`Not valid language: ${language}` )
   }
 }

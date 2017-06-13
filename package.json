@@ -42,6 +42,7 @@
     "moment": "^2.15.0",
     "mongoose": "^4.8.5",
     "request": "2.79.0",
+    "request-promise": "^4.2.1",
     "request-progress": "^2.0.1",
     "selenium-standalone": "^5.8.0",
     "spectron": "^3.4.0",

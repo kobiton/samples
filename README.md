@@ -195,3 +195,13 @@ Append argument: --mobileTestDuration <minutes>
   yarn test -- --task multi-version-check --input nodejs
   ```
 #####
+
+#### Python
+#### Prerequisites
+* Python3 install
+* yarn installed
+##### Run test
+  ```bash
+  yarn test -- --task multi-version-check --input python
+  ```
+#####
