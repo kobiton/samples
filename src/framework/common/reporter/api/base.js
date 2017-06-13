@@ -26,4 +26,11 @@ export default class BaseAPI {
 
     return [resBody, response]
   }
+
+  async _get(options = {}) {
+    return this._send({
+      ...options,
+      method: 'GET'
+    })
+  }
 }

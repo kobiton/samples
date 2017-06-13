@@ -32,7 +32,7 @@ async function getTargetPackageVersions(packageName, numberToTake) {
   const responseJson = JSON.parse(responseText)
   const allVersions = Object.keys(responseJson.releases)
     .sort()
-    .filter(v => !(v.includes('dev') || v.includes('rc')))
+    .filter((v) => !(v.includes('dev') || v.includes('rc')))
 
   return allVersions.slice(allVersions.length - numberToTake, allVersions.length)
 }
@@ -55,7 +55,7 @@ function executeTestScripts(dirPath, libName, libVersion) {
   testCaseResult = executeTestCase(dirPath, libName, libVersion, 'iOSAppTest')
   results.push(testCaseResult)
 
-  results.forEach(rs => {
+  results.forEach((rs) => {
     rs.language = 'python3'
     rs.libName = libName
     rs.libVersion = libVersion

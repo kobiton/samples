@@ -1,0 +1,15 @@
+{
+    "name": "kobiton/php-sample",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/appium/php-client"
+        }
+    ],
+    "require": {
+        "appium/php-client": "0.2.1",
+        "phpunit/phpunit": "^5.7",
+        "facebook/webdriver": "^1.4",
+        "phpunit/phpunit-selenium": "^3.0"
+    }
+}

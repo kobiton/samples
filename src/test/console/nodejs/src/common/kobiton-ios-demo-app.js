@@ -1,6 +1,6 @@
 const elements = {
   uiKitCatalogXPath: '//*[@name="UIKitCatalog"]',
-  activity : {
+  activity: {
     xPath: '//UIAStaticText[@name="Activity Indicators"]'
   },
   alert: {

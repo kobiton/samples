@@ -14,7 +14,7 @@ const wrongUsernameMsg = 'Your username is invalid!'
 const wrongPasswordMsg = 'Your password is invalid!'
 const successMsg = 'You logged into a secure area!'
 
-describe(`Kobiton demo page`, () => {
+describe('Kobiton demo page', () => {
 
   before(async () => {
     const serverConfig = await automationUtils.kobitonServerUrl()

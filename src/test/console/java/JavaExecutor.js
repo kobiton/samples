@@ -1,4 +1,4 @@
-import childProcess from 'child_process'
+import {spawnSync} from 'child_process'
 import {debug} from '@kobiton/core-util'
 import fs from 'fs'
 import request from 'request'
@@ -36,7 +36,6 @@ export async function execute(dirPath) {
         )
 
         debug.log(`execute test with ${LIB_NAME} - ${v}`)
-        const spawnSync = childProcess.spawnSync
         const ls = spawnSync(`cd ${targetDir} && gradle build --info`,
           [],
           {

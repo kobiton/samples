@@ -1,10 +1,8 @@
-import childProcess from 'child_process'
+import {spawnSync} from 'child_process'
 import fs from 'fs'
 import moment from 'moment'
 import {debug} from '@kobiton/core-util'
 import reporterAPI from '../../../framework/common/reporter/api'
-
-const spawnSync = childProcess.spawnSync
 
 const LIB_NAME = 'wd'
 const NUMBER_OF_VERSION = 2

@@ -19,7 +19,7 @@ class AvailabitityAPI extends BaseAPI {
       return this._add(availabitities)
     }
     else {
-      const jobs = availabitities.map(a => this._add([a]))
+      const jobs = availabitities.map((a) => this._add([a]))
       return BPromise.all(jobs)
     }
   }

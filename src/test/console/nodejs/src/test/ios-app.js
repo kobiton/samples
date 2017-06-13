@@ -11,7 +11,7 @@ let driver
 let kobitonIOSDemoApp
 const timeout = 30000 // millisecond
 
-describe(`Kobiton demo app`, () => {
+describe('Kobiton demo app', () => {
 
   before(async () => {
     const serverConfig = await automationUtils.kobitonServerUrl()

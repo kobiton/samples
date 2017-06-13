@@ -204,4 +204,13 @@ Append argument: --mobileTestDuration <minutes>
   ```bash
   yarn test -- --task multi-version-check --input python
   ```
+
+#### PHP
+#### Prerequisites
+* PHP installed
+* php composer installed at '/usr/local/bin/composer.phar'
+##### Run test
+  ```bash
+  yarn test -- --task multi-version-check --input nodejs
+  ```
 #####

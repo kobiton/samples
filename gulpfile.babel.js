@@ -73,7 +73,8 @@ async function startMultipleVersionCheck(language) {
     java: './build/test/console/java/JavaExecutor',
     dotnet: './build/test/console/dotnet/DotNetExecutor',
     nodejs: './build/test/console/nodejs/NodejsExecutor',
-    python: './build/test/console/python/PythonExecutor'
+    python: './build/test/console/python/PythonExecutor',
+    php: './build/test/console/php/PHPExecutor'
   }
 
   if (language && languageExecutorMap[language]) {

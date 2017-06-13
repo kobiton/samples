@@ -28,13 +28,25 @@ describe('Kobiton demo app', () => {
     await kobitonAndroidDemoApp.gotoAccessibilityMenu()
     // Verify accessibility screen
     assert.isTrue(
-      await driver.hasElementByXPath(kobitonAndroidDemoApp.elements.accessibility.nodeProviderXPath), true)
+      await driver.hasElementByXPath(
+        kobitonAndroidDemoApp.elements.accessibility.nodeProviderXPath),
+      true)
+
     assert.isTrue(
-      await driver.hasElementByXPath(kobitonAndroidDemoApp.elements.accessibility.nodeQueryingXPath), true)
+      await driver.hasElementByXPath(
+        kobitonAndroidDemoApp.elements.accessibility.nodeQueryingXPath),
+      true)
+
     assert.isTrue(
-      await driver.hasElementByXPath(kobitonAndroidDemoApp.elements.accessibility.serviceXPath), true)
+      await driver.hasElementByXPath(
+        kobitonAndroidDemoApp.elements.accessibility.serviceXPath),
+      true)
+
     assert.isTrue(
-      await driver.hasElementByXPath(kobitonAndroidDemoApp.elements.accessibility.customViewXPath), true)
+      await driver.hasElementByXPath(
+        kobitonAndroidDemoApp.elements.accessibility.customViewXPath),
+      true)
+
     // Verify main menu
     await kobitonAndroidDemoApp.backtoMainMenuFromAccessibility()
     assert.isTrue(
@@ -45,9 +57,13 @@ describe('Kobiton demo app', () => {
     await kobitonAndroidDemoApp.gotoCustomTitleApp()
     // Verify custom title screen
     assert.isTrue(
-      await driver.hasElementByXPath(kobitonAndroidDemoApp.elements.app.customTitle.changeLeftTextXPath), true)
+      await driver.hasElementByXPath(
+        kobitonAndroidDemoApp.elements.app.customTitle.changeLeftTextXPath),
+      true)
     assert.isTrue(
-      await driver.hasElementByXPath(kobitonAndroidDemoApp.elements.app.customTitle.changeRightTextXPath), true)
+      await driver.hasElementByXPath(
+        kobitonAndroidDemoApp.elements.app.customTitle.changeRightTextXPath),
+      true)
   })
 
   it('should change left header text', async () => {
