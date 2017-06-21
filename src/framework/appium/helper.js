@@ -1,7 +1,7 @@
-import config from '../config/test'
 import pick from 'lodash/pick'
-import Key from '../api/key'
 import api from '../api'
+import Key from '../api/key'
+import config from '../config/test'
 
 let apiKey
 
@@ -26,7 +26,7 @@ export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
   deviceOrientation = config.device.orientation,
   captureScreenshots = config.device.captureScreenshots
 } = {}) {
-  return devices
+  return [devices]
     .map((d) => {
       let desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName', 'udid')
       let deviceGroup = getDeviceGroup(d)

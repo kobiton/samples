@@ -21,6 +21,13 @@ const yargs = require('yargs')
     describe: 'Test reporters',
     type: 'string'
   })
+  .options('type', {
+    alias: 'typeOfTest',
+    demand: false,
+    default: null,
+    describe: 'type of testing',
+    type: 'string'
+  })
   .options('tsLoopAmount', {
     alias: 'longTestSuiteIterationAmount',
     demand: false,

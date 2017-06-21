@@ -1,7 +1,7 @@
+import wd from 'wd'
+import {debug} from '@kobiton/core-util'
 import * as logger from '../../framework/common/logger'
 import {createServerConfig} from './helper'
-import {debug} from '@kobiton/core-util'
-import wd from 'wd'
 
 export async function quitDriver(driver) {
   try {
@@ -13,37 +13,18 @@ export async function quitDriver(driver) {
   }
 }
 
-export async function createDriver(server, desiredCaps) {
+export async function createDriver(desiredCapabilities) {
+  const server = await createServerConfig()
   const driver = await wd.promiseChainRemote(server)
   try {
-    await driver.init(desiredCaps)
+    await driver.init(desiredCapabilities)
   }
   catch (error) {
     if (error.data) {
       debug.error('create_driver', error)
       logger.writeLog('createDriver()', error)
     }
+    throw error
   }
   return driver
-}
-
-export async function createAppDriver(caps, callbackJob) {
-  const serverConfig = await createServerConfig()
-  const driver = await createDriver(serverConfig, caps)
-  driver.on('error', (e) => {
-    logger.writeLog(
-      `info cap:${caps}, Error while creating apps driver`, e
-    )
-  })
-  if (driver !== null) {
-    try {
-      await callbackJob(driver)
-    }
-    finally {
-      try {
-        await quitDriver(driver)
-      }
-      catch (ignored) {}
-    }
-  }
 }

@@ -10,10 +10,7 @@ export default {
   'test-jsonwired-api.js': './build/test/config/mocha-delay.js',
   'test-web-session-daily.js': './build/test/config/mocha-delay.js',
   'test-multiple-devices-parallel.js': './build/test/config/mocha-delay.js',
-  'test-device-android-hybrid-app.js': './build/test/config/mocha-delay.js',
-  'test-device-android-native-app.js': './build/test/config/mocha-delay.js',
-  'test-device-ios-hybrid-app.js': './build/test/config/mocha-delay.js',
-  'test-device-ios-native-app.js': './build/test/config/mocha-delay.js',
   'test-desirecap.js': './build/test/config/mocha-delay.js',
-  'test-web-with-chromebeta.js': './build/test/config/mocha-delay.js'
+  'test-web-with-chromebeta.js': './build/test/config/mocha-delay.js',
+  'test-app.js': './build/test/config/mocha-delay.js'
 }

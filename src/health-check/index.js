@@ -1,32 +1,38 @@
 import BPromise from 'bluebird'
 import moment from 'moment'
+import {debug} from '@kobiton/core-util'
+import testConfig from '../framework/config/test'
+import Device from '../framework/api/device'
 import * as runner from './runner'
+import {report} from './reporter'
+import BaseTest from './scripts/base'
 import DailyWebTest from './scripts/daily-web'
 import AndroidAppTest from './scripts/android-app'
 import IOSAppTest from './scripts/ios-app'
-import {report} from './reporter'
-import api from '../framework/api'
-import testConfig from '../framework/config/test'
 
-import {debug} from '@kobiton/core-util'
+const expectedDurationInSeconds = testConfig.expectedDurationInMinutes * 60
+const initial = new BaseTest()
 
 class HealthChecker {
   async executeWebCheck() {
-    const devices = await api.Device.getOnlineDevices()
-    await this.execute(devices, new DailyWebTest())
+    const devices = await Device.getOnlineDevices()
+    await this.execute(initial._getTimeStamp(),
+      devices, expectedDurationInSeconds, new DailyWebTest())
   }
 
   async executeIOSAppCheck() {
-    const devices = await api.Device.getOnlineDevices()
-    await this.execute(devices, new IOSAppTest())
+    const devices = await Device.getOnlineDevices()
+    await this.execute(initial._getTimeStamp(),
+      devices, expectedDurationInSeconds, new IOSAppTest())
   }
 
   async executeAndroidAppCheck() {
-    const devices = await api.Device.getOnlineDevices()
-    await this.execute(devices, new AndroidAppTest())
+    const devices = await Device.getOnlineDevices()
+    await this.execute(initial._getTimeStamp(),
+      devices, expectedDurationInSeconds, new AndroidAppTest())
   }
 
-  async execute(devices, testScript,
+  async execute(timeStamp, devices, expectedDuration, testScript,
     {retry = testConfig.healthCheck.maxRetry, checkedUUIDs = []} = {}) {
 
     const attemp = testConfig.healthCheck.maxRetry - retry
@@ -40,14 +46,14 @@ class HealthChecker {
       checkedDeviceUUIDs.push(device.udid)
       debug.log(`Check on: ${device.deviceName} udid: ${device.udid}`)
       // eslint-disable-next-line babel/no-await-in-loop
-      const results = await runner.execute([device], testScript)
+      const results = await runner.execute(timeStamp, [device], expectedDuration, testScript)
       // eslint-disable-next-line babel/no-await-in-loop
       await report(results)
       // eslint-disable-next-line babel/no-await-in-loop
       device = await this._pickDevice(devices, checkedDeviceUUIDs)
     }
 
-    const allDevices = await api.Device.getOnlineDevices()
+    const allDevices = await Device.getOnlineDevices()
     const unavailableDevices = allDevices.filter((d) => {
       return !checkedDeviceUUIDs.includes(d.udid)
     })
@@ -73,7 +79,7 @@ class HealthChecker {
   async _pickDevice(devices, ignoredDeviceUDIDs) {
     const devicesUDIDs = devices.map((d) => d.udid)
 
-    const allDevices = await api.Device.getOnlineDevices()
+    const allDevices = await Device.getOnlineDevices()
     return allDevices
       .filter((d) => {
         return devicesUDIDs.includes(d.udid) &&

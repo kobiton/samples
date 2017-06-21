@@ -37,6 +37,7 @@ const config = {
   emailRetainingToken: process.env.KOBITON_EMAIL_RETAINING_TOKEN,
   longTestSuiteIterationAmount: args.longTestSuiteIterationAmount,
   expectedDurationInMinutes: args.mobileTestDuration,
+  typeOfTest: args.type,
   device: {
     name: args.deviceName,
     platform: args.devicePlatform,

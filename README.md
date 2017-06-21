@@ -107,15 +107,15 @@ Append argument: --mobileTestDuration <minutes>
 ##### Test native app:
 
   ```bash
-    yarn run test -- --input /console/appium/app/test-device-android-native-app.js
-    yarn run test -- --input /console/appium/app/test-device-ios-native-app.js
+    yarn run test -- --input /console/appium/app/test-app.js --type android_native_app
+    yarn run test -- --input /console/appium/app/test-app.js --type ios_native_app
   ```
 
 ##### Test hybrid app:
 
   ```bash
-    yarn run test -- --input /console/appium/app/test-device-android-hybrid-app.js
-    yarn run test -- --input /console/appium/app/test-device-ios-hybrid-app.js
+    yarn run test -- --input /console/appium/app/test-app.js --type android_hybrid_app
+    yarn run test -- --input /console/appium/app/test-app.js --type ios_hybrid_app
   ```
 
 ##### Test desired cap:

@@ -2,9 +2,11 @@ import BPromise from 'bluebird'
 import moment from 'moment'
 import {errorToJSON} from '../../framework/util'
 
-export async function execute(devices, test, options = {}) {
-  const jobs = devices
-    .map((device) => wrapExecution(test, device, onCompleted).then(onCompleted))
+export async function execute(timeStamp, targetDevice, expectedDuration, test,
+  options = {}) {
+  const jobs = targetDevice
+    .map((device) => wrapExecution(timeStamp, device, expectedDuration,
+     test, onCompleted).then(onCompleted))
 
   function onCompleted({result, status}) {
     result.finishedAt = moment()
@@ -15,11 +17,11 @@ export async function execute(devices, test, options = {}) {
   return results
 }
 
-function wrapExecution(test, device) {
+function wrapExecution(timeStamp, device, expectedDuration, test) {
   const testCaseName = test.constructor.name
   const startedAt = moment()
   return (test
-    .execute(device)
+    .execute(timeStamp, device, expectedDuration)
     .then(
       () => {
         const result = createResult({testCaseName, device, startedAt, state: 'passed'})

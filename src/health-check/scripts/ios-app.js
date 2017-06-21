@@ -1,34 +1,7 @@
-import BaseTest from './base'
-import {convertToDesiredCapabilitiesApp} from '../../framework/appium/helper'
-import {createAppDriver, quitDriver} from '../../framework/appium/driver'
-import IosNativeAppTest from '../../framework/appium/app/ios-native-app-test'
+import {iOSNativeAppScript} from '../../framework/appium/app/ios-native-app-script'
 
-const desiredCapabilitiesiOSNativeApp = {
-  app: 'https://s3.amazonaws.com/kobiton-dev/apps-test/UIKitCatalog-Test-115.ipa',
-  bundleId: 'com.example.apple-samplecode.UIKitCatalog',
-  fullReset: true
-}
-
-export default class IOSAppTest extends BaseTest {
-  async execute(device, timeout) {
-    const desiredCapabilities = this._getCap(device)
-
-    try {
-      await createAppDriver(desiredCapabilities, async (driver) => {
-        const iOSNativeAppTest = new IosNativeAppTest(driver)
-        await iOSNativeAppTest.executeIosNativeTest()
-      })
-    }
-    finally {
-      quitDriver()
-    }
-  }
-
-  _getCap(device) {
-    const caps = convertToDesiredCapabilitiesApp(
-      this._getTimeStamp(),
-      desiredCapabilitiesiOSNativeApp,
-      [device])
-    return caps[0]
+export default class IOSAppTest {
+  async execute(timeStamp, targetDevice, expectedDuration) {
+    await iOSNativeAppScript(timeStamp, targetDevice, expectedDuration)
   }
 }
