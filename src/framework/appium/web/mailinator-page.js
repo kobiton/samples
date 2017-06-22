@@ -34,7 +34,7 @@ export default class MailinatorPage {
           .waitForExist(elements.passwordInput, this._timeout)
           .setValue(elements.passwordInput, word)
         const endedAt = moment.utc()
-        duration = endedAt.diff(startedAt, 'minutes')
+        duration = endedAt.diff(startedAt, 'seconds')
       } while (duration < expectedDurationInMinutes)
     }
     catch (err) {

@@ -4,7 +4,8 @@ import {debug} from '@kobiton/core-util'
 import Device from '../../../../framework/api/device'
 import config from '../../../../framework/config/test'
 import {nativeAppCheck,
-        hybridAppCheck} from '../../../../framework/appium/app'
+        hybridAppCheck,
+        fullApisCheck} from '../../../../framework/appium/app'
 
 const runLoop = config.longTestSuiteIterationAmount
 const timestamps = moment().format('YYYYMMDDHHmmss')
@@ -13,7 +14,9 @@ const testMethodList = {
   'android_native_app': nativeAppCheck,
   'ios_native_app': nativeAppCheck,
   'android_hybrid_app': hybridAppCheck,
-  'ios_hybrid_app': hybridAppCheck
+  'ios_hybrid_app': hybridAppCheck,
+  'android_full_apis': fullApisCheck,
+  'ios_full_apis': fullApisCheck
 }
 const isExistedTestMethod = Object.keys(testMethodList).includes(type)
 
