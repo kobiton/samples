@@ -6,9 +6,6 @@ include("services/DeviceService.php");
 
 class AndroidAppTest extends PHPUnit_Extensions_AppiumTestCase {
 
-  public $firstQuestion = 'Acura MDX';
-  public $secondQuestion = 'Cruise Control';
-
   public static $browsers = array(
       array(
         'host'         => '<automation-host>',
@@ -23,70 +20,27 @@ class AndroidAppTest extends PHPUnit_Extensions_AppiumTestCase {
           'deviceGroup'         => 'ORGANIZATION',
           'deviceName'          => '<automation-deviceName>',
           'platformName'        => '<automation-platformName>',
-          'platformVersion'     => '<automation-platformVersion>'
+          'platformVersion'     => '<automation-platformVersion>',
         ),
        'seleniumServerRequestsTimeout' => 120
      )
   );
-
+   
   public function test_android_app() {
-    $this->search_questions_on_Acura_Support_Community();
     $this->search_IFixit_on_home_screen();
   }
 
-  public function search_questions_on_Acura_Support_Community() {
-    print 'should allow to search some questions on Acura Support Community'.PHP_EOL;
-    print 'browsers:'.PHP_EOL;
-    var_dump(self::$browsers);
-    print PHP_EOL;
-
-    $this->byId('android:id/home')->click();
-    sleep(5);
-    $this->byXpath("//*[@text='Car and Truck']")->click();
-    sleep(3);
-    $this->byXpath("//*[@text='Acura']")->click();
-    sleep(2);
-
-    $acuraText = $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=1]")->text();
-    $acuraIntegraText = $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=3]")->text();
-    $acuraMDXText = $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=4]")->text();
-    $acuraRLText = $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=5]")->text();
-    $acuraTLText = $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=6]")->text();
-    $acuraTSXText = $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=7]")->text();
-    $this->assertEquals('Acura', $acuraText);
-    $this->assertEquals('Acura Integra', $acuraIntegraText);
-    $this->assertEquals('Acura MDX', $acuraMDXText);
-    $this->assertEquals('Acura RL', $acuraRLText);
-    $this->assertEquals('Acura TL', $acuraTLText);
-    $this->assertEquals('Acura TSX', $acuraTSXText);
-
-    $get_attr_name1 = $this->search_question($this->firstQuestion);
-
-    /*
-    Steps:
-    1. Clear text on Search field
-    2. Enter keyword 'Cruise Control'
-    3. Click on Search icon
-    4. Wait a few seconds to get returned result
-    5. Close app
-
-    Expected: It should show at least 1 result.
+   /*
+    Steps: 
+    1. Reopen iFixit app 
+    2. Click Search menu on the left menu bar
+    3. Search keyword 'Macbook Pro 2015' 
+    4. Press Enter button on keyboard
+    Expected: It should show at least 47 results.
+    5. Select Devices item on the Guides/Devices dropdown
+    Expected: It should show at least 5 results.
+    6. Swipe to Right and Left
     */
-
-    $this->back();
-    sleep(2);
-    $get_attr_name2 = $this->search_question($this->secondQuestion);
-
-    $this->closeApp();
-
-    $get_attr_name1 = preg_replace("/[^0-9]/", '', $get_attr_name1);
-    $this->assertGreaterThanOrEqual((int)6, $get_attr_name1,
-      'The expected results are greater or equal to 6 results.');
-
-    $get_attr_name2 = preg_replace("/[^0-9]/", '', $get_attr_name2);
-    $this->assertGreaterThanOrEqual((int)1, $get_attr_name2,
-      'The expected results are greater or equal to 1 result.');
-  }
 
   public function search_IFixit_on_home_screen() {
     print 'should allow to search iFixit on Home screen';

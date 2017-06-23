@@ -8,7 +8,6 @@ include("services/DeviceService.php");
 class IOSWebTest extends PHPUnit_Framework_TestCase {
   protected $driver;
   public $wrong_username_msg = 'Your username is invalid!';
-  public $wrong_password_msg = 'Your password is invalid!';
   public $success_msg = 'You logged into a secure area!';
 
   public function setUp() {
@@ -32,7 +31,6 @@ class IOSWebTest extends PHPUnit_Framework_TestCase {
 
   public function test_ios_web() {
     $this->verify_login_invalid_username();
-    $this->verify_login_invalid_password();
     $this->verify_login_successfully();
   }
 
@@ -40,12 +38,6 @@ class IOSWebTest extends PHPUnit_Framework_TestCase {
     print 'should return error when we input wrong username';
     $this->login('foo', 'SuperSecretPassword!');
     $this->assertContains($this->wrong_username_msg, $this->getMessage());
-  }
-
-  public function verify_login_invalid_password() {
-    print 'should return error when we input wrong password';
-    $this->login('tomsmith', 'SuperSecretPassword');
-    $this->assertContains($this->wrong_password_msg, $this->getMessage());
   }
 
   public function verify_login_successfully() {

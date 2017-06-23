@@ -15,7 +15,7 @@
   ##### Install local packages:
   `$ yarn install`
 
-    * KOBITON_API_URL
+    * KOBITON_API_URL 
     * KOBITON_PORTAL_URL
     * KOBITON_DESKTOP_APP_URL
     * KOBITON_USERNAME_1
@@ -211,6 +211,6 @@ Append argument: --mobileTestDuration <minutes>
 * php composer installed at '/usr/local/bin/composer.phar'
 ##### Run test
   ```bash
-  yarn test -- --task multi-version-check --input nodejs
+  yarn test -- --task multi-version-check --input php
   ```
 #####
