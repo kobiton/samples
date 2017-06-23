@@ -10,7 +10,6 @@ from python.services.DeviceService import DeviceService
 class AndroidWebTest(unittest.TestCase):
 
   wrong_username_msg = 'Your username is invalid!'
-  wrong_password_msg = 'Your password is invalid!'
   success_msg = 'You logged into a secure area!'
 
   def setUp(self):
@@ -25,18 +24,12 @@ class AndroidWebTest(unittest.TestCase):
 
   def test_android_web(self):
     self.verify_invalid_username()
-    self.verify_invalid_password()
     self.verify_login_successfully()
 
   def verify_invalid_username(self):
     print ('should return error when we input wrong username')
     self.login('foo', 'SuperSecretPassword!')
     self.assertTrue(self.wrong_username_msg in self.get_message())
-
-  def verify_invalid_password(self):
-    print ('should return error when we input wrong password')
-    self.login('tomsmith', 'SuperSecretPassword')
-    self.assertTrue(self.wrong_password_msg in self.get_message())
 
   def verify_login_successfully(self):
     print ('should run test successfully with correct username and password')

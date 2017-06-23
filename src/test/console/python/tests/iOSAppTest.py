@@ -24,47 +24,7 @@ class iOSAppTest(unittest.TestCase):
     self.driver.quit()
 
   def test_ios_app(self):
-    self.search_questions_on_Acura_Support_Community()
     self.search_IFixit_on_home_screen()
-
-  def search_questions_on_Acura_Support_Community(self):
-    print ('should allow to navigate to some devices on Acura Support Community')
-    '''
-    Steps:
-    1. Click on "Car and Truck" Categories on Homepage
-    2. Click on "Acura" Categories
-
-    Expected:
-    1. General Information is "Acura".
-    2.Verify five devices below displays.
-    + Acura Integra
-    + Acura MDX
-    + Acura RL
-    + Acura TL
-    + Acura TSX
-    '''
-    self.driver.find_element_by_xpath("//XCUIElementTypeButton[@name='START A REPAIR']").click()
-    time.sleep(5)
-    self.driver.find_element_by_xpath("//*[@name='Car and Truck']").click()
-    time.sleep(2)
-    self.driver.find_element_by_xpath("//*[@name='Acura']").click()
-    time.sleep(2)
-    WebDriverWait(self.driver, 60).until(
-    EC.element_to_be_clickable((By.XPATH, "//XCUIElementTypeNavigationBar")))
-    acura_text = self.driver.find_element_by_xpath("//XCUIElementTypeNavigationBar").get_attribute('name')
-
-    has_acura_integra = self.driver.find_element_by_xpath("//XCUIElementTypeStaticText[@name='Acura Integra']").is_displayed()
-    has_acura_MDX = self.driver.find_element_by_xpath("//XCUIElementTypeStaticText[@name='Acura MDX']").is_displayed()
-    has_acura_RL = self.driver.find_element_by_xpath("//XCUIElementTypeStaticText[@name='Acura RL']").is_displayed()
-    has_acura_TL = self.driver.find_element_by_xpath("//XCUIElementTypeStaticText[@name='Acura TL']").is_displayed()
-    has_acura_TSX = self.driver.find_element_by_xpath("//XCUIElementTypeStaticText[@name='Acura TSX']").is_displayed()
-
-    self.assertEqual(acura_text, 'Acura')
-    self.assertTrue(has_acura_integra)
-    self.assertTrue(has_acura_MDX)
-    self.assertTrue(has_acura_RL)
-    self.assertTrue(has_acura_TL)
-    self.assertTrue(has_acura_TSX)
 
   def search_IFixit_on_home_screen(self):
     print ('should allow to search iFixit on Home screen')
