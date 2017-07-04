@@ -66,7 +66,7 @@ class HealthChecker {
       const busyDevices = unavailableDevices.filter((d) => d.isBooked && d.isOnline)
       if (retry > 0 && busyDevices.length > 0) {
         await BPromise.delay(testConfig.healthCheck.onDeviceBusyRetryInterval)
-        await this.execute(busyDevices, testScript, {
+        await this.execute(timeStamp, busyDevices, expectedDuration, testScript, {
           retry: (retry - 1), checkedUUIDs: checkedDeviceUUIDs
         })
       }
