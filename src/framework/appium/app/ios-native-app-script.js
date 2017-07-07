@@ -29,9 +29,9 @@ export async function iOSNativeAppScript(timestamps, onlineDevice, expectedDurat
         .setCommandTimeout(waitingTime)
         .getOrientation()
         .setOrientation('PORTRAIT')
-        .sleep(1000)
+        .sleep(2000) // increase timeout to set orientation on low performance devices
         .setOrientation('LANDSCAPE')
-        .sleep(1000)
+        .sleep(2000) // increase timeout to set orientation on low performance devices
         .setOrientation('PORTRAIT')
         .back()
 
