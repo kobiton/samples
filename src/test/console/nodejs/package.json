@@ -3,11 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --timeout 600000 src/test/*.js",
-    "android-web": "mocha --compilers js:babel-core/register --timeout 600000 src/test/android-web.js",
-    "ios-web": "mocha --compilers js:babel-core/register --timeout 600000 src/test/ios-web.js",
-    "android-app": "mocha --compilers js:babel-core/register --timeout 600000 src/test/android-app.js",
-    "ios-app": "mocha --compilers js:babel-core/register --timeout 600000 src/test/ios-app.js"
+    "test": "mocha --timeout 600000 src/test/*.js",
+    "android-web": "mocha --timeout 600000 src/test/android-web.js",
+    "ios-web": "mocha --timeout 600000 src/test/ios-web.js",
+    "android-app": "mocha --timeout 600000 src/test/android-app.js",
+    "ios-app": "mocha --timeout 600000 src/test/ios-app.js"
   },
   "devDependencies": {
     "babel-compile": "^2.0.0",

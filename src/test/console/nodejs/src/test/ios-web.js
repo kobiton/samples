@@ -10,11 +10,9 @@ import KobitonDemoPage from '../common/kobiton-demo-page'
 let driver
 let kobitonDemoPage
 const timeout = 60000 // millisecond
-const wrongUsernameMsg = 'Your username is invalid!'
-const wrongPasswordMsg = 'Your password is invalid!'
 const successMsg = 'You logged into a secure area!'
 
-describe('Kobiton demo page', () => {
+describe('Kobiton demo iOS page', () => {
 
   before(async () => {
     const serverConfig = await automationUtils.kobitonServerUrl()
@@ -25,20 +23,6 @@ describe('Kobiton demo page', () => {
 
     driver = await createDriver({serverConfig, desiredCapabilities})
     kobitonDemoPage = new KobitonDemoPage(driver, timeout)
-  })
-
-  it('should return error when we input wrong username', async () => {
-    await kobitonDemoPage.login('foo', 'SuperSecretPassword!')
-    let msg = await kobitonDemoPage.getMessage()
-
-    assert.include(msg, wrongUsernameMsg)
-  })
-
-  it('should return error when we input wrong password', async () => {
-    await kobitonDemoPage.login('tomsmith', 'SuperSecretPassword')
-    let msg = await kobitonDemoPage.getMessage()
-
-    assert.include(msg, wrongPasswordMsg)
   })
 
   it('should run test successfully with correct username and password', async () => {
