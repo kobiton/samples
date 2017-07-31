@@ -15,8 +15,6 @@ import kobiton.com.utils.AutomationUtils;
 public class iOSWebTest {
 
     public static IOSDriver<WebElement> driver = null;
-    String wrongUsernameMsg = "Your username is invalid!";
-    String wrongPasswordMsg = "Your password is invalid!";
     String successMsg = "You logged into a secure area!";
 
     @BeforeTest
@@ -29,7 +27,7 @@ public class iOSWebTest {
         } catch (IOException ex) {
             Assert.fail("set up failed", ex);
         }
-        
+
     }
 
     @AfterTest
@@ -43,19 +41,7 @@ public class iOSWebTest {
         }
     }
 
-    @Test(priority = 1, description = "should return error when we input wrong username")
-    public void testInvalidUsername() {
-        login("foo", "SuperSecretPassword!");
-        Assert.assertTrue(getMessage().contains(wrongUsernameMsg));
-    }
-
-    @Test(priority = 2, description = "should return error when we input wrong password")
-    public void testInvalidPassword() {
-        login("tomsmith", "SuperSecretPassword");
-        Assert.assertTrue(getMessage().contains(wrongPasswordMsg));
-    }
-
-    @Test(priority = 3, description = "should run test successfully with correct username and password")
+    @Test(priority = 1, description = "should run test successfully with correct username and password")
     public void testLoginSuccessfully() {
         login("tomsmith", "SuperSecretPassword!");
         Assert.assertTrue(getMessage().contains(successMsg));
