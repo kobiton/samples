@@ -6,7 +6,7 @@ import config from '../../../../framework/config/test'
 import {executeMailinatorPageTest} from '../../../../framework/appium/web/index'
 import {convertToDesiredCapabilities} from '../../../../framework/appium/helper'
 
-const timeout = 90000 // milliseconds
+const timeout = 30000 // milliseconds
 const runLoop = config.longTestSuiteIterationAmount
 const timestamps = moment().format('YYYYMMDDHHmmss')
 
@@ -22,7 +22,8 @@ setTimeout(async () => {
         for (let i = 0; i < runLoop; i++) {
           it(`${timestamps} - Loop ${i + 1}/${runLoop} ${JSON.stringify(metadata)}`,
           async function () { // Use function instead of arrow function to call skip()
-            if (Device.isOnlineDevice(device)) {
+            const isOnlineDevice = await Device.isOnlineDevice(device)
+            if (isOnlineDevice) {
               const onlineCaps = await convertToDesiredCapabilities(timestamps, [device])
               await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
             }

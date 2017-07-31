@@ -7,7 +7,7 @@ import BPromise from 'bluebird'
 import config from '../../config/test'
 import {getApiKey} from '../helper'
 
-const duration = config.expectedDurationInMinutes
+const duration = config.expectedDurationInMinutes * 60
 const server = {
   host: config.autoTestHostname,
   port: config.autoTestPort,

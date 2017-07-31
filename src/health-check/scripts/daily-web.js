@@ -3,7 +3,7 @@ import BaseTest from './base'
 import {convertToDesiredCapabilities} from '../../framework/appium/helper'
 import MailinatorPage from '../../framework/appium/web/mailinator-page'
 
-const timeout = 60000
+const timeout = 30000
 const initial = new BaseTest()
 export default class DailyWebTest {
   async execute(timeStamp, targetDevice, expectedDuration) {

@@ -7,11 +7,13 @@ const elements = {
   emailInput: '//input[@type="text" and contains(@id,"email")]',
   passwordInput: '//input[@type="password" and contains(@id,"password")]'
 }
-const networkErrorMessages = ["//div[contains(.,'ERR_INTERNET_DISCONNECTED')]",
+const networkErrorMessages = [
+  "//div[contains(.,'ERR_INTERNET_DISCONNECTED')]",
   "//div[contains(.,'ERR_TIMED_OUT')]",
-  "//p[contains(.,'not connected to the Internet')]",
+  "//*[contains(.,'is not connected')]",
   "//div[contains(.,'ERR_ADDRESS_UNREACHABLE')]",
-  "//div[contains(.,'HTTP Status 403')]"]
+  "//div[contains(.,'HTTP Status 403')]"
+]
 
 export default class MailinatorPage {
   constructor(browser, timeout) {
@@ -19,29 +21,33 @@ export default class MailinatorPage {
     this._timeout = timeout
   }
 
-  async executeTest(expectedDurationInMinutes) {
+  async executeTest(expectedDurationInSeconds) {
     let duration = 0
     const startedAt = moment.utc()
     try {
       await this._browser
         .init()
+        .url(elements.url)
       do {
         const word = faker.lorem.word()
         await this._browser // eslint-disable-line babel/no-await-in-loop
-          .url(elements.url)
           .waitForExist(elements.emailInput, this._timeout)
           .setValue(elements.emailInput, word)
-          .waitForExist(elements.passwordInput, this._timeout)
           .setValue(elements.passwordInput, word)
         const endedAt = moment.utc()
         duration = endedAt.diff(startedAt, 'seconds')
-      } while (duration < expectedDurationInMinutes)
+      } while (duration < expectedDurationInSeconds)
     }
     catch (err) {
       debug.error('auto_web', err)
       const isNetworkErr = await this._isBrowserContainAny(networkErrorMessages)
       if (isNetworkErr) {
-        throw new Error('There is an issue network on this device')
+        throw new Error('There is no Internet connection on this device')
+      }
+      // Error message when element email can't be found within timeout
+      else if (err.toString().includes('still not existing')) {
+        //load page takes more than 30 milliseconds.
+        throw new Error('Poor network connectivity on this device')
       }
       else {
         throw err
@@ -64,4 +70,3 @@ export default class MailinatorPage {
     return isContain
   }
 }
-
