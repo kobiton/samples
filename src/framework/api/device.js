@@ -1,3 +1,5 @@
+import BPromise from 'bluebird'
+import moment from 'moment'
 import Base from './_base'
 import config from '../config/test'
 
@@ -90,7 +92,26 @@ class Device extends Base {
       indexFinish,
       arrayUDID
     })
-    const isOnline = (onlineDevices.length > 0)
+    let isOnline = (onlineDevices.length > 0)
+    if (!isOnline && config.longTestSuiteIterationAmount > 1) {
+      let duration = 0
+      const startedAt = moment.utc()
+      const timeToCleanUp = 180 // seconds
+      do {
+        // eslint-disable-next-line babel/no-await-in-loop
+        await BPromise.delay(10000) //delay 10000 milliseconds
+        // eslint-disable-next-line babel/no-await-in-loop
+        const checkOnline = await this._getOnlineDevicesBy({
+          groupType,
+          indexBegin,
+          indexFinish,
+          arrayUDID
+        })
+        isOnline = (checkOnline.length > 0)
+        const endedAt = moment.utc()
+        duration = endedAt.diff(startedAt, 'seconds')
+      } while (!isOnline && duration < timeToCleanUp)
+    }
     return isOnline
   }
 
@@ -114,32 +135,6 @@ class Device extends Base {
       indexBegin,
       indexFinish,
       arrayUDID
-    })
-  }
-
-  async getPrivateOnlineDevices({
-    platformName,
-    platformVersion,
-    deviceName
-  } = {}) {
-    return await this._getOnlineDevicesBy({
-      platformName,
-      platformVersion,
-      deviceName,
-      groupType: 'private'
-    })
-  }
-
-  async getCloudOnlineDevices({
-    platformName,
-    platformVersion,
-    deviceName
-  } = {}) {
-    return await this._getOnlineDevicesBy({
-      platformName,
-      platformVersion,
-      deviceName,
-      groupType: 'cloud'
     })
   }
 
