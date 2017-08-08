@@ -15,13 +15,11 @@
   ##### Install local packages:
   `$ yarn install`
 
-    * KOBITON_API_URL 
+    * KOBITON_API_URL
     * KOBITON_PORTAL_URL
     * KOBITON_DESKTOP_APP_URL
     * KOBITON_USERNAME_1
-    * KOBITON_PASSWORD_1
-    * KOBITON_USERNAME_2
-    * KOBITON_PASSWORD_2
+    * KOBITON_API_KEY
     * KOBITON_EMAIL_RETAINING_TOKEN
     * KOBITON_REPORT_SERVER_URL
     * KOBITON_REPORT_SECRET_KEY
@@ -30,7 +28,7 @@
     * export KOBITON_API_URL='<api_url>'
     * export KOBITON_PORTAL_URL='<portal_url>'
     * export KOBITON_USERNAME_1='<username>'
-    * export KOBITON_PASSWORD_1='<password>'
+    * export KOBITON_API_KEY='<api_key>'
 
   Run command to set variable environment
     ```bash

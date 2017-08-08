@@ -31,21 +31,17 @@ if (!request.Request.callbackOverrided) {
 }
 
 export default async function init() {
+  const token = Buffer.from(`${config.username1}:${config.apiKey}`).toString('base64')
   UserRestApi.setBaseUrl(config.apiUrl)
-  UserRestApi.setLoginAccount(config.username1, config.password1)
-  const {token} = await UserRestApi.login()
   UserRestApi.setToken(token)
 
   SessionRestApi.setBaseUrl(config.apiUrl)
-  SessionRestApi.setLoginAccount(config.username1, config.password1)
   SessionRestApi.setToken(token)
 
   ApiKey.setBaseUrl(config.apiUrl)
-  ApiKey.setLoginAccount(config.username1, config.password1)
   ApiKey.setToken(token)
 
   Device.setBaseUrl(config.apiUrl)
-  Device.setLoginAccount(config.username1, config.password1)
   Device.setToken(token)
 
   if (config.log.pushLog) {

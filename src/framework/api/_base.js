@@ -37,7 +37,7 @@ export default class Base {
 
   async _send({method = 'GET', json = true, path, headers, body = {}} = {}) {
     const finalHeaders = headers || {
-      'authorization': `Bearer ${this._token}`,
+      'authorization': `Basic ${this._token}`,
       'content-type': 'application/json'
     }
     const finalOptions = {
