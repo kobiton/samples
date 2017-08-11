@@ -39,7 +39,7 @@ namespace MobileAutomation.Tests.Utils
             var capabilities = CreateCapabilitiesFor(device);
             capabilities.SetCapability("sessionName", "Android app");
             capabilities.SetCapability("sessionDescription", "This is an example for Android app testing");
-            capabilities.SetCapability("app", "https://s3.amazonaws.com/kobiton-dev/apps-test/demo/com.dozuki.ifixit.apk");
+            capabilities.SetCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk");
             return capabilities;
         }
 
@@ -57,7 +57,7 @@ namespace MobileAutomation.Tests.Utils
             var capabilities = CreateCapabilitiesFor(device);
             capabilities.SetCapability("sessionName", "iOS app");
             capabilities.SetCapability("sessionDescription", "This is an example for iOS app testing");
-            capabilities.SetCapability("app", "https://s3.amazonaws.com/kobiton-dev/apps-test/demo/iFixit.ipa");
+            capabilities.SetCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa");
             return capabilities;
         }
 

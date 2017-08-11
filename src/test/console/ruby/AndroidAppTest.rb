@@ -9,7 +9,7 @@ class AndroidAppTest < Test::Unit::TestCase
     device = getABookableDevice 'Android'
 
     options = {
-      app: 'http://appium.github.io/appium/assets/ApiDemos-debug.apk',
+      app: 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/ApiDemos-debug.apk',
       appPackage: 'io.appium.android.apis',
       appActivity: '.ApiDemos'
     }

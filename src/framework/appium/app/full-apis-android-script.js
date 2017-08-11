@@ -7,7 +7,7 @@ import {convertToDesiredCapabilitiesApp} from '../../appium/helper'
 
 const waitingTime = 60000
 const apiDemoDebugApp = {
-  app: 'http://appium.github.io/appium/assets/ApiDemos-debug.apk',
+  app: 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/ApiDemos-debug.apk',
   appPackage: 'io.appium.android.apis',
   appActivity: '.ApiDemos'
 }
@@ -63,13 +63,14 @@ export async function fullApisAndroidScript(timestamps, onlineDevice, expectedDu
         .back()
         .back()
         .sleep(2)
+      // eslint-disable-next-line babel/no-await-in-loop
       let hasEle = await driver.hasElementByXPath("//*[@content-desc='Accessibility']")
       if (!hasEle) {
-        await driver
+        await driver // eslint-disable-line babel/no-await-in-loop
           .back()
           .waitForElementByXPath("//*[@content-desc='Accessibility']", waitingTime)
       }
-      await driver
+      await driver // eslint-disable-line babel/no-await-in-loop
         .waitForElementByXPath("//*[@content-desc='Accessibility']", waitingTime)
         .waitForElementByXPath("//*[@content-desc='Accessibility']", waitingTime)
         .elementByXPath("//*[@content-desc='Accessibility']").text()

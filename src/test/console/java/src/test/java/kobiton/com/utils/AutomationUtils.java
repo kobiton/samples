@@ -11,13 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class AutomationUtils {    
-    public static final URL kobitonServerUrl() {             
+public class AutomationUtils {
+    public static final URL kobitonServerUrl() {
         try {
             APIKey key = new KeyService().getApiKey();
-            
+
             URL apiUrl = new URL(Config.getInstance().getApiUrl());
-            String automationUrl = String.format("%s://%s:%s@%s/wd/hub", 
+            String automationUrl = String.format("%s://%s:%s@%s/wd/hub",
                     apiUrl.getProtocol(),
                     key.getUsername(),
                     key.getKey(),
@@ -45,7 +45,7 @@ public class AutomationUtils {
         DesiredCapabilities capabilities = createCapabilitiesFor(device);
         capabilities.setCapability("sessionName", "Android app");
         capabilities.setCapability("sessionDescription", "This is an example for Android app testing");
-        capabilities.setCapability("app", "https://s3.amazonaws.com/kobiton-dev/apps-test/demo/com.dozuki.ifixit.apk");
+        capabilities.setCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk");
         return capabilities;
     }
 
@@ -61,10 +61,10 @@ public class AutomationUtils {
         DesiredCapabilities capabilities = createCapabilitiesFor(device);
         capabilities.setCapability("sessionName", "iOS app");
         capabilities.setCapability("sessionDescription", "This is an example for iOS App testing");
-        capabilities.setCapability("app", "https://s3.amazonaws.com/kobiton-dev/apps-test/demo/iFixit.ipa");
+        capabilities.setCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa");
         return capabilities;
     }
-    
+
     private static DesiredCapabilities createCapabilitiesFor(Device device) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("deviceOrientation", "portrait");

@@ -7,7 +7,7 @@ import {convertToDesiredCapabilitiesApp} from '../../appium/helper'
 
 const waitingTime = 60000
 const androidHybridApp = {
-  app: 'https://s3.amazonaws.com/kobiton-dev/apps-test/selendroid-test-app.apk',
+  app: 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/selendroid-test-app.apk',
   appPackage: 'io.selendroid.testapp',
   appActivity: 'HomeScreenActivity'
 }

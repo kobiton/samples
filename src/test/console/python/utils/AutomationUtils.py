@@ -32,7 +32,7 @@ def desiredCapabilitiesAndroidApp(device):
   caps = createCapabilitiesFor(device)
   caps['sessionName'] = 'Android app'
   caps['sessionDescription'] = 'This is an example for Android app testing'
-  caps['app'] = 'https://s3.amazonaws.com/kobiton-dev/apps-test/demo/com.dozuki.ifixit.apk'
+  caps['app'] = 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk'
   return caps
 
 def desiredCapabilitiesiOSWeb(device):
@@ -46,7 +46,7 @@ def desiredCapabilitiesiOSApp(device):
   caps = createCapabilitiesFor(device)
   caps['sessionName'] = 'iOS app'
   caps['sessionDescription'] = 'This is an example for iOS app testing'
-  caps['app'] = 'https://s3.amazonaws.com/kobiton-dev/apps-test/demo/iFixit.ipa'
+  caps['app'] = 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa'
   return caps
 
 def createCapabilitiesFor(device):

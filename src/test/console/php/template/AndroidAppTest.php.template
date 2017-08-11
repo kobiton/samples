@@ -15,7 +15,7 @@ class AndroidAppTest extends PHPUnit_Extensions_AppiumTestCase {
           'sessionName'         => '<automation-session-name>',
           'sessionDescription'  => '<automation-session-description>',
           'deviceOrientation'   => 'portrait',
-          'app'                 => 'https://s3.amazonaws.com/kobiton-dev/apps-test/demo/com.dozuki.ifixit.apk',
+          'app'                 => 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk',
           'captureScreenshots'  => true,
           'deviceGroup'         => 'ORGANIZATION',
           'deviceName'          => '<automation-deviceName>',
@@ -25,16 +25,16 @@ class AndroidAppTest extends PHPUnit_Extensions_AppiumTestCase {
        'seleniumServerRequestsTimeout' => 120
      )
   );
-   
+
   public function test_android_app() {
     $this->search_IFixit_on_home_screen();
   }
 
    /*
-    Steps: 
-    1. Reopen iFixit app 
+    Steps:
+    1. Reopen iFixit app
     2. Click Search menu on the left menu bar
-    3. Search keyword 'Macbook Pro 2015' 
+    3. Search keyword 'Macbook Pro 2015'
     4. Press Enter button on keyboard
     Expected: It should show at least 47 results.
     5. Select Devices item on the Guides/Devices dropdown

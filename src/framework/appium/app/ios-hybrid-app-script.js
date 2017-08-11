@@ -7,7 +7,7 @@ import {convertToDesiredCapabilitiesApp} from '../../appium/helper'
 
 const waitingTime = 60000
 const iOSHybridApp = {
-  app: 'https://s3.amazonaws.com/kobiton-dev/apps-test/HybridIOSApp.ipa',
+  app: 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/HybridIOSApp.ipa',
   bundleId: 'org.sample.hybridiosapp'
 }
 

@@ -7,14 +7,13 @@ import {convertToDesiredCapabilitiesApp} from '../../appium/helper'
 
 const waitingTime = 60000
 const uiKitCatalogApp = {
-  app: 'https://s3.amazonaws.com/kobiton-dev/apps-test/UIKitCatalog-Test-115.ipa',
+  app: 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/UIKitCatalog-Test-Adhoc.ipa',
   bundleId: 'com.example.apple-samplecode.UIKitCatalog'
 }
 
 export async function fullApisIosScript(timestamps, onlineDevice, expectedDuration) {
   const desiredCap = convertToDesiredCapabilitiesApp(
     timestamps, uiKitCatalogApp, onlineDevice)
-  console.log(desiredCap)
   let driver
   let duration = 0
   let startedAt, endedAt

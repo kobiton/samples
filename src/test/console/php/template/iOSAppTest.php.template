@@ -13,7 +13,7 @@ class IOSAppTest extends PHPUnit_Extensions_AppiumTestCase {
           'sessionName'         => '<automation-session-name>',
           'sessionDescription'  => '<automation-session-description>',
           'deviceOrientation'   => 'portrait',
-          'app'                 => 'https://s3.amazonaws.com/kobiton-dev/apps-test/demo/com.dozuki.ifixit.apk',
+          'app'                 => 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa',
           'captureScreenshots'  => true,
           'deviceGroup'         => 'ORGANIZATION',
           'deviceName'          => '<automation-deviceName>',

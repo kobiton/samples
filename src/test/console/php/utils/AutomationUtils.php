@@ -31,7 +31,7 @@ function desiredCapabilitiesAndroidApp($device) {
   $caps = createCapabilitiesFor($device);
   $caps['sessionName'] = 'Android app';
   $caps['sessionDescription'] = 'This is an example for Android App testing';
-  $caps['app'] = 'https://s3.amazonaws.com/kobiton-dev/apps-test/demo/com.dozuki.ifixit.apk';
+  $caps['app'] = 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk';
 
   return $caps;
 }
