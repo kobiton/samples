@@ -6,7 +6,7 @@ class TestCasesAPI extends BaseAPI {
   async add(testCases) {
     return this._send({
       method: 'POST',
-      url: `${removeSlash(config.report.serverUrl)}/test-cases`,
+      url: `${removeSlash(config.report.serverUrl)}/test-results`,
       body: testCases
     })
   }
