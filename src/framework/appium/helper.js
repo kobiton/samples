@@ -3,8 +3,6 @@ import api from '../api'
 import Key from '../api/key'
 import config from '../config/test'
 
-let apiKey
-
 export function convertToDesiredCapabilities(timestamp, devices, {
   deviceOrientation = config.device.orientation,
   captureScreenshots = config.device.captureScreenshots
@@ -85,10 +83,9 @@ export async function getApiKey() {
 }
 
 export async function createServerConfig() {
-  apiKey = await getApiKey()
   return {
     host: config.autoTestHostname,
-    auth: `${config.username1}:${apiKey}`,
+    auth: `${config.username1}:${config.apiKey}`,
     port: config.autoTestPort
   }
 }

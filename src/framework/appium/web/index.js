@@ -5,39 +5,34 @@ import MailinatorPage from './mailinator-page'
 import RandomPage from './random-page'
 import BPromise from 'bluebird'
 import config from '../../config/test'
-import {getApiKey} from '../helper'
 
 const duration = config.expectedDurationInMinutes * 60
 const server = {
   host: config.autoTestHostname,
   port: config.autoTestPort,
   user: config.username1,
-  key: null // api key, will be fetched when execute test
+  key: config.apiKey
 }
 
 export async function executeDesiredCapabilitiesTest({desiredCapabilities, timeout}) {
-  server.key = await getApiKey()
   const browser = webdriverio.remote({desiredCapabilities, ...server})
   const mailinatorPage = new MailinatorPage(browser, timeout)
   return await mailinatorPage.executeTest(1)
 }
 
 export async function executeJsonwiredTest({desiredCapabilities, timeout}) {
-  server.key = await getApiKey()
   const browser = webdriverio.remote({desiredCapabilities, ...server})
   const automationPracticePage = new AutomationPracticePage(browser, timeout)
   return await automationPracticePage.executeTest(duration)
 }
 
 export async function executeKobitonPageTest({desiredCapabilities, timeout}) {
-  server.key = await getApiKey()
   const browser = webdriverio.remote({desiredCapabilities, ...server})
   const kobitonPage = new KobitonPage(browser, timeout)
   return await kobitonPage.executeTest(duration)
 }
 
 export async function executeMailinatorPageTest({desiredCapabilities, timeout}) {
-  server.key = await getApiKey()
   const browser = webdriverio.remote({desiredCapabilities, ...server})
   const mailinatorPage = new MailinatorPage(browser, timeout)
   return await mailinatorPage.executeTest(duration)
@@ -59,7 +54,6 @@ executeMultipleDevicesParallelTest({desiredCapsList, durationInMinutes, timeout}
 }
 
 async function _launchSession({desiredCapabilities, durationInMinutes, timeout}) {
-  server.key = await getApiKey()
   const browser = webdriverio.remote({desiredCapabilities, ...server})
   const randomPage = new RandomPage(browser, timeout)
   await randomPage.executeTest(durationInMinutes)
