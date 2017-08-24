@@ -5,7 +5,7 @@ import mkdirp from 'mkdirp'
 import config from '../config/test'
 
 export function removeSlash(text) {
-  return text.replace(/\/$/, '')
+  return (text) ? text.replace(/\/$/, '') : text
 }
 
 export function generateUsername() {

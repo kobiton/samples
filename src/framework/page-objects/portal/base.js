@@ -92,8 +92,8 @@ export default class Page {
 
 /**
  * Wait for an element exist then return an web element. This method does not cache result
- * @param   {selectorValue} is a string to identify an object
- * @returns {element} return an web element object
+ * @param {selectorValue} is a string to identify an object
+ * @return {element} return an web element object
  */
   _getElement(selectorValue) {
     let element = this._cachedElemens[selectorValue]
@@ -108,8 +108,8 @@ export default class Page {
 
   /**
  * Wait for elements exist then return an arrays of web elements. Cache result.
- * @param   {selector} is a string to identify objects
- * @returns {element} return an array of web element objects
+ * @param {selector} is a string to identify objects
+ * @return {element} return an array of web element objects
  */
   getElements(selectorValue) {
     let elements = []
@@ -127,15 +127,16 @@ export default class Page {
 
   /**
    * Wait for elelemt(s) exist
-   * @param  {string} selectorValue xpath or css selector
-   * Throw Error if element not existed
+   * @param {string} CSS selector to query
+   * Throw Error if element is not existed
    */
-  _waitForExist(selectorValue) {
+  _waitForExist(selectorValue, timeout = 5000, reverse = false) {
     try {
-      this._browser.waitForExist(selectorValue)
+      this._browser.waitForExist(selectorValue, timeout, reverse)
     }
     catch (err) {
-      throw new Error(`selector of ${selectorValue} is not exist. Please check ` + err)
+      throw new Error(`selector of ${selectorValue} is not existed. Please check ` + err)
     }
   }
+
 }

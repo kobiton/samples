@@ -2,7 +2,6 @@ import Page from '../base'
 
 const elements = {
   firstNameCharacter: '#app > div > div > div:nth-child(3) > div:nth-child(1) > div > div > div > div > div:nth-child(1) > div:nth-child(1)', // eslint-disable-line max-len
-  profileDeviceOwnerLink: 'div=Device Owner',
   profileButton: '//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div/div/div[2]/div/div[1]/button', // eslint-disable-line max-len
   logoutButton: '//div[text()="Logout"]',
   profileIcon: "//div[@size='40']",
@@ -55,11 +54,5 @@ export default class AuthenticatedPage extends Page {
     this._browser.waitForExist(elements.firstNameCharacter)
     return this._browser.isVisible(elements.firstNameCharacter)
   }
-
-  selectDeviceOwner() {
-    this.elements.profileButton.click()
-    this.elements.profileDeviceOwnerLink.click()
-    this.waitForLoadingProgressDone()
-    return this
-  }
+  
 }

@@ -14,7 +14,8 @@ const elements = {
   registerNowLink: 'div=Register now',
   logoImageHeader: '//img',
   sessionsLnk: "//a[@href='/me/sessions']",
-  form: '#app form'
+  form: '#app form',
+  locator: '//span[text()="Invalid email and/or password" or text()="Sessions"]'
 }
 
 export default class LoginPage extends Page {
@@ -60,7 +61,6 @@ export default class LoginPage extends Page {
   * it could be loginPage or sessionPage
   */
   _waitForPageLoaded() {
-    const locator = '//span[text()="Invalid email and/or password" or text()="Sessions"]'
-    this._browser.waitForExist(locator)
+    this._browser.waitForExist(elements.locator)
   }
 }

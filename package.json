@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@kobiton/core-build": "^1.0.27",
-    "@kobiton/core-util": "^1.0.26",
     "@kobiton/core-node": "^1.0.24",
+    "@kobiton/core-util": "^1.0.26",
     "babel-polyfill": "^6.5.0",
     "babel-register": "^6.11.6",
     "bluebird": "^3.0.6",
@@ -42,8 +42,8 @@
     "moment": "^2.15.0",
     "mongoose": "^4.8.5",
     "request": "2.79.0",
-    "request-promise": "^4.2.1",
     "request-progress": "^2.0.1",
+    "request-promise": "^4.2.1",
     "selenium-standalone": "^5.8.0",
     "spectron": "^3.4.0",
     "tmp": "0.0.28",
@@ -54,6 +54,6 @@
     "wdio-selenium-standalone-service": "0.0.7",
     "webdriverio": "4.6.2",
     "winston": "^2.3.1",
-    "yargs" : "^6.5.0"
+    "yargs": "^6.5.0"
   }
 }

@@ -152,10 +152,11 @@ export default class AutomationPracticePage {
       .url('http://webdriver.io')
       .reload()
       .pause(2000)
-      let result = await this._browser.execute(function(a, b, c, d) {
-        return a + b + c + d
+
+    let result = await this._browser.execute((a, b, c, d) => {
+      return a + b + c + d
       }, 1, 2, 3, 4)
-      debug.log(result.value)
+    debug.log(result.value)
 
     // List unsupported APIs
     // executeAsync

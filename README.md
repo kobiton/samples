@@ -9,9 +9,6 @@
   ##### Check yarn version
   `$ yarn --version`
 
-  ##### Login private registry with username/password/email in [Document] (https://github.com/kobiton/docs/blob/master/team/accounts.md#npm)
-    `$ npm login`
-
   ##### Install local packages:
   `$ yarn install`
 
@@ -73,11 +70,16 @@ Append argument: --longTestSuiteIterationAmount <number_of_loop>
 Append argument: --mobileTestDuration <minutes>
 
 ### Run a specific test suites
-#### Api
+#### API
 
    ```bash
    yarn test -- --input /console/api
    ```
+
+#### UIs
+  ```
+  yarn test -- --input /browser
+  ```
 
 #### E2e
 
