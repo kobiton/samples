@@ -3,15 +3,32 @@ import ManualPage from './manual'
 import {debug} from '@kobiton/core-util'
 
 const elements = {
+  mainFunction: {
+    devices: '//a[contains(@href, "devices")]/span',
+    sessions: '//a[contains(@href, "sessions")]/span',
+    appRepo: '//a[contains(@href, "apps")]/span',
+    download: '//span[contains(., "Download")]',
+    documentation: '//span[contains(., "Documentation")]',
+    support: '//span[contains(., "Support")]'
+  },
   group: {
     favorite: '//h3[contains(., "Favorite Devices")]/../../following-sibling::div/div',
     cloud: '//div[span//h3[contains(., "Cloud Devices")]]/../following-sibling::div/div/div',
     private: '//h3[contains(., "Private Devices")]/../../following-sibling::div/div'
   },
   device: {
-    isOnline: '/div/div[2]/div[2]/div/div[contains(@style, "rgb(104, 159, 56)")]',
+    isOnline: '//div[contains(@style, "rgb(104, 159, 56)")]',
+    isUtilizing: '//div[contains(@style, "rgb(251, 192, 45)")]',
+    isOffline: '//div[contains(@style, "rgb(97, 97, 97)")]',
     name: '/div/div[2]/div[1]/div',
-    launchButton: '/div[3]/button[1]'
+    launchButton: '/div[2]/div[2]/span/button[1]'
+  },
+  search: {
+    onlineCheckbox: '//label[contains(.,"Online")]/../div',
+    busyCheckbox: '//label[contains(.,"Busy")]/../div',
+    offlineCheckbox: '//label[contains(.,"Offline")]/../div',
+    isKobitonDevices: '//label[contains(.,"Kobiton devices")]/../div',
+    isMyDevices: '//label[contains(.,"My devices")]/../div'
   },
   closeDialogButton: '//*[div/div/h2[contains(.,"Help us, help you.")]]/*[local-name()="svg"]'
 }
@@ -22,6 +39,9 @@ export default class DevicesPage extends AuthenticatedPage {
     this._initElementsGetter(elements)
   }
 
+  /**
+   * Open devices page
+   */
   open() {
     super.open('devices')
   }
@@ -31,6 +51,13 @@ export default class DevicesPage extends AuthenticatedPage {
     if (this._browser.isExisting(elements.closeDialogButton)) {
       this._browser.click(elements.closeDialogButton)
     }
+  }
+
+  /**
+   * Get url of devices page
+   */
+  getUrlPage() {
+    return this._browser.getUrl()
   }
 
   /**

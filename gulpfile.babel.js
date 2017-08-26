@@ -35,9 +35,7 @@ gulp.task('run-test', async () => {
     return executeDefinedTask(taskName)
   } else {
     let inputPath = argv.input
-    if (inputPath.includes('/browser')) {
-      return startBrowserTests('./build/test' + inputPath)
-    } else if (inputPath.includes('/console')) {
+    if (inputPath.includes('/console')) {
       return startConsoleTests('./build/test' + inputPath)
     } else {
       return startUatTest(inputPath)
@@ -48,8 +46,8 @@ gulp.task('run-test', async () => {
 
 async function executeDefinedTask(taskName) {
   switch (taskName) {
-    case 'test-manual':
-      return await startManualTest()
+    case 'test-ui':
+      return await startUiTest()
     case 'multi-version-check':
       return startMultipleVersionCheck(argv.input)
     case 'health-check':
@@ -57,13 +55,13 @@ async function executeDefinedTask(taskName) {
   }
 }
 
-async function startManualTest() {
+async function startUiTest() {
   try {
-    const runManual = require('./build/test/browser/manual/manual-setup')
-    await runManual()
+    const launchBrowser = require('./build/test/browser/browser-setup')
+    await launchBrowser()
   }
   catch(err) {
-    debug.error('test-manual', err)
+    debug.error('test-ui', err)
   }
 }
 
@@ -97,22 +95,6 @@ async function startHealthCheck(type) {
     case 'ios-app':
       return healthChecker.executeIOSAppCheck()
   }
-}
-
-function startBrowserTests(inputPath) {
-  if (fs.lstatSync(inputPath).isDirectory()) {
-    inputPath = path.join(inputPath, 'wdio.conf.js')
-  }
-
-  const getMochaConfig = getMochaConfigMethod(inputPath)
-  const mochaOption = getMochaConfig({
-    reporter: argv.reporter, 
-    reportDir: 'reports/browser'
-  })
-
-  return gulp.src(inputPath, {read: false})
-          .pipe(plumber())
-          .pipe(webdriver(mochaOption))
 }
 
 const defaultMochaConfigSrc = './src/framework/config/mocha-conf'

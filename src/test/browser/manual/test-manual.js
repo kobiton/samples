@@ -8,7 +8,7 @@ import {writeSuccess} from '../../../framework/common/logger'
 
 const {deviceName: filterDevice, deviceGroup} = {...config}
 const expectedDurationInMinutes = config.expectedDurationInMinutes
-const {screenQuality} = {...config.manual}
+const {screenQuality} = {...config.browser}
 const {username1: username, password1: password} = {...config}
 const {deviceName, platformVersion} = filterDevice
   ? {deviceName: filterDevice, platformVersion: 'none'} : ManualData.getADevice()

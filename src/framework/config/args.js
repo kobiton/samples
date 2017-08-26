@@ -119,6 +119,20 @@ const yargs = require('yargs')
     describe: 'max of browser instances',
     type: 'number'
   })
+  .options('numberOfBrowser', {
+    alias: 'numberOfBrowser',
+    demand: false,
+    default: 1,
+    describe: 'number of browser you want to open',
+    type: 'number'
+  })
+  .options('browserName', {
+    alias: 'browserName',
+    demand: false,
+    default: 'chrome',
+    describe: 'Name of browser you want to launch',
+    type: 'string'
+  })
   .options('logs', {
     alias: 'pushLogs',
     demand: false,

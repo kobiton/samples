@@ -51,9 +51,11 @@ const config = {
     indexFinish: args.indexFinish,
     arrayUDID: args.arrayUDID
   },
-  manual: {
+  browser: {
     screenQuality: args.screenQuality,
-    maxBrowserInstances: args.maxBrowserInstances
+    maxBrowserInstances: args.maxBrowserInstances,
+    numberOfBrowser: args.numberOfBrowser,
+    browserName: args.browserName
   },
   report: {
     reporter: args.reporter,

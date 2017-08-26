@@ -1,10 +1,10 @@
-import base from '../../framework/config/wdio-conf'
-
 import config from '../../framework/config/test'
 
+const base = require('../../framework/config/wdio-conf')
+const fileTest = config.typeOfTest ? `${config.typeOfTest}` : 'test-*'
 exports.config = {
   ...base.config,
-  maxInstances: config.manual.maxBrowserInstances,
+  maxInstances: config.browser.maxBrowserInstances,
   seleniumArgs: {
     drivers: {
       chrome: {
@@ -22,8 +22,5 @@ exports.config = {
     }
   },
   logLevel: 'error',
-  specs: [
-    'build/test/browser/manual/test-manual.js',
-    'build/test/browser/settings/test-*.js']
+  specs: [`build/test/browser/**/${fileTest}.js`]
 }
-

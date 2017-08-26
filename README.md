@@ -25,6 +25,7 @@
     * export KOBITON_API_URL='<api_url>'
     * export KOBITON_PORTAL_URL='<portal_url>'
     * export KOBITON_USERNAME_1='<username>'
+    * export KOBITON_PASSWORD_1='<password>'
     * export KOBITON_API_KEY='<api_key>'
 
   Run command to set variable environment
@@ -78,7 +79,7 @@ Append argument: --mobileTestDuration <minutes>
 
 #### UIs
   ```
-  yarn test -- --input /browser
+  yarn test -- --task test-ui --type <file_test>
   ```
 
 #### E2e

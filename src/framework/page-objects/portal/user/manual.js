@@ -12,9 +12,7 @@ const elements = {
   homeButton: '//button[div/div/span[normalize-space(text())="Home ( Long press )"]]',
   touchButton: '//button[div/div/span[text()="Touch"]]',
   pinchButton: '//button[div/div/span[contains(.,"Pinch")]]',
-  rotateButton: '//button[div/div/span[contains(.,"Rotate Screen")]]',
-  volumeUpButton: '//button[div/div/span[contains(.,"Volume up")]]',
-  volumeDownButton: '//button[div/div/span[contains(.,"Volume down")]]',
+  rotateButton: '//button[div/div/span[contains(.,"Rotate screen")]]',
   recentAppsButton: '//button[div/div/span[text()="Recent Apps"]]',
   connectedToServerAlert: '//div[normalize-space(text())="Connected to server."]',
   disConnectedFromServerAlert: '//div[normalize-space(text())="Disconnected from server."]',
@@ -95,6 +93,7 @@ export default class ManualPage extends AuthenticatedPage {
     this._browser.pause(5000)
     this.elements.screenQuality.waitForEnabled()
     this.elements.screenQuality.click()
+    this._browser.pause(2000)
     const qualityElement = `//div[text()="${quality}"]`
     this._browser.waitForExist(qualityElement)
     this._browser.click(qualityElement)
@@ -104,57 +103,4 @@ export default class ManualPage extends AuthenticatedPage {
   powerOffAlertExist() {
     return this._browser.isExisting(elements.powerOffAlert)
   }
-
-  startFpsCount() {
-    // The block below works at browser condition
-    /* eslint-disable */
-    this._browser.execute(() => {
-      window.createObjectURLFunct = URL.createObjectURL;
-      window.frameCount = 0;
-      window.frameQueue = {};
-      var startDate = new Date();
-      window.frameQueue[startDate.toLocaleTimeString()] = 0;
-
-      URL.createObjectURL = function () {
-        var date = new Date();
-        if (!window.frameQueue[date.toLocaleTimeString()]) {
-          window.frameQueue[date.toLocaleTimeString()] = 0;
-        }
-        window.frameQueue[date.toLocaleTimeString()]++;
-        window.frameCount++;
-        return window.createObjectURLFunct.apply(this, arguments);
-      }
-      })
-      /* eslint-enable */
-  }
-
-  /**
-   * This function will reset and return current frame count
-   */
-  resetFrameCount() {
-    // The block below works at browser condition
-    /* eslint-disable */
-    const frameCount = this._browser.execute(() => {
-      var frameCount = window.frameCount;
-      window.frameCount = 0;
-      return frameCount;
-    })
-      /* eslint-enable */
-    return frameCount.value
-  }
-
-  getAverageFps() {
-    // The block below works at browser condition
-    /* eslint-disable */
-    const averageFps = this._browser.execute(() => {
-      var sumOfFrame = Object.values(window.frameQueue).reduce(function(a,b){ return a+b;}, 0);
-      var timeLength = Object.values(window.frameQueue).length;
-      // Don't count the fps at the first second
-      var average = timeLength > 1 ? sumOfFrame/(timeLength-1) : 0;
-      return average;
-    })
-      /* eslint-enable */
-    return averageFps.value
-  }
-
 }
