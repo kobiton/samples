@@ -35,6 +35,9 @@ class Device extends Base {
       default:
         devices = devicesGroups.cloudDevices.concat(devicesGroups.privateDevices)
     }
+
+    devices = devices.filter((d) => !d.support.appiumDisabled)
+
     if (platformName) {
       platformName = platformName.toLowerCase()
       devices = devices.filter((d) => d.platformName.toLowerCase() === platformName)
