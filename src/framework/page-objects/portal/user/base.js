@@ -11,7 +11,7 @@ const elements = {
 
 /**
  * Authenticated page is a base page which contains profile menu and navigation items objects.
- * This page just display when user login successfully
+ * This page just displays when user logins successfully
  */
 export default class AuthenticatedPage extends Page {
   constructor(specificBrowser = browser) {
@@ -21,19 +21,20 @@ export default class AuthenticatedPage extends Page {
   }
 
   _clickProfileIcon() {
-    this.elements.profileIcon.waitForEnabled()
-    this.elements.profileIcon.click()
+    this._browser.waitForEnabled(elements.profileIcon)
+    this._browser.click(elements.profileIcon)
   }
 
   openProfileMenu() {
-    this.elements.profileMenuDropdownIcon.waitForEnabled()
-    this.elements.profileMenuDropdownIcon.click()
+    this._browser.waitForEnabled(elements.profileMenuDropdownIcon)
+    this._browser.click(elements.profileMenuDropdownIcon)
+
     return this
   }
 
   selectSettingMenu() {
-    this.elements.settingsMenuButton.waitForEnabled()
-    this.elements.settingsMenuButton.click()
+    this._browser.waitForEnabled(elements.settingsMenuButton)
+    this._browser.click(elements.settingsMenuButton)
     this.waitForLoadingProgressDone()
 
     return this
@@ -44,9 +45,11 @@ export default class AuthenticatedPage extends Page {
    */
   logout() {
     this._clickProfileIcon()
-    this.elements.logoutButton.waitForEnabled()
-    this.elements.logoutButton.click()
+    this._browser.waitForEnabled(elements.logoutButton)
+    this._browser.click(elements.logoutButton)
     this.waitForLoadingProgressDone()
+
+    return this
   }
 
   isUserLoggedSuccessfully() {

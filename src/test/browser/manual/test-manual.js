@@ -25,7 +25,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     const loginPage = new LoginPage()
     loginPage.windowHandleMaximize()
     loginPage.open()
-    devicesPage = loginPage.login({username, password})
+    devicesPage = loginPage.login(username, password)
     const numOfOnlineDevices =
       devicesPage.getTotalOnlineDevices({group: deviceGroup, deviceName})
     assert.isAtLeast(numOfOnlineDevices, 1, `Expected at least one online ${deviceName} device`)

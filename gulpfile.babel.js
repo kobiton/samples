@@ -38,7 +38,7 @@ gulp.task('run-test', async () => {
     if (inputPath.includes('/console')) {
       return startConsoleTests('./build/test' + inputPath)
     } else {
-      return startUatTest(inputPath)
+      throw new Error(`File path ${inputPath} is not valid.`)
     }
   }
 

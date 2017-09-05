@@ -2,12 +2,13 @@ const elements = {
   loadingHidden: '#app [data-state= "hidden"]',
   loadingRunning: '#app [data-state= "running"]'
 }
+const timeout = 5000
 
 export default class Page {
 
   /**
    * Constructor for Page object
-   * @param  {[type]} specificBrowser browser that control this page object,
+   * @param {[type]} specificBrowser browser that control this page object,
    * default is global browser
    */
   constructor(specificBrowser = browser) {
@@ -23,7 +24,7 @@ export default class Page {
 
 /**
  * Open a page
- * @param   {path} path to the selected page. ex: /login or /register
+ * @param {path} path to the selected page. ex: /login or /register
  * @uses when open an identified page.by default, it will open the baseUrl
  * which have been defined in wdio.conf.js
  */
@@ -49,29 +50,62 @@ export default class Page {
     this.waitForLoadingProgressDone()
   }
 
+  /**
+  * Maximize the specified window if not already maximized
+  */
   windowHandleMaximize() {
     this._browser.windowHandleMaximize()
   }
 
+  /**
+  * Pause execution for a specific amount of time
+  * @param {int} milliseconds - time in ms
+  */
   pause(timeout) {
     this._browser.pause(timeout)
   }
 
+  /**
+  * Navigate backwards in the browser history, if possible
+  */
+  back() {
+    this._browser.back()
+    this.waitForLoadingProgressDone()
+    this._browser.pause(timeout)
+    return this
+  }
+  
+  /**
+  * Wait for an element (selected by css selector) for the provided amount of milliseconds
+  * to be present within the DOM
+  */
   waitForLoadingProgressRunning() {
-    this._browser.waitForExist(elements.loadingRunning)
+    this._browser.waitForExist(elements.loadingRunning, timeout * 2)
   }
 
+  /**
+  * Wait for an element (selected by css selector) for the provided amount of milliseconds
+  * to be present within the DOM
+  */
   waitForLoadingProgressDone() {
-    this._browser.waitForExist(elements.loadingHidden)
+    this._browser.waitForExist(elements.loadingHidden, timeout * 2)
   }
 
+  /**
+  * Search for multiple elements on the page, starting from the document root.
+  * The located elements will be returned as a WebElement JSON objects.
+  * @param {string} selector to query the elements
+  */
   _isElementExists(selectorValue) {
     let response = this._browser.elements(selectorValue)
     return response.value && response.value.length > 0
   }
 
-  _isPluralSelectorName(selectorName) {
-    return selectorName.endsWith('s')
+  /**
+  * Returns true if at least one element is existing by given selector
+  */
+  _isExisting(selectorValue) {
+    return this._browser.isExisting(selectorValue)
   }
 
   /**

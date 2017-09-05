@@ -5,7 +5,8 @@ import Url from 'url'
 
 const args = parse()
 
-const envVariablesToCheck = ['KOBITON_USERNAME_1',
+const envVariablesToCheck = [
+  'KOBITON_USERNAME_1',
   'KOBITON_PASSWORD_1',
   'KOBITON_API_URL',
   'KOBITON_API_KEY',
@@ -17,7 +18,7 @@ const envVariablesToCheck = ['KOBITON_USERNAME_1',
 ]
 for (const envName of envVariablesToCheck) {
   if (!process.env[envName]) {
-    debug.log(`WARNING: environemnt ${envName} is not defined. `)
+    debug.log(`WARNING: environemnt ${envName} is not defined.`)
   }
 }
 
@@ -33,6 +34,7 @@ const config = {
   autoTestPort: defaultAutoTestPort,
   apiKey: process.env.KOBITON_API_KEY,
   username1: process.env.KOBITON_USERNAME_1,
+  emailUser1: process.env.KOBITON_EMAIL_USER_1,
   password1: process.env.KOBITON_PASSWORD_1,
   username2: process.env.KOBITON_USERNAME_2,
   password2: process.env.KOBITON_PASSWORD_2,

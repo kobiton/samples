@@ -103,6 +103,9 @@ export default class APIKeysPage extends AuthenticatedPage {
     return this
   }
 
+  /**
+  * Delete all API Keys
+  */
   deleteAllAPIKeys() {
     let index = 0
     const size = this.getAPIKeys().length

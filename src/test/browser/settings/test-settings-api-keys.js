@@ -13,7 +13,7 @@ describe('Settings / API Keys', () => {
     const loginPage = new LoginPage()
     loginPage.open()
     loginPage.windowHandleMaximize()
-    loginPage.login({username, password})
+    loginPage.login(username, password)
     apiKeysPage = new APIKeysPage()
     apiKeysPage.open()
   })
@@ -29,17 +29,24 @@ describe('Settings / API Keys', () => {
     apiKeysPage.addAPIKey()
       
     const apiKeysSize = apiKeysPage.getAPIKeys().length
-    assert.equal(apiKeysSize, 1, 'A new API Key isn\'t created.')
+    assert.equal(apiKeysSize, 1, 'A new API Key is created.')
 
     const firstAPIKey = apiKeysPage.getAPIKeys()[0]
-    assert.match(firstAPIKey, apiKeyFormat, 'New API Key doesn\'t match the regular expression.')
+    assert.match(firstAPIKey, apiKeyFormat, 'New API Key matches the regular expression.')
+  })
+
+  it('should cancel Delete action', () => {
+    apiKeysPage.deleteAPIKey(0, 3)
+
+    const apiKeysSize = apiKeysPage.getAPIKeys().length
+    assert.equal(apiKeysSize, 1, 'Existing API Key is remaining.')
   })
 
   it('should delete API Key that has just created', () => {
     apiKeysPage.deleteAPIKey(0)
 
     const apiKeysSize = apiKeysPage.getAPIKeys().length
-    assert.equal(apiKeysSize, 0, 'All API Keys aren\'t deleted.')
+    assert.equal(apiKeysSize, 0, 'All API Keys are deleted.')
   })
 
 })

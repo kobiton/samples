@@ -17,7 +17,7 @@ describe('Verifying on the devices page', () => {
   it('should verify url of devices page', () => {
     const urlPage = devicesPage.getUrlPage()
     assert.equal(urlPage, config.portalUrl.concat('/devices'),
-    `The current url is ${urlPage} - the expected url is ${config.portalUrl.concat('/devices')}`)
+    `The expected url is ${config.portalUrl.concat('/devices')}`)
   })
 
 })

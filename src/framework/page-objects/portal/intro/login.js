@@ -1,6 +1,7 @@
 import Page from '../base'
 import DevicesPage from '../user/devices'
 
+const timeout = 5000
 const elements = {
   usernameLabel: '//input[@name="emailOrUsername"]/../label',
   usernameTextInput: 'input[name="emailOrUsername"]',
@@ -8,14 +9,19 @@ const elements = {
   passwordTextInput: 'input[name="password"]',
   loginButton: '#app form button',
   rememberMeLabel: '//span[contains(.,"Remember me")]',
-  rememberMeCheck: 'input[name="remember"]',
+  rememberMeCheckbox: 'input[name="remember"]',
   messageFailedLabel: '//form/span',
   forgotPasswordLink: 'div=Forgot password?',
   registerNowLink: 'div=Register now',
   logoImageHeader: '//img',
-  sessionsLnk: "//a[@href='/me/sessions']",
   form: '#app form',
-  locator: '//span[text()="Invalid email and/or password" or text()="Sessions"]'
+  errorMsg: '//form/span',
+  locator: '//span[contains(text(), "Invalid email and/or password") or text()="Sessions"]'
+}
+
+const LOGIN_STATUSES = {
+  SUCCESSED: 0,
+  FAILED: 1
 }
 
 export default class LoginPage extends Page {
@@ -25,35 +31,113 @@ export default class LoginPage extends Page {
     this._initElementsGetter(elements)
   }
 
-  login({username, password}) {
-    this.elements.usernameTextInput.waitForExist()
-    this.elements.usernameTextInput.clearElement()
-    this.elements.usernameTextInput.setValue(username)
-    this.elements.passwordTextInput.clearElement()
-    this.elements.passwordTextInput.setValue(password)
-    this.elements.loginButton.click()
-    // click login button then submit form because of the known issue:
-    // https://trello.com/c/ZeL2ilpT/816-portal-chrome-firefox-login-could-not-click-on-login-button-after-input-username-and-password
-    // TODO: remove 2 lines below when the trello card above is fixed
-    this.elements.loginButton.waitForEnabled()
-    this.elements.form.submitForm()
-    this.waitForLoadingProgressDone()
-    this._waitForPageLoaded()
-    const isSuccessful = this._browser.getUrl().indexOf('devices') >= 0
-    if (isSuccessful) {
-      return new DevicesPage(this._browser)
-    }
-    return this
-  }
-
   open(option) {
     super.open('login', option)
     this.waitForLoadingProgressDone()
     return this
   }
 
+  /**
+  * Returns true if at least one element is existing by given selector
+  */
+  isExistingElement(element) {
+    return this._isExisting(elements[element])
+  }
+
+  /**
+  * Returns true if at least one element is existing by given selector
+  */
+  getRememberMeCheckboxValue() {
+    return this._browser.getValue(elements.rememberMeCheckbox)
+  }
+
+  /**
+  * Enter username into username field
+  * @param {string} enter username or email
+  */
+  setUserName(value) {
+    this._browser.waitForExist(elements.usernameTextInput)
+    this._browser.clearElement(elements.usernameTextInput)
+    if (value) {
+      this._browser.setValue(elements.usernameTextInput, value)
+    }
+    return this
+  }
+
+  /**
+  * Enter password into password field
+  * @param {string} enter password
+  */
+  setPassword(value) {
+    this._browser.clearElement(elements.passwordTextInput)
+    if (value) {
+      this._browser.setValue(elements.passwordTextInput, value)
+    }
+    return this
+  }
+
+  /**
+  * Click Login button
+  */
+  clickLogin() {
+    this._browser.click(elements.loginButton)
+    this.waitForLoadingProgressDone()
+    return this
+  }
+
+  /**
+  * Click on Element
+  */
+  click(element) {
+    return this._browser.click(elements[element])
+  }
+
+  /**
+  * login action
+  * @param {string} enter username or email
+  * @param {string} enter password
+  * @param {int} set expectation
+  *   Option 0: Expected to log in successfully
+  *   Option 1: Expected to log in unsuccessfully
+  */
+  login(username, password, options = LOGIN_STATUSES.SUCCESSED) {
+    this.setUserName(username)
+    this.setPassword(password)
+    this.clickLogin()
+
+    if (options === LOGIN_STATUSES.SUCCESSED) {
+      this._waitForPageLoaded()
+      const isSuccessful = this._browser.getUrl().indexOf('devices') >= 0
+      if (isSuccessful) {
+        return new DevicesPage(this._browser)
+      }
+    }
+
+    return this
+  }
+
+  /**
+  * Return true if the selected DOM-element found by given selector is visible
+  * Returns an array if multiple DOM-elements are found for the given selector.
+  */
   isLoggedIn() {
     return !this._browser.isVisible(elements.usernameTextInput)
+  }
+
+  /**
+  * Get the error after clicking on Login button
+  */
+  getErrorMessage() {
+    this._browser.waitForExist(elements.errorMsg, timeout)
+    return this._browser.element(elements.errorMsg).getText()
+  }
+
+  /**
+  * Get the url of current opened website
+  */
+  getUrlPage() {
+    this.waitForLoadingProgressDone()
+    return this._browser.getUrl()
   }
 
  /**
