@@ -51,6 +51,45 @@ const formatsConfiguration = {
   }
 }
 
+const formatsSubscription = {
+  formats: {
+    planName: {
+      required: true,
+      type: 'string'
+    },
+    startedAt: {
+      required: true,
+      type: 'string',
+      format: 'datetime'
+    },
+    endsAt: {
+      required: true,
+      type: 'string',
+      format: 'datetime'
+    },
+    totalUsableMinutes: {
+      required: true,
+      type: 'number'
+    },
+    usedMinutes: {
+      required: true,
+      type: 'number'
+    },
+    remainingMinutes: {
+      required: true,
+      type: 'number'
+    },
+    overageMinutes: {
+      required: true,
+      type: 'number'
+    },
+    purchasedDeviceSlots: {
+      required: true,
+      type: 'number'
+    }
+  }
+}
+
 class APIData extends BaseData {
   getRegisterSchema() {
     return registerSchema
@@ -58,6 +97,10 @@ class APIData extends BaseData {
 
   getFormatsConfiguration() {
     return formatsConfiguration
+  }
+
+  getFormatsSubscription() {
+    return formatsSubscription
   }
 }
 

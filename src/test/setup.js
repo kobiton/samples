@@ -31,7 +31,7 @@ if (!request.Request.callbackOverrided) {
 }
 
 export default async function init() {
-  const token = Buffer.from(`${config.username1}:${config.apiKey}`).toString('base64')
+  const token = new Buffer(`${config.username1}:${config.apiKey}`).toString('base64')
   UserRestApi.setBaseUrl(config.apiUrl)
   UserRestApi.setToken(token)
 
