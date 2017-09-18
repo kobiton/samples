@@ -154,6 +154,13 @@ const yargs = require('yargs')
     describe: 'interval in seconds',
     type: 'number'
   })
+  .options('concurrentDevices', {
+    alias: 'healthCheckConcurrentDevices',
+    demand: false,
+    default: 1,
+    describe: 'Max concurrent device at a time',
+    type: 'number'
+  })
   .help()
 
 export function help() {

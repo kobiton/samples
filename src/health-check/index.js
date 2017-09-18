@@ -39,18 +39,26 @@ class HealthChecker {
     if (attemp) {
       debug.log(`RETRY BUSY DEVICE ${attemp}/${testConfig.healthCheck.maxRetry}`)
     }
-    let checkedDeviceUUIDs = [...checkedUUIDs]
 
-    let device = await this._pickDevice(devices, checkedDeviceUUIDs)
-    while (device) {
-      checkedDeviceUUIDs.push(device.udid)
-      debug.log(`Check on: ${device.deviceName} udid: ${device.udid}`)
+    let checkedDeviceUUIDs = [...checkedUUIDs]
+    const concurrentDevices = testConfig.healthCheck.maxConcurrentDevices
+
+    let selectedDevices = await this._pickDevices(devices, checkedDeviceUUIDs, concurrentDevices)
+    while (selectedDevices && selectedDevices.length) {
+      checkedDeviceUUIDs = checkedDeviceUUIDs.concat(selectedDevices)
+
+      selectedDevices.forEach((device) => {
+        debug.log(`Check on: ${device.deviceName} udid: ${device.udid}`)
+      })
+
       // eslint-disable-next-line babel/no-await-in-loop
-      const results = await runner.execute(timeStamp, [device], expectedDuration, testScript)
+      const results = await runner.execute(timeStamp, selectedDevices, expectedDuration, testScript)
+
       // eslint-disable-next-line babel/no-await-in-loop
       await report(results)
+
       // eslint-disable-next-line babel/no-await-in-loop
-      device = await this._pickDevice(devices, checkedDeviceUUIDs)
+      selectedDevices = await this._pickDevices(devices, checkedDeviceUUIDs, concurrentDevices)
     }
 
     const allDevices = await Device.getOnlineDevices()
@@ -76,7 +84,7 @@ class HealthChecker {
     }
   }
 
-  async _pickDevice(devices, ignoredDeviceUDIDs) {
+  async _pickDevices(devices, ignoredDeviceUDIDs, amount = 1) {
     const devicesUDIDs = devices.map((d) => d.udid)
 
     const allDevices = await Device.getOnlineDevices()
@@ -85,7 +93,8 @@ class HealthChecker {
         return devicesUDIDs.includes(d.udid) &&
           d.isOnline && !d.isBooked &&
           !ignoredDeviceUDIDs.includes(d.udid)
-      })[0]
+      })
+      .slice(0, amount)
   }
 
   async _reportUnavailableDevice(devices, testScript) {

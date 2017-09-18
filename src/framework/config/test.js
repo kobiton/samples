@@ -71,7 +71,8 @@ const config = {
   },
   healthCheck: {
     onDeviceBusyRetryInterval: args.onDeviceBusyRetryInterval * 1000,
-    maxRetry: args.onBusyDeviceRetryTimes
+    maxRetry: args.onBusyDeviceRetryTimes,
+    maxConcurrentDevices: args.healthCheckConcurrentDevices || 1
   }
 }
 
