@@ -45,7 +45,7 @@ class HealthChecker {
 
     let selectedDevices = await this._pickDevices(devices, checkedDeviceUUIDs, concurrentDevices)
     while (selectedDevices && selectedDevices.length) {
-      checkedDeviceUUIDs = checkedDeviceUUIDs.concat(selectedDevices)
+      checkedDeviceUUIDs = checkedDeviceUUIDs.concat(selectedDevices.map(d => d.udid))
 
       selectedDevices.forEach((device) => {
         debug.log(`Check on: ${device.deviceName} udid: ${device.udid}`)
