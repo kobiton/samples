@@ -1,6 +1,7 @@
 import BPromise from 'bluebird'
 import moment from 'moment'
 import Base from './_base'
+import group from '../common/groupType/type-of-group'
 import config from '../config/test'
 
 class Device extends Base {
@@ -26,10 +27,10 @@ class Device extends Base {
     let devices
     let devicesByUDID = []
     switch (groupType) {
-      case 'private':
+      case group.private:
         devices = devicesGroups.privateDevices.sort((a, b) => a.id - b.id)
         break
-      case 'cloud':
+      case group.cloud:
         devices = devicesGroups.cloudDevices
         break
       default:
@@ -77,7 +78,7 @@ class Device extends Base {
   }
 
   async isOnlineDevice(device) {
-    const groupType = (device.udid) ? 'private' : 'cloud'
+    const groupType = (device.udid) ? group.private : group.cloud
     let platformName = device.platformName
     const platformVersion = device.platformVersion
     let deviceName = device.deviceName
@@ -139,6 +140,46 @@ class Device extends Base {
       indexFinish,
       arrayUDID
     })
+  }
+
+  async countDeviceByCriteria({
+    groupType,
+    status,
+    name
+  } = {}) {
+    const allDevices = await this._getDevices()
+    let devices
+    switch (groupType) {
+      case group.private:
+        devices = allDevices.privateDevices
+        break
+      case group.cloud:
+        devices = allDevices.cloudDevices
+        break
+      case group.favorite:
+        devices = allDevices.favoriteDevices
+        break
+      default:
+        devices = allDevices.cloudDevices.concat(
+          allDevices.privateDevices).concat(allDevices.favoriteDevices)
+    }
+    devices = devices.filter((d) => !d.isHidden)
+    switch (status) {
+      case 'online':
+        devices = devices.filter((d) => d.isOnline && !d.isBooked)
+        break
+      case 'busy':
+        devices = devices.filter((d) => d.isOnline && d.isBooked)
+        break
+      case 'offline':
+        devices = devices.filter((d) => !d.isOnline)
+        break
+    }
+    if (name) {
+      name = name.toLowerCase()
+      devices = devices.filter((d) => d.deviceName.toLowerCase().includes(name))
+    }
+    return devices.length
   }
 
   async getDevice(udid) {

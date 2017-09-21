@@ -1,6 +1,7 @@
 import {removeSlash} from '../util'
 import request from 'request'
 import BPromise from 'bluebird'
+import config from '../config/test'
 
 const requestAsync = BPromise.promisify(request, {multiArgs: true})
 
@@ -24,6 +25,8 @@ export default class Base {
   }
 
   getToken() {
+    const encode = new Buffer(`${config.username1}:${config.apiKey}`).toString('base64')
+    this._token = this._token ? this._token : encode
     return this._token
   }
 
@@ -32,12 +35,13 @@ export default class Base {
   }
 
   _getAbsoluteUrl(path) {
-    return `${this._baseUrl}/v1/${removeSlash(path)}`
+    const pageUrl = this._baseUrl ? this._baseUrl : config.apiUrl
+    return `${pageUrl}/v1/${removeSlash(path)}`
   }
 
   async _send({method = 'GET', json = true, path, headers, body = {}} = {}) {
     const finalHeaders = headers || {
-      'authorization': `Basic ${this._token}`,
+      'authorization': `Basic ${this.getToken()}`,
       'content-type': 'application/json'
     }
     const finalOptions = {
