@@ -4,3 +4,4 @@ coverage
 gulpfile.babel.js
 reports
 logs
+src/test/console/php

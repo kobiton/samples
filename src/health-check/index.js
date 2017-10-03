@@ -15,19 +15,19 @@ const initial = new BaseTest()
 
 class HealthChecker {
   async executeWebCheck() {
-    const devices = await Device.getOnlineDevices()
+    const devices = await Device.getAllDevices()
     await this.execute(initial._getTimeStamp(),
       devices, expectedDurationInSeconds, new DailyWebTest())
   }
 
   async executeIOSAppCheck() {
-    const devices = await Device.getOnlineDevices()
+    const devices = await Device.getAllDevices()
     await this.execute(initial._getTimeStamp(),
       devices, expectedDurationInSeconds, new IOSAppTest())
   }
 
   async executeAndroidAppCheck() {
-    const devices = await Device.getOnlineDevices()
+    const devices = await Device.getAllDevices()
     await this.execute(initial._getTimeStamp(),
       devices, expectedDurationInSeconds, new AndroidAppTest())
   }
@@ -45,7 +45,7 @@ class HealthChecker {
 
     let selectedDevices = await this._pickDevices(devices, checkedDeviceUUIDs, concurrentDevices)
     while (selectedDevices && selectedDevices.length) {
-      checkedDeviceUUIDs = checkedDeviceUUIDs.concat(selectedDevices.map(d => d.udid))
+      checkedDeviceUUIDs = checkedDeviceUUIDs.concat(selectedDevices.map((d) => d.udid))
 
       selectedDevices.forEach((device) => {
         debug.log(`Check on: ${device.deviceName} udid: ${device.udid}`)
@@ -61,7 +61,7 @@ class HealthChecker {
       selectedDevices = await this._pickDevices(devices, checkedDeviceUUIDs, concurrentDevices)
     }
 
-    const allDevices = await Device.getOnlineDevices()
+    const allDevices = await Device.getAllDevices()
     const unavailableDevices = allDevices.filter((d) => {
       return !checkedDeviceUUIDs.includes(d.udid)
     })
@@ -87,7 +87,7 @@ class HealthChecker {
   async _pickDevices(devices, ignoredDeviceUDIDs, amount = 1) {
     const devicesUDIDs = devices.map((d) => d.udid)
 
-    const allDevices = await Device.getOnlineDevices()
+    const allDevices = await Device.getAllDevices()
     return allDevices
       .filter((d) => {
         return devicesUDIDs.includes(d.udid) &&

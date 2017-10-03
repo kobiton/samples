@@ -153,11 +153,6 @@ export default class AutomationPracticePage {
       .reload()
       .pause(2000)
 
-    let result = await this._browser.execute((a, b, c, d) => {
-      return a + b + c + d
-      }, 1, 2, 3, 4)
-    debug.log(result.value)
-
     // List unsupported APIs
     // executeAsync
   }

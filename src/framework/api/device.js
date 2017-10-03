@@ -13,7 +13,8 @@ class Device extends Base {
     return devicesGroups
   }
 
-  async _getOnlineDevicesBy({
+  async _getDevicesBy({
+    onlineDeviceOnly = true,
     groupType = 'all',
     platformName,
     platformVersion,
@@ -48,7 +49,9 @@ class Device extends Base {
       devices = devices.slice(indexBegin, indexFinish)
     }
     else {
-      devices = devices.filter((d) => d.isOnline && !d.isBooked)
+      if (onlineDeviceOnly) {
+        devices = devices.filter((d) => d.isOnline && !d.isBooked)
+      }
 
       if (platformVersion) {
         devices = devices.filter((d) => d.platformVersion.includes(platformVersion))
@@ -86,7 +89,7 @@ class Device extends Base {
     const deviceNumbers = config.device.number
     const indexBegin = -1
     const indexFinish = 1000
-    const onlineDevices = await this._getOnlineDevicesBy({
+    const onlineDevices = await this._getDevicesBy({
       groupType,
       platformName,
       platformVersion,
@@ -105,7 +108,7 @@ class Device extends Base {
         // eslint-disable-next-line babel/no-await-in-loop
         await BPromise.delay(10000) //delay 10000 milliseconds
         // eslint-disable-next-line babel/no-await-in-loop
-        const checkOnline = await this._getOnlineDevicesBy({
+        const checkOnline = await this._getDevicesBy({
           groupType,
           indexBegin,
           indexFinish,
@@ -130,7 +133,7 @@ class Device extends Base {
     arrayUDID = config.device.arrayUDID
   } = {}) {
 
-    return await this._getOnlineDevicesBy({
+    return await this._getDevicesBy({
       groupType,
       platformName,
       platformVersion,
@@ -138,6 +141,25 @@ class Device extends Base {
       deviceNumbers,
       indexBegin,
       indexFinish,
+      arrayUDID
+    })
+  }
+
+  async getAllDevices({
+    groupType = config.device.group,
+    platformName = config.device.platform,
+    platformVersion = config.device.version,
+    deviceName = config.device.name,
+    deviceNumbers = config.device.number,
+    arrayUDID = config.device.arrayUDID
+  } = {}) {
+    return await this._getDevicesBy({
+      onlineDeviceOnly: false,
+      groupType,
+      platformName,
+      platformVersion,
+      deviceName,
+      deviceNumbers,
       arrayUDID
     })
   }
