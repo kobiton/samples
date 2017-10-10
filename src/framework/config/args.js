@@ -49,6 +49,13 @@ const yargs = require('yargs')
     describe: 'Specific device for mobile',
     type: 'string'
   })
+  .options('platformVersion', {
+    alias: 'devicePlatformVersion',
+    demand: false,
+    default: null,
+    describe: 'Specific version platform of device',
+    type: 'string'
+  })
   .options('name', {
     alias: 'deviceName',
     demand: false,

@@ -18,7 +18,7 @@ const elements = {
   ios: '//div[contains(text(),"iOS")]',
   name: '/div/div[2]/div[1]/div',
   deviceTag: '//div[contains(@style, "background-color: rgb(224, 224, 224)")]',
-  launchButton: '/div[2]/div[2]/span/button[1]',
+  launchButton: '//ancestor::div//div[2]/div[2]/span[1]/button',
   favoriteButton: '/div[2]/div[1]/span/button',
   devices: '//a[contains(@href, "devices")]/span',
   sessions: '//a[contains(@href, "sessions")]/span',
@@ -93,13 +93,6 @@ export default class DevicesPage extends AuthenticatedPage {
   }
 
   /**
-   * Get url of the page
-   */
-  getUrlPage() {
-    return this._browser.getUrl()
-  }
-
-  /**
    * Check element whether it is existing
    */
   isContaining(ele) {
@@ -119,33 +112,37 @@ export default class DevicesPage extends AuthenticatedPage {
   /**
    * Launch a device which belong to a group
    */
-  launchAnOnlineDevice({group = group.cloud, deviceName}) {
+  launchAnOnlineDevice({group, nameOfDevice, platformVersionOfDevice}) {
     this.waitForLoadingProgressDone()
-    return this._launchADevice(this._getDeviceLocator({group, deviceName}))
+    return this._launchADevice(this._getDeviceLocator(
+      {group, nameOfDevice, platformVersionOfDevice}), platformVersionOfDevice)
   }
 
-  getTotalOnlineDevices({group = group.cloud, deviceName}) {
-    const onlineDevices = this._getOnlineDevicesLocator({group: group.cloud, deviceName})
+  getTotalOnlineDevices({group, nameOfDevice, platformVersionOfDevice}) {
+    const onlineDevices = this._getOnlineDevicesLocator(
+      {group, nameOfDevice, platformVersionOfDevice})
     return this.getTotalVisibleElements(onlineDevices)
   }
 
-  _getOnlineDevicesLocator({group = group.cloud, deviceName}) {
-    const deviceLocators = this._getDeviceLocator({group, deviceName})
-    return deviceLocators.concat(elements.isOnline)
+  _getOnlineDevicesLocator({group, nameOfDevice, platformVersionOfDevice}) {
+    const deviceLocators = this._getDeviceLocator({group, nameOfDevice, platformVersionOfDevice})
+    return deviceLocators.concat(`/../..${elements.isOnline}`)
   }
 
-  _getDeviceLocator({group, deviceName}) {
+  _getDeviceLocator({group, nameOfDevice, platformVersionOfDevice}) {
     const groupLocators = elements[group]
-    const deviceLocators = deviceName
-      ? groupLocators.concat(`[${elements.name.substr(1)}[text()="${deviceName}"]]`)
+    let deviceLocators = nameOfDevice
+      ? groupLocators.concat(`[${elements.name.substr(1)}[text()="${nameOfDevice}"]]`)
       : groupLocators
+    deviceLocators = platformVersionOfDevice ? deviceLocators.concat(`/div/div[2]/div[3]/div
+      [text()="${platformVersionOfDevice}"]`) : deviceLocators
     return deviceLocators
   }
 
 /**
  * Launch a device from list device locator
  */
-  _launchADevice(listDeviceLocator) {
+  _launchADevice(listDeviceLocator, platformVersionOfDevice) {
     let i = 1
     let foundDevice = false
     let maxElement = 0
@@ -155,8 +152,8 @@ export default class DevicesPage extends AuthenticatedPage {
       // This is ancestor element which used to mix with deviceName, onlineStatus,
       // and launchButton
       const deviceSelector = listDeviceLocator.concat(`[${i}]`)
-      const onlineStatusLocator = `${deviceSelector}${elements.isOnline}`
-
+      const onlineStatusLocator = platformVersionOfDevice ? `${deviceSelector}/../..
+      ${elements.isOnline}` : `${deviceSelector}${elements.isOnline}`
       foundDevice = this._browser.isExisting(onlineStatusLocator)
 
       if (foundDevice) {
@@ -165,6 +162,8 @@ export default class DevicesPage extends AuthenticatedPage {
         this._browser.moveToObject(onlineStatusLocator)
         this._browser.waitForExist(launchButtonLocator)
         this._browser.click(launchButtonLocator)
+        this.waitForLoadingProgressRunning()
+        this.waitForLoadingProgressDone()
         const manualPage = new ManualPage()
         return manualPage
       }

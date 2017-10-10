@@ -74,7 +74,14 @@ export default class Page {
     this._browser.pause(timeout)
     return this
   }
-  
+
+  /**
+   * Get url of the page
+   */
+  getUrlPage() {
+    return this._browser.getUrl()
+  }
+
   /**
   * Wait for an element (selected by css selector) for the provided amount of milliseconds
   * to be present within the DOM
@@ -88,7 +95,7 @@ export default class Page {
   * to be present within the DOM
   */
   waitForLoadingProgressDone() {
-    this._browser.waitForExist(elements.loadingHidden, timeout * 2)
+    this._browser.waitForExist(elements.loadingHidden, timeout * 4)
   }
 
   /**

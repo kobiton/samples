@@ -45,6 +45,7 @@ const config = {
   device: {
     name: args.deviceName,
     platform: args.devicePlatform,
+    version: args.platformVersion,
     orientation: args.deviceOrientation,
     group: args.deviceGroup,
     number: args.deviceNumbers,
