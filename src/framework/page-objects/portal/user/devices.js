@@ -2,41 +2,63 @@ import {debug} from '@kobiton/core-util'
 import AuthenticatedPage from './base'
 import ManualPage from './manual'
 
-const elements = {
+let elements = {
+  // Group device
+  favorite: '//div[span//h3[contains(., "Favorite Devices")]]/../following-sibling::div/div/div',
+  cloud: '//div[span//h3[contains(., "Cloud Devices")]]/../following-sibling::div/div/div',
+  org: '//div[span//h3[contains(., "orgName Devices")]]/../following-sibling::div/div/div',
+  orgTitle: '//h3[contains(., "orgName Devices")]',
+
+  // Header Checkboxs
+  onlineCheckbox: '//label[contains(.,"Online")]/parent::div/parent::div/input',
+  busyCheckbox: '//label[contains(.,"Busy")]/parent::div/parent::div/input',
+  offlineCheckbox: '//label[contains(.,"Offline")]/parent::div/parent::div/input',
+  kobitonCheckbox: '//label[contains(.,"Kobiton devices")]/parent::div/parent::div/input',
+  organizationCheckbox: '//label[contains(.,"Organization devices")]/parent::div/parent::div/input',
+  myDevicesCheckbox: '//label[contains(.,"My devices")]/parent::div/parent::div/input',
+
+  // Settings
+  avatar: '//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div/div/div[1]/*[@size="40"]',
+  orgName: '//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div/div/div[1]/div/span',
+  profileSetting: '//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div/div/div[2]',
   buttonSetting: '//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div/div/div[2]/div/button',
   settingsTag: '//div[text()="Settings"]',
   profileTag: '//div[text()="Profile"]',
   subscriptionTag: '//div[text()="Subscription"]',
   logoutTag: '//div[text()="Logout"]',
-  favorite: '//div[span//h3[contains(., "Favorite Devices")]]/../following-sibling::div/div/div',
-  cloud: '//div[span//h3[contains(., "Cloud Devices")]]/../following-sibling::div/div/div',
-  private: '//h3[contains(., "Private Devices")]/../../following-sibling::div/div',
-  isOnline: '//div[contains(@style, "rgb(104, 159, 56)")]',
-  isUtilizing: '//div[contains(@style, "rgb(251, 192, 45)")]',
-  isOffline: '//div[contains(@style, "background-color: rgb(97, 97, 97)")]',
-  android: '//div[contains(text(),"Android")]',
-  ios: '//div[contains(text(),"iOS")]',
-  name: '/div/div[2]/div[1]/div',
-  deviceTag: '//div[contains(@style, "background-color: rgb(224, 224, 224)")]',
-  launchButton: '//ancestor::div//div[2]/div[2]/span[1]/button',
-  favoriteButton: '/div[2]/div[1]/span/button',
+
+  // Main functions
+  homePageImage: '//a[@href="/"]/img[2]',
   devices: '//a[contains(@href, "devices")]/span',
   sessions: '//a[contains(@href, "sessions")]/span',
   appRepo: '//a[contains(@href, "apps")]/span',
   download: '//span[contains(., "Download")]',
   documentation: '//span[contains(., "Documentation")]',
   support: '//span[contains(., "Support")]',
-  avatar: '//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div/div/div[1]/*[@size="40"]',
-  profileSetting: '//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div/div/div[2]',
-  onlineCheckbox: '//label[contains(.,"Online")]/parent::div/parent::div/input',
-  busyCheckbox: '//label[contains(.,"Busy")]/parent::div/parent::div/input',
-  offlineCheckbox: '//label[contains(.,"Offline")]/parent::div/parent::div/input',
-  kobitonCheckbox: '//label[contains(.,"Kobiton devices")]/parent::div/parent::div/input',
-  myDevicesCheckbox: '//label[contains(.,"My devices")]/parent::div/parent::div/input',
-  closeDialogButton: '//*[div/div/h2[contains(.,"Help us, help you.")]]/*[local-name()="svg"]',
+
+  // Search box
   iconSearch: '//input[contains(@placeholder, "Search")]',
-  searchTextbox: '//input[contains(@placeholder, "Model, platform or device name")]'
+  searchTextbox: '//input[contains(@placeholder, "Model, platform or device name")]',
+
+  // Status of device
+  isOnline: '//div[contains(@style, "rgb(104, 159, 56)")]',
+  isUtilizing: '//div[contains(@style, "rgb(251, 192, 45)")]',
+  isOffline: '//div[contains(@style, "background-color: rgb(97, 97, 97)")]',
+  isFavorite: '',
+
+  // Buttons on each device
+  launchButton: '//ancestor::div//div[2]/div[2]/span[1]/button',
+  favoriteButton: '//ancestor::div//div[2]/div[1]/span/button',
+
+  // Device Info
+  android: '//div[contains(text(),"Android")]',
+  ios: '//div[contains(text(),"iOS")]',
+  name: '/div/div[2]/div[1]/div',
+
+  deviceTag: '//div[contains(@style, "background-color: rgb(224, 224, 224)")]',
+  closeDialogButton: '//*[div/div/h2[contains(.,"Help us, help you.")]]/*[local-name()="svg"]'
 }
+let nameOfOrg
 
 export default class DevicesPage extends AuthenticatedPage {
   constructor(specificBrowser = browser) {
@@ -68,6 +90,20 @@ export default class DevicesPage extends AuthenticatedPage {
   }
 
   /**
+   * Get text of tag
+   */
+  getText(ele) {
+    return this._browser.getText(elements[ele])
+  }
+
+  /**
+   * Get value of tag
+   */
+  getValue(ele) {
+    return this._browser.getValue(elements[ele])
+  }
+
+  /**
    * Count devices by status in a group
    */
   countDevicesInGroupByStatus(group, statusOfDevice) {
@@ -81,8 +117,24 @@ export default class DevicesPage extends AuthenticatedPage {
    * Count devices by specific criteria
    */
   countDeviceOnUIByCriteria(criteria) {
-    const numberOfDevice = this._browser.elements(elements[criteria])
-    return numberOfDevice.value.length
+    const arrayElement = this._browser.elements(elements[criteria])
+    const numberOfDevice = arrayElement.value ? arrayElement.value.length : 0
+    return numberOfDevice
+  }
+
+  /**
+   * Get xpath of organization group
+   */
+  getElementInOrg(ele) {
+    elements[ele] = elements[ele].replace('orgName', nameOfOrg)
+  }
+
+  /**
+   * Check Org is existing
+   */
+  isExistingOrg() {
+    nameOfOrg = this.getText('orgName')
+    return (nameOfOrg !== '')
   }
 
   closeHelpDialog() {
@@ -103,10 +155,35 @@ export default class DevicesPage extends AuthenticatedPage {
    * Search text
    */
   searchText(value) {
-    value = value.toLowerCase()
     this._browser.clearElement(elements.searchTextbox)
     this._browser.setValue(elements.searchTextbox, value)
-    this._browser.pause(2000)
+    this._browser.pause(3000)
+  }
+
+  /**
+   * Check favorite device
+   */
+  isFavoriteDevice({group, nameOfDevice, platformVersionOfDevice}) {
+    const deviceLocator = this._getDeviceLocator({group, nameOfDevice, platformVersionOfDevice})
+     // eslint-disable-next-line max-len
+    const xpathFavoriteIcon = deviceLocator.concat('[1]').concat(elements.favoriteButton).concat('//*[local-name()="svg"]')
+    this._browser.scroll(deviceLocator)
+    this._browser.moveToObject(deviceLocator)
+    this._browser.waitForExist(xpathFavoriteIcon)
+    const styleOfFavoriveIcon = this._browser.getAttribute(xpathFavoriteIcon, 'style')
+    return styleOfFavoriveIcon.includes('fill: rgb(255, 143, 0)')
+  }
+
+  /**
+   * Mark favorite device
+   */
+  markOrUnmarkFavoriteDevice({group, nameOfDevice, platformVersionOfDevice}) {
+    const deviceLocator = this._getDeviceLocator({group, nameOfDevice, platformVersionOfDevice})
+    const favoriteButtonLocator = `${deviceLocator}[1]${elements.favoriteButton}`
+    this._moveToDeviceAndClickButton(deviceLocator, favoriteButtonLocator)
+    this.waitForLoadingProgressRunning()
+    this.waitForLoadingProgressDone()
+    this._browser.pause(1000)
   }
 
   /**
@@ -139,9 +216,19 @@ export default class DevicesPage extends AuthenticatedPage {
     return deviceLocators
   }
 
-/**
- * Launch a device from list device locator
- */
+  /**
+   * Move to specific device and click on button
+   */
+  _moveToDeviceAndClickButton(device, button) {
+    this._browser.scroll(device)
+    this._browser.moveToObject(device)
+    this._browser.waitForExist(button)
+    this._browser.click(button)
+  }
+
+  /**
+   * Launch a device from list device locator
+   */
   _launchADevice(listDeviceLocator, platformVersionOfDevice) {
     let i = 1
     let foundDevice = false
@@ -158,10 +245,7 @@ export default class DevicesPage extends AuthenticatedPage {
 
       if (foundDevice) {
         const launchButtonLocator = `${deviceSelector}${elements.launchButton}`
-        this._browser.scroll(onlineStatusLocator)
-        this._browser.moveToObject(onlineStatusLocator)
-        this._browser.waitForExist(launchButtonLocator)
-        this._browser.click(launchButtonLocator)
+        this._moveToDeviceAndClickButton(onlineStatusLocator, launchButtonLocator)
         this.waitForLoadingProgressRunning()
         this.waitForLoadingProgressDone()
         const manualPage = new ManualPage()

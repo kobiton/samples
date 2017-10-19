@@ -83,6 +83,14 @@ export default class Page {
   }
 
   /**
+   * Reload page
+   */
+  refreshPage() {
+    this._browser.refresh()
+    this.waitForLoadingProgressDone()
+  }
+
+  /**
   * Wait for an element (selected by css selector) for the provided amount of milliseconds
   * to be present within the DOM
   */

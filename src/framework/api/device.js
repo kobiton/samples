@@ -167,7 +167,8 @@ class Device extends Base {
   async countDeviceByCriteria({
     groupType,
     status,
-    name
+    name,
+    platformVersion
   } = {}) {
     const allDevices = await this._getDevices()
     let devices
@@ -201,6 +202,10 @@ class Device extends Base {
       name = name.toLowerCase()
       devices = devices.filter((d) => d.deviceName.toLowerCase().includes(name))
     }
+    if (platformVersion) {
+      devices = devices.filter((d) => d.platformVersion.includes(platformVersion))
+    }
+
     return devices.length
   }
 
