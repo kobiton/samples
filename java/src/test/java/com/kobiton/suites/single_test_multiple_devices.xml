@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Single test multiple device" verbose="1" data-provider-thread-count="2">
+    <test name="Android Web on 2 devices"   >
+        <classes>
+            <class name="com.kobiton.usecases.WebTestAndroidMultipleDevice" />
+        </classes>
+    </test>
+</suite>
+
