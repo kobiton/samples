@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Kobiton sample test" verbose="1" >    
+    <test name="IOS App"   >
+        <classes>
+            <class name="com.kobiton.usecases.AppTestIOS" />
+        </classes>
+    </test>
+</suite>
+

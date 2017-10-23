@@ -1,0 +1,40 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile 'io.appium:java-client:5.0.4'
+
+    compile 'org.testng:testng:6.11'
+}
+
+tasks.withType(JavaCompile) {
+  options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+}
+
+task exeTest(type: Test) {
+    if (project.hasProperty('suite')) {
+        useTestNG {
+            suites "src/test/java/com/kobiton/suites/" + suite + ".xml"
+        }
+
+        beforeTest { descriptor ->
+            logger.lifecycle("Running test: " + descriptor)
+        }
+        onOutput { descriptor, event ->
+            logger.lifecycle("Test: " + descriptor + " out/err: " + event.message )
+        }
+
+        testLogging {
+            events 'started', 'passed'
+        }
+    }
+}
+
+exeTest.dependsOn cleanExeTest
