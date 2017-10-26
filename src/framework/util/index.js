@@ -70,3 +70,16 @@ export function errorToJSON(err) {
   }
   return res
 }
+
+export function subtractDays(days) {
+  const today = new Date()
+  return new Date(today.getFullYear(), today.getMonth(), today.getDate() - days)
+}
+
+export function extractStartDate(text) {
+  return (text) ? text.toString().match(/startDate=([0-9]+)/g)[0].replace('startDate=', '') : text
+}
+
+export function extractEndDate(text) {
+  return (text) ? text.toString().match(/endDate=([0-9]+)/g)[0].replace('endDate=', '') : text
+}

@@ -7,7 +7,9 @@ const elements = {
   platformDropDown: '//label[text()="Platform"]/parent::*/div[@style]',
   userDropDown: '//label[text()="User"]/parent::*/div[@style]',
   dropDownItems: '//div[@data-reactroot]/div/div/div[not(@style) and not(@data-state)]',
-  sessionList: '//div[contains(@class,"rmq-c44f70ce _1y_mg6OlZKhq9LGfUCMUme")]'
+  sessionList: '//div[contains(@class,"rmq-c44f70ce _1y_mg6OlZKhq9LGfUCMUme")]',
+  startDate: '//input[@id="start-date"]',
+  endDate: '//input[@id="end-date"]'
 }
 
 const sessionTypeEnum = {
@@ -48,7 +50,8 @@ export default class SessionsPage extends AuthenticatedPage {
 
   /**
    * Filter sessions by search types
-   * @searchTypes: Object consist of search type and search value. ex: filterSessionBy({'sessionType': 'Auto', 'status': 'Complete'})
+   * @searchTypes: Object consist of search type and search value. 
+    ex: filterSessionBy({'sessionType': 'Auto', 'status': 'Complete'})
    * Return an array of session info
    */
   filterSessionBy(searchTypes) {
@@ -77,6 +80,7 @@ export default class SessionsPage extends AuthenticatedPage {
   selectDropdownItem(value) {
     const optimizedValue = this.capitalizeFirstLetter(value.toLowerCase())
     const itemXpath = `${elements.dropDownItems}//div[text()='${optimizedValue}']`
+    this._browser.pause(1000)
     this._browser.click(itemXpath)
     this.waitForLoadingProgressDone()
   }
@@ -89,6 +93,7 @@ export default class SessionsPage extends AuthenticatedPage {
     if (sessionTypeEnum.hasOwnProperty(sessionType.toUpperCase())) {
       this._browser.click(elements.sessionTypeDropDown)
       this.selectDropdownItem(sessionType)
+      this.waitForLoadingProgressDone()
     }
   }
 
@@ -100,6 +105,7 @@ export default class SessionsPage extends AuthenticatedPage {
     if (statusEnum.hasOwnProperty(sessionStatus.toUpperCase())) {
       this._browser.click(elements.statusDropDown)
       this.selectDropdownItem(sessionStatus)
+      this.waitForLoadingProgressDone()
     }
   }
 
@@ -111,6 +117,7 @@ export default class SessionsPage extends AuthenticatedPage {
     if (platformEnum.hasOwnProperty(platformName.toUpperCase())) {
       this._browser.click(elements.platformDropDown)
       this.selectDropdownItem(platformName)
+      this.waitForLoadingProgressDone()
     }
   }
 
@@ -121,6 +128,7 @@ export default class SessionsPage extends AuthenticatedPage {
   filterSessionByUser(userName) {
     this._browser.click(elements.userDropDown)
     this.selectDropdownItem(userName)
+    this.waitForLoadingProgressDone()
   }
 
   /**
@@ -130,6 +138,7 @@ export default class SessionsPage extends AuthenticatedPage {
   filterSessionByFullText(text) {
     this._browser.setValue(elements.fullTextSearch, text)
         .keys('Enter')
+    this.waitForLoadingProgressRunning()
     this.waitForLoadingProgressDone()
   }
 
@@ -143,11 +152,10 @@ export default class SessionsPage extends AuthenticatedPage {
     let sessionDataList = []
     if (sessionElements.length > 1) {
       for (let i = 2; i <= sessionElements.length; i++) {
-        // eslint-disable-next-line max-len
-        sessionData.SessionName = this._browser.element(`${elements.sessionList}[${i}]/div[1]/div/div`).getText()
-        sessionData.OSVersion = this._browser.element(`${elements.sessionList}[${i}]/div[2]`).getText()
-        sessionData.DeviceModel = this._browser.element(`${elements.sessionList}[${i}]/div[3]/div`).getText()
-        sessionData.Status = this._browser.element(`${elements.sessionList}[${i}]/div[4]`).getText()
+        sessionData.SessionName = this._browser.element(`${elements.sessionList}[${i}]/div[1]/div/div`).getText() // eslint-disable-line max-len
+        sessionData.OSVersion = this._browser.element(`${elements.sessionList}[${i}]/div[2]`).getText() // eslint-disable-line max-len
+        sessionData.DeviceModel = this._browser.element(`${elements.sessionList}[${i}]/div[3]/div`).getText() // eslint-disable-line max-len
+        sessionData.Status = this._browser.element(`${elements.sessionList}[${i}]/div[4]`).getText() // eslint-disable-line max-len
         sessionDataList.push(sessionData)
         sessionData = {}
       }
@@ -158,5 +166,14 @@ export default class SessionsPage extends AuthenticatedPage {
   capitalizeFirstLetter(string) {
     return `${string.charAt(0).toUpperCase()}${string.slice(1)}`
   }
+
+  /**
+  * Get the url of current opened website
+  */
+  getUrlPage() {
+    this.waitForLoadingProgressDone()
+    return this._browser.getUrl()
+  }
+
 }
 

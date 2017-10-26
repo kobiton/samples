@@ -36,8 +36,8 @@ class Session extends Base {
     let subPath = ''
     Object.keys(searchTypes).forEach((type) => {
       let value = searchTypes[type]
-      if (type.toUpperCase() in searchTypeEnum) {
-        subPath = `${type}=${value.toUpperCase()}&`
+      if (searchTypeEnum.hasOwnProperty(type.toUpperCase())) {
+        subPath = `${type}=${value.toString().toUpperCase()}&`
         path = path.concat(subPath)
       }
     })
