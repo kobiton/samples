@@ -1,5 +1,12 @@
+import fs from 'fs'
+import path from 'path'
+import url from 'url'
+import BPromise from 'bluebird'
+import {debug} from '@kobiton/core-util'
 import AuthenticatedPage from './base'
 import CanvasScreen from './canvas-screen'
+import {prepareFolderSync} from '../../../util'
+import DownloadProcess from '../../../util/download_process'
 
 const elements = {
 // Header bar
@@ -10,6 +17,8 @@ const elements = {
   lowQuality: '//div[text()="Low Quality"]',
   // eslint-disable-next-line max-len
   deviceInfo: '//div[div[text()="High Quality" or text()="Medium Quality" or text()="Low Quality"]]/parent::div/parent::div/span[3]',
+  sessionTab: '//div[text()="Session"]',
+  appsTab: '//div[text()="Apps"]',
 
 // Canvas screen
   // eslint-disable-next-line max-len
@@ -28,7 +37,13 @@ const elements = {
   notSupportLongPressMessage: '//div[contains(normalize-space(text()),"Long Press on iOS 10.0.x to 10.2.x is currently not supported.")]',
   // eslint-disable-next-line max-len
   notSupportDoubleHomeMessage: '//div[contains(normalize-space(text()),"Double Press on iOS 10.3.0+ is currently not supported.")]',
-
+  autoEndSession: 'The session has ended, exiting now ...',
+  uploadingAppFile: '//div[contains(.,"Uploading app file")]',
+  loadingIcon: '//div[contains(@style, "background-image: repeating-linear-gradient")]',
+  failedToInstallAppMessage: '//div[contains(text(),"Failed to install the app")]',
+  installingAppMessage: '//div[contains(text(),"Uploaded success, installing app")]',
+  uploadingAppMessage: '//div[contains(text(),"Uploading app file")]',
+  installedAppMessage: '//div[contains(.,"has been installed on the device")]',
 // Menu Action Bar
   collapsePanelButton: '//button[div/div/span[text()="Collapse this panel"]]',
   expandPanelButton: '//button[div/div/span[text()="Expand this panel"]]',
@@ -72,14 +87,37 @@ const elements = {
 
 // Session tab
   sessionButton: '//button[div/div[text()="Session"]]',
+  idleCheckbox: '//input[@type="checkbox"]',
+  sessionNameForm: '//div[text()="Session name"]/../form',
+  editSessionNameButton: '//div[text()="Session name"]/../form/div/button',
+  sessionNameField: '//div[text()="Session name"]/../form/div/input',
+  // eslint-disable-next-line max-len
+  invalidSessionNameMessage: '//span[contains(text(),"sessionName must be between 5 and 80 characters")]',
+  // eslint-disable-next-line max-len
+  closeInvalidSessionNameWarningButton: '//span[contains(text(),"sessionName must be between")]/../following-sibling::div/*[local-name()="svg"]',
+  requiredSessionNameMessage: '//div[text()="Session name is required"]',
+  sessionDescriptionForm: '//div[text()="Description"]/../form/div/div',
+  editSessionDescriptionButton: '//div[text()="Description"]/../form/div/button',
+  sessionDescriptionField: '//div[text()="Description"]/../form/div/div/textarea[2]',
+  // eslint-disable-next-line max-len
+  idlePopUp: '//div[contains(text(),"Session has been idle over its time limit. Do you want to continue testing?")]',
+  continueButton: '//button[div/div/span[text()="Continue testing"]]',
+  endSessionButton: '//button[div/div/span[contains(text(),"End session")]]',
 
 // Apps tab
-  apkUrlTextbox: '//input[contains(@id,"-apkurl-")]',
-  apkFileInput: '//div[@class="TxBJgay1Dock8v41stRW3"]/input[@type="file"]',
   appsButton: '//button[div/div[text()="Apps"]]',
+  chooseFileButton: '//input[@type="file"]',
+  apkUrlTextbox: '//input[@type="text"]',
+  installAppsButton: '//button[div/div/span[text()="Install from URL"]]',
+  processingTag: '//div[contains(@style, "background-image: repeating-linear-gradient")]',
+  appTags: '//div[contains(@style, "background-color: rgb(33, 33, 33)")]',
 
   sendToDeviceAndInstallButton: '//button[span[text()="Send to device & install"]]',
-  uploadToDeviceAndInstallButton: '//button[span[text()="Upload to device & install"]]'
+  uploadToDeviceAndInstallButton: '//button[span[text()="Upload to device & install"]]',
+
+// Error messages on system
+  // eslint-disable-next-line max-len
+  encounterError: '//div[contains(.,"Device encounters a system issue and in progress of re-initializing.")]'
 }
 
 export default class ManualPage extends AuthenticatedPage {
@@ -121,9 +159,10 @@ export default class ManualPage extends AuthenticatedPage {
     return pieceOfDeviceInfo[pieceOfDeviceInfo.length - 1]
   }
 
-  takeScreenShot(ele) {
-    this.clickButtonOnMenuBar('takeScreenShotButton')
-    this._browser.waitForExist(elements.uploadingScreenshot)
+  takeScreenShot() {
+    this._browser.click(elements.takeScreenShotButton)
+    this._browser.waitForExist(elements.uploadingScreenshot, 5000)
+    this._browser.waitForExist(elements.downloadScreenshotButton, 30000)
   }
 
   getStyleOfButton(ele) {
@@ -158,31 +197,200 @@ export default class ManualPage extends AuthenticatedPage {
     }
   }
 
+  /**
+   * Get default device time zone
+   */
   getDefaultTimezone() {
     this.clickButtonOnMenuBar('setDeviceTimeZoneButton')
     this._browser.waitForExist(elements.setDeviceTimezonePopup)
     return this._browser.getText(elements.defaultValueTimezone)
   }
 
+  /**
+   * Set device time zone
+   */
   setDeviceTimezone(timezone) {
     this.clickButtonOnMenuBar('setDeviceTimeZoneButton')
     this._browser.waitForExist(elements.setDeviceTimezonePopup)
     this._browser.element(elements.selectTimezoneDropbox).selectByVisibleText(timezone)
     this._browser.pause(5000)
     this._browser.click(elements.setTimezoneButton)
-    this._browser.pause(40000)
+    this._browser.waitForExist(elements.setNewTimezoneStatus, 90000)
   }
 
-  countScreenshots(ele) {
+  /**
+   * Count screenshots were captured
+   */
+  countElements(ele) {
     const numberOfScreenshot = this._browser.elements(elements[ele])
     return numberOfScreenshot.value.length
   }
 
+  /**
+   * Show recent apps
+   */
   showRecentApps() {
     this.clickButtonOnMenuBar('recentAppsButton')
     this._browser.pause(2000)
     this.clickButtonOnMenuBar('homeButton')
     this._browser.pause(2000)
+  }
+
+  /**
+   * Get session name
+   */
+  getSessionName() {
+    return this._browser.getText(elements.sessionNameForm)
+  }
+
+  /**
+   * Get session description
+   */
+  getSessionDescription() {
+    return this._browser.getText(elements.sessionDescriptionForm)
+  }
+
+  /**
+   * Close system message
+   */
+  closeSystemMessage(mesg) {
+    this._browser.click(elements[mesg])
+    this._browser.pause(1000)
+  }
+  /**
+   * Set up session name
+   */
+  editSessionName(sessionName) {
+    this._browser.click(elements.editSessionNameButton)
+    this._browser.pause(1000)
+    this._browser.setValue(elements.sessionNameField, sessionName)
+    this._browser.click(elements.screenshotBoard)
+    this.waitForLoadingProgressRunning()
+    this.waitForLoadingProgressDone()
+  }
+
+  /**
+   * Set up session description
+   */
+  editSessionDescription(sessionDescription) {
+    this._browser.click(elements.editSessionDescriptionButton)
+    this._browser.pause(1000)
+    this._browser.setValue(elements.sessionDescriptionField, sessionDescription)
+    this._browser.click(elements.screenshotBoard)
+    this.waitForLoadingProgressRunning()
+    this.waitForLoadingProgressDone()
+  }
+
+  /**
+   * Fill in session name is empty
+   */
+  inputEmptySessionName(value) {
+    this._browser.click(elements.editSessionNameButton)
+    this._browser.pause(1000)
+    this._browser.setValue(elements.sessionNameField, value)
+    this._browser.click(elements.screenshotBoard)
+    this._browser.pause(1000)
+  }
+
+  /**
+   * Download app test and save it into local machine
+   */
+  async downloadApp(urlApp) {
+    const appTestFolder = 'apps-test'
+    prepareFolderSync(appTestFolder)
+    const appDirPath = fs.realpathSync(appTestFolder)
+
+    // Get app's name
+    const appName = url.parse(urlApp).pathname.split('/').pop()
+    const appPath = path.join(appDirPath, appName)
+    if (!fs.existsSync(appPath)) {
+      return new BPromise((resolve, reject) => {
+        const download = new DownloadProcess('download')
+        const downloadUrl = urlApp
+        download.download(downloadUrl, appPath)
+        download
+          .on('progress', (state) => debug.log('Progress', JSON.stringify(state)))
+          .on('finish', (file) => {
+            debug.log('setup', `Finished download file ${file}`)
+            resolve(file)
+          })
+          .on('error', (err) => {
+            debug.error('Error', err)
+            reject(err)
+          })
+      })
+    }
+    else {
+      return true
+    }
+  }
+
+  /**
+   * Get path of local app test
+   */
+  async getAppPath(urlApp) {
+    const downloadedApp = await this.downloadApp(urlApp)
+    if (downloadedApp) {
+      const appDirPath = fs.realpathSync('apps-test')
+
+    // Get app's path
+      const appName = url.parse(urlApp).pathname.split('/').pop()
+      const appPath = path.join(appDirPath, appName)
+      return appPath
+    }
+    else {
+      return 0
+    }
+  }
+
+  /**
+   * Install application from local file
+   */
+  chooseFileFromLocalFile(filePath) {
+    this._browser.click(elements.appsButton)
+    this._browser.pause(1000)
+    this._browser.chooseFile(elements.chooseFileButton, filePath)
+    this._browser.waitForExist(elements.uploadingAppFile)
+  }
+
+  /**
+   *
+   */
+  waitForUploadScreenshotDone(timeout) {
+    this._browser.waitUntil(() => {
+      return !this._browser.isExisting(elements.loadingIcon)
+    }, timeout, 'should upload screenshot done', 3000)
+  }
+  /**
+   * Fill url's app in app url textbox
+   */
+  fillInAppUrlAndInstall(appUrl) {
+    this._browser.click(elements.appsButton)
+    this._browser.click(elements.appsTab)
+    this._browser.setValue(elements.apkUrlTextbox, appUrl)
+    this._browser.waitForEnabled(elements.installAppsButton)
+    this._browser.click(elements.installAppsButton)
+    this._browser.waitForExist(elements.loadingIcon, 3000)
+  }
+
+  /**
+   * Waiting for install app
+   */
+  waitForInstallingAppDone(timeout) {
+    this._browser.waitUntil(() => {
+      return !this._browser.isExisting(elements.loadingIcon)
+    }, timeout, 'should install app done', 3000)
+  }
+
+  /**
+   * Intall app from app repository
+   */
+  installAppFromAppRepo(orderOfValidApp) {
+    this._browser.click(elements.appsButton)
+    // eslint-disable-next-line max-len
+    const xpathOfInstallButton = elements.appTags.concat(`[${orderOfValidApp}]/div[contains(@style, "justify-content: flex-end")]//button`)
+    this._browser.click(xpathOfInstallButton)
+    this._browser.waitForExist(elements.loadingIcon, 2000)
   }
 
   turnBack() {

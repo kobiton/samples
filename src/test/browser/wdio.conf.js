@@ -8,7 +8,7 @@ exports.config = {
   seleniumArgs: {
     drivers: {
       chrome: {
-        version: 2.28,
+        version: 2.33,
         baseURL: 'https://chromedriver.storage.googleapis.com'
       }
     }
@@ -16,7 +16,7 @@ exports.config = {
   seleniumInstallArgs: {
     drivers: {
       chrome: {
-        version: 2.28,
+        version: 2.33,
         baseURL: 'https://chromedriver.storage.googleapis.com'
       }
     }

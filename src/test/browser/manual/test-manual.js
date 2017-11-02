@@ -7,20 +7,23 @@ import LoginPage from '../../../framework/page-objects/portal/intro/login'
 const expectedDurationInMinutes = config.expectedDurationInMinutes
 const {username1: username, password1: password} = {...config}
 const {name: deviceName, group: deviceGroup, version: platformVersion} = {...config.device}
+const s3AppLink = 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/'
 describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   let devicesPage
   let manualPage
   let platformName
   let startedAt, endedAt
   let duration = 0
+  let appTestPath
   const initilizingTimeout = 180000 // 3 minutes
+  const installAppTimeout = 180000 // 3 minutes
+  const uploadScreenshotTimeout = 60000 // 1 minute
   const expectedDuration = expectedDurationInMinutes
   startedAt = moment.utc()
 
   before(() => {
     const loginPage = new LoginPage()
     loginPage.open()
-    loginPage.windowHandleMaximize()
     devicesPage = loginPage.login(username, password)
     const numOfOnlineDevices =
       devicesPage.getTotalOnlineDevices({
@@ -35,7 +38,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     }
   })
 
-  it('should launch device succesfully', () => {
+  it('should launch device successfully', () => {
     manualPage = devicesPage.launchAnOnlineDevice({
       group: deviceGroup, nameOfDevice: deviceName, platformVersionOfDevice: platformVersion
     })
@@ -44,6 +47,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     const urlPage = manualPage.getUrlPage()
     assert.include(urlPage, config.portalUrl.concat('/devices/launch?key='),
       'It has not launched a device yet')
+    platformName = manualPage.getPlatformNameInfo()
   })
 
   it('should change quality successfully', () => {
@@ -70,20 +74,24 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   })
 
   it('should take screenshot', () => {
+    // Verify there is screenshot board
+    assert.isTrue(manualPage.isContaining('screenshotBoard'))
+
     // Verify there isn't a screenshot was captured
     assert.isFalse(manualPage.isContaining('downloadScreenshotButton'))
+
     // Take screenshot
-    manualPage.takeScreenShot('takeScreenShotButton')
-    assert.isTrue(manualPage.isContaining('screenshotBoard'))
-    assert.isTrue(manualPage.isContaining('downloadScreenshotButton'))
+    manualPage.takeScreenShot()
     // Verify there is a screenshot was captured
-    assert.equal(manualPage.countScreenshots('downloadScreenshotButton'), 1)
+    assert.equal(manualPage.countElements('downloadScreenshotButton'), 1)
     manualPage.pause(1000)
-    manualPage.takeScreenShot('takeScreenShotButton')
-    manualPage.takeScreenShot('takeScreenShotButton')
-    manualPage.takeScreenShot('takeScreenShotButton')
+
+    manualPage.takeScreenShot()
+    manualPage.takeScreenShot()
+    manualPage.takeScreenShot()
+    manualPage.waitForUploadScreenshotDone(uploadScreenshotTimeout)
     // Verify number of screenshots were captured
-    assert.equal(manualPage.countScreenshots('downloadScreenshotButton'), 4)
+    assert.equal(manualPage.countElements('downloadScreenshotButton'), 4)
   })
 
   it('should have default touch mode', () => {
@@ -164,7 +172,6 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   })
 
   it('should show recent apps', function () {
-    platformName = manualPage.getPlatformNameInfo()
     if (platformName === 'Android') {
       manualPage.showRecentApps()
     }
@@ -175,7 +182,6 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   })
 
   it('should do actions on Home button', () => {
-    platformName = manualPage.getPlatformNameInfo()
     // Turn off screen
     manualPage.clickButtonOnMenuBar('powerButton')
     manualPage.pause(3000)
@@ -206,7 +212,6 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   })
 
   it('should click back button successfully', function () {
-    platformName = manualPage.getPlatformNameInfo()
     if (platformName === 'Android') {
       manualPage.turnBack()
     }
@@ -225,5 +230,105 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     manualPage.doSwipeUp()
     manualPage.doTouch({x: 10, y: 10})
   }
+
+  it('should change session name successfully', () => {
+    // Verify default session name
+    const dateTimeRegex = manualPage.dateTimeRegex()
+    const defaultSessionName = manualPage.getSessionName()
+    assert.isTrue(dateTimeRegex.test(defaultSessionName))
+    assert.include(defaultSessionName, 'Session created at')
+
+    // Edit session name with invalid value
+    manualPage.editSessionName('test')
+    assert.isTrue(manualPage.isContaining('invalidSessionNameMessage'))
+    manualPage.closeSystemMessage('closeInvalidSessionNameWarningButton')
+    // eslint-disable-next-line max-len
+    manualPage.editSessionName('Our platform gives developers and businesses access to the real mobile devices they want and manage the devices they own')
+    assert.isTrue(manualPage.isContaining('invalidSessionNameMessage'))
+    manualPage.closeSystemMessage('closeInvalidSessionNameWarningButton')
+
+    // Edit session name with valid value
+    manualPage.editSessionName('Kobiton test 12/4$5)')
+    assert.isFalse(manualPage.isContaining('invalidSessionNameMessage'))
+    const sessionName = manualPage.getSessionName()
+    assert.equal(sessionName, 'Kobiton test 12/4$5)')
+
+    // Verify message required session name
+    manualPage.inputEmptySessionName(' ')
+    assert.isTrue(manualPage.isContaining('requiredSessionNameMessage'))
+  })
+
+  it('should change session description successfully', () => {
+    // Verify default description
+    const defaultDescription = manualPage.getSessionDescription()
+    assert.equal(defaultDescription, 'Edit session description')
+
+    // Edit session description
+    manualPage.editSessionDescription('description')
+    const sessionDescription = manualPage.getSessionDescription()
+    assert.equal(sessionDescription, 'description')
+  })
+
+  it('should download app to local file successfully', async function () {
+    let urlApp
+    if (platformName === 'Android') {
+      urlApp = s3AppLink.concat('iFixit.apk')
+    }
+    else {
+      urlApp = s3AppLink.concat('iFixit.ipa')
+    }
+    appTestPath = await manualPage.getAppPath(urlApp)
+    // Purpose of this test is just download app and save in local machine
+    this.skip()
+  })
+
+  it('should install app from local file', function () {
+    if (appTestPath) {
+      manualPage.pause(2000)
+      manualPage.chooseFileFromLocalFile(appTestPath)
+      manualPage.waitForInstallingAppDone(installAppTimeout)
+      assert.isTrue(manualPage.isContaining('installedAppMessage'))
+    }
+    else {
+      debug.log('There isn\'t an app in the apps-test folder to install')
+      this.skip()
+    }
+  })
+
+  it('should install app from url successfully', () => {
+    let appUrl
+    // Input invalid url
+    appUrl = s3AppLink.concat('result_smoke_test_prod.txt.zip')
+    manualPage.fillInAppUrlAndInstall(appUrl)
+    manualPage.waitForInstallingAppDone(installAppTimeout)
+    assert.isTrue(manualPage.isContaining('failedToInstallAppMessage'))
+    manualPage.closeSystemMessage('dismissMessage')
+    manualPage.pause(1000)
+
+    // Input valid url
+    if (platformName === 'Android') {
+      appUrl = s3AppLink.concat('iFixit.apk')
+    }
+    else {
+      appUrl = s3AppLink.concat('iFixit.ipa')
+    }
+    manualPage.fillInAppUrlAndInstall(appUrl)
+    manualPage.waitForInstallingAppDone(installAppTimeout)
+    assert.isTrue(manualPage.isContaining('installedAppMessage'))
+  })
+
+  it('should install app from App repository successfully', function () {
+    const numberOfAppToInstall = manualPage.countElements('appTags')
+    if (numberOfAppToInstall > 0) {
+      const orderOfValidApp = Math.floor(Math.random() * numberOfAppToInstall) + 1
+      manualPage.installAppFromAppRepo(orderOfValidApp.toString())
+      manualPage.waitForInstallingAppDone(installAppTimeout)
+      assert.isTrue(manualPage.isContaining('installedAppMessage'))
+    }
+    else {
+      debug.log('There isn\'t an app in App Repo to install')
+      this.skip()
+    }
+  })
 
 })

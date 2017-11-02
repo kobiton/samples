@@ -50,7 +50,7 @@ export default class SessionsPage extends AuthenticatedPage {
 
   /**
    * Filter sessions by search types
-   * @searchTypes: Object consist of search type and search value. 
+   * @searchTypes: Object consist of search type and search value.
     ex: filterSessionBy({'sessionType': 'Auto', 'status': 'Complete'})
    * Return an array of session info
    */

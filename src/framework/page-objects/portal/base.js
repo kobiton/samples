@@ -90,6 +90,12 @@ export default class Page {
     this.waitForLoadingProgressDone()
   }
 
+  dateTimeRegex() {
+    // eslint-disable-next-line max-len
+    const dateTimeRegex = /(1[0-2]|0[1-9])\/(3[01]|[12][0-9]|0[1-9])\/[0-9]{4} ([0]\d|[1][0-2]):([0-5]\d) \s?(?:AM|PM)/
+    return dateTimeRegex
+  }
+
   /**
   * Wait for an element (selected by css selector) for the provided amount of milliseconds
   * to be present within the DOM
