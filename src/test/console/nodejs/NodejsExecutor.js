@@ -1,37 +1,80 @@
-import {spawnSync} from 'child_process'
+import {spawn} from 'child_process'
+import BPromise from 'bluebird'
 import fs from 'fs'
 import moment from 'moment'
 import {debug} from '@kobiton/core-util'
 import reporterAPI from '../../../framework/common/reporter/api'
 
+debug.enable('*')
+
 const LIB_NAME = 'wd'
 const NUMBER_OF_VERSION = 2
 
-export async function execute(dirPath) {
-  const targetDir = dirPath || __dirname
+export async function executeSeleniumWebDriverCheck({dirPath, testCmd}) {
+  await execute({
+    dirPath,
+    libName: 'selenium-webdriver',
+    numberOfVersion: 3,
+    command: testCmd,
+    reportToServer: false
+  })
+}
 
-  const versions = await getDependencyVersions(LIB_NAME, NUMBER_OF_VERSION)
+function spawnSyncWrap(command, {
+  targetStdOut = process.stdout,
+  targetStdErr = process.stderr
+} = {}) {
+  debug.log('spawnSync:', command)
+
+  return new BPromise((resolve) => {
+    const ls = spawn(command, [], {shell: true, encoding: 'utf8'})
+    ls.stdout.pipe(targetStdOut)
+    ls.stderr.pipe(targetStdErr)
+
+    let stdoutData = ''
+    ls.stdout.on('data', (data) => {
+      stdoutData += data
+    })
+
+    let stderrData = ''
+    ls.stderr.on('error', (data) => {
+      stderrData += data
+    })
+
+    ls.on('close', (code) => {
+      debug.log(`child process exited with code ${code}`)
+      resolve({stdout: stdoutData, stderr: stderrData})
+    })
+  })
+}
+
+export async function execute({
+  dirPath = __dirname,
+  libName = LIB_NAME,
+  numberOfVersion = NUMBER_OF_VERSION,
+  specificVersions,
+  command = 'yarn test',
+  reportToServer = true
+} = {}) {
+  const targetDir = dirPath
+  debug.log('execute at:', targetDir)
+
+  const versions = specificVersions || (await getDependencyVersions(libName, numberOfVersion))
+  debug.log(`execute lib ${libName}:`, versions)
 
   const results = []
   for (const v of versions) {
-    debug.log(`Execute JS test - lib: ${LIB_NAME} version: ${v}`)
+    debug.log(`Execute JS test - lib: ${libName} version: ${v}`)
 
     const templatePath = `${targetDir}/template/package.json.template`
     const destinationPath = `${targetDir}/package.json`
-    generatePakageJson(templatePath, destinationPath, LIB_NAME, v)
+    generatePakageJson(templatePath, destinationPath, libName, v)
 
-    const ls = spawnSync(`cd ${targetDir} && yarn install && yarn test`,
-      [],
-      {shell: true, encoding: 'utf8'}
-    )
-
-    debug.log('stderr:', ls.stderr)
-    debug.log('status:', ls.status)
-    debug.log('err:', ls.error)
+    const ls = await spawnSyncWrap(`cd ${targetDir} && yarn install && ${command}`)
 
     results.push({
       language: 'javascript',
-      libName: LIB_NAME,
+      libName,
       libVersion: v,
       checkedDate: moment().toDate(),
       state: ls.status === 0 ? 'passed' : 'failed',
@@ -41,16 +84,11 @@ export async function execute(dirPath) {
     })
   }
 
-  reporterAPI.Availability.add(results, {parallelSending: true})
+  reportToServer && reporterAPI.Availability.add(results, {parallelSending: true})
 }
 
 async function getDependencyVersions(packageName, numberOfVersion) {
-  const ls = spawnSync(`npm show ${packageName} versions`,
-    [],
-    {
-      shell: true, encoding: 'utf8'
-    }
-  )
+  const ls = await spawnSyncWrap(`npm show ${packageName} versions`)
 
   if (ls.err) {
     throw ls.err
@@ -58,7 +96,9 @@ async function getDependencyVersions(packageName, numberOfVersion) {
 
   const stdout = ls.stdout.trim()
 
-  const allVersions = stdout.replace(/(\r\n|\n|\r|\[|\]|'|\s)/gm, '').split(',')
+  const allVersions = stdout.replace(/(\r\n|\n|\r|\[|\]|'|\s)/gm, '')
+    .split(',')
+    .filter((v) => !v.toLowerCase().includes('beta'))
 
   const sliceBegin = allVersions.length - numberOfVersion
   const sliceEnd = allVersions.length

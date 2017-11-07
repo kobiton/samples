@@ -2,9 +2,14 @@ import Url from 'url'
 import configs from '../configs'
 import KeyService from '../service/KeyService'
 
-export async function kobitonServerUrl() {
+export async function getKobitonAutomationServerUrl() {
   const apiUrl = Url.parse(configs.apiUrl)
+  const apiKey = await KeyService.getApiKey()
+  return `https://${apiKey.username}:${apiKey.key}@${apiUrl.hostname}/wd/hub`
+}
 
+export async function kobitonServerConfig() {
+  const apiUrl = Url.parse(configs.apiUrl)
   const apiKey = await KeyService.getApiKey()
 
   const config = {
@@ -16,9 +21,9 @@ export async function kobitonServerUrl() {
   return config
 }
 
-export function desiredCapabilitiesAndroidWeb(device) {
+export function desiredCapabilitiesAndroidWeb(device, sessionName = 'Android web') {
   return {
-    sessionName: 'Android web',
+    sessionName,
     sessionDescription: 'This is an example for Android web testing',
     deviceOrientation: 'portrait',
     captureScreenshots: true,
@@ -30,9 +35,9 @@ export function desiredCapabilitiesAndroidWeb(device) {
   }
 }
 
-export function desiredCapabilitiesAndroidApp(device) {
+export function desiredCapabilitiesAndroidApp(device, sessionName = 'Android app') {
   return {
-    sessionName: 'Android app',
+    sessionName,
     sessionDescription: 'This is an example for Android app testing',
     deviceOrientation: 'portrait',
     captureScreenshots: true,
@@ -44,9 +49,9 @@ export function desiredCapabilitiesAndroidApp(device) {
   }
 }
 
-export function desiredCapabilitiesiOSWeb(device) {
+export function desiredCapabilitiesiOSWeb(device, sessionName = 'iOS web') {
   return {
-    sessionName: 'iOS web',
+    sessionName,
     sessionDescription: 'This is an example for iOS web testing',
     deviceOrientation: 'portrait',
     captureScreenshots: true,
@@ -58,9 +63,9 @@ export function desiredCapabilitiesiOSWeb(device) {
   }
 }
 
-export function desiredCapabilitiesiOSApp(device) {
+export function desiredCapabilitiesiOSApp(device, sessionName = 'ios App') {
   return {
-    sessionName: 'iOS app',
+    sessionName,
     sessionDescription: 'This is an example for iOS app testing',
     deviceOrientation: 'portrait',
     captureScreenshots: true,

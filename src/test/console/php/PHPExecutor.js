@@ -7,31 +7,37 @@ import configs from '../../../framework/config/test'
 import reporterAPI from '../../../framework/common/reporter/api'
 
 const LIB_NAME = 'appium/php-client'
-const VERSION_TO_CHECK = 2
+const NUMBER_OF_VERSION = 2
 
 const composer = 'php /usr/local/bin/composer.phar'
 
-export async function execute(dirPath) {
+export async function execute({
+  dirPath = __dirname,
+  libName = LIB_NAME,
+  numberOfVersion = NUMBER_OF_VERSION,
+  specificVersions,
+  reportToServer = true
+} = {}) {
   const targetDir = dirPath || __dirname
-  const versions = await getTargetPackageVersions(LIB_NAME, VERSION_TO_CHECK)
+  const versions = specificVersions || (await getTargetPackageVersions(libName, numberOfVersion))
 
-  initPackages(targetDir)
+  await initPackages(targetDir)
   const results = []
   for (const v of versions) {
-    debug.log(`execute php test package: ${LIB_NAME}-${v}`)
+    debug.log(`execute php test package: ${libName} - ${v}`)
 
     // eslint-disable-next-line babel/no-await-in-loop
-    const testResults = await executeTestScripts(targetDir, LIB_NAME, v)
+    const testResults = await executeTestScripts(targetDir, libName, v)
 
     results.push(...testResults)
   }
 
-  await reporterAPI.Availability.add(results, {parallelSending: true})
+  reportToServer && (await reporterAPI.Availability.add(results, {parallelSending: true}))
 }
 
-function initPackages(dirPath) {
+async function initPackages(dirPath) {
   debug.log('Start initializing packages')
-  cmd.executeCmdSync(`cd ${dirPath} && ${composer} install`)
+  await cmd.spawnSyncWrap(`cd ${dirPath} && ${composer} install`)
 }
 
 async function getTargetPackageVersions(packageFullName, numberToTake) {
@@ -40,9 +46,9 @@ async function getTargetPackageVersions(packageFullName, numberToTake) {
   const responseText = await request(`https://packagist.org/packages/${vendor}/${packageName}.json`)
   const responseJson = JSON.parse(responseText)
   const allVersions = Object.keys(responseJson.package.versions)
-    .sort()
     .filter((v) => !(v.includes('dev') || v.includes('rc')))
     .map((v) => v.replace('v', ''))
+    .sort()
 
   return allVersions.slice(allVersions.length - numberToTake, allVersions.length)
 }
@@ -50,22 +56,18 @@ async function getTargetPackageVersions(packageFullName, numberToTake) {
 async function executeTestScripts(dirPath, libName, libVersion) {
   debug.log('   ---- Execute php Test ----')
 
-  const results = []
-  let testCaseResult = null
+  let results = []
 
-  testCaseResult = executeTestCase(dirPath, libName, libVersion, 'androidWebTest')
-  results.push(testCaseResult)
-
-  await prepareAppTestCase(dirPath, 'androidAppTest', 'Android')
-  testCaseResult = executeTestCase(dirPath, libName, libVersion, 'androidAppTest')
-  results.push(testCaseResult)
-
-  testCaseResult = executeTestCase(dirPath, libName, libVersion, 'iOSWebTest')
-  results.push(testCaseResult)
-
-  await prepareAppTestCase(dirPath, 'iOSAppTest', 'iOS')
-  testCaseResult = executeTestCase(dirPath, libName, libVersion, 'iOSAppTest')
-  results.push(testCaseResult)
+  switch (libName) {
+    case 'facebook/webdriver':
+      const remoteWebResults = await executeRemoteWebTest(dirPath, libName, libVersion)
+      results = results.concat(remoteWebResults)
+      break
+    case 'appium/php-client':
+      const appResults = await executeAppTest(dirPath, libName, libVersion)
+      results = results.concat(appResults)
+      break
+  }
 
   results.forEach((rs) => {
     rs.language = 'php'
@@ -75,7 +77,33 @@ async function executeTestScripts(dirPath, libName, libVersion) {
   return results
 }
 
-async function prepareAppTestCase(dirPath, testCaseName, devicePlatform) {
+async function executeRemoteWebTest(dirPath, libName, libVersion) {
+  const results = []
+  let testCaseResult = await executeTestCase(dirPath, libName, libVersion, 'androidWebTest')
+  results.push(testCaseResult)
+
+  testCaseResult = await executeTestCase(dirPath, libName, libVersion, 'iOSWebTest')
+  results.push(testCaseResult)
+
+  return results
+}
+
+async function executeAppTest(dirPath, libName, libVersion) {
+  const results = []
+
+  await prepareAppTestCase(dirPath, libName, 'androidAppTest', 'Android')
+  let tcResult = await executeTestCase(dirPath, libName, libVersion, 'androidAppTest')
+  results.push(tcResult)
+
+  await prepareAppTestCase(dirPath, libName, 'iOSAppTest', 'iOS')
+  tcResult = await executeTestCase(dirPath, libName, libVersion, 'iOSAppTest')
+  results.push(tcResult)
+
+  return results
+}
+
+async function prepareAppTestCase(rootDir, libName, testCaseName, devicePlatform) {
+  const dirPath = `${rootDir}/${libName.replace('/', '-')}`
   const templatePath = `${dirPath}/template/${testCaseName}.php.template`
   const templateContent = fs.readFileSync(templatePath, 'utf8')
 
@@ -83,7 +111,7 @@ async function prepareAppTestCase(dirPath, testCaseName, devicePlatform) {
   const outputText = templateContent
     .replace('<automation-host>', (await getPHPAutomationHost()))
     .replace('<automation-port>', '80')
-    .replace('<automation-session-name>', `[Multi-version-check] App sesstion ${testCaseName}`)
+    .replace('<automation-session-name>', `[Multi-version-check PHP] App sesstion ${testCaseName}`)
     .replace('<automation-session-description>', `Check multiple version for ${testCaseName}`)
     .replace('<automation-deviceName>', device.deviceName)
     .replace('<automation-platformName>', device.platformName)
@@ -103,12 +131,16 @@ async function getPHPAutomationHost() {
   return `${apiKey.username}:${apiKey.key}@${apiUrl.hostname}`
 }
 
-function executeTestCase(dirPath, libName, libVersion, testCaseName) {
-  const setUpCmd = `cd ${dirPath} && ${composer} require "${libName}=${libVersion}"`
+async function executeTestCase(rootDir, libName, libVersion, testCaseName) {
+  const setUpCmd = `cd ${rootDir} && ${composer} require "${libName}=${libVersion}"`
 
   debug.log(`${testCaseName}.php`)
-  let testResult = cmd.executeTestCmdSync(
-    `${setUpCmd} && vendor/phpunit/phpunit/phpunit ${testCaseName}.php`)
+  const testCaseFolderName = libName.replace('/', '-')
+  let testResult = await cmd.spawnSyncWrap(
+    `${setUpCmd} && vendor/phpunit/phpunit/phpunit ${testCaseFolderName}/${testCaseName}.php`)
+    .catch((err) => {
+      return err
+    })
   testResult.testCaseName = testCaseName
   return testResult
 }

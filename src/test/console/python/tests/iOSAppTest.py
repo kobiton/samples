@@ -39,16 +39,7 @@ class iOSAppTest(unittest.TestCase):
 
     firstListResult = self.driver.find_elements_by_xpath("//XCUIElementTypeStaticText[contains(@label,'MacBook Pro')]")
 
-    self.driver.find_element_by_xpath("//XCUIElementTypeButton[@name='Cancel']").click()
-    self.driver.find_element_by_xpath("//*[@name='Search']").click()
-    self.driver.find_element_by_xpath("//XCUIElementTypeSearchField[@name='Search']").send_keys('Acura')
-    self.driver.find_element_by_xpath("//XCUIElementTypeButton[@name='Categories']").click()
-    time.sleep(2)
-
-    secondListResult = self.driver.find_elements_by_xpath("//XCUIElementTypeStaticText[contains(@label,'Acura')]")
-
     self.assertTrue(len(firstListResult) >= 33, 'The expected results are greater or equal to 33 results.')
-    self.assertTrue(len(secondListResult) >= 6, 'The expected results are greater or equal to 6 results.')
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(iOSAppTest)

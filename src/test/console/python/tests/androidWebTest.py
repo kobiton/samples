@@ -23,13 +23,7 @@ class AndroidWebTest(unittest.TestCase):
     self.driver.quit()
 
   def test_android_web(self):
-    self.verify_invalid_username()
     self.verify_login_successfully()
-
-  def verify_invalid_username(self):
-    print ('should return error when we input wrong username')
-    self.login('foo', 'SuperSecretPassword!')
-    self.assertTrue(self.wrong_username_msg in self.get_message())
 
   def verify_login_successfully(self):
     print ('should run test successfully with correct username and password')

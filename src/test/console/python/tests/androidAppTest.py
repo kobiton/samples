@@ -40,15 +40,10 @@ class AndroidAppTest(unittest.TestCase):
     self.driver.find_element_by_xpath("//*[@resource-id='android:id/text1' and @text='Guides']").click()
     self.driver.find_element_by_xpath("//*[@resource-id='android:id/text1' and @text='Devices']").click()
     time.sleep(2)
-    secondResult = self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/search_result_count']").text
 
     firstResult = re.findall('\d+', firstResult)[0]
     self.assertTrue(int(firstResult) >= 47,
       'The expected results are greater or equal to 47 results.')
-
-    secondResult = re.findall('\d+', secondResult)[0]
-    self.assertTrue(int(secondResult) >= 5,
-      'The expected results are greater or equal to 5 results.')
 
   def swipe(self, element, direction = 'RightLeft'):
     # Get the size of screen.
@@ -69,22 +64,6 @@ class AndroidAppTest(unittest.TestCase):
       self.driver.swipe(endx, starty, startx, starty, 200)
 
     time.sleep(5)
-
-  def search_question(self, question):
-    self.question = question
-    self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=1]").click()
-
-    WebDriverWait(self.driver, 60).until(
-      EC.element_to_be_clickable((By.XPATH, "//*[@resource-id='com.dozuki.ifixit:id/topic_info_image']")))
-    time.sleep(3)
-    element = self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/topic_info_image']")
-    self.swipe(element, 'RightLeft')
-    time.sleep(3)
-    self.driver.find_element_by_xpath("//*[@resource-id='answersSearch']").send_keys(self.question)
-    self.driver.find_element_by_xpath("//*[@resource-id='searchIcon']").click()
-    time.sleep(5)
-
-    return self.driver.find_element_by_xpath("//android.view.View[contains(@content-desc,'questions') and @index=1]").get_attribute('name')
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(AndroidAppTest)

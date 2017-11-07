@@ -12,7 +12,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.google.code.gson:gson:2.8.0'
 
-    compile 'io.appium:java-client:4.1.2'
+    compile 'io.appium:java-client:5.0.4'
 
     compile 'org.testng:testng:6.10'
     compile 'junit:junit:4.12'

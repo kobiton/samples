@@ -35,7 +35,7 @@ public class AutomationUtils {
 
     public static final DesiredCapabilities desiredCapabilitiesAndroidWeb(Device device) {
         DesiredCapabilities capabilities = createCapabilitiesFor(device);
-        capabilities.setCapability("sessionName", "Android Web");
+        capabilities.setCapability("sessionName", "[Java] Android Web");
         capabilities.setCapability("sessionDescription", "This is an example for Android Web testing");
         capabilities.setCapability("browserName", "chrome");
         return capabilities;
@@ -43,7 +43,7 @@ public class AutomationUtils {
 
     public static final DesiredCapabilities desiredCapabilitiesAndroidApp(Device device) {
         DesiredCapabilities capabilities = createCapabilitiesFor(device);
-        capabilities.setCapability("sessionName", "Android app");
+        capabilities.setCapability("sessionName", "[Java] Android app");
         capabilities.setCapability("sessionDescription", "This is an example for Android app testing");
         capabilities.setCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk");
         return capabilities;
@@ -51,7 +51,7 @@ public class AutomationUtils {
 
     public static final DesiredCapabilities desiredCapabilitiesiOSWeb(Device device) {
         DesiredCapabilities capabilities = createCapabilitiesFor(device);
-        capabilities.setCapability("sessionName", "iOS Web");
+        capabilities.setCapability("sessionName", "[Java] iOS Web");
         capabilities.setCapability("sessionDescription", "This is an example for iOS Web testing");
         capabilities.setCapability("browserName", "safari");
         return capabilities;
@@ -59,7 +59,7 @@ public class AutomationUtils {
 
     public static final DesiredCapabilities desiredCapabilitiesiOSApp(Device device) {
         DesiredCapabilities capabilities = createCapabilitiesFor(device);
-        capabilities.setCapability("sessionName", "iOS app");
+        capabilities.setCapability("sessionName", "[Java] iOS app");
         capabilities.setCapability("sessionDescription", "This is an example for iOS App testing");
         capabilities.setCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa");
         return capabilities;

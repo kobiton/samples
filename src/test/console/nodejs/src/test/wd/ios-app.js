@@ -2,21 +2,21 @@ import 'babel-polyfill'
 import 'colors'
 import {assert} from 'chai'
 import {debug} from '@kobiton/core-util'
-import * as automationUtils from '../utils/automation'
-import {createDriver, quitDriver} from '../common/driver'
-import DeviceService from '../service/DeviceService'
-import KobitonIOSDemoApp from '../common/kobiton-ios-demo-app'
+import * as automationUtils from '../../utils/automation'
+import {createDriver, quitDriver} from '../../common/driver'
+import DeviceService from '../../service/DeviceService'
+import KobitonIOSDemoApp from '../../common/kobiton-ios-demo-app'
 
 let driver
 let kobitonIOSDemoApp
 const timeout = 30000 // millisecond
 
-describe('Kobiton demo iOS app', () => {
+describe('iOS app', () => {
 
   before(async () => {
-    const serverConfig = await automationUtils.kobitonServerUrl()
+    const serverConfig = await automationUtils.kobitonServerConfig()
     const device = await DeviceService.getOnlineDevice('iOS')
-    const desiredCapabilities = automationUtils.desiredCapabilitiesiOSApp(device)
+    const desiredCapabilities = automationUtils.desiredCapabilitiesiOSApp(device, '[JS] IOS App')
 
     debug.log(`Execute on ${device.deviceName}`)
 
@@ -30,9 +30,10 @@ describe('Kobiton demo iOS app', () => {
 
   it('should navigate to UIKit Catalog menu', async () => {
     await kobitonIOSDemoApp.gotoUIKitCatalogMenu()
-    // Verify UIKit Catalog Menu
-    assert.isTrue(
-      await driver.hasElementByXPath(kobitonIOSDemoApp.elements.activity.xPath), true)
+    const uiKitCatalogMenuExisted = await driver
+      .hasElementByXPath(kobitonIOSDemoApp.elements.activity.xPath)
+
+    assert.isTrue(uiKitCatalogMenuExisted, true, 'activity element not found')
   })
 
 })

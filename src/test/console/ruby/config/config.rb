@@ -19,6 +19,7 @@ $config['serverUrl'] = "https://#{$config['username']}:#{$config['apiKey']}@api.
 def getAppCapabilitiesFor(device, options)
   return {
     caps: {
+      sessionName: '[Ruby] App',
       deviceName: device['deviceName'],
       deviceGroup: 'KOBITON',
       platformName: device['platformName'],
@@ -40,6 +41,7 @@ end
 def getWebCapabilitiesFor(device, options)
   return {
       caps: {
+        sessionName: '[Ruby] Web',
         deviceName: device['deviceName'],
         deviceGroup: 'KOBITON',
         platformName: device['platformName'],

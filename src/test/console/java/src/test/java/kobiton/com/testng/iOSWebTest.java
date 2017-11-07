@@ -3,18 +3,17 @@ package kobiton.com.testng;
 import com.kobiton.service.DeviceService;
 import com.kobiton.service.model.Device;
 import java.util.concurrent.TimeUnit;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import io.appium.java_client.ios.IOSDriver;
 import java.io.IOException;
 import kobiton.com.utils.AutomationUtils;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class iOSWebTest {
 
-    public static IOSDriver<WebElement> driver = null;
+    public static RemoteWebDriver driver = null;
     String successMsg = "You logged into a secure area!";
 
     @BeforeTest
@@ -22,7 +21,7 @@ public class iOSWebTest {
         try {
             Device device = new DeviceService().getOnlineDevice("iOS");
             System.out.println(String.format("Execute with: %s  udid: %s", device.getDeviceName(), device.getUdid()));
-            driver = new IOSDriver<>(AutomationUtils.kobitonServerUrl(), AutomationUtils.desiredCapabilitiesiOSWeb(device));
+            driver = new RemoteWebDriver(AutomationUtils.kobitonServerUrl(), AutomationUtils.desiredCapabilitiesiOSWeb(device));
             driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
         } catch (IOException ex) {
             Assert.fail("set up failed", ex);

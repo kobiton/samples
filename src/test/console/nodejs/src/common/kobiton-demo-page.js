@@ -23,9 +23,46 @@ export default class HerokuPage {
       .submit()
   }
 
+  async loginUsingSelenium(username, password, seleniumWebDriver) {
+    await this._driver.get('http://the-internet.herokuapp.com/login')
+
+    await this._driver.wait(() => {
+      return this._driver.findElement(seleniumWebDriver.By.id(elements.usernameId)).isDisplayed()
+    }, 2000)
+
+    await this._driver.findElement(seleniumWebDriver.By.id(elements.usernameId)).sendKeys('tomsmith')
+
+    await this._driver.wait(() => {
+      return this._driver.findElement(seleniumWebDriver.By.id(elements.passwordId)).isDisplayed()
+    }, 2000)
+
+    await this._driver.findElement(seleniumWebDriver.By.id(elements.passwordId)).sendKeys(password)
+    await this._driver.wait(() => {
+      return this._driver.findElement(seleniumWebDriver.By.id(elements.passwordId)).isDisplayed()
+    }, 2000)
+
+    await this._driver.wait(() => {
+      return this._driver.findElement(seleniumWebDriver.By.xpath(elements.formXpath)).isDisplayed()
+    }, 2000)
+
+    await this._driver.findElement(seleniumWebDriver.By.xpath(elements.formXpath)).submit()
+  }
+
   async getMessage() {
     return await this._driver
       .waitForElementByXPath(elements.messageXpath, this._timeout, 2000)
       .text()
+  }
+
+  async getMessageUsingSelenium(seleniumWebDriver) {
+    await this._driver.wait(() => {
+      return this._driver
+        .findElement(seleniumWebDriver.By.xpath(elements.messageXpath))
+        .isDisplayed()
+    }, 2000)
+
+    return await this._driver
+      .findElement(seleniumWebDriver.By.xpath(elements.messageXpath))
+      .getText()
   }
 }

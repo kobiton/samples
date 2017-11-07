@@ -16,10 +16,6 @@ class AndroidWebTest extends PHPUnit_Framework_TestCase {
     $device = getOnlineDevice('Android');
     $caps = desiredCapabilitiesAndroidWeb($device);
 
-    print 'caps:'.PHP_EOL;
-    var_dump($caps);
-    print PHP_EOL;
-
     $this->driver = RemoteWebDriver::create(
       kobitonServerUrl(),
       $caps,
@@ -28,12 +24,12 @@ class AndroidWebTest extends PHPUnit_Framework_TestCase {
     );
     $this->driver->manage()->timeouts()->implicitlyWait(60); // seconds
   }
+
    /*
-    Steps: 
+    Steps:
     1. Login invalid user
     2. Login successfully with correct username and passoword
     */
-
   public function test_android_web() {
     $this->verify_login_invalid_username();
     $this->verify_login_successfully();

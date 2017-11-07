@@ -12,7 +12,7 @@ class AndroidWebTest < Test::Unit::TestCase
     }
     desired_caps = getWebCapabilitiesFor device, options
 
-    @driver = Appium::Driver.new(desired_caps)
+    @driver = Appium::Driver.new(desired_caps, false)
     @driver.start_driver
     @driver.driver.navigate.to('https://www.google.com')
     @driver.find_element(:name, 'q').send_keys('Kobiton.com')

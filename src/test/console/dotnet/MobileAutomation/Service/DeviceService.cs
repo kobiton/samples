@@ -16,7 +16,8 @@ namespace MobileAutomation.Service
             Device device = null;
             var platformName = deviceType.ToString();
 
-            var response = GetSync(string.Format("{0}/devices/bookable/{1}/1", Configs.Instance.TestSeverUrl, deviceType));
+            var requestUrl = string.Format("{0}/devices/bookable/{1}/1", Configs.Instance.TestSeverUrl, deviceType);
+            var response = GetSync(requestUrl);
             if (response.IsSuccessStatusCode)
             {
                 var readContentTask = response.Content.ReadAsAsync<Device[]>();

@@ -23,28 +23,28 @@ def kobitonServerUrl():
 
 def desiredCapabilitiesAndroidWeb(device):
   caps = createCapabilitiesFor(device)
-  caps['sessionName'] = 'Android Web'
+  caps['sessionName'] = '[Python] Android Web'
   caps['sessionDescription'] = 'This is an example for Android Web testing'
   caps['browserName'] = 'chrome'
   return caps
 
 def desiredCapabilitiesAndroidApp(device):
   caps = createCapabilitiesFor(device)
-  caps['sessionName'] = 'Android app'
+  caps['sessionName'] = '[Python] Android app'
   caps['sessionDescription'] = 'This is an example for Android app testing'
   caps['app'] = 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk'
   return caps
 
 def desiredCapabilitiesiOSWeb(device):
   caps = createCapabilitiesFor(device)
-  caps['sessionName'] = 'iOS Web'
+  caps['sessionName'] = '[Python] iOS Web'
   caps['sessionDescription'] = 'This is an example for iOS Web testing'
   caps['browserName'] = 'safari'
   return caps
 
 def desiredCapabilitiesiOSApp(device):
   caps = createCapabilitiesFor(device)
-  caps['sessionName'] = 'iOS app'
+  caps['sessionName'] = '[Python] iOS app'
   caps['sessionDescription'] = 'This is an example for iOS app testing'
   caps['app'] = 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa'
   return caps

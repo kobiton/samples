@@ -1,0 +1,104 @@
+<?php
+require_once('PHPUnit/Extensions/AppiumTestCase.php');
+include("configs.php");
+include("utils/AutomationUtils.php");
+include("services/DeviceService.php");
+
+class AndroidAppTest extends PHPUnit_Extensions_AppiumTestCase {
+
+  public static $browsers = array(
+      array(
+        'host'         => '<automation-host>',
+        'port'         => <automation-port>,
+        'browserName'  => '',
+        'desiredCapabilities' => array(
+          'sessionName'         => '<automation-session-name>',
+          'sessionDescription'  => '<automation-session-description>',
+          'deviceOrientation'   => 'portrait',
+          'app'                 => 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk',
+          'captureScreenshots'  => true,
+          'deviceGroup'         => 'ORGANIZATION',
+          'deviceName'          => '<automation-deviceName>',
+          'platformName'        => '<automation-platformName>',
+          'platformVersion'     => '<automation-platformVersion>',
+        ),
+       'seleniumServerRequestsTimeout' => 120
+     )
+  );
+
+  public function test_android_app() {
+    $this->search_IFixit_on_home_screen();
+  }
+
+   /*
+    Steps:
+    1. Reopen iFixit app
+    2. Click Search menu on the left menu bar
+    3. Search keyword 'Macbook Pro 2015'
+    4. Press Enter button on keyboard
+    Expected: It should show at least 47 results.
+    5. Select Devices item on the Guides/Devices dropdown
+    Expected: It should show at least 5 results.
+    6. Swipe to Right and Left
+    */
+
+  public function search_IFixit_on_home_screen() {
+    print 'should allow to search iFixit on Home screen';
+    $this->launchApp();
+    sleep(5);
+    $this->byXpath("//*[@text='Search']")->click();
+    sleep(2);
+    $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/abs__search_src_text']")->click();
+    sleep(2);
+    $this->keys('Macbook Pro 2015');
+    sleep(2);
+    $this->keyEvent(66);
+    sleep(5);
+    $first_result = $this->byId("com.dozuki.ifixit:id/search_result_count")->text();
+    $this->byXpath("//*[@resource-id='android:id/text1' and @text='Guides']")->click();
+    sleep(2);
+    $this->byXpath("//*[@resource-id='android:id/text1' and @text='Devices']")->click();
+    sleep(2);
+    $second_result = $this->byId("com.dozuki.ifixit:id/search_result_count")->text();
+
+    $first_result = preg_replace("/[^0-9]/", '', $first_result);
+    $this->assertGreaterThanOrEqual((int)47, $first_result,
+      'The expected results are greater or equal to 47 results.');
+
+    $second_result = preg_replace("/[^0-9]/", '', $second_result);
+    $this->assertGreaterThanOrEqual((int)5, $second_result,
+      'The expected results are greater or equal to 5 result.');
+  }
+
+  public function search_question($question) {
+    $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=1]")->click();
+    sleep(5);
+    $element = $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/topic_info_image']");
+    sleep(5);
+    $this->swipe_on_element($element, 'RightLeft');
+    sleep(5);
+    $this->byXpath("//*[@resource-id='answersSearch']")->click();
+    $this->keys($question);
+    $this->byId('searchIcon')->click();
+    sleep(5);
+    return $this->byXpath("//android.view.View[contains(@content-desc,'questions') and @index=1]")->attribute('name');
+  }
+
+  public function swipe_on_element($element, $direction = 'RightLeft') {
+    $size = $element->size();
+    $startx = $size['width'] * 0.95;
+    // Find endx point which is at left side of screen.
+    $endx = $size['width'] * 0.10;
+    // Find vertical point where you wants to swipe. It is in middle of screen height.
+    $starty = ($size['height'] * 0.50) + 100;
+
+    if ($direction == 'RightLeft') {
+      $this->swipe($startx, $starty, $endx, $starty, 200);
+    }
+
+    if ($direction == 'LeftRight') {
+      $this->swipe($endx, $starty, $startx, $starty, 200);
+    }
+    sleep(3);
+  }
+}

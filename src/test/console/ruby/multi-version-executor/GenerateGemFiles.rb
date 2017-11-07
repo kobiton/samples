@@ -7,22 +7,9 @@ def generateGemFiles(gemName, numberOfVersion)
   versions = versionsInParenttheses
     .sub('(', '').sub(')', '')
     .split(', ')
+    .sort
 
-  versionGroups = {}
-  versions.each do |v|
-    major = /.+?(?=\.)/.match(v)[0]
-    if versionGroups[major] == nil
-      versionGroups[major] = []
-    end
-    versionGroups[major].push v
-  end
-
-  groupsToGet = versionGroups.keys.first numberOfVersion
-
-  selectedVersions = []
-  groupsToGet.each do |group|
-    selectedVersions.push versionGroups[group].first
-  end
+  selectedVersions = versions.last numberOfVersion
 
   # Read from gemfile template and generate gemfiles
   gemFileTemplate = File.read 'gemtemplates/Gemfile.template'

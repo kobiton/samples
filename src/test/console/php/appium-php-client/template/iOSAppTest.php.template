@@ -1,0 +1,72 @@
+<?php
+require_once('PHPUnit/Extensions/AppiumTestCase.php');
+include("configs.php");
+
+class IOSAppTest extends PHPUnit_Extensions_AppiumTestCase {
+
+  public static $browsers = array(
+      array(
+        'host'         => '<automation-host>',
+        'port'         => <automation-port>,
+        'browserName'  => '',
+        'desiredCapabilities' => array(
+          'sessionName'         => '<automation-session-name>',
+          'sessionDescription'  => '<automation-session-description>',
+          'deviceOrientation'   => 'portrait',
+          'app'                 => 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa',
+          'captureScreenshots'  => true,
+          'deviceGroup'         => 'ORGANIZATION',
+          'deviceName'          => '<automation-deviceName>',
+          'platformName'        => '<automation-platformName>',
+          'platformVersion'     => '<automation-platformVersion>'
+        ),
+       'seleniumServerRequestsTimeout' => 120
+     )
+  );
+
+  public function test_ios_app() {
+    $this->search_IFixit_on_home_screen();
+  }
+
+  /*
+    Steps:
+    1. Reopen iFixit app
+    2. Click Search menu on the left menu bar
+    3. Search keyword 'Macbook Pro 2015'
+    4. Press Enter button on keyboard
+    Expected: It should show at least 33 results.
+    5. Clear the current content
+    6. Search keyword 'Acura' on Categories tab
+    Expected: It should show at least 6 results.
+    */
+
+  public function search_IFixit_on_home_screen() {
+    print 'should allow to search iFixit on Home screen';
+
+    $this->launchApp();
+    sleep(5);
+    $this->byXpath("//XCUIElementTypeButton[@name='START A REPAIR']")->click();
+    sleep(2);
+    $this->byXpath("//*[@name='Search']")->click();
+    sleep(2);
+    $this->byXpath("//XCUIElementTypeSearchField[@name='Search']")->click();
+    $this->keys('Macbook Pro 2015');
+    sleep(2);
+    $first_list_result = $this->elements($this->using('xpath')->value("//XCUIElementTypeStaticText[contains(@label,'MacBook Pro')]"));
+
+    $this->byXpath("//XCUIElementTypeButton[@name='Cancel']")->click();
+    sleep(2);
+    $this->byXpath("//*[@name='Search']")->click();
+    sleep(2);
+    $this->byXpath("//XCUIElementTypeSearchField[@name='Search']")->click();
+    sleep(2);
+    $this->keys('Acura');
+    sleep(5);
+    $this->byXpath("//XCUIElementTypeButton[@name='Categories']")->click();
+    sleep(2);
+    $second_list_result = $this->elements($this->using('xpath')->value("//XCUIElementTypeStaticText[contains(@label,'Acura')]"));
+
+    $this->assertGreaterThanOrEqual(33, count($first_list_result), 'The expected results are greater or equal to 33 results.');
+    $this->assertGreaterThanOrEqual(6, count($second_list_result), 'The expected results are greater or equal to 6 results.');
+  }
+}

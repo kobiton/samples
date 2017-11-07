@@ -20,25 +20,16 @@ function kobitonServerUrl() {
 
 function desiredCapabilitiesAndroidWeb($device) {
   $caps = createCapabilitiesFor($device);
-  $caps['sessionName'] = 'Android Web';
+  $caps['sessionName'] = '[PHP] Android Web';
   $caps['sessionDescription'] = 'This is an example for Android Web testing';
   $caps['browserName'] = 'chrome';
 
   return $caps;
 }
 
-function desiredCapabilitiesAndroidApp($device) {
-  $caps = createCapabilitiesFor($device);
-  $caps['sessionName'] = 'Android app';
-  $caps['sessionDescription'] = 'This is an example for Android App testing';
-  $caps['app'] = 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk';
-
-  return $caps;
-}
-
 function desiredCapabilitiesiOSWeb($device) {
   $caps = createCapabilitiesFor($device);
-  $caps['sessionName'] = 'iOS Web';
+  $caps['sessionName'] = '[PHP] iOS Web';
   $caps['sessionDescription'] = 'This is an example for iOS Web testing';
   $caps['browserName'] = 'safari';
 
