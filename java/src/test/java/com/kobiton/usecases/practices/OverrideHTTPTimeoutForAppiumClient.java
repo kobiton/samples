@@ -54,7 +54,6 @@ public class OverrideHTTPTimeoutForAppiumClient extends BaseTest {
 
     @Test(description = "should verify Acura categories")
     public void testSearchQuestionsOnAcuraSupportCommunity() {
-
         /*
       * Steps:
       * 1. Click on "Car and Truck" Categories on Homepage
@@ -72,7 +71,6 @@ public class OverrideHTTPTimeoutForAppiumClient extends BaseTest {
                 .getText();
 
         Assert.assertEquals(acuraText, "Acura");
-
     }
 
     public void sleep(int seconds) {

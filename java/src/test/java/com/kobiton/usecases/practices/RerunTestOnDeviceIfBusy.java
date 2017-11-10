@@ -89,7 +89,6 @@ public class RerunTestOnDeviceIfBusy extends BaseTest {
                 .getText();
 
         Assert.assertEquals(acuraText, "Acura");
-
     }
 
     public void sleep(int seconds) {

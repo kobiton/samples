@@ -37,7 +37,7 @@ public class RetrieveAutomationDetails extends BaseTest {
         
         Assert.assertNotNull(response.body(), "Response body is null");
         
-        // responseBodyString is JSON format, you parse to use it as your demand
+        // responseBodyString is JSON format, you could parse to use it as your demand
         String responseBodyString = response.body().string();
         Assert.assertNotNull(responseBodyString, "Response body string is null");
     }
@@ -47,7 +47,6 @@ public class RetrieveAutomationDetails extends BaseTest {
         AndroidDriver<WebElement> driver = executeSimpleAppTest();
         
         String kobitonSessionId = driver.getSessionDetails().get("kobitonSessionId").toString();
-        System.out.println("kobitonSessionId: " + kobitonSessionId);
         
         String url = String.format("https://%s/v1/sessions/%s", getHostName(), kobitonSessionId);
         
@@ -60,7 +59,7 @@ public class RetrieveAutomationDetails extends BaseTest {
         Response response = client.newCall(request).execute();
         Assert.assertNotNull(response.body(), "Response body is null");
         
-        // responseBodyString is JSON format, you parse to use it as your demand
+        // responseBodyString is JSON format, you could parse to use it as your demand
         String responseBodyString = response.body().string();
         System.err.println("response body: " + responseBodyString);
         Assert.assertNotNull(responseBodyString, "Response body string is null");
