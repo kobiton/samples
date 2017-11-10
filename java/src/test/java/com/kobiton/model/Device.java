@@ -81,6 +81,4 @@ public class Device {
     public void setIsFavorite(boolean isFavorite) {
         this.isFavorite = isFavorite;
     }
-    
-    
 }
