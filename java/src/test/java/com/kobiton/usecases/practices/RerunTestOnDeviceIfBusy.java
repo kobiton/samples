@@ -48,7 +48,7 @@ public class RerunTestOnDeviceIfBusy extends BaseTest {
                 driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
                 continuePollingCheck = false;
             } catch (org.openqa.selenium.SessionNotCreatedException e) {
-                System.err.println("DEVICE BUSY RETRYING");
+                System.err.println("DEVICE BUSY!! RETRYING.");
                 long attemptDuration = System.currentTimeMillis() - pollingStartedAt;
 
                 // SessionNotCreatedException exception is thrown if the expected device
