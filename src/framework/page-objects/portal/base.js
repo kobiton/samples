@@ -194,4 +194,11 @@ export default class Page {
     }
   }
 
+  /**
+  * Sleep for milliseconds
+  */
+  wait(milliseconds) {
+    this._browser.pause(milliseconds)
+  }
+
 }

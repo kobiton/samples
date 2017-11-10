@@ -83,3 +83,7 @@ export function extractStartDate(text) {
 export function extractEndDate(text) {
   return (text) ? text.toString().match(/endDate=([0-9]+)/g)[0].replace('endDate=', '') : text
 }
+
+export function equalArrays(array1, array2) {
+  return JSON.stringify(array1) === JSON.stringify(array2)
+}

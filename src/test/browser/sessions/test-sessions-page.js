@@ -4,7 +4,7 @@ import LoginPage from '../../../framework/page-objects/portal/intro/login'
 import config from '../../../framework/config/test'
 import SessionsPage from '../../../framework/page-objects/portal/user/sessions'
 import SessionAPI from '../../../framework/api/session'
-import {subtractDays} from '../../../framework/util'
+import {subtractDays, equalArrays, extractStartDate, extractEndDate} from '../../../framework/util'
 
 const {username1: username, password1: password} = {...config}
 let sessionsPage
@@ -15,6 +15,8 @@ const sessionType = 'Manual'
 const sessionStatus = 'Complete'
 const platform = 'Android'
 const deviceModel = 'Galaxy'
+const startDate = subtractDays(30)
+const endDate = subtractDays(1)
 
 describe('Verifying on sessions page', () => {
 
@@ -27,6 +29,28 @@ describe('Verifying on sessions page', () => {
 
   beforeEach(() => {
     sessionsPage.open()
+  })
+
+  it('should display session types correctly', () => {
+    const sessionTypes = sessionsPage.getSessionTypes()
+    const expectedSessions = ['All', 'Auto', 'Manual']
+    assert.isTrue(equalArrays(sessionTypes, expectedSessions),
+      'The session types do not match.')
+  })
+
+  it('should display status types correctly', () => {
+    const statusTypes = sessionsPage.getStatusTypes()
+    const expectedStatuses = ['All', 'Running', 'Complete', 'Passed',
+      'Failed', 'Timeout', 'Error', 'Terminated']
+    assert.isTrue(equalArrays(statusTypes, expectedStatuses),
+      'The status types do not match.')
+  })
+
+  it('should display platform types correctly', () => {
+    const platformTypes = sessionsPage.getPlatformTypes()
+    const expectedPlatforms = ['All', 'Android', 'iOS']
+    assert.isTrue(equalArrays(platformTypes, expectedPlatforms),
+      'The platform types do not match.')
   })
 
   it('should verify fulltext search in session page', async () => {
@@ -111,6 +135,22 @@ describe('Verifying on sessions page', () => {
     assert.isTrue(isIncluded(sessionListFromUI, sessionListFromAPI.data),
       'The session list does not match.')
   })
+
+  it('should verify filter sessions with period of time', async () => {
+    sessionsPage.selectStartAndEndDates(startDate, endDate)
+    const url = sessionsPage.getUrlPage()
+    const sessionListFromUI = sessionsPage.getSessionsOnCurrentPage()
+    const searchDataForAPI = {
+      'startDate': extractStartDate(url),
+      'endDate': extractEndDate(url)
+    }
+
+    const sessionListFromAPI = await SessionAPI.filterSessionsByMultiInput(searchDataForAPI)
+
+    assert.isTrue(isIncluded(sessionListFromUI, sessionListFromAPI.data),
+      'The session list does not match.')
+  })
+
 })
 
 /**
