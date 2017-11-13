@@ -11,7 +11,6 @@ import com.kobiton.usecases.*;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.AppiumCommandExecutor;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.internal.ApacheHttpClient;
@@ -21,6 +20,11 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+/**
+ * Currently appium have an issue about this, so this code would throw error. 
+ * This sample code should work after the issue was resolved.
+ * Github issue: https://github.com/appium/java-client/issues/671
+ */
 public class OverrideHTTPTimeoutForAppiumClient extends BaseTest {
     private AndroidDriver<WebElement> driver = null;
 
