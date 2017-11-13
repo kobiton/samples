@@ -47,7 +47,6 @@ public class AppTestAndroid extends BaseTest {
 
     @Test(description = "should verify Acura categories")
     public void testSearchQuestionsOnAcuraSupportCommunity() {
-
         /*
       * Steps:
       * 1. Click on "Car and Truck" Categories on Homepage
