@@ -10,7 +10,7 @@ targetCompatibility = 1.8
 
 dependencies {
     compile 'io.appium:java-client:5.0.4'
-
+    compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'org.testng:testng:6.11'
 }
 
