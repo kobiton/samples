@@ -17,6 +17,8 @@ const elements = {
   lowQuality: '//div[text()="Low Quality"]',
   // eslint-disable-next-line max-len
   deviceInfo: '//div[div[text()="High Quality" or text()="Medium Quality" or text()="Low Quality"]]/parent::div/parent::div/span[3]',
+  // eslint-disable-next-line max-len
+  timing: '//div[div[text()="High Quality" or text()="Medium Quality" or text()="Low Quality"]]/parent::div/parent::div/span[2]',
   sessionTab: '//div[text()="Session"]',
   appsTab: '//div[text()="Apps"]',
 
@@ -100,7 +102,7 @@ const elements = {
   editSessionDescriptionButton: '//div[text()="Description"]/../form/div/button',
   sessionDescriptionField: '//div[text()="Description"]/../form/div/div/textarea[2]',
   // eslint-disable-next-line max-len
-  idlePopUp: '//div[contains(text(),"Session has been idle over its time limit. Do you want to continue testing?")]',
+  idlePopUp: '//p[contains(normalize-space(text()),"Do you want to continue testing?")]',
   continueButton: '//button[div/div/span[text()="Continue testing"]]',
   endSessionButton: '//button[div/div/span[contains(text(),"End session")]]',
 
@@ -137,6 +139,10 @@ export default class ManualPage extends AuthenticatedPage {
 
   isInitializing() {
     return this._browser.isVisible(elements.initializingStatus)
+  }
+
+  waitForIdlePopUp(timeout) {
+    this._browser.waitForExist(elements.idlePopUp, timeout)
   }
 
   isContaining(ele) {
@@ -251,12 +257,24 @@ export default class ManualPage extends AuthenticatedPage {
   }
 
   /**
+   * Get counting time
+   */
+  getCountingTime() {
+    return this._browser.getText(elements.timing)
+  }
+
+  continueManualSession() {
+    this._browser.click(elements.continueButton)
+  }
+
+  /**
    * Close system message
    */
   closeSystemMessage(mesg) {
     this._browser.click(elements[mesg])
     this._browser.pause(1000)
   }
+
   /**
    * Set up session name
    */
@@ -265,7 +283,6 @@ export default class ManualPage extends AuthenticatedPage {
     this._browser.pause(1000)
     this._browser.setValue(elements.sessionNameField, sessionName)
     this._browser.click(elements.screenshotBoard)
-    this.waitForLoadingProgressRunning()
     this.waitForLoadingProgressDone()
   }
 
@@ -277,7 +294,6 @@ export default class ManualPage extends AuthenticatedPage {
     this._browser.pause(1000)
     this._browser.setValue(elements.sessionDescriptionField, sessionDescription)
     this._browser.click(elements.screenshotBoard)
-    this.waitForLoadingProgressRunning()
     this.waitForLoadingProgressDone()
   }
 
@@ -433,10 +449,10 @@ export default class ManualPage extends AuthenticatedPage {
     }
   }
 
-  waitForInitializingDeviceDone(timeOut) {
+  waitForInitializingDeviceDone(timeout) {
     this._browser.waitUntil(() => {
       return !this._browser.isExisting(elements.initializingStatus)
-    }, timeOut, 'should initilizing done', 3000)
+    }, timeout, 'should initilizing done', 3000)
   }
 
   selectQuality(quality) {

@@ -18,6 +18,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   const initilizingTimeout = 180000 // 3 minutes
   const installAppTimeout = 180000 // 3 minutes
   const uploadScreenshotTimeout = 60000 // 1 minute
+  const stayIdleTimeout = 360000 // 6 minutes
   const expectedDuration = expectedDurationInMinutes
   startedAt = moment.utc()
 
@@ -48,6 +49,17 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     assert.include(urlPage, config.portalUrl.concat('/devices/launch?key='),
       'It has not launched a device yet')
     platformName = manualPage.getPlatformNameInfo()
+  })
+
+  it('should have correct format for counting time', () => {
+    const timeRegex = manualPage.timeRegex()
+    let time = manualPage.getCountingTime()
+    assert.isTrue(timeRegex.test(time))
+
+    //Refresh page
+    manualPage.refreshPage()
+    time = manualPage.getCountingTime()
+    assert.isTrue(timeRegex.test(time))
   })
 
   it('should change quality successfully', () => {
@@ -230,6 +242,15 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     manualPage.doSwipeUp()
     manualPage.doTouch({x: 10, y: 10})
   }
+
+  it('should end session automatically afer staying idle for 5 minutes', () => {
+    manualPage.waitForIdlePopUp(stayIdleTimeout)
+    assert.isTrue(manualPage.isContaining('idlePopUp'))
+    manualPage.continueManualSession()
+    assert.isFalse(manualPage.isContaining('idlePopUp'))
+    manualPage.elements.idleCheckbox.click()
+    manualPage.pause(1000)
+  })
 
   it('should change session name successfully', () => {
     // Verify default session name

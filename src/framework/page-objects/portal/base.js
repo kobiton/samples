@@ -90,10 +90,21 @@ export default class Page {
     this.waitForLoadingProgressDone()
   }
 
+  /**
+  * Date time Regex
+  */
   dateTimeRegex() {
     // eslint-disable-next-line max-len
     const dateTimeRegex = /(1[0-2]|0[1-9])\/(3[01]|[12][0-9]|0[1-9])\/[0-9]{4} ([0]\d|[1][0-2]):([0-5]\d) \s?(?:AM|PM)/
     return dateTimeRegex
+  }
+
+  /**
+  * Time Regex
+  */
+  timeRegex() {
+    const timeRegrex = /[0-9][0-9]:([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]/
+    return timeRegrex
   }
 
   /**
