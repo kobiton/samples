@@ -10,6 +10,10 @@ exports.config = {
       chrome: {
         version: 2.33,
         baseURL: 'https://chromedriver.storage.googleapis.com'
+      },
+      firefox: {
+        version: '0.19.1',
+        baseURL: 'https://github.com/mozilla/geckodriver/releases/download'
       }
     }
   },
@@ -18,6 +22,10 @@ exports.config = {
       chrome: {
         version: 2.33,
         baseURL: 'https://chromedriver.storage.googleapis.com'
+      },
+      firefox: {
+        version: '0.19.1',
+        baseURL: 'https://github.com/mozilla/geckodriver/releases/download'
       }
     }
   },

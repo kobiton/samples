@@ -11,7 +11,8 @@ exports.config = {
   maxInstances: 10,
   capabilities: [{
     maxInstances: 5,
-    browserName: 'chrome'
+    browserName: config.browser.browserName,
+    marionette: true
   }],
   sync: true,
   logLevel: 'verbose',
