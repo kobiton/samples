@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import url from 'url'
+import clipboardy from 'clipboardy'
 import BPromise from 'bluebird'
 import {debug} from '@kobiton/core-util'
 import AuthenticatedPage from './base'
@@ -38,11 +39,13 @@ const elements = {
   // eslint-disable-next-line max-len
   notSupportLongPressMessage: '//div[contains(normalize-space(text()),"Long Press on iOS 10.0.x to 10.2.x is currently not supported.")]',
   // eslint-disable-next-line max-len
+  tooLongTextToPasteMessage: '//div[text()="The copied text is over 2048 characters, the remaining will be trimmed."]',
+  // eslint-disable-next-line max-len
   notSupportDoubleHomeMessage: '//div[contains(normalize-space(text()),"Double Press on iOS 10.3.0+ is currently not supported.")]',
   autoEndSession: 'The session has ended, exiting now ...',
   uploadingAppFile: '//div[contains(.,"Uploading app file")]',
   loadingIcon: '//div[contains(@style, "background-image: repeating-linear-gradient")]',
-  failedToInstallAppMessage: '//div[contains(text(),"Failed to install the app")]',
+  failedToInstallAppMessage: '//div[contains(text(),"Failed to install")]',
   installingAppMessage: '//div[contains(text(),"Uploaded success, installing app")]',
   uploadingAppMessage: '//div[contains(text(),"Uploading app file")]',
   installedAppMessage: '//div[contains(.,"has been installed on the device")]',
@@ -168,7 +171,7 @@ export default class ManualPage extends AuthenticatedPage {
   takeScreenShot() {
     this._browser.click(elements.takeScreenShotButton)
     this._browser.waitForExist(elements.uploadingScreenshot, 5000)
-    this._browser.waitForExist(elements.downloadScreenshotButton, 30000)
+    this._browser.waitForExist(elements.downloadScreenshotButton, 60000)
   }
 
   getStyleOfButton(ele) {
@@ -284,6 +287,7 @@ export default class ManualPage extends AuthenticatedPage {
     this._browser.setValue(elements.sessionNameField, sessionName)
     this._browser.click(elements.screenshotBoard)
     this.waitForLoadingProgressDone()
+    this._browser.pause(2000)
   }
 
   /**
@@ -305,7 +309,7 @@ export default class ManualPage extends AuthenticatedPage {
     this._browser.pause(1000)
     this._browser.setValue(elements.sessionNameField, value)
     this._browser.click(elements.screenshotBoard)
-    this._browser.pause(1000)
+    this._browser.pause(3000)
   }
 
   /**
@@ -360,6 +364,13 @@ export default class ManualPage extends AuthenticatedPage {
   }
 
   /**
+   * Touch on canvas-screen
+   */
+  touchOnCanvasScreen() {
+    this._browser.click(elements.canvasScreen)
+  }
+
+  /**
    * Install application from local file
    */
   chooseFileFromLocalFile(filePath) {
@@ -381,6 +392,8 @@ export default class ManualPage extends AuthenticatedPage {
    * Fill url's app in app url textbox
    */
   fillInAppUrlAndInstall(appUrl) {
+    this._browser.pause(5000)
+    this.clickButtonOnMenuBar('homeButton')
     this._browser.click(elements.appsButton)
     this._browser.click(elements.appsTab)
     this._browser.setValue(elements.apkUrlTextbox, appUrl)
@@ -389,13 +402,30 @@ export default class ManualPage extends AuthenticatedPage {
     this._browser.waitForExist(elements.loadingIcon, 3000)
   }
 
+  copyAndPasteOnClipboard({textValue} = {}) {
+    this._browser.click(elements.canvasScreen)
+    const result = this._browser.element(elements.canvasScreen)
+    if (textValue) {
+      clipboardy.writeSync(textValue)
+    }
+    else {
+      this._browser.elementIdValue(result.value.ELEMENT, ['Command', 'a'])
+      this._browser.pause(5000)
+      this._browser.elementIdValue(result.value.ELEMENT, ['Command', 'c'])
+      this._browser.pause(5000)
+    }
+    this._browser.click(elements.canvasScreen)
+    this._browser.elementIdValue(result.value.ELEMENT, ['Command', 'v'])
+    this._browser.pause(5000)
+  }
+
   /**
    * Waiting for install app
    */
   waitForInstallingAppDone(timeout) {
     this._browser.waitUntil(() => {
       return !this._browser.isExisting(elements.loadingIcon)
-    }, timeout, 'should install app done', 3000)
+    }, timeout, 'should install app done', 10000)
   }
 
   /**
@@ -405,6 +435,7 @@ export default class ManualPage extends AuthenticatedPage {
     this._browser.click(elements.appsButton)
     // eslint-disable-next-line max-len
     const xpathOfInstallButton = elements.appTags.concat(`[${orderOfValidApp}]/div[contains(@style, "justify-content: flex-end")]//button`)
+    this._browser.scroll(xpathOfInstallButton)
     this._browser.click(xpathOfInstallButton)
     this._browser.waitForExist(elements.loadingIcon, 2000)
   }

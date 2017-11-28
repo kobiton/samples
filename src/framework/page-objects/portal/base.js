@@ -87,6 +87,7 @@ export default class Page {
    */
   refreshPage() {
     this._browser.refresh()
+    this.waitForLoadingProgressRunning()
     this.waitForLoadingProgressDone()
   }
 
@@ -112,7 +113,7 @@ export default class Page {
   * to be present within the DOM
   */
   waitForLoadingProgressRunning() {
-    this._browser.waitForExist(elements.loadingRunning, timeout * 2)
+    this._browser.waitForExist(elements.loadingRunning, timeout * 6)
   }
 
   /**
@@ -120,7 +121,7 @@ export default class Page {
   * to be present within the DOM
   */
   waitForLoadingProgressDone() {
-    this._browser.waitForExist(elements.loadingHidden, timeout * 4)
+    this._browser.waitForExist(elements.loadingHidden, timeout * 10)
   }
 
   /**
@@ -206,10 +207,9 @@ export default class Page {
   }
 
   /**
-  * Sleep for milliseconds
-  */
+   * Sleep for milliseconds
+   */
   wait(milliseconds) {
     this._browser.pause(milliseconds)
   }
-
 }

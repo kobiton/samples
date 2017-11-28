@@ -56,7 +56,8 @@ let elements = {
   name: '/div/div[2]/div[1]/div',
 
   deviceTag: '//div[contains(@style, "background-color: rgb(224, 224, 224)")]',
-  closeDialogButton: '//*[div/div/h2[contains(.,"Help us, help you.")]]/*[local-name()="svg"]'
+  closeDialogButton: '//*[div/div/h2[contains(.,"Help us, help you.")]]/*[local-name()="svg"]',
+  launchButtonOnPopUp: '//button[div/span[text()="Launch"]]'
 }
 let nameOfOrg
 
@@ -203,7 +204,7 @@ export default class DevicesPage extends AuthenticatedPage {
 
   _getOnlineDevicesLocator({group, nameOfDevice, platformVersionOfDevice}) {
     const deviceLocators = this._getDeviceLocator({group, nameOfDevice, platformVersionOfDevice})
-    return deviceLocators.concat(`/../..${elements.isOnline}`)
+    return deviceLocators.concat(elements.isOnline)
   }
 
   _getDeviceLocator({group, nameOfDevice, platformVersionOfDevice}) {
@@ -221,7 +222,9 @@ export default class DevicesPage extends AuthenticatedPage {
    */
   _moveToDeviceAndClickButton(device, button) {
     this._browser.scroll(device)
-    this._browser.moveToObject(device)
+    this._browser.click(device)
+    this.waitForLoadingProgressRunning()
+    this.waitForLoadingProgressDone()
     this._browser.waitForExist(button)
     this._browser.click(button)
   }
@@ -244,8 +247,7 @@ export default class DevicesPage extends AuthenticatedPage {
       foundDevice = this._browser.isExisting(onlineStatusLocator)
 
       if (foundDevice) {
-        const launchButtonLocator = `${deviceSelector}${elements.launchButton}`
-        this._moveToDeviceAndClickButton(onlineStatusLocator, launchButtonLocator)
+        this._moveToDeviceAndClickButton(onlineStatusLocator, elements.launchButtonOnPopUp)
         this.waitForLoadingProgressRunning()
         this.waitForLoadingProgressDone()
         const manualPage = new ManualPage()

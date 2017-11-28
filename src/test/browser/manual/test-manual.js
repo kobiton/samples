@@ -1,6 +1,7 @@
 import {assert} from 'chai'
 import moment from 'moment'
 import {debug} from '@kobiton/core-util'
+import BaseData from '../../browser/data'
 import config from '../../../framework/config/test'
 import LoginPage from '../../../framework/page-objects/portal/intro/login'
 
@@ -51,17 +52,6 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     platformName = manualPage.getPlatformNameInfo()
   })
 
-  it('should have correct format for counting time', () => {
-    const timeRegex = manualPage.timeRegex()
-    let time = manualPage.getCountingTime()
-    assert.isTrue(timeRegex.test(time))
-
-    //Refresh page
-    manualPage.refreshPage()
-    time = manualPage.getCountingTime()
-    assert.isTrue(timeRegex.test(time))
-  })
-
   it('should change quality successfully', () => {
     // Change to low quality
     manualPage.selectQuality('Low')
@@ -72,6 +62,20 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     // Change to Medium quality
     manualPage.selectQuality('Medium')
     assert.isTrue(manualPage.isContaining('mediumQuality'))
+  })
+
+  it('should have correct format for counting time', () => {
+    const timeRegex = manualPage.timeRegex()
+    let time = manualPage.getCountingTime()
+    assert.isTrue(timeRegex.test(time))
+
+    // It causes automatically exit session on Firefox
+    // Refresh page
+    // manualPage.pause(2000)
+    // manualPage.refreshPage()
+    // manualPage.pause(2000)
+    // time = manualPage.getCountingTime()
+    // assert.isTrue(timeRegex.test(time))
   })
 
   it('should collapse or expand panel', () => {
@@ -85,8 +89,8 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     assert.isTrue(manualPage.isContaining('collapsePanelButton'))
   })
 
-  it('should take screenshot', () => {
     // Verify there is screenshot board
+  it('should take screenshot', () => {
     assert.isTrue(manualPage.isContaining('screenshotBoard'))
 
     // Verify there isn't a screenshot was captured
@@ -111,12 +115,14 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     assert.isTrue(styleOfTouchButton.includes('fill: white'))
     let styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
     assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'))
-    startedAt = moment.utc()
-    do {
-      _doDeviceActions()
-      endedAt = moment.utc()
-      duration = endedAt.diff(startedAt, 'minutes')
-    } while (duration < expectedDuration)
+    if (config.browser.browserName === 'chrome') {
+      startedAt = moment.utc()
+      do {
+        _doDeviceActions()
+        endedAt = moment.utc()
+        duration = endedAt.diff(startedAt, 'minutes')
+      } while (duration < expectedDuration)
+    }
   })
 
   it('should pinch or zoom successfully', () => {
@@ -207,7 +213,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     manualPage.pause(3000)
     assert.isTrue(manualPage.isContaining('powerOffAlert'))
     // Turn on screen by touching on device screen
-    manualPage.doTouch({x: 100, y: 100})
+    manualPage.touchOnCanvasScreen()
     manualPage.pause(3000)
     assert.isFalse(manualPage.isContaining('powerOffAlert'))
 
@@ -253,6 +259,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   })
 
   it('should change session name successfully', () => {
+    manualPage.elements.idleCheckbox.click()
     // Verify default session name
     const dateTimeRegex = manualPage.dateTimeRegex()
     const defaultSessionName = manualPage.getSessionName()
@@ -309,6 +316,8 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
       manualPage.chooseFileFromLocalFile(appTestPath)
       manualPage.waitForInstallingAppDone(installAppTimeout)
       assert.isTrue(manualPage.isContaining('installedAppMessage'))
+      manualPage.closeSystemMessage('dismissMessage')
+      manualPage.pause(1000)
     }
     else {
       debug.log('There isn\'t an app in the apps-test folder to install')
@@ -328,7 +337,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
 
     // Input valid url
     if (platformName === 'Android') {
-      appUrl = s3AppLink.concat('iFixit.apk')
+      appUrl = s3AppLink.concat('clipboard-app-debug.apk')
     }
     else {
       appUrl = s3AppLink.concat('iFixit.ipa')
@@ -336,6 +345,20 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     manualPage.fillInAppUrlAndInstall(appUrl)
     manualPage.waitForInstallingAppDone(installAppTimeout)
     assert.isTrue(manualPage.isContaining('installedAppMessage'))
+    manualPage.closeSystemMessage('dismissMessage')
+    manualPage.pause(1000)
+  })
+
+  it('should copy paste on clipboard successfully', () => {
+    manualPage.copyAndPasteOnClipboard()
+    manualPage.pause(10000)
+    assert.isFalse(manualPage.isContaining('dismissMessage'))
+
+    // Invalid text
+    const value = BaseData.generateParagraphs(50)
+    manualPage.copyAndPasteOnClipboard({textValue: value})
+    manualPage.pause(5000)
+    assert.isTrue(manualPage.isContaining('tooLongTextToPasteMessage'))
   })
 
   it('should install app from App repository successfully', function () {
