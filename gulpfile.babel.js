@@ -48,6 +48,8 @@ async function executeDefinedTask(taskName) {
   switch (taskName) {
     case 'test-ui':
       return await startUiTest()
+    case 'test-aut':
+      return await startAutTest()
     case 'multi-version-check':
       return startMultipleVersionCheck(argv.input)
     case 'health-check':
@@ -62,6 +64,16 @@ async function startUiTest() {
   }
   catch(err) {
     debug.error('test-ui', err)
+  }
+}
+
+async function startAutTest() {
+  try {
+    const setupDesktop = require('./build/test/desktop/desktop-setup')
+    await setupDesktop()
+  }
+  catch(err) {
+    debug.error('test-aut', err)
   }
 }
 

@@ -82,6 +82,11 @@ Append argument: --mobileTestDuration <minutes>
   yarn test -- --task test-ui --type <file_test>
   ```
 
+#### AUT
+  ```
+  yarn test -- --task test-aut --type <file_test>
+  ```
+
 #### E2e
 
 ##### Test manual:
