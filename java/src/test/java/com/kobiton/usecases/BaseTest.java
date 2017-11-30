@@ -59,17 +59,17 @@ public class BaseTest extends TestListenerAdapter {
     }
 
     protected URL getAutomationUrl() throws MalformedURLException {
-        return new URL( automationUrl);
+        return new URL(automationUrl);
     }
 
     protected String getHostName() {
         return hostName;
     }
-    
+
     protected String getAuthorization() {
         String keySource = String.format("%s:%s", this.username, this.apiKey);
         String base64Key = Base64.getEncoder().encodeToString(keySource.getBytes());
-        
+
         return String.format("Basic %s", base64Key);
     }
 }

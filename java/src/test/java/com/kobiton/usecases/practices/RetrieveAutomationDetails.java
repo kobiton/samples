@@ -27,13 +27,7 @@ public class RetrieveAutomationDetails extends BaseTest {
         //API details: https://api.kobiton.com/docs/?java#get-sessions
         String url = String.format("https://%s/v1/sessions", getHostName());
         
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .header("Authorization", getAuthorization())
-                .build();
-        
-        Response response = client.newCall(request).execute();
+        Response response = getRequest(url);
         
         Assert.assertNotNull(response.body(), "Response body is null");
         
@@ -50,19 +44,23 @@ public class RetrieveAutomationDetails extends BaseTest {
         
         String url = String.format("https://%s/v1/sessions/%s", getHostName(), kobitonSessionId);
         
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .header("Authorization", getAuthorization())
-                .build();
-        
-        Response response = client.newCall(request).execute();
+        Response response = getRequest(url);
         Assert.assertNotNull(response.body(), "Response body is null");
         
         // responseBodyString is JSON format, you could parse to use it as your demand
         String responseBodyString = response.body().string();
         System.err.println("response body: " + responseBodyString);
         Assert.assertNotNull(responseBodyString, "Response body string is null");
+    }
+
+    private Response getRequest(String url) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .header("Authorization", getAuthorization())
+                .build();
+        Response response = client.newCall(request).execute();
+        return response;
     }
 
     private AndroidDriver<WebElement> executeSimpleAppTest() throws MalformedURLException {
