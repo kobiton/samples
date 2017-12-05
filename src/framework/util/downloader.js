@@ -44,9 +44,17 @@ export function installApp(file) {
   })
 }
 
-export async function removeApp() {
+export function removeApp() {
   const filePath = `${destPath}/${appName}`
-  await exec.executeCommand(`rm -rf ${filePath}`)
+  return new BPromise(async (resolve, reject) => {
+    try {
+      await exec.executeCommand(`rm -rf ${filePath}`)
+      resolve()
+    }
+    catch (e) {
+      reject(e)
+    }
+  })
 }
 
 function executeAttachImage(cmd, args) {

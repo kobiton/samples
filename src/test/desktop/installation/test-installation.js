@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import LoginPage from '../../../framework/page-objects/desktop/intro/login'
-import downloader from '../../../framework/util/downloader'
+import {removeApp, downloadApp, installApp} from '../../../framework/util/downloader'
 
 describe('Installation', () => {
   let loginPage
@@ -9,10 +9,10 @@ describe('Installation', () => {
     loginPage = new LoginPage()
     await loginPage.cleanUpEnvironment()
     await loginPage.uninstallPackages()
-    // await downloader.removeApp()
+    await removeApp()
 
-    // const kobitonAppFile = await downloader.downloadApp()
-    // await downloader.installApp(kobitonAppFile)
+    const kobitonAppFile = await downloadApp()
+    await installApp(kobitonAppFile)
 
     await loginPage.startApplication()
     
@@ -24,8 +24,8 @@ describe('Installation', () => {
     }
   })
 
-  it('should show an initial window', () => {
-    const count = loginPage.getWindowCount()
+  it('should show an initial window', async () => {
+    const count = await loginPage.getWindowCount()
     assert.equal(count, 1, 'Only 1 window is activated.')
   })
 

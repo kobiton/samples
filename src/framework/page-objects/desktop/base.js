@@ -61,16 +61,15 @@ export default class Page {
       `rm -rf /Users/${username}/isign`,
       'brew uninstall --ignore-dependencies git',
       'brew uninstall --ignore-dependencies openssl',
-      'brew uninstall --force python',
-      'brew uninstall ios-deploy',
-      'brew uninstall carthage',
+      'brew uninstall --force --ignore-dependencies python',
+      'brew uninstall --ignore-dependencies ios-deploy',
       'brew uninstall --ignore-dependencies libplist',
       'brew uninstall --ignore-dependencies usbmuxd',
-      'brew uninstall graphicsmagick',
-      'brew uninstall libimobiledevice',
-      'brew uninstall ideviceinstaller',
-      'brew uninstall ffmpeg',
-      'brew uninstall carthage'
+      'brew uninstall --ignore-dependencies graphicsmagick',
+      'brew uninstall --ignore-dependencies libimobiledevice',
+      'brew uninstall --ignore-dependencies ideviceinstaller',
+      'brew uninstall --ignore-dependencies ffmpeg',
+      'brew uninstall --ignore-dependencies carthage'
     ]
     packages.map((p) => {
       return executeCommand(p)
@@ -81,10 +80,10 @@ export default class Page {
 
   async killKobitonProcesses() {
     const cmds = [
-      'killall Kobiton',
-      'killall "Kobiton Helper"',
-      'killall adb',
-      'killall chromedriver'
+      'killall Kobiton || true',
+      'killall "Kobiton Helper" || true',
+      'killall adb || true',
+      'killall chromedriver || true'
     ]
     await cmds.map((cmd) => {
       executeCommand(cmd)
@@ -94,6 +93,7 @@ export default class Page {
   async startApplication() {
     await this.killKobitonProcesses()
     await desktopApp.start()
+    await this.pause(5)
     await this.client.waitUntilWindowLoaded()
     await this.client.getMainProcessLogs()
     await this.client.getRenderProcessLogs()
@@ -117,6 +117,10 @@ export default class Page {
 
   getWindowCount() {
     return desktopApp.client.getWindowCount()
+  }
+
+  async pause(seconds) {
+    await this.client.pause(seconds * 1000)
   }
 
 }
