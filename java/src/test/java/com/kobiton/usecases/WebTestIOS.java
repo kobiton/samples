@@ -1,7 +1,7 @@
 /*
  * Created on Sep 26, 2017, 5:17:43 PM
  *
- * Copyright(c) 2017 Kobiton Company, Inc.  All Rights Reserved.
+ * Copyright(c) 2017 Kobiton Inc.  All Rights Reserved.
  * This software is the proprietary information of Kobiton Company.
  *
  */

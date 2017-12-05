@@ -35,7 +35,7 @@ SET KOBITON_API_KEY="<apiKey>"
 # 4. Execute tests
 
 1. Open Terminal and go to this folder (having this README.md file)
-1. Tests can be run by one of following commands
+2. Tests can be run by one of following commands
 
 * On Mac
 
@@ -62,3 +62,8 @@ Example:`gradlew.bat exeTest -Psuite="web_test_android"`
 * `app_test`: run app test on both iOS and Android device
 * `web_test`: run web test on both iOS and Android device
 * `single_test_multiple_devices`: run single test on 2 devices in parrallel
+
+# 5. Kobiton Practices
+Include some kobiton specific practices that we think it would be useful when scripting and executing automation test.
+
+You can find these practices at `src/test/java/com/kobiton/usecases/practices`.

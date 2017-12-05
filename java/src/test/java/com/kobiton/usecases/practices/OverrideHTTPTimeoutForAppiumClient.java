@@ -5,19 +5,27 @@
  * This software is the proprietary information of Kobiton Company.
  *
  */
-package com.kobiton.usecases;
+package com.kobiton.usecases.practices;
 
+import com.kobiton.usecases.*;
 import io.appium.java_client.android.AndroidDriver;
-import java.util.concurrent.TimeUnit;
+import io.appium.java_client.remote.AppiumCommandExecutor;
+import java.util.HashMap;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.internal.ApacheHttpClient;
+import org.openqa.selenium.remote.internal.HttpClientFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class AppTestAndroid extends BaseTest {
-
+/**
+ * Currently appium have an issue about this, so this code would throw error. 
+ * This sample code should work after the issue was resolved.
+ * Github issue: https://github.com/appium/java-client/issues/671
+ */
+public class OverrideHTTPTimeoutForAppiumClient extends BaseTest {
     private AndroidDriver<WebElement> driver = null;
 
     @BeforeTest
@@ -26,7 +34,7 @@ public class AppTestAndroid extends BaseTest {
         super.Setup();
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("sessionName", "Android App Test");
+        capabilities.setCapability("sessionName", "Android App Test - Override HTTP timeout for Appium client");
         capabilities.setCapability("sessionDescription", "Kobiton sample session");
         capabilities.setCapability("deviceOrientation", "portrait");
         capabilities.setCapability("captureScreenshots", true);
@@ -34,8 +42,11 @@ public class AppTestAndroid extends BaseTest {
         capabilities.setCapability("deviceName", "Galaxy J7");
         capabilities.setCapability("platformName", "Android");
 
-        driver = new AndroidDriver<>(getAutomationUrl(), capabilities);
-        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        int connectionTimeout = 20 * 60 * 1000;
+        int socketTimeout = 90 * 1000;
+        ApacheHttpClient.Factory clientFactory = new ApacheHttpClient.Factory(new HttpClientFactory(connectionTimeout, socketTimeout));
+        AppiumCommandExecutor executor = new AppiumCommandExecutor(new HashMap<>(), getAutomationUrl(), clientFactory);
+        driver = new AndroidDriver<>(executor, capabilities);
     }
 
     @AfterTest
@@ -64,7 +75,6 @@ public class AppTestAndroid extends BaseTest {
                 .getText();
 
         Assert.assertEquals(acuraText, "Acura");
-
     }
 
     public void sleep(int seconds) {
