@@ -61,6 +61,24 @@ export default class Base {
     return [resBody, response]
   }
 
+  async login(username, password) {
+    const [userInfo] = await this.post({
+      path: 'users/login',
+      body: {
+        emailOrUsername: username,
+        password
+      }
+    })
+
+    return userInfo
+  }
+
+  async getBearerToken(username, password) {
+    const res = await this.login(username, password)
+    return res.token
+
+  }
+
   async get(options = {}) {
     return await this._send({
       ...options,

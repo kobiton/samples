@@ -87,3 +87,33 @@ export function extractEndDate(text) {
 export function equalArrays(array1, array2) {
   return JSON.stringify(array1) === JSON.stringify(array2)
 }
+
+/**
+* Filter json item in json array by specific inputed criteria
+* @param: jsonArray
+  ex: [{ role: 'MEMBER',
+      invitationStatus: 'PENDING',
+      invitedEmail: 'rp6EN@gmail.com' },
+    { role: 'MEMBER',
+      invitationStatus: 'PENDING',
+      invitedEmail: '1GwYm@gmail.com' }]
+* @param: criteria
+  ex: {role: 'MEMBER', invitedEmail: 'rp6EN@gmail.com'}
+* Return a filtered result like below:
+  ex: [{ role: 'MEMBER',
+      invitationStatus: 'PENDING',
+      invitedEmail: 'rp6EN@gmail.com' }]
+*/
+export function filterJson(jsonArray, criteria) {
+  const keys = Object.keys(criteria)
+  const values = Object.values(criteria)
+  let result = []
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]
+    result = jsonArray.filter(item => item[key] === values[i])
+    jsonArray = result
+  }
+
+  return result
+
+}
