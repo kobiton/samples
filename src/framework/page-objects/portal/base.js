@@ -109,6 +109,13 @@ export default class Page {
   }
 
   /**
+  * Click on element
+  */
+  click(ele) {
+    this._browser.click(elements[ele])
+  }
+
+  /**
   * Wait for an element (selected by css selector) for the provided amount of milliseconds
   * to be present within the DOM
   */

@@ -92,7 +92,14 @@ const elements = {
 
 // Session tab
   sessionButton: '//button[div/div[text()="Session"]]',
-  idleCheckbox: '//input[@type="checkbox"]',
+  // eslint-disable-next-line max-len
+  idleCheckbox: '//label[contains(text(),"Quit session after staying idle")]/parent::div/parent::div/input[@type="checkbox"]',
+  // eslint-disable-next-line max-len
+  attributeIdleCheckbox: '//label[contains(text(),"Quit session")]/../div/div/*[local-name()="svg"][1]',
+  // eslint-disable-next-line max-len
+  cleanUpCheckbox: '//label[text()="Clean up device on exit"]/parent::div/parent::div/input[@type="checkbox"]',
+  // eslint-disable-next-line max-len
+  attributeCleanUpCheckbox: '//label[contains(text(),"Clean up device")]/../div/div/*[local-name()="svg"][1]',
   sessionNameForm: '//div[text()="Session name"]/../form',
   editSessionNameButton: '//div[text()="Session name"]/../form/div/button',
   sessionNameField: '//div[text()="Session name"]/../form/div/input',
@@ -177,6 +184,10 @@ export default class ManualPage extends AuthenticatedPage {
   getStyleOfButton(ele) {
     const xpathOfIcon = elements[ele].concat('//div/*[local-name()="svg"]')
     return this._browser.getAttribute(xpathOfIcon, 'style')
+  }
+
+  getStyleOfCheckbox(ele) {
+    return this._browser.getAttribute(elements[ele], 'style')
   }
 
   clickButtonOnMenuBar(ele) {

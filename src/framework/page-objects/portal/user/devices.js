@@ -6,7 +6,8 @@ let elements = {
   // Group device
   favorite: '//div[span//h3[contains(., "Favorite Devices")]]/../following-sibling::div/div/div',
   cloud: '//div[span//h3[contains(., "Cloud Devices")]]/../following-sibling::div/div/div',
-  org: '//div[span//h3[contains(., "orgName Devices")]]/../following-sibling::div/div/div',
+  private: '//div[span//h3[contains(., "orgName Devices")]]/../following-sibling::div/div/div',
+  admin: '//div[span//h3[contains(., "Private Devices")]]/../following-sibling::div/div/div',
   orgTitle: '//h3[contains(., "orgName Devices")]',
 
   // Header Checkboxs
@@ -204,7 +205,7 @@ export default class DevicesPage extends AuthenticatedPage {
 
   _getOnlineDevicesLocator({group, nameOfDevice, platformVersionOfDevice}) {
     const deviceLocators = this._getDeviceLocator({group, nameOfDevice, platformVersionOfDevice})
-    return deviceLocators.concat(elements.isOnline)
+    return deviceLocators.concat(`/../..${elements.isOnline}`)
   }
 
   _getDeviceLocator({group, nameOfDevice, platformVersionOfDevice}) {

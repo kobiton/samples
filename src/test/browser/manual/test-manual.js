@@ -2,12 +2,14 @@ import {assert} from 'chai'
 import moment from 'moment'
 import {debug} from '@kobiton/core-util'
 import BaseData from '../../browser/data'
+import ManualData from './data'
 import config from '../../../framework/config/test'
 import LoginPage from '../../../framework/page-objects/portal/intro/login'
 
 const expectedDurationInMinutes = config.expectedDurationInMinutes
 const {username1: username, password1: password} = {...config}
-const {name: deviceName, group: deviceGroup, version: platformVersion} = {...config.device}
+let deviceGroup = config.device.group.toLowerCase()
+let {deviceName, platformVersion} = ManualData.getADevice()
 const s3AppLink = 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/'
 describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   let devicesPage
@@ -27,6 +29,17 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     const loginPage = new LoginPage()
     loginPage.open()
     devicesPage = loginPage.login(username, password)
+    if (deviceGroup === 'private') {
+      if (username === 'pikachu') {
+        deviceGroup = 'admin'
+      }
+      else if (devicesPage.isExistingOrg()) {
+        devicesPage.getElementInOrg('private')
+      }
+      else {
+        debug.log('There isn\'t a organization\'s device')
+      }
+    }
     const numOfOnlineDevices =
       devicesPage.getTotalOnlineDevices({
         group: deviceGroup, nameOfDevice: deviceName, platformVersionOfDevice: platformVersion
@@ -50,6 +63,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     assert.include(urlPage, config.portalUrl.concat('/devices/launch?key='),
       'It has not launched a device yet')
     platformName = manualPage.getPlatformNameInfo()
+    platformVersion = parseFloat(platformVersion)
   })
 
   it('should change quality successfully', () => {
@@ -162,18 +176,24 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     manualPage.elements.cancelLocationButton.click()
   })
 
-  it('should set device time zone successfully', () => {
-    // Verify Cancel action on set device time zone dialog
-    const defaultTimezone = manualPage.getDefaultTimezone()
-    assert.equal(defaultTimezone, 'Select a time zone')
-    assert.isFalse(manualPage.isVisableButton('setTimezoneButton'))
-    manualPage.elements.cancelSetTimezoneButton.click()
+  it('should set device time zone successfully', function () {
+    if (platformName === 'Android' && platformVersion >= 8) {
+      debug.log('Kobiton hasn\'t supported set time zone on Android 8.x.x')
+      this.skip()
+    }
+    else {
+      // Verify Cancel action on set device time zone dialog
+      const defaultTimezone = manualPage.getDefaultTimezone()
+      assert.equal(defaultTimezone, 'Select a time zone')
+      assert.isFalse(manualPage.isVisableButton('setTimezoneButton'))
+      manualPage.elements.cancelSetTimezoneButton.click()
 
-    manualPage.setDeviceTimezone('(GMT-10:00) Hawaii Time')
-    assert.isTrue(manualPage.isContaining('setNewTimezoneStatus'))
+      manualPage.setDeviceTimezone('(GMT-10:00) Hawaii Time')
+      assert.isTrue(manualPage.isContaining('setNewTimezoneStatus'))
 
-    manualPage.setDeviceTimezone('(GMT+00:00) London')
-    assert.isTrue(manualPage.isContaining('setNewTimezoneStatus'))
+      manualPage.setDeviceTimezone('(GMT+00:00) London')
+      assert.isTrue(manualPage.isContaining('setNewTimezoneStatus'))
+    }
   })
 
   it('should power off/on device', () => {
@@ -217,7 +237,6 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     manualPage.pause(3000)
     assert.isFalse(manualPage.isContaining('powerOffAlert'))
 
-    const platformVersion = parseFloat(manualPage.getPlatformVersionInfo())
     if (platformName === 'iOS') {
       // Double Home on iOS device
       manualPage.elements.homeButton.doubleClick()
@@ -250,12 +269,29 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   }
 
   it('should end session automatically afer staying idle for 5 minutes', () => {
+    if (deviceGroup === 'private' || deviceGroup === 'admin') {
+      const defaultValueCheckbox = manualPage.getStyleOfCheckbox('attributeIdleCheckbox')
+      // Verify default value is unchecked
+      assert.isTrue(defaultValueCheckbox.includes('opacity 1000ms'))
+      // Check on auto quick session after 5 minutes if you do not anything
+      manualPage.click('idleCheckbox')
+    }
     manualPage.waitForIdlePopUp(stayIdleTimeout)
     assert.isTrue(manualPage.isContaining('idlePopUp'))
     manualPage.continueManualSession()
     assert.isFalse(manualPage.isContaining('idlePopUp'))
-    manualPage.elements.idleCheckbox.click()
+    manualPage.click('idleCheckbox')
     manualPage.pause(1000)
+  })
+
+  it('should have checkbox Clean up device on private devices', () => {
+    if (deviceGroup === 'private' || deviceGroup === 'admin') {
+      const defaultValueCheckbox = manualPage.getStyleOfCheckbox('attributeCleanUpCheckbox')
+      assert.isTrue(defaultValueCheckbox.includes('opacity 1000ms'))
+    }
+    else {
+      assert.isFalse(manualPage.isContaining('cleanUpCheckbox'))
+    }
   })
 
   it('should change session name successfully', () => {
@@ -349,16 +385,22 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     manualPage.pause(1000)
   })
 
-  it('should copy paste on clipboard successfully', () => {
-    manualPage.copyAndPasteOnClipboard()
-    manualPage.pause(10000)
-    assert.isFalse(manualPage.isContaining('dismissMessage'))
+  it('should copy paste on clipboard successfully', function () {
+    if (platformName === 'Android') {
+      manualPage.copyAndPasteOnClipboard()
+      manualPage.pause(10000)
+      assert.isFalse(manualPage.isContaining('dismissMessage'))
 
-    // Invalid text
-    const value = BaseData.generateParagraphs(50)
-    manualPage.copyAndPasteOnClipboard({textValue: value})
-    manualPage.pause(5000)
-    assert.isTrue(manualPage.isContaining('tooLongTextToPasteMessage'))
+      // Invalid text
+      const value = BaseData.generateParagraphs(50)
+      manualPage.copyAndPasteOnClipboard({textValue: value})
+      manualPage.pause(5000)
+      assert.isTrue(manualPage.isContaining('tooLongTextToPasteMessage'))
+    }
+    else {
+      debug.log('Kobiton hasn\'t supported function copy paste on iOS devices')
+      this.skip()
+    }
   })
 
   it('should install app from App repository successfully', function () {
