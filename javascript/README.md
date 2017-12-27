@@ -92,6 +92,7 @@ npm run android-web-test
 npm run android-app-test
 npm run ios-web-test
 npm run ios-app-test
+npm run multiple-devices-test
 ```
 
 ## VI. Reporting on Test Results
