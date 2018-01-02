@@ -10,20 +10,20 @@ const apiKey = 'your Kobiton api key'
 
 let desiredCapabilities = [{
   sessionName:        'Automation test session on first device',
-  sessionDescription: 'This is an example for Android web', 
-  deviceOrientation:  'portrait',  
-  captureScreenshots: true, 
-  browserName:        'chrome', 
+  sessionDescription: 'This is an example for Android web',
+  deviceOrientation:  'portrait',
+  captureScreenshots: true,
+  browserName:        'chrome',
   deviceGroup:        'KOBITON',
   deviceName:         'Galaxy S5',
   platformName:       'Android'
   }, {
   sessionName:        'Automation test session on second device',
-  sessionDescription: 'This is an example for iOS web', 
-  deviceOrientation:  'portrait',  
-  captureScreenshots: true, 
-  browserName:        'safari', 
-  deviceGroup:        'KOBITON', 
+  sessionDescription: 'This is an example for iOS web',
+  deviceOrientation:  'portrait',
+  captureScreenshots: true,
+  browserName:        'safari',
+  deviceGroup:        'KOBITON',
   deviceName:         'iPhone X',
   platformName:       'iOS'
 }]
@@ -34,7 +34,7 @@ const buildDriver = (_caps) => {
   const caps = Object.assign({}, _caps)
   caps.username = username
   caps.accessKey = apiKey
-  
+
   return new Builder()
     .usingServer(kobitonServerUrl)
     .withCapabilities(caps)
@@ -57,12 +57,9 @@ parallel('Parallel Tests',() => {
       await driver.get('http://www.google.com')
       await driver.findElement(By.name('q')).sendKeys('Kobiton', Key.RETURN)
       await driver.wait(until.titleContains('Kobiton'), 2000)
-      
+
       let msg = await driver.getTitle()
       assert.include(msg, 'Kobiton')
-    }
-    catch (err) {
-      console.error(`error: ${err}`)
     }
     finally {
       if (driver != null) {
