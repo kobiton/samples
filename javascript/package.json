@@ -1,13 +1,14 @@
 {
-  "name": "kobiton sample test",
+  "name": "kobiton-sample",
   "version": "1.0.0",
   "description": "This a sample test",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --no-timeouts *.js",
-    "android-web-test": "mocha --compilers js:babel-core/register --no-timeouts android-web-test.js",
-    "android-app-test": "mocha --compilers js:babel-core/register --no-timeouts android-app-test.js",
-    "ios-web-test": "mocha --compilers js:babel-core/register --no-timeouts ios-web-test.js",
-    "ios-app-test": "mocha --compilers js:babel-core/register --no-timeouts ios-app-test.js"
+    "test": "mocha --require babel-core/register --no-timeouts *.js",
+    "android-web-test": "mocha --require babel-core/register --no-timeouts android-web-test.js",
+    "android-app-test": "mocha --require babel-core/register --no-timeouts android-app-test.js",
+    "ios-web-test": "mocha --require babel-core/register --no-timeouts ios-web-test.js",
+    "ios-app-test": "mocha --require babel-core/register --no-timeouts ios-app-test.js",
+    "multiple-devices-test": "mocha --require babel-core/register --no-timeouts multiple-devices-test.js"
   },
   "keywords": [
     "kobiton",
@@ -18,6 +19,10 @@
   ],
   "author": "Khanh Do",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kobiton/samples/issues"
+  },
+  "homepage": "https://github.com/kobiton/samples#readme",
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -27,9 +32,12 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
+    "bluebird": "^3.5.1",
     "chai": "^4.1.2",
     "colors": "^1.1.2",
     "mocha": "^4.0.1",
+    "mocha.parallel": "^0.12.0",
+    "selenium-webdriver": "^3.6.0",
     "wd": "^1.4.1"
   }
 }
