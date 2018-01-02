@@ -132,7 +132,6 @@ class Device extends Base {
     indexFinish = config.device.indexFinish,
     arrayUDID = config.device.arrayUDID
   } = {}) {
-
     return await this._getDevicesBy({
       groupType,
       platformName,

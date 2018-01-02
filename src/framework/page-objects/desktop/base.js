@@ -54,6 +54,20 @@ export default class Page {
     await BPromise.all(resouceFiles)
   }
 
+  async clearUserProfiles() {
+    let username = await executeCommand('whoami')
+    username = username.trim()
+    const resouceFiles = [
+      `/Users/${username}/Library/Application Support/Kobiton/user.data`,
+      `/Users/${username}/Library/Application Support/Kobiton/profile`
+    ]
+
+    resouceFiles.map((f) => {
+      return executeCommand(`rm -rf "${f}"`)
+    })
+    await BPromise.all(resouceFiles)
+  }
+
   async uninstallPackages() {
     let username = await executeCommand('whoami')
     username = username.trim()

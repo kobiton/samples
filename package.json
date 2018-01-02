@@ -47,14 +47,14 @@
     "request-progress": "^3.0.0",
     "request-promise": "^4.2.1",
     "selenium-standalone": "^6.11.0",
-    "spectron": "^3.4.0",
+    "spectron": "^3.7.2",
     "tmp": "0.0.28",
     "wd": "^1.1.1",
     "wdio-json-reporter": "0.0.1",
     "wdio-junit-reporter": "^0.1.0",
     "wdio-mocha-framework": "^0.5.9",
     "wdio-selenium-standalone-service": "0.0.9",
-    "webdriverio": "4.9.9",
+    "webdriverio": "4.9.11",
     "winston": "^2.3.1",
     "yargs": "^6.5.0"
   }

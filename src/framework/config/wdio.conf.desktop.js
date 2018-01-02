@@ -8,12 +8,7 @@ const reportFolder = `reports/browser/${moment().format('YYYY-MM-DD-HH-mm')}`
 
 let mochaOptions = createMochaConfig()
 exports.config = {
-  desiredCapabilities: {
-    browserName: 'chrome',
-    chromeOptions: {
-      binary: '/Applications/Kobiton.app/Contents/MacOS/Kobiton'
-    }
-  },
+  capabilities: {},
   sync: true,
   logLevel: 'verbose',
   coloredLogs: true,
