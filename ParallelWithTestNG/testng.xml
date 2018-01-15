@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite thread-count="2" name="Kobiton Parallel Suite" parallel="tests" >
+    <parameter name="kobitonURL"
+               value="https://YOUR_USERNAME:YOUR_API_KEY@api.kobiton.com/wd/hub"/> <!-- Ex: username:apiKey@api-test.kobiton.com/wd/hub -->
+    <test name="Run test on Android device" >
+        <parameter name="platform" value="Android"/>
+        <classes>
+            <class name="WebTest"/>
+        </classes>
+    </test>
+
+    <test name="Run test on iOS device" >
+        <parameter name="platform" value="iOS"/>
+        <classes>
+            <class name="WebTest"/>
+        </classes>
+    </test>
+</suite>
