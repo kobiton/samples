@@ -16,24 +16,28 @@ const server = {
 
 export async function executeDesiredCapabilitiesTest({desiredCapabilities, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
+  browser.timeouts('script', 5 * 60 * 1000)
   const mailinatorPage = new MailinatorPage(browser, timeout)
   return await mailinatorPage.executeTest(1)
 }
 
 export async function executeJsonwiredTest({desiredCapabilities, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
+  browser.timeouts('script', 5 * 60 * 1000)
   const automationPracticePage = new AutomationPracticePage(browser, timeout)
   return await automationPracticePage.executeTest(duration)
 }
 
 export async function executeKobitonPageTest({desiredCapabilities, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
+  browser.timeouts('script', 5 * 60 * 1000)
   const kobitonPage = new KobitonPage(browser, timeout)
   return await kobitonPage.executeTest(duration)
 }
 
 export async function executeMailinatorPageTest({desiredCapabilities, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
+  browser.timeouts('script', 5 * 60 * 1000)
   const mailinatorPage = new MailinatorPage(browser, timeout)
   return await mailinatorPage.executeTest(duration)
 }
