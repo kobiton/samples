@@ -14,7 +14,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.util.Map;
 
 public class WebTest {
-    public static Map<String,String> testngParams;
+    public static Map<String, String> testngParams;
     String kobitonURL;
     RemoteWebDriver driver = null;
 
@@ -38,19 +38,16 @@ public class WebTest {
     }
 
     @Test
-    public void testKobitonWebsite() throws MalformedURLException, InterruptedException {
+    public void testKobitonWebsite() {
         driver.get("http://google.com");
         WebElement searchFieldE = driver.findElementByXPath("//input[@name='q']");
         searchFieldE.sendKeys("Kobiton");
         searchFieldE.sendKeys(Keys.ENTER);
-        if (driver.findElementsByXPath("//div/span[text()='Looking for results in English?']").size() != 0) {
-            driver.findElementByXPath("//div/a[text()='Change to English']").click();
-        }
-        String message = driver.findElementByXPath("//a[@href='https://kobiton.com/']").getText();
+        String message = driver.getTitle();
         Assert.assertTrue(message.contains("Kobiton"));
     }
 
-    public static final DesiredCapabilities generateDesiredCaps(String platform) {
+    public static DesiredCapabilities generateDesiredCaps(String platform) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         String browserName = "chrome";
         String deviceName = "Galaxy";
