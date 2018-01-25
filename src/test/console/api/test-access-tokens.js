@@ -6,7 +6,7 @@ const apiKeyFormat = /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/
 
 describe('API / apiKey', () => {
 
-  it('Should able to delete an existing api key', async() => {
+  it('should able to delete an existing api key', async () => {
     const listAccessTokens = (await api.Key.getAll()).map((item) => {
       return item.key
     })
@@ -21,17 +21,17 @@ describe('API / apiKey', () => {
     assert.notInclude(listNewAccessTokens, deletedToken, 'api key was not deleted')
   })
 
-  it('Should generate a new api key', async () => {
+  it('should generate a new api key', async () => {
     const result = await api.Key.createNew()
 
     const listAccessTokens = (await api.Key.getAll()).map((item) => {
       return item.key
     })
     assert.include(listAccessTokens, result.key)
-    assert.match(result.key, apiKeyFormat, 'new api key does not matche regexp')
+    assert.match(result.key, apiKeyFormat, 'new api key does not match regexp')
   })
 
-  it('Should limit new api keys upto 250', async () => {
+  it('should limit new api keys up to 250', async () => {
     const listAccessTokens = (await api.Key.getAll()).map((item) => {
       return item.key
     })

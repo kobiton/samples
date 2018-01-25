@@ -122,7 +122,7 @@ function startConsoleTests(inputPath) {
   }
   const getMochaConfig = getMochaConfigMethod(inputPath)
   const mochaOption = getMochaConfig({
-    reporter: argv.reporter,
+    reporter: argv.reporter || 'spec',
     reportName: argv.reportName,
     mochaFile: `reports/console/${moment().format('YYYY-MM-DD-HH-mm')}.xml`,
     reportDir: 'reports/console'
