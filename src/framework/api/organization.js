@@ -27,8 +27,6 @@ class OrganizationAPI extends Base {
     const result = filterJson(members, {invitationStatus: 'ACCEPTED'})
     return result
   }
-
 }
 
 export default new OrganizationAPI()
-

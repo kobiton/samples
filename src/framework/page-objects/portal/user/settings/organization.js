@@ -4,13 +4,13 @@ const elements = {
   orgName: '//form[@data-radium]/div/span',
   orgNameInput: '//form[@data-radium]/div/input',
   orgTotalMembersLabel: '//input[@name="email"]/ancestor::div[4]/div[2]/div',
-  orgDesciption: '//form[@data-radium]/div/div',
-  orgDesciptionInput: '//form[@data-radium]/div/div[2]/textarea[2]',
+  orgDescription: '//form[@data-radium]/div/div',
+  orgDescriptionInput: '//form[@data-radium]/div/div[2]/textarea[2]',
   emailInput: '//input[@name="email"]',
   addUserButton: '(//form)[3]//button',
   filterInput: '//input[@name="search"]',
   memberList: '//input[@name="search"]/ancestor::div[3]/div[2]/div',
-  notificationMsg: '//span[text()="Organization has been updated successfully"]',
+  addEmailMsg: '//span[text()="Email address is invalid "]',
   contextMenu: {
     grantAdminCheckbox: '//input[@type="checkbox"]',
     removeMember: '//div[text()="Remove"]'
@@ -33,10 +33,9 @@ const roleEnum = {
   ADMIN: 'ADMIN'
 }
 
-const waitTime = 500 //milliseconds
+const waitTime = 1000 //milliseconds
 
 export default class OrganizationPage extends SettingsPage {
-
   constructor(specificBrowser = browser) {
     super(specificBrowser)
     this._initElementsGetter(elements)
@@ -136,8 +135,8 @@ export default class OrganizationPage extends SettingsPage {
    */
   setOrgName(newOrgName) {
     this._browser.click(elements.orgName)
-                 .setValue(elements.orgNameInput, newOrgName)
-                 .click(elements.orgTotalMembersLabel)
+      .setValue(elements.orgNameInput, newOrgName)
+      .click(elements.orgTotalMembersLabel)
     this.waitForLoadingProgressDone()
   }
 
@@ -146,9 +145,28 @@ export default class OrganizationPage extends SettingsPage {
    * @param: newOrgDescription
    */
   setOrgDescription(newOrgDescription) {
-    this._browser.click(elements.orgDesciption)
-                 .setValue(elements.orgDesciptionInput, newOrgDescription)
-                 .click(elements.orgTotalMembersLabel)
+    this._browser.click(elements.orgDescription)
+    if (newOrgDescription === '') {
+      // got issue when cannot set description to empty (data auto rollback on itself)
+      // the walkaround solution is setting the field to a space or other characters
+      // then use unicode representation of a backspace keystroke
+      this._browser.setValue(elements.orgDescriptionInput, [' ', '\uE003'])
+    }
+    else {
+      this._browser.setValue(elements.orgDescriptionInput, newOrgDescription)
+    }
+    this._browser.click(elements.orgTotalMembersLabel)
+    this.waitForLoadingProgressDone()
+  }
+
+  /**
+  * Edit email
+  * @param: newEmail
+  */
+  addInvitationEmail(newEmail) {
+    this._browser.click(elements.emailInput)
+      .setValue(elements.emailInput, newEmail)
+      .click(elements.addUserButton)
     this.waitForLoadingProgressDone()
   }
 
@@ -165,14 +183,14 @@ export default class OrganizationPage extends SettingsPage {
    * Return a string of org description
    */
   getOrgDescription() {
-    return this._browser.getText(elements.orgDesciption)
+    return this._browser.getText(elements.orgDescription)
   }
 
   /**
-   * Return true if notification message is displayed, otherwise false
+   * Return true if invitation email added successfully otherwise return false
    */
-  isNotificationMessageExisting() {
-    return this._browser.isExisting(elements.notificationMsg)
+  isAddEmailInvitationMessageExisting() {
+    return this._browser.isExisting(elements.addEmailMsg)
   }
 
   /**
@@ -220,6 +238,29 @@ export default class OrganizationPage extends SettingsPage {
   }
 
   /**
+  * Check if member existed, return true if found otherwise false
+  * @param: email string
+  */
+  ifMemberExist(search) {
+    const searchByEmail = this.getMemberList().find((m) => m.email === search)
+    const searchByName = this.getMemberList().find((m) => m.name === search)
+    return searchByEmail || searchByName
+  }
+
+  /**
+  * Search member in memberlist by email, fullname. If found return true otherwise return false
+  * @param: email string/ fullname string
+  */
+  searchMember(searchString) {
+    const searchNameXPath = `//span/div[text()="${searchString}"]`
+    const searchEmailXPath = `//span/span[contains(text(),"${searchString}")]`
+    this._browser.click(elements.filterInput)
+        .setValue(elements.filterInput, searchString)
+    this.pause(1000)
+    return this._browser.isExisting(searchNameXPath) || this._browser.isExisting(searchEmailXPath)
+  }
+
+  /**
    * Add list of members to the organization
    * @param: emails array
    */
@@ -237,7 +278,7 @@ export default class OrganizationPage extends SettingsPage {
     if (this.getMemberList().length > 0) {
       this._browser.click(`${elements.memberList}[1]/span[3]`)
     }
-    this.wait(waitTime)
+    this._browser.pause(waitTime)
   }
 
   _closeMemberContextMenu() {
@@ -266,11 +307,34 @@ export default class OrganizationPage extends SettingsPage {
     this._openMemberContextMenu(email)
     if (this._isExisting(elements.contextMenu.grantAdminCheckbox) &&
       this._browser.isSelected(elements.contextMenu.grantAdminCheckbox)) {
-      return 'Admin'
+      return roleEnum.ADMIN
     }
     else {
-      return 'Member'
+      return roleEnum.MEMBER
     }
   }
 
+  getMemberEmail() {
+    return this.getMemberList().find((m) => m.role.toUpperCase() === roleEnum.MEMBER).email
+  }
+
+  doesContextMenuExist(email) {
+    this.filterMember(email)
+    if (this.getMemberList().length > 0) {
+      this._openMemberContextMenu(email)
+      return this._isExisting(elements.contextMenu.removeMember)
+    }
+    return false
+  }
+
+  doesConfirmDialogExist(email) {
+    this.filterMember(email)
+    if (this.ifMemberExist(email)) {
+      this._openMemberContextMenu(email)
+      this._browser.click(elements.contextMenu.removeMember)
+      this.pause(2000)
+      return this._isExisting(elements.removeConfirmation.removeButton)
+    }
+    return false
+  }
 }

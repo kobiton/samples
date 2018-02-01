@@ -22,8 +22,18 @@ export function generateEmail(username) {
   return `${username}+${milliseconds}-${config.emailRetainingToken}@kms-technology.com`
 }
 
+export function generateTestEmail() {
+  return faker.internet.email()
+}
+
 export function generateFullname() {
   return faker.name.findName()
+}
+
+export function generateRandomText(length) {
+  const randomString = faker.lorem.paragraphs(8)
+  const text = randomString.replace(/\s/g, '').replace(/\./g, '')
+  return text.slice(0, length)
 }
 
 export function prepareFolderSync(folderPath) {
@@ -110,7 +120,7 @@ export function filterJson(jsonArray, criteria) {
   let result = []
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i]
-    result = jsonArray.filter(item => item[key] === values[i])
+    result = jsonArray.filter((item) => item[key] === values[i])
     jsonArray = result
   }
 

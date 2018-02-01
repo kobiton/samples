@@ -5,7 +5,9 @@ const elements = {
   userNameInput: '//input[@type="text" and @name="username"]',
   emailInput: '//input[@type="text" and @name="email"]',
   passwordInput: '//input[@type="password" and @name="password"]',
-  registerSpan: '//button[contains(., "Register")]',
+  emailValidation: '//div[text()="This is not a valid email"]',
+  agreement: '//input[@name="tos"]',
+  registerButton: '//button[contains(., "Register")]',
   errorSpan: '//form/span'
 }
 
@@ -47,8 +49,8 @@ export default class RegisterPage extends Page {
   }
 
   register() {
-    this._browser.waitForEnabled(elements.registerSpan)
-    this.elements.registerSpan.click()
+    this._browser.waitForEnabled(elements.registerButton)
+    this.elements.registerButton.click()
     this.waitForLoadingProgressDone()
     return this
   }
@@ -56,9 +58,35 @@ export default class RegisterPage extends Page {
   getRegisterErrorMessage() {
     let errorMsg = ''
     if (this._isElementExists(elements.errorSpan)) {
-      errorMsg = this.errorSpan.getText()
+      errorMsg = this._browser.getText(elements.errorSpan)
     }
-
     return errorMsg
+  }
+
+  /*
+  * take wrong format email string as input
+  * return error message as output
+  */
+  emailValidation(invalidEmail) {
+    this.setEmail(invalidEmail)
+    this._browser.pause(1000)
+    const message = this._browser.getText(elements.emailValidation)
+    return message
+  }
+
+  /*
+  * return the state of lisence agreement checkbox, true if checked
+  * false if unchecked
+  */
+  getCheckLiscenceAgreementValue() {
+    return this._browser.getValue(elements.agreement)
+  }
+
+  /*
+  * get attribute ("disabled") of register button
+  * return true if the button is disabled, otherwise false
+  */
+  getRegisterButtonDisabledAttribute() {
+    return this._browser.getAttribute(elements.registerButton, 'disabled')
   }
 }
