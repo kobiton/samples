@@ -1,13 +1,8 @@
-import fs from 'fs'
-import path from 'path'
 import url from 'url'
 import clipboardy from 'clipboardy'
-import BPromise from 'bluebird'
-import {debug} from '@kobiton/core-util'
 import AuthenticatedPage from './base'
 import CanvasScreen from './canvas-screen'
-import {prepareFolderSync} from '../../../util'
-import DownloadProcess from '../../../util/download_process'
+import {downloadApp, getRealPath, fileExists} from '../../../util'
 
 const elements = {
 // Header bar
@@ -325,53 +320,19 @@ export default class ManualPage extends AuthenticatedPage {
 
   /**
    * Download app test and save it into local machine
-   */
-  async downloadApp(urlApp) {
-    const appTestFolder = 'apps-test'
-    prepareFolderSync(appTestFolder)
-    const appDirPath = fs.realpathSync(appTestFolder)
-
-    // Get app's name
-    const appName = url.parse(urlApp).pathname.split('/').pop()
-    const appPath = path.join(appDirPath, appName)
-    if (!fs.existsSync(appPath)) {
-      return new BPromise((resolve, reject) => {
-        const download = new DownloadProcess('download')
-        const downloadUrl = urlApp
-        download.download(downloadUrl, appPath)
-        download
-          .on('progress', (state) => debug.log('Progress', JSON.stringify(state)))
-          .on('finish', (file) => {
-            debug.log('setup', `Finished download file ${file}`)
-            resolve(file)
-          })
-          .on('error', (err) => {
-            debug.error('Error', err)
-            reject(err)
-          })
-      })
-    }
-    else {
-      return true
-    }
-  }
-
-  /**
    * Get path of local app test
    */
-  async getAppPath(urlApp) {
-    const downloadedApp = await this.downloadApp(urlApp)
-    if (downloadedApp) {
-      const appDirPath = fs.realpathSync('apps-test')
+  async getAppPath(appUrl) {
+    const appTestFolder = 'apps-test'
+    // Get app's name
+    const appName = url.parse(appUrl).pathname.split('/').pop()
+    const appPath = getRealPath(appTestFolder, appName)
+    
+    if (!fileExists(appPath)) {
+      await downloadApp(appUrl, appPath)
+    }
 
-    // Get app's path
-      const appName = url.parse(urlApp).pathname.split('/').pop()
-      const appPath = path.join(appDirPath, appName)
-      return appPath
-    }
-    else {
-      return 0
-    }
+    return appPath
   }
 
   /**

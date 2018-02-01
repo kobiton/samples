@@ -27,6 +27,7 @@
     * export KOBITON_USERNAME_1='<username>'
     * export KOBITON_PASSWORD_1='<password>'
     * export KOBITON_API_KEY='<api_key>'
+    * export KOBITON_DESKTOP_APP_URL='<Kobiton App S3 link>'
 
   Run command to set variable environment
     ```bash

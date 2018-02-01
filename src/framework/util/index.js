@@ -1,8 +1,12 @@
 import faker from 'faker'
 import fs from 'fs'
+import path from 'path'
 import moment from 'moment'
 import mkdirp from 'mkdirp'
 import config from '../config/test'
+import BPromise from 'bluebird'
+import DownloadProcess from './download_process'
+import {debug} from '@kobiton/core-util'
 
 export function removeSlash(text) {
   return (text) ? text.replace(/\/$/, '') : text
@@ -125,5 +129,38 @@ export function filterJson(jsonArray, criteria) {
   }
 
   return result
+}
 
+export function downloadApp(appUrl, target) {
+  return new BPromise((resolve, reject) => {
+    const download = new DownloadProcess()
+    const downloadUrl = appUrl
+    debug.log('Download file:', downloadUrl)
+    if (target) {
+      download.download(downloadUrl, target)
+    }
+    else {
+      download.download(downloadUrl)
+    }
+    download
+      .on('progress', (state) => debug.log('Progress', JSON.stringify(state)))
+      .on('finish', (file) => {
+        debug.log('setup', `Finished download file ${file}`)
+        resolve(file)
+      })
+      .on('error', (err) => {
+        debug.error('Error', err)
+        reject(err)
+      })
+  })
+}
+
+export function getRealPath(folderPath, appName) {
+  prepareFolderSync(folderPath)
+  const appDirPath = fs.realpathSync(folderPath)
+  return path.join(appDirPath, appName)
+}
+
+export function fileExists(filePath) {
+  return fs.existsSync(filePath)
 }

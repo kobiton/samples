@@ -39,15 +39,18 @@ export default class Base {
     return `${pageUrl}/v1/${removeSlash(path)}`
   }
 
-  async _send({method = 'GET', json = true, path, headers, body = {}} = {}) {
+  async _send({method = 'GET', json = true, url, path, headers, body = {}} = {}) {
     const finalHeaders = headers || {
       'authorization': `Basic ${this.getToken()}`,
       'content-type': 'application/json'
     }
+
+    const requestURL = url || this._getAbsoluteUrl(path)
+
     const finalOptions = {
       method,
       json,
-      url: this._getAbsoluteUrl(path),
+      url: requestURL,
       headers: finalHeaders,
       body
     }
@@ -102,4 +105,5 @@ export default class Base {
       ...options
     })
   }
+
 }

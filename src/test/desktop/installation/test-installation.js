@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import LoginPage from '../../../framework/page-objects/desktop/intro/login'
-import {removeApp, downloadApp, installApp} from '../../../framework/util/downloader'
+import {removeApp, downloadKobitonApp, installApp} from '../../../framework/page-objects/desktop/desktop-installation' // eslint-disable-line max-len
 
 describe('Installation', () => {
   let loginPage
@@ -11,7 +11,7 @@ describe('Installation', () => {
     await loginPage.uninstallPackages()
     await removeApp()
 
-    const kobitonAppFile = await downloadApp()
+    const kobitonAppFile = await downloadKobitonApp()
     await installApp(kobitonAppFile)
 
     await loginPage.startApplication()
