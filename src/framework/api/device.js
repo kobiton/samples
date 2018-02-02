@@ -6,6 +6,9 @@ import config from '../config/test'
 
 class Device extends Base {
 
+  /**
+   * Retrieve devices in 3 groups: private/org, favorite and cloud devices.
+   */
   async _getDevices() {
     const [devicesGroups] = await this.get({
       path: 'devices'
@@ -13,6 +16,37 @@ class Device extends Base {
     return devicesGroups
   }
 
+  /**
+   * Mark a device favorite
+   * @param deviceId {integer} - Device ID
+   */
+  async markDeviceFavorite(deviceId) {
+    return await this.post({
+      path: `devices/${deviceId}/favorite`
+    })
+  }
+
+  /**
+   * Unmark favorite device
+   * @param deviceId {integer} - Device ID
+   */
+  async unmarkFavoriteDevice(deviceId) {
+    return await this.delete({
+      path: `devices/${deviceId}/favorite`
+    })
+  }
+
+  /**
+   * Filter devices by some criteria
+   * @param groupType {string} - Private | Cloud | Favorite | All
+   * @param platformName {string} - Android | iOS
+   * @param platformVersion {string} - Platform Version
+   * @param deviceName {string} - Device Name
+   * @param deviceNumbers {integer} - Total devices
+   * @param indexBegin {integer} - The start index
+   * @param indexFinish {integer} - The end index
+   * @param arrayUDID {array} - List of devices
+   */
   async _getDevicesBy({
     onlineDeviceOnly = true,
     groupType = 'all',
@@ -80,6 +114,10 @@ class Device extends Base {
     return devices
   }
 
+  /**
+   * Get the status of the device
+   * @param device {object} - The object device
+   */
   async isOnlineDevice(device) {
     const groupType = (device.udid) ? group.private : group.cloud
     let platformName = device.platformName
@@ -122,6 +160,17 @@ class Device extends Base {
     return isOnline
   }
 
+  /**
+   * Return the list of Online devices
+   * @param groupType {string} - Private | Cloud | Favorite | All
+   * @param platformName {string} - Android | iOS
+   * @param platformVersion {string} - Platform Version
+   * @param deviceName {string} - Device Name
+   * @param deviceNumbers {integer} - Total devices
+   * @param indexBegin {integer} - The start index
+   * @param indexFinish {integer} - The end index
+   * @param arrayUDID {array} - List of devices
+   */
   async getOnlineDevices({
     groupType = config.device.group,
     platformName = config.device.platform,
@@ -144,6 +193,15 @@ class Device extends Base {
     })
   }
 
+  /**
+   * Query the device depends on some criteria
+   * @param groupType {string} - Private | Cloud | Favorite | All
+   * @param platformName {string} - Android | iOS
+   * @param platformVersion {string} - Platform Version
+   * @param deviceName {string} - Device Name
+   * @param deviceNumbers {integer} - Total devices
+   * @param arrayUDID {array} - List of devices
+   */
   async getAllDevices({
     groupType = config.device.group,
     platformName = config.device.platform,
@@ -163,6 +221,13 @@ class Device extends Base {
     })
   }
 
+  /**
+   * Count total devices depend on some criteria
+   * @param groupType {string} - Private | Cloud | Favorite | All
+   * @param status {string} - Online | Busy | Offline
+   * @param name {string} - Device Name
+   * @param platformVersion {string} - Platform Version
+   */
   async countDeviceByCriteria({
     groupType,
     status,
@@ -208,6 +273,10 @@ class Device extends Base {
     return devices.length
   }
 
+  /**
+   * Query the device depends on UDID
+   * @param udid {string} - Device UDID
+   */
   async getDevice(udid) {
     const groups = await this._getDevices()
     const allDevices = groups.privateDevices
