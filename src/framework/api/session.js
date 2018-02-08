@@ -1,5 +1,7 @@
 import Base from './_base'
-import {debug} from '@kobiton/core-util'
+import config from '../../framework/config/test'
+
+const {autoTestHostname, username1: username, apiKey} = {...config}
 
 const searchTypeEnum = {
   STATE: 'state',
@@ -14,39 +16,117 @@ const searchTypeEnum = {
 
 class Session extends Base {
 
-  async getSessions() {
+  /**
+   * Retrieve all sessions belong to the current organization or user.
+   * @param searchTypes {array}
+   * searchTypes = {
+   *  state, // Running, Complete, Passed, Failed, Timeout, Error, Terminated
+   *  type, // All, Auto, Manual
+   *  platform, // All, Android, iOS
+   *  userId,
+   *  keyword,
+   *  page,
+   *  startDate,
+   *  endDate
+   * }
+   */
+  async getSessions(params) {
+    let realPath = (params) ? 'sessions?' : 'sessions'
+
+    if (params) {
+      let subPath = ''
+      Object.keys(params).forEach((type) => {
+        let value = params[type]
+        if (searchTypeEnum.hasOwnProperty(type.toUpperCase())) {
+          subPath = `${type}=${value.toString().toUpperCase()}&`
+          realPath = realPath.concat(subPath)
+        }
+      })
+      realPath = realPath.substring(0, realPath.length - 1)
+    }
+
     return await this.get({
-      path: 'sessions'
+      path: realPath
     })
   }
 
-  async filterSessionsBySingleInput(searchType, searchData) {
-    if (searchTypeEnum.hasOwnProperty(searchType.toUpperCase())) {
-      const [sessionInfo] = await this.get({
-        path: `sessions?${searchType}=${searchData.toUpperCase()}`
-      })
-      return sessionInfo
-    }
-    debug.error(`Invalid search type: ${searchType}`)
-    return
+  /**
+   * Retrieve a session info belonging to the current user or organization.
+   * @param sessionId {integer} - Session ID
+   */
+  async getASession(sessionId) {
+    return await this.get({
+      path: `sessions/${sessionId}`
+    })
   }
 
-  async filterSessionsByMultiInput(searchTypes) {
-    let path = 'sessions?'
-    let subPath = ''
-    Object.keys(searchTypes).forEach((type) => {
-      let value = searchTypes[type]
-      if (searchTypeEnum.hasOwnProperty(type.toUpperCase())) {
-        subPath = `${type}=${value.toString().toUpperCase()}&`
-        path = path.concat(subPath)
+  /**
+   * Delete a session
+   * @param sessionId {integer} - Session ID
+   */
+  async deleteASession(sessionId) {
+    return await this.delete({
+      path: `sessions/${sessionId}`
+    })
+  }
+
+  /**
+   * Terminate a session
+   * @param sessionId {integer} - Session ID
+   */
+  async terminateASession(sessionId) {
+    return await this.delete({
+      path: `sessions/${sessionId}/terminate`
+    })
+  }
+
+  /**
+   * Terminate a Session
+   * @param body {object}
+   * >> name: The test session name
+   * >> description: The test session description
+   * >> state: The state of test session "PASSED | FAILED | COMPLETE"
+   */
+  async updateSessionInfo(sessionId, {name, description, state}) {
+    return await this.put({
+      path: `sessions/${sessionId}`,
+      body: {
+        name,
+        description,
+        state
       }
     })
-
-    const [sessionInfo] = await this.get({
-      path: path.substring(0, path.length - 1)
-    })
-    return sessionInfo
   }
+
+  /**
+  * Create a new session
+  * @param body {object} Enter desiredCapabilities. Example:
+  * 'desiredCapabilities': {
+  *  'deviceOrientation': 'portrait',
+  *  'captureScreenshots': true,
+  *  'deviceGroup': 'KOBITON',
+  *  'deviceName': 'iPhone',
+  *  'platformName': 'iOS',
+  *  'browserName': 'safari'
+  }
+  */
+  async initSession(body) {
+    return await this.post({
+      url: `https://${username}:${apiKey}@${autoTestHostname}/wd/hub/session`,
+      body
+    })
+  }
+
+  /**
+  * Delete the session
+  * @param sessionId {string} Session Id
+  */
+  async deleteSession(sessionId) {
+    return await this.delete({
+      url: `https://${autoTestHostname}/wd/hub/session/${sessionId}`
+    })
+  }
+
 }
 
 export default new Session()

@@ -62,7 +62,7 @@ describe('Verifying on sessions page', () => {
       'endDate': today
     }
 
-    const sessionListFromAPI = await SessionAPI.filterSessionsByMultiInput(searchDataForAPI)
+    const sessionListFromAPI = await SessionAPI.getSessions(searchDataForAPI)
 
     assert.isTrue(isIncluded(sessionListFromUI, sessionListFromAPI.data),
       'The session list does not match.')
@@ -77,7 +77,7 @@ describe('Verifying on sessions page', () => {
       'endDate': today
     }
 
-    const sessionListFromAPI = await SessionAPI.filterSessionsByMultiInput(searchDataForAPI)
+    const sessionListFromAPI = await SessionAPI.getSessions(searchDataForAPI)
 
     assert.isTrue(isIncluded(sessionListFromUI, sessionListFromAPI.data),
       'The session list does not match.')
@@ -92,7 +92,7 @@ describe('Verifying on sessions page', () => {
       'endDate': today
     }
 
-    const sessionListFromAPI = await SessionAPI.filterSessionsByMultiInput(searchDataForAPI)
+    const sessionListFromAPI = await SessionAPI.getSessions(searchDataForAPI)
 
     assert.isTrue(isIncluded(sessionListFromUI, sessionListFromAPI.data),
       'The session list does not match.')
@@ -107,7 +107,7 @@ describe('Verifying on sessions page', () => {
       'endDate': today
     }
 
-    const sessionListFromAPI = await SessionAPI.filterSessionsByMultiInput(searchDataForAPI)
+    const sessionListFromAPI = await SessionAPI.getSessions(searchDataForAPI)
 
     assert.isTrue(isIncluded(sessionListFromUI, sessionListFromAPI.data),
       'The session list does not match.')
@@ -130,7 +130,7 @@ describe('Verifying on sessions page', () => {
       'endDate': today
     }
 
-    const sessionListFromAPI = await SessionAPI.filterSessionsByMultiInput(searchDataForAPI)
+    const sessionListFromAPI = await SessionAPI.getSessions(searchDataForAPI)
 
     assert.isTrue(isIncluded(sessionListFromUI, sessionListFromAPI.data),
       'The session list does not match.')
@@ -145,7 +145,7 @@ describe('Verifying on sessions page', () => {
       'endDate': extractEndDate(url)
     }
 
-    const sessionListFromAPI = await SessionAPI.filterSessionsByMultiInput(searchDataForAPI)
+    const sessionListFromAPI = await SessionAPI.getSessions(searchDataForAPI)
 
     assert.isTrue(isIncluded(sessionListFromUI, sessionListFromAPI.data),
       'The session list does not match.')
