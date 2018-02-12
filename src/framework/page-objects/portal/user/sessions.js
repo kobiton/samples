@@ -2,6 +2,11 @@ import AuthenticatedPage from './base'
 import {debug} from '@kobiton/core-util'
 
 const elements = {
+  timeOfFirstSession: `//div[contains(text(),"Test session")]/../
+  following-sibling::div[1]/div/div/span`,
+  firstSessionOfSessionList: '//div[contains(text(),"Test session")]/../following-sibling::div[1]',
+  startTime: '//div[5]/div[1]/div[2]',
+  endTime: '//div[5]/div[2]/div[2]',
   fullTextSearch: '//input[@name="keyword"]',
   sessionTypeDropDown: '//label[text()="Session type"]/parent::*/div[1]',
   statusDropDown: '//label[text()="Status"]/parent::*/div[@style]',
@@ -237,9 +242,11 @@ export default class SessionsPage extends AuthenticatedPage {
       this.openDatePicker('ENDDATE')
       this.selectDate(endDate)
       this.wait(waitTime)
+      this.waitForLoadingProgressDone()
     }
     else {
-      debug.error(`${startDate} is greater than ${endDate}, please choose other dates and try again.`)
+      debug.error(`${startDate} is greater than ${endDate}, 
+       please choose other dates and try again.`)
     }
   }
 
@@ -301,5 +308,29 @@ export default class SessionsPage extends AuthenticatedPage {
       this._browser.click(elements.datePicker.next)
       this.wait(waitTime)
     }
+  }
+
+  /**
+   * Get time of first session in list session
+   * Return an object
+   */
+  getTimeOfFirstSession() {
+    return this._browser.getText(elements.timeOfFirstSession)
+  }
+
+  /**
+   * Get session detail infor
+   * Return an object
+   */
+  getFirstSessionDetail() {
+    // Click first session of list sessions on Sessions page
+    this.waitForLoadingProgressDone()
+    this._browser.click(elements.firstSessionOfSessionList)
+    this.waitForLoadingProgressDone()
+    // Get start and end time
+    const session = {}
+    session.StartTime = this._browser.getText(elements.startTime)
+    session.EndTime = this._browser.getText(elements.endTime)
+    return session
   }
 }
