@@ -53,10 +53,11 @@ class Session extends Base {
   /**
    * Retrieve a session info belonging to the current user or organization.
    * @param sessionId {integer} - Session ID
+   * @param pageNumber {integer} - Page number, default is 1
    */
-  async getASession(sessionId) {
+  async getASession(sessionId, pageNumber = 1) {
     return await this.get({
-      path: `sessions/${sessionId}`
+      path: `sessions/${sessionId}?page=${pageNumber}`
     })
   }
 
