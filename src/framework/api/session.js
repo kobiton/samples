@@ -128,6 +128,20 @@ class Session extends Base {
     })
   }
 
+  /**
+  * Navigate to a new URL
+  * @param sessionId {string} Session Id
+  * @param url {string} Get a new url
+  */
+  async getUrl(sessionId, {url}) {
+    return await this.post({
+      url: `https://${autoTestHostname}/wd/hub/session/${sessionId}/url`,
+      body: {
+        url
+      }
+    })
+  }
+
 }
 
 export default new Session()
