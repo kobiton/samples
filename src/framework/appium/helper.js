@@ -5,7 +5,8 @@ import config from '../config/test'
 
 export function convertToDesiredCapabilities(timestamp, devices, {
   deviceOrientation = config.device.orientation,
-  captureScreenshots = config.device.captureScreenshots
+  captureScreenshots = config.device.captureScreenshots,
+  newCommandTimeout = 60 * 5
 } = {}) {
   return devices
     .map((d) => {
@@ -16,7 +17,7 @@ export function convertToDesiredCapabilities(timestamp, devices, {
       const sessionDescription = `Auto web session on device ${d.deviceName}`
       const browserName = getDefaultBrowserBy(desiredCapFields.platformName)
       return {...desiredCapFields, deviceOrientation, captureScreenshots,
-        browserName, deviceGroup, sessionName, sessionDescription}
+        newCommandTimeout, browserName, deviceGroup, sessionName, sessionDescription}
     })
 }
 

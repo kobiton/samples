@@ -70,6 +70,7 @@ class Device extends Base {
         break
       default:
         devices = devicesGroups.cloudDevices.concat(devicesGroups.privateDevices)
+        break
     }
 
     devices = devices.filter((d) => !d.support.appiumDisabled)
@@ -249,6 +250,7 @@ class Device extends Base {
       default:
         devices = allDevices.cloudDevices.concat(
           allDevices.privateDevices).concat(allDevices.favoriteDevices)
+        break
     }
     devices = devices.filter((d) => !d.isHidden)
     switch (status) {
