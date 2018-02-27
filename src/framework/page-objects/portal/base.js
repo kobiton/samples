@@ -1,3 +1,8 @@
+import fs from 'fs'
+import rimraf from 'rimraf'
+import compareImages from 'resemblejs/compareImages'
+import {prepareFolderSync} from '../../../framework/util'
+
 const elements = {
   loadingHidden: '#app [data-state= "hidden"]',
   loadingRunning: '#app [data-state= "running"]'
@@ -132,9 +137,48 @@ export default class Page {
   }
 
   /**
+  * Take current viewport screenshot
+  * @param page {string} name page of screenshot
+  * @param nameScreenshot {string} name screenshot we took
+  */
+  takeScreenshotPage(page, nameScreenshot) {
+    const screenshootFolder = `images/${page}`
+    prepareFolderSync(screenshootFolder)
+    this._browser.screenshot()
+    this._browser.saveScreenshot(`${screenshootFolder}/${nameScreenshot}.png`)
+  }
+
+  /**
+  * Compare two screenshots
+  * @param page {string} name page of screenshot
+  * @param nameScreenshot1 {string} name of the first screenshot
+  * @param nameScreenshot2 {string} name of the second screenshot
+  * @param resultName {string} name screenshot of result comparision
+  */
+  async compareImages(page, nameScreenshot1, nameScreenshot2, resultName) {
+    const data = await compareImages(
+      fs.readFileSync(`images/${page}/${nameScreenshot1}.png`),
+      fs.readFileSync(`images/${page}/${nameScreenshot2}.png`)
+    )
+    fs.writeFileSync(`images/${page}/${resultName}.png`, data.getBuffer())
+    return data
+  }
+
+  /**
+  * Clean up folder image
+  * @param folderName {string} name of folder we want to clean
+  */
+  cleanUpFolder(folderName) {
+    if (fs.existsSync(folderName)) {
+      const folderPath = fs.realpathSync(folderName)
+      rimraf.sync(folderPath)
+    }
+  }
+
+  /**
   * Search for multiple elements on the page, starting from the document root.
   * The located elements will be returned as a WebElement JSON objects.
-  * @param {string} selector to query the elements
+  * @param selectorValue {string} selector to query the elements
   */
   _isElementExists(selectorValue) {
     let response = this._browser.elements(selectorValue)
@@ -150,7 +194,7 @@ export default class Page {
 
   /**
    * Go through all of elements and create getter function for each of element
-   * @param  {object} elements [description]
+   * @param elements {object} elements [description]
    * @return {object} element   could throw exception
    *                             if element not found
    */
@@ -164,11 +208,11 @@ export default class Page {
     })
   }
 
-/**
- * Wait for an element exist then return an web element. This method does not cache result
- * @param {selectorValue} is a string to identify an object
- * @return {element} return an web element object
- */
+  /**
+   * Wait for an element exist then return an web element. This method does not cache result
+   * @param {selectorValue} is a string to identify an object
+   * @return {element} return an web element object
+   */
   _getElement(selectorValue) {
     let element = this._cachedElemens[selectorValue]
     if (!element) {
@@ -181,10 +225,10 @@ export default class Page {
   }
 
   /**
- * Wait for elements exist then return an arrays of web elements. Cache result.
- * @param {selector} is a string to identify objects
- * @return {element} return an array of web element objects
- */
+   * Wait for elements exist then return an arrays of web elements. Cache result.
+   * @param selectorValue {selector} is a string to identify objects
+   * @return {element} return an array of web element objects
+   */
   getElements(selectorValue) {
     let elements = []
     let response = this._browser.elements(selectorValue)
@@ -201,7 +245,7 @@ export default class Page {
 
   /**
    * Wait for elelemt(s) exist
-   * @param {string} CSS selector to query
+   * @param selectorValue {string} CSS selector to query
    * Throw Error if element is not existed
    */
   _waitForExist(selectorValue, timeout = 5000, reverse = false) {

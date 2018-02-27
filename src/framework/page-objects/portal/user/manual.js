@@ -17,6 +17,7 @@ const elements = {
   timing: '//div[div[text()="High Quality" or text()="Medium Quality" or text()="Low Quality"]]/parent::div/parent::div/span[2]',
   sessionTab: '//div[text()="Session"]',
   appsTab: '//div[text()="Apps"]',
+  liveLogsTab: '//div[text()="Live Logs"]',
 
 // Canvas screen
   // eslint-disable-next-line max-len
@@ -44,6 +45,11 @@ const elements = {
   installingAppMessage: '//div[contains(text(),"Uploaded success, installing app")]',
   uploadingAppMessage: '//div[contains(text(),"Uploading app file")]',
   installedAppMessage: '//div[contains(.,"has been installed on the device")]',
+  // eslint-disable-next-line max-len
+  recordingNetworkActivityMessage: '//div[contains(normalize-space(text()),"Network activity is being recorded.")]',
+  // eslint-disable-next-line max-len
+  endRecordNetworkActivityMessage: '//div[contains(normalize-space(text()),"Network activity successfully recorded.")]',
+
 // Menu Action Bar
   collapsePanelButton: '//button[div/div/span[text()="Collapse this panel"]]',
   expandPanelButton: '//button[div/div/span[text()="Expand this panel"]]',
@@ -52,17 +58,21 @@ const elements = {
   pinchButton: '//button[div/div/span[contains(.,"Pinch")]]',
   rotateButton: '//button[div/div/span[contains(.,"Rotate screen")]]',
   setDeviceLocationButton: '//button[div/div/span[contains(.,"Set device location")]]',
+  recordNetworkActivityButton: '//button[div/div/span[contains(.,"Record network activity")]]',
+  // eslint-disable-next-line max-len
+  stopRecordingNetworkActivityButton: '//button[div/div/span[contains(.,"Stop recording network activity")]]',
   setDeviceTimeZoneButton: '//button[div/div/span[contains(.,"Set device time zone")]]',
   powerButton: '//button[div/div/span[text()="Power"]]',
   recentAppsButton: '//button[div/div/span[text()="Recent apps"]]',
   homeButton: '//button[div/div/span[contains(normalize-space(text()),"Home (press,")]]',
   backButton: '//button[div/div/span[text()="Back"]]',
+  shareScreenButton: '//button[div/div/span[contains(text(),"Share manual")]]',
   exitButton: '//*[@id="app"]//button[div/span[contains(.,"Exit")]]',
 
 // Set location device pop up
   setDeviceLocationPopup: '//h3[text()="Set device location"]',
-  latitudeField: '//div[label[text()="Latitude"]]/input',
-  longitudeField: '//div[label[text()="Longitude"]]/input',
+  latitudeField: '//div[contains(.,"Latitude")]/input',
+  longitudeField: '//div[contains(.,"Longitude")]/input',
   setLocationButton: '//h3[text()="Set device location"]/../div/form//button[contains(.,"Set")]',
   cancelLocationButton:
   '//h3[text()="Set device location"]/../div/form//button[contains(.,"Cancel")]',
@@ -71,6 +81,22 @@ const elements = {
   '//div[contains(normalize-space(text()),"Latitude value must be between -90 to 90")]',
   wrongLongitudeWarning:
   '//div[contains(normalize-space(text()),"Longitude value must be between -180 to 180")]',
+
+// Record network activity
+  recordNetworkPopup: '//div[h3[contains(.,"Record network traffic")]]',
+  // eslint-disable-next-line max-len
+  styleRecordNetworkButton: '//button[div/div/span[contains(.,"Record network activity")]]/div/div[2]/div',
+  // eslint-disable-next-line max-len
+  styleRecordingNetworkButton: '//button[div/div/span[contains(.,"Stop recording network activity")]]/div/div[2]/div',
+  notRemindCheckbox: '//div[h3[contains(.,"Record network traffic")]]//input[@type="checkbox"]',
+  // eslint-disable-next-line max-len
+  startRecordNetwork: '//div[h3[contains(.,"Record network traffic")]]//button[contains(.,"Start")]',
+
+// Share screen manual
+  shareSessionViewPopup: '//h3[text()="Share session view"]',
+  linkShare: '//input[@readonly]',
+  copyLinkButton: '//button[contains(.,"Copy link")]',
+  closeShareSessionPopUpButton: '//button[contains(.,"Close")]',
 
 // Set time zone device pop up
   setDeviceTimezonePopup: '//h3[text()="Set device time zone"]',
@@ -121,6 +147,13 @@ const elements = {
 
   sendToDeviceAndInstallButton: '//button[span[text()="Send to device & install"]]',
   uploadToDeviceAndInstallButton: '//button[span[text()="Upload to device & install"]]',
+
+// Lives log tab
+  pauseButton: '//button[contains(.,"Pause")]',
+  resumeButton: '//button[contains(.,"Resume")]',
+  clearLogsButton: '//button[contains(.,"Clear logs")]',
+  downloadLogsButton: '//button[contains(.,"Download logs")]',
+  liveLogsBoard: '//div[@aria-label="grid"]/div',
 
 // Error messages on system
   // eslint-disable-next-line max-len
@@ -181,7 +214,7 @@ export default class ManualPage extends AuthenticatedPage {
     return this._browser.getAttribute(xpathOfIcon, 'style')
   }
 
-  getStyleOfCheckbox(ele) {
+  getStyleOfElement(ele) {
     return this._browser.getAttribute(elements[ele], 'style')
   }
 
@@ -194,6 +227,14 @@ export default class ManualPage extends AuthenticatedPage {
   rotateScreen() {
     this.clickButtonOnMenuBar('rotateButton')
     this._browser.pause(5000)
+  }
+
+  /**
+   * Check or uncheck idle checkbox
+   */
+  clickIdleCheckbox() {
+    this._browser.click(elements.idleCheckbox)
+    this._browser.pause(2000)
   }
 
   setDeviceLocation({lat, long} = {}) {
@@ -210,6 +251,34 @@ export default class ManualPage extends AuthenticatedPage {
       this._browser.waitForExist(elements.setNewLocationStatus)
       this._browser.pause(2000)
     }
+  }
+
+  /**
+   * Start to record network activity
+   */
+  recordNetworkActivity() {
+    this.clickButtonOnMenuBar('recordNetworkActivityButton')
+    this._browser.waitForExist(elements.recordNetworkPopup)
+    this._browser.click(elements.notRemindCheckbox)
+    this._browser.pause(2000)
+    this._browser.click(elements.startRecordNetwork)
+    this._browser.pause(2000)
+  }
+
+  /**
+   * Stop to record network activity
+   */
+  stopRecordingNetworkActivity() {
+    this.clickButtonOnMenuBar('stopRecordingNetworkActivityButton')
+    this._browser.pause(5000)
+  }
+
+  /**
+   * Click share manual testing screen button
+   */
+  shareScreenView() {
+    this.clickButtonOnMenuBar('shareScreenButton')
+    this._browser.pause(2000)
   }
 
   /**
@@ -246,8 +315,6 @@ export default class ManualPage extends AuthenticatedPage {
    */
   showRecentApps() {
     this.clickButtonOnMenuBar('recentAppsButton')
-    this._browser.pause(2000)
-    this.clickButtonOnMenuBar('homeButton')
     this._browser.pause(2000)
   }
 
@@ -327,7 +394,7 @@ export default class ManualPage extends AuthenticatedPage {
     // Get app's name
     const appName = url.parse(appUrl).pathname.split('/').pop()
     const appPath = getRealPath(appTestFolder, appName)
-    
+
     if (!fileExists(appPath)) {
       await downloadApp(appUrl, appPath)
     }
@@ -353,13 +420,14 @@ export default class ManualPage extends AuthenticatedPage {
   }
 
   /**
-   *
+   * Wait for upload screenshot
    */
   waitForUploadScreenshotDone(timeout) {
     this._browser.waitUntil(() => {
       return !this._browser.isExisting(elements.loadingIcon)
     }, timeout, 'should upload screenshot done', 3000)
   }
+
   /**
    * Fill url's app in app url textbox
    */
@@ -406,7 +474,7 @@ export default class ManualPage extends AuthenticatedPage {
   installAppFromAppRepo(orderOfValidApp) {
     this._browser.click(elements.appsButton)
     // eslint-disable-next-line max-len
-    const xpathOfInstallButton = elements.appTags.concat(`[${orderOfValidApp}]/div[contains(@style, "justify-content: flex-end")]//button`)
+    const xpathOfInstallButton = elements.appTags.concat(`[${orderOfValidApp}]//button[contains(.,"Install")]`)
     this._browser.scroll(xpathOfInstallButton)
     this._browser.click(xpathOfInstallButton)
     this._browser.waitForExist(elements.loadingIcon, 2000)

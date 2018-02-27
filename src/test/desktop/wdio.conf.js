@@ -1,7 +1,9 @@
 import config from '../../framework/config/test'
 
-const base = require('../../framework/config/wdio.conf.desktop')
+let base = require('../../framework/config/wdio-conf')
 const fileTest = config.typeOfTest ? `${config.typeOfTest}` : 'test-*'
+base.config.maxInstances = ''
+base.config.capabilities = {}
 exports.config = {
   ...base.config,
   logLevel: 'verbose',

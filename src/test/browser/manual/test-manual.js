@@ -45,6 +45,8 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
         group: deviceGroup, nameOfDevice: deviceName, platformVersionOfDevice: platformVersion
       })
     assert.isAtLeast(numOfOnlineDevices, 1, `Expected at least one online ${deviceName} device`)
+    devicesPage.cleanUpFolder('images')
+    devicesPage.cleanUpFolder('reports')
   })
 
   after(() => {
@@ -139,17 +141,22 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     }
   })
 
-  it('should pinch or zoom successfully', () => {
+  it('should pinch or zoom successfully', async () => {
     let styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
     assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'))
+    manualPage.takeScreenshot('manual', 'beforePinchZoom')
 
     manualPage.clickButtonOnMenuBar('pinchButton')
     styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
     assert.isTrue(styleOfPinchButton.includes('fill: white'))
+    manualPage.takeScreenshot('manual', 'afterPinchZoom')
 
     manualPage.clickButtonOnMenuBar('touchButton')
     styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
     assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'))
+    // eslint-disable-next-line max-len
+    const result = await manualPage.compareImage('manual', 'beforePinchZoom', 'afterPinchZoom', 'beforeAndAfterPinchZoom')
+    assert.isAtLeast(result.misMatchPercentage, 1)
   })
 
   it('should rotate screen', () => {
@@ -174,6 +181,27 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     assert.isTrue(manualPage.isContaining('wrongLongitudeWarning'))
     assert.isFalse(manualPage.isVisableButton('setLocationButton'))
     manualPage.elements.cancelLocationButton.click()
+  })
+
+  it('should record network activity', function () {
+    if ((platformName === 'Android' && platformVersion >= 6) || platformName === 'iOS') {
+      let styleOfRecordNetworkButton = manualPage.getStyleOfElement('styleRecordNetworkButton')
+      assert.isTrue(styleOfRecordNetworkButton.includes('background-color: rgb(97, 97, 97)'))
+      // Turn on recording network activity
+      manualPage.recordNetworkActivity()
+      assert.isTrue(manualPage.isContaining('recordingNetworkActivityMessage'))
+      styleOfRecordNetworkButton = manualPage.getStyleOfElement('styleRecordingNetworkButton')
+      assert.isTrue(styleOfRecordNetworkButton.includes('background-color: rgb(244, 67, 54)'))
+      // Turn off recording network activity
+      manualPage.stopRecordingNetworkActivity()
+      assert.isTrue(manualPage.isContaining('endRecordNetworkActivityMessage'))
+      styleOfRecordNetworkButton = manualPage.getStyleOfElement('styleRecordNetworkButton')
+      assert.isTrue(styleOfRecordNetworkButton.includes('background-color: rgb(97, 97, 97)'))
+    }
+    else {
+      debug.log('Kobiton hasn\'t supported record network activity on Android 4.x.x and 5.x.x')
+      this.skip()
+    }
   })
 
   it('should set device time zone successfully', function () {
@@ -209,9 +237,16 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     assert.isFalse(manualPage.isContaining('powerOffAlert'))
   })
 
-  it('should show recent apps', function () {
+  it('should show recent apps on Android device', async function () {
     if (platformName === 'Android') {
+      manualPage.takeScreenshotPage('manual', 'beforeClickRecentApp')
       manualPage.showRecentApps()
+      manualPage.takeScreenshotPage('manual', 'afterClickRecentApp')
+      manualPage.elements.homeButton.click()
+      manualPage.pause(2000)
+      // eslint-disable-next-line max-len
+      const result = await manualPage.compareImage('manual', 'beforeClickRecentApp', 'afterClickRecentApp', 'beforeAndAfterClickRecentApp')
+      assert.isAtLeast(result.misMatchPercentage, 1)
     }
     else {
       debug.log(`Menu action bar doesn't have recent apps button for ${platformName} device`)
@@ -258,6 +293,19 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     }
   })
 
+  it('should have function share manual testing screen', () => {
+    manualPage.shareScreenView()
+    // eslint-disable-next-line max-len
+    assert.isTrue(manualPage.isContaining('shareSessionViewPopup'), 'There is no share screen pop up')
+    assert.isTrue(manualPage.isContaining('linkShare'), 'There is no share link')
+    assert.isTrue(manualPage.isContaining('copyLinkButton'), 'There is no copy link button')
+
+    // Close share session pop up
+    manualPage.elements.closeShareSessionPopUpButton.click()
+    manualPage.pause(2000)
+    assert.isFalse(manualPage.isContaining('shareSessionViewPopup'))
+  })
+
   function _doDeviceActions() {
     manualPage.doSwipeRight()
     manualPage.doSwipeLeft()
@@ -270,23 +318,23 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
 
   it('should end session automatically afer staying idle for 5 minutes', () => {
     if (deviceGroup === 'private' || deviceGroup === 'admin') {
-      const defaultValueCheckbox = manualPage.getStyleOfCheckbox('attributeIdleCheckbox')
+      const defaultValueCheckbox = manualPage.getStyleOfElement('attributeIdleCheckbox')
       // Verify default value is unchecked
       assert.isTrue(defaultValueCheckbox.includes('opacity 1000ms'))
       // Check on auto quick session after 5 minutes if you do not anything
-      manualPage.click('idleCheckbox')
+      manualPage.clickIdleCheckbox()
     }
     manualPage.waitForIdlePopUp(stayIdleTimeout)
     assert.isTrue(manualPage.isContaining('idlePopUp'))
     manualPage.continueManualSession()
     assert.isFalse(manualPage.isContaining('idlePopUp'))
-    manualPage.click('idleCheckbox')
+    manualPage.clickIdleCheckbox()
     manualPage.pause(1000)
   })
 
   it('should have checkbox Clean up device on private devices', () => {
     if (deviceGroup === 'private' || deviceGroup === 'admin') {
-      const defaultValueCheckbox = manualPage.getStyleOfCheckbox('attributeCleanUpCheckbox')
+      const defaultValueCheckbox = manualPage.getStyleOfElement('attributeCleanUpCheckbox')
       assert.isTrue(defaultValueCheckbox.includes('opacity 1000ms'))
     }
     else {
@@ -386,7 +434,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   })
 
   it('should copy paste on clipboard successfully', function () {
-    if (platformName === 'Android') {
+    if (platformName === 'Android' && config.browserName === 'firefox') {
       manualPage.copyAndPasteOnClipboard()
       manualPage.pause(10000)
       assert.isFalse(manualPage.isContaining('dismissMessage'))
@@ -417,4 +465,32 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     }
   })
 
+  it('should show lives log', () => {
+    assert.isTrue(manualPage.isContaining('liveLogsTab'))
+    manualPage.elements.liveLogsTab.click()
+    // Verify control buttons of live logs
+    assert.isTrue(manualPage.isContaining('pauseButton'))
+    assert.isTrue(manualPage.isContaining('clearLogsButton'))
+    assert.isTrue(manualPage.isContaining('downloadLogsButton'))
+    // Verify live logs is loading
+    let styleOfGrid = manualPage.getStyleOfElement('liveLogsBoard')
+    assert.isNotNull(styleOfGrid, 'There is not live logs')
+    // Click pause live logs
+    manualPage.elements.pauseButton.click()
+    manualPage.pause(1000)
+    // Verify live log is stopped loading
+    const styleOfGridAtPausing = manualPage.getStyleOfElement('liveLogsBoard')
+    manualPage.pause(5000)
+    const styleOfGridAfterPausing = manualPage.getStyleOfElement('liveLogsBoard')
+    assert.equal(styleOfGridAtPausing, styleOfGridAfterPausing)
+    // Verify clear logs
+    manualPage.elements.clearLogsButton.click()
+    manualPage.pause(2000)
+    assert.isFalse(manualPage.isContaining('liveLogsBoard'))
+    // Verify live log is loading
+    manualPage.elements.resumeButton.click()
+    manualPage.pause(2000)
+    styleOfGrid = manualPage.getStyleOfElement('liveLogsBoard')
+    assert.notEqual(styleOfGrid, styleOfGridAfterPausing)
+  })
 })
