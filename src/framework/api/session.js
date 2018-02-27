@@ -18,8 +18,8 @@ class Session extends Base {
 
   /**
    * Retrieve all sessions belong to the current organization or user.
-   * @param searchTypes {array}
-   * searchTypes = {
+   * @param params {array}
+   * params = {
    *  state, // Running, Complete, Passed, Failed, Timeout, Error, Terminated
    *  type, // All, Auto, Manual
    *  platform, // All, Android, iOS
@@ -34,11 +34,10 @@ class Session extends Base {
     let realPath = (params) ? 'sessions?' : 'sessions'
 
     if (params) {
-      let subPath = ''
       Object.keys(params).forEach((type) => {
         let value = params[type]
         if (searchTypeEnum.hasOwnProperty(type.toUpperCase())) {
-          subPath = `${type}=${value.toString().toUpperCase()}&`
+          let subPath = `${type}=${value.toString().toUpperCase()}&`
           realPath = realPath.concat(subPath)
         }
       })
@@ -131,7 +130,7 @@ class Session extends Base {
   /**
   * Navigate to a new URL
   * @param sessionId {string} Session Id
-  * @param url {string} Get a new url
+  * @param url {object} Get a new url. Ex: {url: 'https://www.google.com'}
   */
   async getUrl(sessionId, {url}) {
     return await this.post({
