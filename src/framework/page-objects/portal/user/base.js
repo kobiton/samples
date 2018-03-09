@@ -6,7 +6,11 @@ const elements = {
   logoutButton: '//div[text()="Logout"]',
   profileIcon: "//div[@size='40']",
   profileMenuDropdownIcon: 'button',
-  settingsMenuButton: '//div[text()="Settings"]'
+  settingsMenuButton: '//div[text()="Settings"]',
+  alarm: {
+    alarmButton: '//button[contains(@style, "background-color")]',
+    closeAlarmButton: '//button[contains(@style, "background-color: rgba(0, 0, 0, 0)")]'
+  }
 }
 
 /**
@@ -57,5 +61,15 @@ export default class AuthenticatedPage extends Page {
     this._browser.waitForExist(elements.firstNameCharacter)
     return this._browser.isVisible(elements.firstNameCharacter)
   }
-  
+
+  /**
+   * Close Kobiton alarm notification from portal
+   */
+  closeAlarm() {
+    if (this._isExisting(elements.alarm.alarmButton)) {
+      this._browser.click(elements.alarm.alarmButton)
+      this.wait(500)
+      this._browser.click(elements.alarm.closeAlarmButton)
+    }
+  }
 }

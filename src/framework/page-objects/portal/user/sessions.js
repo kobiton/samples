@@ -1,4 +1,4 @@
-import AuthenticatedPage from './base'
+import Paging from '../../portal/paging'
 import {debug} from '@kobiton/core-util'
 
 const elements = {
@@ -21,6 +21,10 @@ const elements = {
     next: '(//div[@data-reactroot])[2]/div/div[2]/div[1]/div[1]/button[2]',
     curMonth: '(//div[@data-reactroot])[2]/div/div[2]/div[1]/div[1]/div/div/div',
     days: '(//div[@data-reactroot])[2]/div/div[2]/div[1]/div[3]//span'
+  },
+  deleteSessionForm: {
+    cancelButton: '(//button//span)[1]',
+    deleteButton: '(//button//span)[2]'
   }
 }
 
@@ -64,7 +68,7 @@ const monthEmun = {
 
 const waitTime = 500 //milliseconds
 
-export default class SessionsPage extends AuthenticatedPage {
+export default class SessionsPage extends Paging {
   constructor(specificBrowser = browser) {
     super(specificBrowser)
     this._initElementsGetter(elements)
@@ -173,22 +177,36 @@ export default class SessionsPage extends AuthenticatedPage {
 
   /**
    * Get list of sessions's info in a current page
-   * Return an array of session info
+   * @param startDate {Date Object}
+   * @param endDate {Date Object}
+   * Return an array of sessions info
    */
-  getSessionsOnCurrentPage() {
-    let sessionElements = this.getElements(elements.sessionList)
-    let sessionData = {}
+
+  getSessions(startDate, endDate) {
     let sessionDataList = []
-    if (sessionElements.length > 1) {
-      for (let i = 2; i <= sessionElements.length; i++) {
-        sessionData.SessionName = this._browser.getText(`${elements.sessionList}[${i}]/div[1]/div/div`) // eslint-disable-line max-len
-        sessionData.OSVersion = this._browser.getText(`${elements.sessionList}[${i}]/div[2]`) // eslint-disable-line max-len
-        sessionData.DeviceModel = this._browser.getText(`${elements.sessionList}[${i}]/div[3]/div`) // eslint-disable-line max-len
-        sessionData.Status = this._browser.getText(`${elements.sessionList}[${i}]/div[4]`) // eslint-disable-line max-len
-        sessionDataList.push(sessionData)
-        sessionData = {}
-      }
+    let pageNumber = 1
+    if (startDate && endDate) {
+      this.selectStartAndEndDates(startDate, endDate)
     }
+    const totalPages = this.getTotalPages()
+    while (pageNumber <= totalPages) {
+      const sessionElements = this.getElements(elements.sessionList)
+      if (sessionElements.length > 1) {
+        for (let i = 2; i <= sessionElements.length; i++) {
+          let sessionData = {}
+          sessionData.SessionName = this._browser.getText(`${elements.sessionList}[${i}]/div[1]/div/div`) // eslint-disable-line max-len
+          sessionData.OSVersion = this._browser.getText(`${elements.sessionList}[${i}]/div[2]`) // eslint-disable-line max-len
+          sessionData.DeviceModel = this._browser.getText(`${elements.sessionList}[${i}]/div[3]/div`) // eslint-disable-line max-len
+          sessionData.Status = this._browser.getText(`${elements.sessionList}[${i}]/div[4]`) // eslint-disable-line max-len
+          sessionDataList.push(sessionData)
+        }
+      }
+      if (this.isClickableButton('NEXT')) {
+        this.moveToPage('NEXT')
+      }
+      pageNumber++
+    }
+    
     return sessionDataList
   }
 
@@ -236,16 +254,18 @@ export default class SessionsPage extends AuthenticatedPage {
   selectStartAndEndDates(startDate, endDate) {
     if (startDate <= endDate) {
       this.openDatePicker('STARTDATE')
+      this.wait(waitTime)
       this.selectDate(startDate)
       this.wait(waitTime)
       this.waitForLoadingProgressDone()
       this.openDatePicker('ENDDATE')
+      this.wait(waitTime)
       this.selectDate(endDate)
       this.wait(waitTime)
       this.waitForLoadingProgressDone()
     }
     else {
-      debug.error(`${startDate} is greater than ${endDate}, 
+      debug.error(`${startDate} is greater than ${endDate},
        please choose other dates and try again.`)
     }
   }
@@ -262,6 +282,7 @@ export default class SessionsPage extends AuthenticatedPage {
         break
       case 'ENDDATE':
         this._browser.click(elements.endDate)
+        break
     }
   }
   
@@ -290,12 +311,12 @@ export default class SessionsPage extends AuthenticatedPage {
   }
 
   _getCurrentMonth() {
-    let curDate = this._browser.getText(elements.datePicker.curMonth)
+    const curDate = this._browser.getText(elements.datePicker.curMonth)
     return curDate.substring(0, curDate.length - 5)
   }
 
   _getCurrentYear() {
-    let curDate = this._browser.getText(elements.datePicker.curMonth)
+    const curDate = this._browser.getText(elements.datePicker.curMonth)
     return curDate.substring(curDate.length - 4)
   }
 
@@ -332,5 +353,45 @@ export default class SessionsPage extends AuthenticatedPage {
     session.StartTime = this._browser.getText(elements.startTime)
     session.EndTime = this._browser.getText(elements.endTime)
     return session
+  }
+
+  /**
+   * Click on Delete button of a session in sessions page
+   * @param sessionName {string} : session name
+   */
+  clickDeleteSessionButton(sessionName) {
+    this.filterSessionByFullText(sessionName)
+    if (this.getElements(elements.sessionList).length > 1) {
+      const columns = this.getElements(`${elements.sessionList}[2]/div`).length
+      this._browser.click(`${elements.sessionList}[2]/div[${columns}]//*[name()='svg']`)
+    }
+    else {
+      debug.error(`Unable to delete due to no session with name ${sessionName}.`)
+    }
+  }
+
+  /**
+   * Click on Delete button on deletion confirmation to delete a session
+   */
+  confirmToDelete() {
+    this._browser.click(elements.deleteSessionForm.deleteButton)
+    this.waitForLoadingProgressDone()
+  }
+
+  /**
+   * Click on Cancel button on deletion confirmation to cancel deleting
+   */
+  cancelToDelete() {
+    this._browser.click(elements.deleteSessionForm.cancelButton)
+  }
+
+  /**
+   * Delete a session with a given session name
+   * @param sessionName {string} : session name
+   */
+  deleteASession(sessionName) {
+    this.clickDeleteSessionButton(sessionName)
+    this.wait(waitTime)
+    this.confirmToDelete()
   }
 }

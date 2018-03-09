@@ -29,11 +29,14 @@ class Session extends Base {
    *  startDate,
    *  endDate
    * }
+   * @param pageNumber {integer} - Page number, default is 1
    */
-  async getSessions(params) {
-    let realPath = (params) ? 'sessions?' : 'sessions'
+  async getSessions(params, pageNumber = 1) {
+    let realPath
 
     if (params) {
+      realPath = 'sessions?'
+      let subPath = ''
       Object.keys(params).forEach((type) => {
         let value = params[type]
         if (searchTypeEnum.hasOwnProperty(type.toUpperCase())) {
@@ -43,9 +46,11 @@ class Session extends Base {
       })
       realPath = realPath.substring(0, realPath.length - 1)
     }
-
+    else {
+      realPath = 'sessions'
+    }
     return await this.get({
-      path: realPath
+      path: `${realPath}&page=${pageNumber}`
     })
   }
 
