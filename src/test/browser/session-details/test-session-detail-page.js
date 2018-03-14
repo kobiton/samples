@@ -132,6 +132,16 @@ describe('Verifying on session details page', () => {
       sessionInfo.SessionOverview.Type), '2 sessions have different commands')
   })
 
+  it('should be able to play, pause properly', () => {
+    sessionDetailsPage.navigateTo('Video')
+    //play the video
+    sessionDetailsPage.clickOnVideoScreen()
+    assert.isFalse(sessionDetailsPage.isVideoPaused(), 'video must be played')
+    //pause the video
+    sessionDetailsPage.clickOnVideoScreen()
+    assert.isTrue(sessionDetailsPage.isVideoPaused(), 'video must be paused')
+  })
+
 })
 
 /**

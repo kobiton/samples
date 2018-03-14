@@ -74,6 +74,8 @@ const elements = {
   }
 }
 
+const videoLocatorQuery = 'video'
+
 const tabsEnum = {
   SESSION_OVERVIEW: 'SESSION_OVERVIEW',
   ACTIONS_PERFORMED: 'ACTIONS_PERFORMED',
@@ -499,4 +501,28 @@ export default class SessionDetailsPage extends Paging {
     }
   }
 
+  /**
+  * Click on video screen to stop/play video in session details page
+  */
+  clickOnVideoScreen() {
+    this._browser.click(elements.video.videoScreen)
+  }
+
+  /**
+  * check video if is paused or not. Returns true if video is paused, otherwise false
+  */
+  isVideoPaused() {
+    return this._browser.execute((selector) => {
+      return document.querySelector(selector).paused
+    }, videoLocatorQuery).value
+  }
+
+  /**
+  * Get video duration
+  */
+  getVideoDuration() {
+    return this._browser.execute((selector) => {
+      return document.querySelector(selector).duration
+    }, videoLocatorQuery).value
+  }
 }
