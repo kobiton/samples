@@ -47,15 +47,6 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     assert.isAtLeast(numOfOnlineDevices, 1, `Expected at least one online ${deviceName} device`)
     devicesPage.cleanUpFolder('images')
     devicesPage.cleanUpFolder('reports')
-  })
-
-  after(() => {
-    if (manualPage) {
-      manualPage.exitManual()
-    }
-  })
-
-  it('should launch device successfully', () => {
     manualPage = devicesPage.launchAnOnlineDevice({
       group: deviceGroup, nameOfDevice: deviceName, platformVersionOfDevice: platformVersion
     })
@@ -63,9 +54,15 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     manualPage.waitForInitializingDeviceDone(initilizingTimeout)
     const urlPage = manualPage.getUrlPage()
     assert.include(urlPage, config.portalUrl.concat('/devices/launch?key='),
-      'It has not launched a device yet')
+      `It doesn't launch device ${deviceName} successfully`)
     platformName = manualPage.getPlatformNameInfo()
     platformVersion = parseFloat(platformVersion)
+  })
+
+  after(() => {
+    if (manualPage) {
+      manualPage.exitManual()
+    }
   })
 
   it('should change quality successfully', () => {
@@ -144,18 +141,18 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   it('should pinch or zoom successfully', async () => {
     let styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
     assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'))
-    manualPage.takeScreenshot('manual', 'beforePinchZoom')
+    manualPage.takeScreenshotPage('manual', 'beforePinchZoom')
 
     manualPage.clickButtonOnMenuBar('pinchButton')
     styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
     assert.isTrue(styleOfPinchButton.includes('fill: white'))
-    manualPage.takeScreenshot('manual', 'afterPinchZoom')
+    manualPage.takeScreenshotPage('manual', 'afterPinchZoom')
 
     manualPage.clickButtonOnMenuBar('touchButton')
     styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
     assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'))
     // eslint-disable-next-line max-len
-    const result = await manualPage.compareImage('manual', 'beforePinchZoom', 'afterPinchZoom', 'beforeAndAfterPinchZoom')
+    const result = await manualPage.compareImages('manual', 'beforePinchZoom', 'afterPinchZoom', 'beforeAndAfterPinchZoom')
     assert.isAtLeast(result.misMatchPercentage, 1)
   })
 

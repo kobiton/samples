@@ -125,7 +125,7 @@ const elements = {
   editSessionNameButton: '//div[text()="Session name"]/../form/div/button',
   sessionNameField: '//div[text()="Session name"]/../form/div/input',
   // eslint-disable-next-line max-len
-  invalidSessionNameMessage: '//span[contains(text(),"sessionName must be between 5 and 80 characters")]',
+  invalidSessionNameMessage: '//span[contains(text(),"Session name must be between 5 and 80 characters")]',
   // eslint-disable-next-line max-len
   closeInvalidSessionNameWarningButton: '//span[contains(text(),"sessionName must be between")]/../following-sibling::div/*[local-name()="svg"]',
   requiredSessionNameMessage: '//div[text()="Session name is required"]',
@@ -207,6 +207,9 @@ export default class ManualPage extends AuthenticatedPage {
     this._browser.click(elements.takeScreenShotButton)
     this._browser.waitForExist(elements.uploadingScreenshot, 5000)
     this._browser.waitForExist(elements.downloadScreenshotButton, 60000)
+    this._browser.waitUntil(() => {
+      return !this._browser.isExisting(elements.loadingIcon)
+    }, 5000, 'should take screenshot done', 10000)
   }
 
   getStyleOfButton(ele) {
@@ -356,10 +359,9 @@ export default class ManualPage extends AuthenticatedPage {
    */
   editSessionName(sessionName) {
     this._browser.click(elements.editSessionNameButton)
-    this._browser.pause(1000)
+    this._browser.pause(2000)
     this._browser.setValue(elements.sessionNameField, sessionName)
     this._browser.click(elements.screenshotBoard)
-    this.waitForLoadingProgressDone()
     this._browser.pause(2000)
   }
 
