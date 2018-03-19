@@ -285,7 +285,7 @@ export default class SessionsPage extends Paging {
         break
     }
   }
-  
+
   /**
   * @param: date is a Date object, ex: new Date(01-nov-2017)
   */
@@ -295,13 +295,13 @@ export default class SessionsPage extends Paging {
     const inputDay = date.getDate()
     //Select Year
     let curYear = this._getCurrentYear()
-    while (inputYear != curYear) {
+    while (inputYear !== curYear) {
       this._selectDate(inputYear, curYear)
       curYear = this._getCurrentYear()
     }
     //Select Month
     let curMonth = this._getCurrentMonth()
-    while (inputMonth != monthEmun[curMonth.toUpperCase()]) {
+    while (inputMonth !== monthEmun[curMonth.toUpperCase()]) {
       this._selectDate(inputMonth, monthEmun[curMonth.toUpperCase()])
       curMonth = this._getCurrentMonth()
     }

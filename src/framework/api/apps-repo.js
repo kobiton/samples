@@ -3,6 +3,13 @@ import BPromise from 'bluebird'
 
 const fs = BPromise.promisifyAll(require('fs'))
 
+const accessLevelEnum = {
+  PUBLIC: 'PUBLIC',
+  PRIVATE: 'PRIVATE'
+}
+
+let appsList = {}
+
 class AppsRepo extends Base {
 
   /**
@@ -105,7 +112,7 @@ class AppsRepo extends Base {
   async uploadFileToS3(preSignedUrl, filePath) {
 
     const stats = await fs.statAsync(filePath)
-    
+
     return await this.put({
       url: preSignedUrl,
       json: false, // Required by createReadStream
@@ -148,6 +155,100 @@ class AppsRepo extends Base {
     return await this.put({
       path: `apps/${appId}/public`
     })
+  }
+
+  /**
+   * Create a list of apps contains only certain fields that needed for use
+   */
+  async getModifiedAppsList() {
+    let modifiedAppsList = []
+    const list = await this.getApps()
+    list.apps.map((app) => {
+      let versionList = []
+      let temp = {}
+      temp.id = app.id
+      temp.name = app.name
+      temp.os = app.os
+      temp.private = app.privateAccess
+      temp.creator = app.createdBy
+      temp.total_versions = app.versions.length
+      for (let i = 0; i < temp.total_versions; i++) {
+        versionList.push(app.versions[i])
+      }
+      temp.versionList = versionList
+      modifiedAppsList.push(temp)
+    })
+    this.appsList = modifiedAppsList
+    return modifiedAppsList
+  }
+
+  /**
+   * verify all test apps already uploaded to portal test
+   * @param appIdObject {object} -  object that holds id of uploaded apps
+   */
+  isTestAppsExisted(appIdObject) {
+    return this.appsList.some((a) => a.id === appIdObject.androidId) &&
+      this.appsList.some((a) => a.id === appIdObject.iOSId) &&
+      this.appsList.some((a) => a.id === appIdObject.zipFileId)
+  }
+
+  /**
+   * return latest version of uploaded app
+   * @param appId {integer} - id of uploaded app
+   */
+  getLatestAppVersion(appId) {
+    const app = this.appsList.find((obj) => obj.id === appId)
+    let latestVersion = {}
+    if (app) {
+      let latestVersionId = []
+      for (let i = 0; i < app.total_versions; i++) {
+        latestVersionId.push(app.versionList[i].id)
+      }
+      latestVersionId.sort().reverse()
+      app.versionList.map((version) => {
+        if (version.id === latestVersionId[0]) {
+          latestVersion = version
+        }
+      })
+    }
+    return latestVersion
+  }
+  /**
+   * return id of an app according to its access level
+   * @param accessLevel {string} - the access level of an app (public/private)
+   */
+  getAppIdByAccessLevel(accessLevel) {
+    return accessLevel.toUpperCase() === accessLevelEnum.PUBLIC
+    ? this.appsList.find((a) => a.private === false).id
+    : this.appsList.find((a) => a.private === true).id
+  }
+
+  /**
+   * get app's info from API
+   * @param appId {integer} - id of app that need to get info
+   */
+  getAnAppInfo(appId) {
+    if (appId) return this.appsList.find((a) => a.id === appId)
+    return {}
+  }
+
+  /**
+   * return the app's id of first found app that has more than 1 version
+   * @param totalVersions {integer} - the total versions of an app
+   */
+  getMultipleVersionsAppId(totalVersions = 1) {
+    if (this.appsList.find((a) => a.total_versions > totalVersions)) {
+      return this.appsList.find((a) => a.total_versions > totalVersions).id
+    }
+    return {}
+  }
+
+  /**
+   * get first found app id from the apps list
+   * @param index {integer} - the index of app list
+   */
+  getAnAppId(index = 0) {
+    return this.appsList[index].id
   }
 
 }

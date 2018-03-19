@@ -337,4 +337,5 @@ export default class OrganizationPage extends SettingsPage {
     }
     return false
   }
+
 }
