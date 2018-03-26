@@ -22,7 +22,7 @@ Simple Test
 *** Keywords ***
 
 Open test browser
-	Open browser  about:  firefox
+	Open browser  about:  chrome
 	...  remote_url=http://${CREDENTIALS}@api.kobiton.com/wd/hub
 	...  desired_capabilities=browserName:${BROWSER_NAME},deviceName:${DEVICE_NAME},deviceGroup:${DEVICE_GROUP},platformName:${PLATFORM_NAME}
 
