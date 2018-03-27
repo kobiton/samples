@@ -87,7 +87,7 @@ describe('On apps repo page', () => {
       'lock icon did not appear')
   })
 
-  it('should change app to public in order for app accessed by whole organization', async () => { // eslint-disable-line max-len
+  it('should change app to public in order for app accessed by whole organization', async function () { // eslint-disable-line max-len
     if (currentUser.planName.split('-').shift().trim() === 'Business') {
       const privateAppId = AppsRepoAPI.getAppIdByAccessLevel('Private')
       if (privateAppId) {
@@ -105,7 +105,7 @@ describe('On apps repo page', () => {
     }
   })
 
-  it('new uploaded apps should have pulbic access as default', () => {
+  it('new uploaded apps should have pulbic access as default', function () {
     if (currentUser.planName.split('-').shift().trim() === 'Business') {
       for (let id in uploadAppIds) {
         appsRepoPage.filterApp(uploadAppIds[id])
