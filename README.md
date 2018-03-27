@@ -3,7 +3,7 @@ This repository includes examples to demonstrate how to execute web/application 
 
 Also, we provide a detail sample showing how to [integrate Kobiton Apps Repository with CI tool](https://github.com/kobiton/samples/tree/master/Integrate_Kobiton_Apps_Repository_with_CI_tool), eg:
 
-* Upload app to Kobiton app repo
+* Upload app to Kobiton apps repo
 
 * Run app test for uploaded app
 
