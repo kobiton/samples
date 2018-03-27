@@ -13,8 +13,8 @@ const kobitonServerConfig = {
 }
 
 const desiredCaps = {
-  sessionName: 'App Repo Demo',
-  sessionDescription: 'This is an example to demostrate Android app repo',
+  sessionName: 'Apps Repo Demo',
+  sessionDescription: 'This is an example to demostrate Android apps repo',
   platformName: 'android',
   deviceName: 'Galaxy'
 }
