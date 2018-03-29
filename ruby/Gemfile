@@ -1,0 +1,8 @@
+# filename: Gemfile
+
+source 'https://rubygems.org'
+
+gem 'test-unit'
+gem 'appium_lib'
+gem 'watir-webdriver'
+gem 'selenium-webdriver'
