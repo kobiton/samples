@@ -178,6 +178,44 @@ describe('Verifying on sessions page', () => {
     }
   })
 
+  it('should display sessions info correctly in dashboard', async () => {
+    const dashboardInfo = sessionsPage.getDashboardInfo(startDate, endDate)
+    let totalSessionsUI
+    let totalAutoSessionsUI
+    let totalManualSessionsUI
+    if (!dashboardInfo.SessionsData) {
+      totalSessionsUI = 0
+      totalAutoSessionsUI = 0
+      totalManualSessionsUI = 0
+    }
+    else {
+      totalSessionsUI = dashboardInfo.SessionsData.TotalSessionsAndMinutes.split(' Sessions')[0]
+      totalAutoSessionsUI = dashboardInfo.SessionsData.AutoSessionsData.TotalAutoSessions
+      totalManualSessionsUI = dashboardInfo.SessionsData.ManualSessionsData.TotalManualSessions
+    }
+    const url = sessionsPage.getUrlPage()
+    let searchDataForAPI = {
+      startDate: extractStartDate(url),
+      endDate: extractEndDate(url)
+    }
+
+    //verify total sessions displayed in dashboard correctly
+    const sessionListFromAPI = await getAllSessionsFromAPI(searchDataForAPI)
+    assert.isTrue(parseInt(totalSessionsUI) === sessionListFromAPI.length,
+      'Total sessions are not displayed correctly in dashboard.')
+
+    //verify session types are displayed in dashboard
+    searchDataForAPI.type = 'Auto'
+    const autoSessionsAPI = (await getAllSessionsFromAPI(searchDataForAPI)).length
+    searchDataForAPI.type = 'Manual'
+    const manualSessionsAPI = (await getAllSessionsFromAPI(searchDataForAPI)).length
+    assert.isTrue(parseInt(totalAutoSessionsUI) === autoSessionsAPI,
+      'Total auto sessions are not displayed correctly in dashboard.')
+    assert.isTrue(parseInt(totalManualSessionsUI) === manualSessionsAPI,
+      'Total manual sessions are not displayed correctly in dashboard.')
+
+  })
+
 })
 
 /**

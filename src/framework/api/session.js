@@ -36,7 +36,6 @@ class Session extends Base {
 
     if (params) {
       realPath = 'sessions?'
-      let subPath = ''
       Object.keys(params).forEach((type) => {
         let value = params[type]
         if (searchTypeEnum.hasOwnProperty(type.toUpperCase())) {

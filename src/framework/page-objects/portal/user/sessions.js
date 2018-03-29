@@ -25,6 +25,20 @@ const elements = {
   deleteSessionForm: {
     cancelButton: '(//button//span)[1]',
     deleteButton: '(//button//span)[2]'
+  },
+  dashboard: {
+    expandingButton: '//input[@id="start-date"]/ancestor::div[6]//*[name()="svg"]/*[name()="path"]',
+    dashboardDiv: '//input[@id="start-date"]/ancestor::div[6]/div[2]',
+    summaryLabel: '//input[@id="start-date"]/ancestor::div[6]/div[2]/div/div[1]/div[1]',
+    sessionTypeChart: '(//input[@id="start-date"]/ancestor::div[6]/div[2]//*[name()="svg"])[1]',
+    autoSessionNumber: '//span[text()="Automation"]/following-sibling::span',
+    autoSessionStateNumber: '//span[text()="Automation"]/../..//span[text()="Running"]/following-sibling::span',
+    manualSessionNumber: '//span[text()="Manual"]/following-sibling::span',
+    manualSessionStateNumber: '//span[text()="Manual"]/../..//span[text()="Running"]/following-sibling::span',
+    osTypeChart: '(//input[@id="start-date"]/ancestor::div[6]/div[2]//*[name()="svg"])[2]',
+    iOSNumber: '//span[text()="iOS"]/following-sibling::span',
+    androidNumber: '//span[text()="Android"]/following-sibling::span',
+    userSessionsInfo: '//input[@id="start-date"]/ancestor::div[6]/div[2]/div/div[2]/div[2]/div'
   }
 }
 
@@ -51,7 +65,7 @@ const platformEnum = {
   IOS: 'iOS'
 }
 
-const monthEmun = {
+const monthEnum = {
   JANUARY: 1,
   FEBRUARY: 2,
   MARCH: 3,
@@ -66,7 +80,7 @@ const monthEmun = {
   DECEMBER: 12
 }
 
-const waitTime = 500 //milliseconds
+const waitTime = 1000 //milliseconds
 
 export default class SessionsPage extends Paging {
   constructor(specificBrowser = browser) {
@@ -295,14 +309,14 @@ export default class SessionsPage extends Paging {
     const inputDay = date.getDate()
     //Select Year
     let curYear = this._getCurrentYear()
-    while (inputYear !== curYear) {
+    while (inputYear != curYear) {
       this._selectDate(inputYear, curYear)
       curYear = this._getCurrentYear()
     }
     //Select Month
     let curMonth = this._getCurrentMonth()
-    while (inputMonth !== monthEmun[curMonth.toUpperCase()]) {
-      this._selectDate(inputMonth, monthEmun[curMonth.toUpperCase()])
+    while (inputMonth != monthEnum[curMonth.toUpperCase()]) {
+      this._selectDate(inputMonth, monthEnum[curMonth.toUpperCase()])
       curMonth = this._getCurrentMonth()
     }
     //Select Day
@@ -394,4 +408,105 @@ export default class SessionsPage extends Paging {
     this.wait(waitTime)
     this.confirmToDelete()
   }
+
+  /**
+   * Get data on Dashboard
+   * @param startDate {Date Object}
+   * @param endDate {Date Object}
+   * Return an object containing data on Dashboard
+   */
+  getDashboardInfo(startDate, endDate) {
+    let dashboardInfo = {}
+    this.expandDashboard()
+    if (startDate && endDate) {
+      this.selectStartAndEndDates(startDate, endDate)
+    }
+    if (this._isExisting(elements.dashboard.summaryLabel)) {
+      dashboardInfo.SessionsData = this.getDashboardSessionsInfo()
+      dashboardInfo.OSsData = this.getDashboardOSsInfo()
+    }
+    if (this._isExisting(elements.dashboard.userSessionsInfo)) {
+      dashboardInfo.UsersData = this.getDashboardUsersInfo()
+    }
+    return dashboardInfo
+  }
+
+  /**
+   * Get sessions info on Dashboard
+   * Return an object which contains data of sessions on Dashboard
+   */
+  getDashboardSessionsInfo() {
+    let dashboardSessionInfo = {}
+    dashboardSessionInfo.TotalSessionsAndMinutes = this._browser.getText(elements.dashboard.summaryLabel)
+    dashboardSessionInfo.AutoSessionsData = this._getSessionTypesData(sessionTypeEnum.AUTO)
+    dashboardSessionInfo.ManualSessionsData = this._getSessionTypesData(sessionTypeEnum.MANUAL)
+    return dashboardSessionInfo
+  }
+
+  /**
+   * Get sessions data base on session type on Dashboard
+   * @param sessionType {string} - type of session, default value is Auto
+   * Return an object which contains data of corresponding session type
+   */
+  _getSessionTypesData(sessionType = 'Auto') {
+    let sessionTypesData = {}
+    const statusList = Object.keys(statusEnum)
+    if (sessionType === sessionTypeEnum.AUTO) {
+      sessionTypesData.TotalAutoSessions = this._browser.getText(elements.dashboard.autoSessionNumber)
+      for (let i = 1; i < statusList.length; i++) {
+        let status = statusEnum[statusList[i]]
+        sessionTypesData[status] = this._browser.getText(elements.dashboard.autoSessionStateNumber.replace('Running', status))
+      }
+    }
+    else if (sessionType === sessionTypeEnum.MANUAL) {
+      sessionTypesData.TotalManualSessions = this._browser.getText(elements.dashboard.manualSessionNumber)
+      for (let i = 1; i < statusList.length; i++) {
+        let status = statusEnum[statusList[i]]
+        sessionTypesData[status] = this._browser.getText(elements.dashboard.manualSessionStateNumber.replace('Running', status))
+      }
+    }
+    return sessionTypesData
+  }
+
+  /**
+   * Get OS data on Dashboard
+   * Return an object which contains data of OS
+   */
+  getDashboardOSsInfo() {
+    let oSData = {}
+    if (this._isExisting(elements.dashboard.androidNumber)) {
+      oSData.TotalAndroid = this._browser.getText(elements.dashboard.androidNumber)
+    }
+    if (this._isExisting(elements.dashboard.iOSNumber)) {
+      oSData.TotaliOS = this._browser.getText(elements.dashboard.iOSNumber)
+    }
+    return oSData
+  }
+
+  /**
+   * Get Users data on Dashboard
+   * Return an object which contains session users data
+   */
+  getDashboardUsersInfo() {
+    let usersData = []
+    const userElements = this.getElements(elements.dashboard.userSessionsInfo)
+    for (let i = 1; i <= userElements.length; i++) {
+      let userData = {}
+      userData.User = this._browser.getText(`${elements.dashboard.userSessionsInfo}[${i}]/div[1]`)
+      userData.Sessions = this._browser.getText(`${elements.dashboard.userSessionsInfo}[${i}]/div[2]`)
+      userData.Minutes = this._browser.getText(`${elements.dashboard.userSessionsInfo}[${i}]/div[3]`)
+      usersData.push(userData)
+    }
+    return usersData
+  }
+
+  /**
+   * Expand dashboard view by clicking on button
+   */
+  expandDashboard() {
+    if (!this._isExisting(elements.dashboard.dashboardDiv)) {
+      this._browser.click(elements.dashboard.expandingButton)
+    }
+  }
+
 }
