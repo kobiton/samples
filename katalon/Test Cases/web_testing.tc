@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>web_testing</name>
+   <tag></tag>
+   <comment>Verify on web Heroku app on Android device</comment>
+   <testCaseGuid>539a36db-8ea3-4c0e-9b2f-1a6443ce5906</testCaseGuid>
+</TestCaseEntity>
