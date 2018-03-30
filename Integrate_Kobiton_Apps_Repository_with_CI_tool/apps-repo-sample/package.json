@@ -1,0 +1,16 @@
+{
+  "name": "app-repo-sample",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha --no-timeouts app-auto-test"
+  },
+  "dependencies": {
+    "chai": "^4.1.2",
+    "colors": "^1.2.1",
+    "mocha": "^5.0.4",
+    "request": "^2.84.0",
+    "wd": "^1.6.1"
+  }
+}
