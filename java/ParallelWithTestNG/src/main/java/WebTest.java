@@ -1,6 +1,3 @@
-/**
- * Created by Nghi Thai on 12/29/17.
- */
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
