@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TestCaseEntity>
-   <description></description>
-   <name>application_testing_android</name>
-   <tag></tag>
-   <comment>Automation test application on Android</comment>
-   <testCaseGuid>fa274840-d93f-4940-a516-8cc8fed1fcd6</testCaseGuid>
-</TestCaseEntity>
