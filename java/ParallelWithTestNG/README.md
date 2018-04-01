@@ -1,5 +1,6 @@
 # Parallel tests with Kobiton
 This sample code demonstrates how to execute parallel tests with [TestNG](http://testng.org/doc/documentation-main.html) on Kobiton system
+
 ![Kobiton Logo](https://kobiton.com/wp-content/themes/kobiton/images/kobiton-logo-no-caption.svg)
 
 ## Setup
