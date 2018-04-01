@@ -1,11 +1,12 @@
 # Parallel tests with Kobiton
 This sample code demonstrates how to execute parallel tests with [TestNG](http://testng.org/doc/documentation-main.html) on Kobiton system
+![Kobiton Logo](https://kobiton.com/wp-content/themes/kobiton/images/kobiton-logo-no-caption.svg)
 
 ## Setup
 
 * Clone the repo
 * Install [Maven](https://maven.apache.org)
-* Require Java[Java 1.8+](https://java.com/en/download/) installed
+* Require [Java 1.8] or above (https://java.com/en/download/) installed
 * Update `conf/parallel.xml` file with your [Kobiton Username and Api key](https://portal.kobiton.com/settings/keys)
 
 ## Run the tests
