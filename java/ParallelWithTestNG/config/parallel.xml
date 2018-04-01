@@ -5,6 +5,8 @@
                value="https://YOUR_USERNAME:YOUR_API_KEY@api.kobiton.com/wd/hub"/> <!-- Ex: username:apiKey@api.kobiton.com/wd/hub -->
     <test name="Run test on Android device" >
         <parameter name="platform" value="Android"/>
+        <parameter name="deviceName" value="Galaxy"/>
+        <parameter name="browserName" value="Chrome"/>
         <classes>
             <class name="WebTest"/>
         </classes>
@@ -12,6 +14,8 @@
 
     <test name="Run test on iOS device" >
         <parameter name="platform" value="iOS"/>
+        <parameter name="deviceName" value="iPhone"/>
+        <parameter name="browserName" value="safari"/>
         <classes>
             <class name="WebTest"/>
         </classes>

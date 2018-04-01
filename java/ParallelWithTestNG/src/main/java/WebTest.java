@@ -1,26 +1,31 @@
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
+
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import org.testng.ITestContext;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import java.util.Map;
 
 public class WebTest {
-    public static Map<String, String> testngParams;
-    String kobitonURL;
-    RemoteWebDriver driver = null;
+    AppiumDriver driver = null;
 
     @BeforeTest
-    @Parameters({"platform"})
-    public void Setup(ITestContext testContext, String platform) throws MalformedURLException {
-        testngParams = testContext.getCurrentXmlTest().getAllParameters();
-        kobitonURL = testngParams.get("kobitonURL");
-        driver = new RemoteWebDriver(new URL(kobitonURL), this.generateDesiredCaps(platform));
+    @Parameters({"platform", "deviceName", "browserName"})
+    public void Setup(ITestContext testContext, String platform, String deviceName, String browserName) throws MalformedURLException {
+        Map<String, String> testngParams = testContext.getCurrentXmlTest().getAllParameters();
+        String kobitonURL = testngParams.get("kobitonURL");
+        if (platform.toLowerCase().equals("android")) {
+            driver = new AndroidDriver(new URL(kobitonURL), this.generateDesiredCaps(platform, deviceName, browserName));
+        } else {
+            driver = new IOSDriver(new URL(kobitonURL), this.generateDesiredCaps(platform, deviceName, browserName));
+        }
         driver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
     }
 
@@ -44,14 +49,8 @@ public class WebTest {
         Assert.assertTrue(message.contains("Kobiton"));
     }
 
-    public static DesiredCapabilities generateDesiredCaps(String platform) {
+    public static DesiredCapabilities generateDesiredCaps(String platform, String deviceName, String browserName) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        String browserName = "chrome";
-        String deviceName = "Galaxy";
-        if (platform.equals("iOS")) {
-            browserName = "safari";
-            deviceName = "iPhone";
-        }
         capabilities.setCapability("sessionName", "Run test on " + platform);
         capabilities.setCapability("sessionDescription", "This is an example for Web testing");
         capabilities.setCapability("deviceOrientation", "portrait");
