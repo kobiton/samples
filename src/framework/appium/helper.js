@@ -5,19 +5,20 @@ import config from '../config/test'
 
 export function convertToDesiredCapabilities(timestamp, devices, {
   deviceOrientation = config.device.orientation,
-  captureScreenshots = config.device.captureScreenshots,
-  newCommandTimeout = 60 * 5
+  captureScreenshots = config.device.captureScreenshots
 } = {}) {
   return devices
     .map((d) => {
       const desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName', 'udid')
       let deviceGroup = getDeviceGroup(d)
-      const sessionName =
-      (d.udid) ? `${timestamp} - Auto web on ${d.udid}` : `${timestamp} - Auto web session`
+      if (deviceGroup === 'KOBITON') {
+        delete desiredCapFields.udid
+      }
+      const sessionName = `${timestamp} - Auto web on ${d.udid}`
       const sessionDescription = `Auto web session on device ${d.deviceName}`
       const browserName = getDefaultBrowserBy(desiredCapFields.platformName)
       return {...desiredCapFields, deviceOrientation, captureScreenshots,
-        newCommandTimeout, browserName, deviceGroup, sessionName, sessionDescription}
+        browserName, deviceGroup, sessionName, sessionDescription}
     })
 }
 
@@ -29,8 +30,10 @@ export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
     .map((d) => {
       let desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName', 'udid')
       let deviceGroup = getDeviceGroup(d)
-      const sessionName =
-      (d.udid) ? `${timestamp} - Auto app session on ${d.udid}` : `${timestamp} - Auto app session`
+      if (deviceGroup === 'KOBITON') {
+        delete desiredCapFields.udid
+      }
+      const sessionName = `${timestamp} - Auto app session on ${d.udid}`
       const sessionDescription = `Auto app session on device ${d.deviceName}`
       const desiredCapApp = Object.assign(appInfor, desiredCapFields)
       return {...desiredCapApp, deviceOrientation,
@@ -60,7 +63,7 @@ function getDefaultBrowserBy(platformName) {
 }
 
 function getDeviceGroup(device) {
-  if (device.isCloud && (device.udid === null || !device.udid)) {
+  if (device.isCloud) {
     return 'KOBITON'
   }
   else if (device.isMyOrg || device.isMyOwn) {

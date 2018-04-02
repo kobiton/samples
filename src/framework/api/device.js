@@ -84,6 +84,7 @@ class Device extends Base {
       devices = devices.slice(indexBegin, indexFinish)
     }
     else {
+
       if (onlineDeviceOnly) {
         devices = devices.filter((d) => d.isOnline && !d.isBooked)
       }
@@ -111,7 +112,9 @@ class Device extends Base {
         }
         devices = devicesByUDID
       }
+
     }
+
     return devices
   }
 
@@ -120,11 +123,11 @@ class Device extends Base {
    * @param device {object} - The object device
    */
   async isOnlineDevice(device) {
-    const groupType = (device.udid) ? group.private : group.cloud
+    const groupType = config.device.group
     let platformName = device.platformName
     const platformVersion = device.platformVersion
     let deviceName = device.deviceName
-    const arrayUDID = (device.udid) ? device.udid : ''
+    const arrayUDID = (config.device.group === 'private') ? device.udid : ''
     const deviceNumbers = config.device.number
     const indexBegin = -1
     const indexFinish = 1000
