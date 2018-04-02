@@ -17,14 +17,14 @@ public class WebTest {
     AppiumDriver driver = null;
 
     @BeforeTest
-    @Parameters({"platform", "deviceName", "browserName"})
-    public void Setup(ITestContext testContext, String platform, String deviceName, String browserName) throws MalformedURLException {
+    @Parameters({"platformName", "deviceName", "browserName"})
+    public void Setup(ITestContext testContext, String platformName, String deviceName, String browserName) throws MalformedURLException {
         Map<String, String> testngParams = testContext.getCurrentXmlTest().getAllParameters();
         String kobitonURL = testngParams.get("kobitonURL");
-        if (platform.toLowerCase().equals("android")) {
-            driver = new AndroidDriver(new URL(kobitonURL), this.generateDesiredCaps(platform, deviceName, browserName));
+        if (platformName.toLowerCase().equals("android")) {
+            driver = new AndroidDriver(new URL(kobitonURL), this.generateDesiredCaps(platformName, deviceName, browserName));
         } else {
-            driver = new IOSDriver(new URL(kobitonURL), this.generateDesiredCaps(platform, deviceName, browserName));
+            driver = new IOSDriver(new URL(kobitonURL), this.generateDesiredCaps(platformName, deviceName, browserName));
         }
         driver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
     }
@@ -49,14 +49,14 @@ public class WebTest {
         Assert.assertTrue(message.contains("Kobiton"));
     }
 
-    public static DesiredCapabilities generateDesiredCaps(String platform, String deviceName, String browserName) {
+    public static DesiredCapabilities generateDesiredCaps(String platformName, String deviceName, String browserName) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("sessionName", "Run test on " + platform);
+        capabilities.setCapability("sessionName", "Run test on " + platformName);
         capabilities.setCapability("sessionDescription", "This is an example for Web testing");
         capabilities.setCapability("deviceOrientation", "portrait");
         capabilities.setCapability("captureScreenshots", true);
         capabilities.setCapability("deviceGroup", "KOBITON");
-        capabilities.setCapability("platformName", platform);
+        capabilities.setCapability("platformName", platformName);
         capabilities.setCapability("browserName", browserName);
         capabilities.setCapability("deviceName", deviceName);
         return capabilities;
