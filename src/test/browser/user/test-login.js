@@ -6,6 +6,7 @@ import BaseData from '../data'
 const {username1: username, password1: password, emailUser1: email} = {...config}
 const expectedErrorMessage1 = 'Invalid email and/or password'
 const expectedErrorMessage2 = 'Password is invalid'
+const expectedErrorMessage3 = 'Invalid username and/or password'
 let errMsg
 let user
 let devicesPage
@@ -41,7 +42,7 @@ describe('Users / Login', () => {
 
     loginPage.login(username, user[0].password, 1)
     errMsg = loginPage.getErrorMessage()
-    assert.equal(errMsg, expectedErrorMessage1, msg)
+    assert.equal(errMsg, expectedErrorMessage3, msg)
 
     loginPage.login(email, user[0].password, 1)
     errMsg = loginPage.getErrorMessage()
@@ -49,7 +50,7 @@ describe('Users / Login', () => {
 
     loginPage.login(user[0].username, password, 1)
     errMsg = loginPage.getErrorMessage()
-    assert.equal(errMsg, expectedErrorMessage1, msg)
+    assert.equal(errMsg, expectedErrorMessage3, msg)
 
     loginPage.login(user[0].username, '1', 1)
     errMsg = loginPage.getErrorMessage()
@@ -57,7 +58,7 @@ describe('Users / Login', () => {
     
     loginPage.login(user[0].username, user[0].password, 1)
     errMsg = loginPage.getErrorMessage()
-    assert.equal(errMsg, expectedErrorMessage1, msg)
+    assert.equal(errMsg, expectedErrorMessage3, msg)
 
     loginPage.login(user[0].email, user[0].password, 1)
     errMsg = loginPage.getErrorMessage()
@@ -84,6 +85,7 @@ describe('Users / Login', () => {
   it('shouldn\'t allow user access Devices page if user logouts', () => {
     loginPage.open()
     devicesPage = loginPage.login(email, password)
+    devicesPage.waitForLoadingProgressDone()
     devicesPage.logout()
     
     // Verify that once logged in, clicking back button doesn't login user
