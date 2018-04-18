@@ -13,7 +13,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import io.appium.java_client.ios.IOSDriver;
 
-
 public class Ios_web {
 	public static IOSDriver<WebElement> driver = null;
 
@@ -21,18 +20,17 @@ public class Ios_web {
 	public void start_an_ios_web_session() throws MalformedURLException {
 		URL kobitonServerUrl = new URL("https://<KOBITON_USERNAME>:<KOBITON_API_KEY>@api-test.kobiton.com/wd/hub");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability("sessionName", "Automation test session");
-		capabilities.setCapability("sessionDescription", ""); 
-		capabilities.setCapability("deviceOrientation", "portrait");  
-		capabilities.setCapability("captureScreenshots", true); 
-		capabilities.setCapability("browserName", "safari"); 
-		capabilities.setCapability("deviceGroup", "KOBITON"); 
+		capabilities.setCapability("sessionName", "Automation test ios web session");
+		capabilities.setCapability("sessionDescription", "Automation test ios web session");
+		capabilities.setCapability("deviceOrientation", "portrait");
+		capabilities.setCapability("captureScreenshots", true);
+		capabilities.setCapability("browserName", "safari");
+		capabilities.setCapability("deviceGroup", "KOBITON");
 		capabilities.setCapability("deviceName", "iPad mini 2G (Cellular)");
-		capabilities.setCapability("platformVersion", "11.0.3");
-		capabilities.setCapability("platformName", "iOS"); 
+		capabilities.setCapability("platformName", "iOS");
 		driver = new io.appium.java_client.ios.IOSDriver<WebElement>(kobitonServerUrl, capabilities);
 		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-	}	
+	}
 
 	@Given("^User go to login page$")
 	public void go_to_login_herokuapp_page() {
@@ -57,9 +55,10 @@ public class Ios_web {
 
 	@Then("^User will see message ([^\"]*)$")
 	public void user_verify_message(String mesg) {
+		sleep(2);
 		Assert.assertTrue(getMessage().contains(mesg));
 	}
-	
+
 	@Given("^User ends session on Android device$")
 	public void end_an_ios_web_session() {
 		try {
@@ -71,15 +70,14 @@ public class Ios_web {
 	}
 
 	public String getMessage() {
-		sleep(2);
 		return driver.findElementById("flash").getText();
 	}
-	
+
 	public void sleep(int seconds) {
-	    try {
-	      Thread.sleep(seconds * 1000);
-	    } catch (InterruptedException e) {
-	      e.printStackTrace();
-	    }
-	  }
+		try {
+			Thread.sleep(seconds * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 }

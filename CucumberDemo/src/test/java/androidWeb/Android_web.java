@@ -20,14 +20,13 @@ public class Android_web {
 	public void start_an_android_web_session() throws MalformedURLException {
 		URL kobitonServerUrl = new URL("https://<KOBITON_USERNAME>:<KOBITON_API_KEY>@api.kobiton.com/wd/hub");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability("sessionName", "Automation test session");
-		capabilities.setCapability("sessionDescription", ""); 
+		capabilities.setCapability("sessionName", "Automation test android web session");
+		capabilities.setCapability("sessionDescription", "Automation test android web session"); 
 		capabilities.setCapability("deviceOrientation", "portrait");  
 		capabilities.setCapability("captureScreenshots", true); 
 		capabilities.setCapability("browserName", "chrome"); 
 		capabilities.setCapability("deviceGroup", "KOBITON"); 
-		capabilities.setCapability("deviceName", "Desire 728G dual sim");
-		capabilities.setCapability("platformVersion", "5.1");
+		capabilities.setCapability("deviceName", "Galaxy S6");
 		capabilities.setCapability("platformName", "Android");
 		driver = new AndroidDriver<WebElement>(kobitonServerUrl, capabilities);
 		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
@@ -56,6 +55,7 @@ public class Android_web {
 
 	@Then("^User will see message ([^\"]*)$")
 	public void verify_login_message(String mesg) {
+		sleep(2);
 		Assert.assertTrue(getMessage().contains(mesg));
 	}
 	
@@ -70,7 +70,6 @@ public class Android_web {
 	}
 
 	public String getMessage() {
-		sleep(2);
 		return driver.findElementById("flash").getText();
 	}
 	

@@ -23,14 +23,13 @@ public class Ios_app {
 	public void start_an_ios_app_session() throws MalformedURLException {
 		URL kobitonServerUrl = new URL("https://<KOBITON_USERNAME>:<KOBITON_API_KEY>@api.kobiton.com/wd/hub");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability("sessionName", "Automation test session");
-		capabilities.setCapability("sessionDescription", ""); 
+		capabilities.setCapability("sessionName", "Automation test ios app session");
+		capabilities.setCapability("sessionDescription", "Automation test ios app session"); 
 		capabilities.setCapability("deviceOrientation", "portrait");  
 		capabilities.setCapability("captureScreenshots", true); 
 		capabilities.setCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa"); 
 		capabilities.setCapability("deviceGroup", "KOBITON"); 
 		capabilities.setCapability("deviceName", "iPhone 6");
-		capabilities.setCapability("platformVersion", "10.3.1");
 		capabilities.setCapability("platformName", "iOS"); 
 		driver = new IOSDriver<WebElement>(kobitonServerUrl, capabilities);
 		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);

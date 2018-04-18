@@ -1,6 +1,6 @@
 # 1. Getting Started
 
-This sample demonstrate how to execute Automation testing on Kobiton using Cucumber and junit framework
+This sample demonstrates how to execute Automation testing on Kobiton using Cucumber and JUnit Test Framework
 
 # 2. Pre-requisites
 
@@ -20,10 +20,17 @@ Steps to set these variables
 1. To get key for `KOBITON_API_KEY`, visit [https://portal.kobiton.com/settings/keys](https://portal.kobiton.com/settings/keys) with your account
 2. Set the environment variables the specific script in step "start a session"
 
-# 4. Execute tests
+# 4. Execute tests 
 
-1. Open editor(Eclipse, IntelliJ...) then choose a TestRunner to run with junit test
-2. Open Terminal and go to this folder, tests can be run by one of following commands
+### 1. By using Editor (Eclipse, Intellij...)
+
+Eclipse editor:
+* [Download Eclipse] (http://www.eclipse.org/downloads/)
+* [Plugin Maven into Eclipse] (http://www.eclipse.org/m2e/)
+* ![Run TestRunner file as JUnit test] (https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/images/Run_junit_test_on_eclipse_editor.png)
+
+### 2. By using command line
+Open Terminal and go to this folder, tests can be run by one of following commands
 
 * Android web
 `mvn test -Dcucumber.options="--tags @androidWeb"`
