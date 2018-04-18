@@ -8,19 +8,23 @@ This sample demonstrates how to execute Automation testing on Kobiton using Cucu
 
 * [Maven](https://maven.apache.org/install.html) installed.
 
-# 3. Prepare environment variables
+# 3. Prepare environment
 
-Below environment variables are required to execute tests
+Below variables are required to execute tests
 
 * `KOBITON_USERNAME`
 * `KOBITON_API_KEY`
+* `DesiredCapabilities`
 
 Steps to set these variables
 
-1. To get key for `KOBITON_API_KEY`, visit [https://portal.kobiton.com/settings/keys](https://portal.kobiton.com/settings/keys) with your account
-2. Set the environment variables the specific script in step "start a session"
+1. KOBITON_USERNAME: is your username on Kobiton
+2. KOBITON_API_KEY: to get it, visit [https://portal.kobiton.com/settings/keys](https://portal.kobiton.com/settings/keys) with your account
+3. DesiredCapabilities: specific desired capaibilities to execute test
+4. Set those variables in the puporsed script at step "start a session"
+![Set up environment](https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/images/Set_up_environment.png)
 
-# 4. Execute tests 
+# 4. Execute tests
 
 ### 1. By using Editor (Eclipse, Intellij...)
 
