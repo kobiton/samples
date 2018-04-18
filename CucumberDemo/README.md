@@ -27,7 +27,7 @@ Steps to set these variables
 Eclipse editor:
 * [Download Eclipse] (http://www.eclipse.org/downloads/)
 * [Plugin Maven into Eclipse] (http://www.eclipse.org/m2e/)
-* ![Run TestRunner file as JUnit test] (https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/images/Run_junit_test_on_eclipse_editor.png)
+* ![Run TestRunner file as JUnit test](https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/images/Run_junit_test_on_eclipse_editor.png)
 
 ### 2. By using command line
 Open Terminal and go to this folder, tests can be run by one of following commands
