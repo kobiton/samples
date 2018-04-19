@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Kobiton Sample Suite" >
+	<test name="Test Android Web">
+    <classes>
+      <class name="kobiton.com.testng.AndroidWebTest"/>
+    </classes>
+  </test>
+  <test name="Test Android App">
+    <classes>
+      <class name="kobiton.com.testng.AndroidAppTest"/>
+    </classes>
+  </test>
+  <test name="Test iOS Web">
+    <classes>
+      <class name="kobiton.com.testng.iOSWebTest"/>
+    </classes>
+  </test>
+  <test name="Test iOS App">
+    <classes>
+      <class name="kobiton.com.testng.iOSAppTest"/>
+    </classes>
+  </test>
+</suite>
