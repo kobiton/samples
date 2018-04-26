@@ -14,13 +14,22 @@ const firefoxDriver = {
     baseURL: 'https://github.com/mozilla/geckodriver/releases/download'
   }
 }
+const safariDriver = {
+  safari: {
+    version: '2.48',
+    baseURL: 'https://selenium-release.storage.googleapis.com'
+  }
+}
 let driver
-
-if (config.browser.browserName === 'chrome') {
-  driver = chromeDriver
+  
+if (config.browser.browserName === 'safari') {
+  driver = safariDriver
+}
+else if (config.browser.browserName === 'firefox') {
+  driver = firefoxDriver
 }
 else {
-  driver = firefoxDriver
+  driver = chromeDriver
 }
 
 exports.config = {
