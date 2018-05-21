@@ -21,12 +21,15 @@ setTimeout(async () => {
       onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
       assert.isAtLeast(onlineCaps.length, 1, 'Expected at least 1 online devices')
       id = (onlineCaps[0].udid) ? `${onlineCaps[0].udid}` : ''
+
     })
+
     describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
       it(`${timestamps} - should run successfully test with full valid desireCap`, async () => {
         await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
       })
     })
+
     describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
       it('should run successfully test with none udid', async () => {
         if (onlineCaps[0].udid) {
@@ -46,6 +49,7 @@ setTimeout(async () => {
           })
       })
     }
+
     describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
       if (onlineCaps[0].platformName === 'Android') {
         it(`${timestamps} - should run successfully test web with Chrome Beta`, async () => {
@@ -54,6 +58,7 @@ setTimeout(async () => {
         })
       }
     })
+
     describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
       it('`${timestamps} - should run successfully test with device orientation is landscape',
       async () => {
@@ -61,24 +66,28 @@ setTimeout(async () => {
         await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
       })
     })
+
     describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
       it('should run successfully test with CaptureScreenshots is true', async () => {
         onlineCaps[0].CaptureScreenshots = 'true'
         await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
       })
     })
+
     describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
       it('should run successfully test with substring deviceName', async () => {
         onlineCaps[0].deviceName = onlineCaps[0].deviceName.slice(0, -3)
         await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
       })
     })
+    
     describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
       it('should run successfully test with substring PlatformVersion', async () => {
         onlineCaps[0].platformVersion = onlineCaps[0].platformVersion.slice(0, -1)
         await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
       })
     })
+
   })
   run()
 }, 1000)

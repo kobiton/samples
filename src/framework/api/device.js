@@ -4,6 +4,11 @@ import Base from './_base'
 import group from '../common/groupType/type-of-group'
 import config from '../config/test'
 
+const ANDROID_PLATFORM_VERSION = {
+  ABOVE_5: '5+',
+  BELOW_5: '5-'
+}
+
 class Device extends Base {
 
   /**
@@ -290,6 +295,7 @@ class Device extends Base {
     })
     return matches[0]
   }
+
 }
 
 export default new Device()
