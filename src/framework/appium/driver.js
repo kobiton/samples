@@ -5,7 +5,6 @@ import {createServerConfig} from './helper'
 
 export async function quitDriver(driver) {
   try {
-    logger.writeLog('Setting up', 'quit Driver')
     await driver.quit()
   }
   catch (err) {

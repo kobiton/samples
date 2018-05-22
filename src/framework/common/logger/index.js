@@ -39,5 +39,10 @@ export function writeLog(message, value, {logFileName = 'debug.log'} = {}) {
   if (value) {
     metadata = value instanceof String ? value : JSON.stringify(value)
   }
-  fs.appendFileSync(fullLogPath, `${message} : ${metadata} \n`)
+  if (metadata) {
+    fs.appendFileSync(fullLogPath, `${message} : ${metadata} \n`)
+  }
+  else {
+    fs.appendFileSync(fullLogPath, `${message}\n`)
+  }
 }
