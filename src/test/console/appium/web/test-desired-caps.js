@@ -15,13 +15,14 @@ setTimeout(async () => {
   onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
   assert.isAtLeast(onlineCaps.length, 1, 'Expected at least 1 online devices')
   id = (onlineCaps[0].udid) ? `${onlineCaps[0].udid}` : ''
+  
   describe('[appium-web]: Test desired capability', async () => {
+    
     beforeEach(async () => {
       onlineDevices = await Device.getOnlineDevices()
       onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
       assert.isAtLeast(onlineCaps.length, 1, 'Expected at least 1 online devices')
       id = (onlineCaps[0].udid) ? `${onlineCaps[0].udid}` : ''
-
     })
 
     describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
@@ -38,6 +39,7 @@ setTimeout(async () => {
         }
       })
     })
+
     if (onlineCaps[0].deviceGroup === 'ORGANIZATION') {
       describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
         it(`${timestamps} - should run successfully test with just udid`,
@@ -80,11 +82,55 @@ setTimeout(async () => {
         await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
       })
     })
-    
+
     describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
       it('should run successfully test with substring PlatformVersion', async () => {
         onlineCaps[0].platformVersion = onlineCaps[0].platformVersion.slice(0, -1)
         await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+      })
+    })
+
+    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, () => {
+      it('should work with asterisk at the beginning of deviceName', async () => {
+        const onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
+        onlineCaps[0].deviceName = `*${onlineCaps[0].deviceName}`
+        await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+      })
+    })
+
+    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, () => {
+      it('should work with asterisk at the end of deviceName', async () => {
+        const onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
+        onlineCaps[0].deviceName = `${onlineCaps[0].deviceName}*`
+        await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+      })
+    })
+
+    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, () => {
+      it('should work with asterisk both at the beginning and at the end of deviceName',
+        async () => {
+          const onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
+          onlineCaps[0].deviceName = `*${onlineCaps[0].deviceName}*`
+          await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+        })
+    })
+
+    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, () => {
+      it('should throw error if asterisk in the middle of deviceName', async () => {
+        let onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
+        let deviceName = onlineCaps[0].deviceName
+        const newDeviceName = deviceName.insert(Math.floor(deviceName.length / 2), '*')
+        onlineCaps[0].deviceName = newDeviceName
+        const errorMsg =
+        'Only support wildcard character * (asterisk) with 3 formats: *text, text* and *text*.'
+        try {
+          await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout}, (err) => {
+            throw err
+          })
+        }
+        catch (error) {
+          assert.equal(error.message, errorMsg, 'The expected error message did not appear.')
+        }
       })
     })
 
