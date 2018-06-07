@@ -50,7 +50,7 @@ export default class MailinatorPage {
         throw new Error('Poor network connectivity on this device')
       }
       else {
-        throw err
+        throw new Error(err)
       }
     }
     finally {

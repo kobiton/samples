@@ -128,7 +128,7 @@ Append argument: --mobileTestDuration <minutes>
 ##### Test desired cap:
 
   ```bash
-    yarn run test -- --input /console/appium/web/test-desirecap.js --platform Android
+    yarn run test -- --input /console/appium/web/test-desired-caps.js --platform Android
     yarn run test -- --input /console/appium/web/test-desirecap.js --platform iOS
   ```
 

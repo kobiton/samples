@@ -6,134 +6,171 @@ import {convertToDesiredCapabilities} from '../../../../framework/appium/helper'
 
 const timeout = 60000 // milliseconds
 const timestamps = moment().format('YYYYMMDDHHmmss')
-let onlineDevices
-let onlineCaps
-let id
+let onlineDevices = []
+let onlineCaps = []
+let desiredCap = {}
 
 setTimeout(async () => {
   onlineDevices = await Device.getOnlineDevices()
   onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
   assert.isAtLeast(onlineCaps.length, 1, 'Expected at least 1 online devices')
-  id = (onlineCaps[0].udid) ? `${onlineCaps[0].udid}` : ''
-  
   describe('[appium-web]: Test desired capability', async () => {
-    
+
     beforeEach(async () => {
       onlineDevices = await Device.getOnlineDevices()
-      onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
+      onlineCaps = await convertToDesiredCapabilities(timestamps,
+        await Device.platformFilter(onlineDevices))
+      desiredCap = {...onlineCaps[0], automationName: ''}
       assert.isAtLeast(onlineCaps.length, 1, 'Expected at least 1 online devices')
-      id = (onlineCaps[0].udid) ? `${onlineCaps[0].udid}` : ''
     })
 
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
-      it(`${timestamps} - should run successfully test with full valid desireCap`, async () => {
-        await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
-      })
-    })
-
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
+    describe('all devices', async () => {
       it('should run successfully test with none udid', async () => {
-        if (onlineCaps[0].udid) {
-          delete onlineCaps[0].udid
-          await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+        if (desiredCap.udid) {
+          delete desiredCap.udid
         }
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
+
       })
     })
 
-    if (onlineCaps[0].deviceGroup === 'ORGANIZATION') {
-      describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
+    if (desiredCap.deviceGroup === 'ORGANIZATION') {
+      describe('org devices', async () => {
         it(`${timestamps} - should run successfully test with just udid`,
           async () => {
-            delete onlineCaps[0].deviceName
-            delete onlineCaps[0].platformName
-            delete onlineCaps[0].platformVersion
-            await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+            delete desiredCap.deviceName
+            delete desiredCap.platformName
+            delete desiredCap.platformVersion
+            await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
           })
       })
     }
 
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
-      if (onlineCaps[0].platformName === 'Android') {
+    describe('android devices', async () => {
+      if (desiredCap.platformName === 'Android') {
         it(`${timestamps} - should run successfully test web with Chrome Beta`, async () => {
-          onlineCaps[0].browserName = 'chromebeta'
-          await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+          desiredCap.browserName = 'chromebeta'
+          await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
         })
       }
     })
 
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
+    describe('landscape supported devices', async () => {
       it('`${timestamps} - should run successfully test with device orientation is landscape',
       async () => {
-        onlineCaps[0].deviceOrientation = 'landscape'
-        await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+        desiredCap.deviceOrientation = 'landscape'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
       })
     })
 
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
+    describe('all devices', async () => {
       it('should run successfully test with CaptureScreenshots is true', async () => {
-        onlineCaps[0].CaptureScreenshots = 'true'
-        await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+        desiredCap.CaptureScreenshots = 'true'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
       })
     })
 
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
+    describe('all devices', async () => {
       it('should run successfully test with substring deviceName', async () => {
-        onlineCaps[0].deviceName = onlineCaps[0].deviceName.slice(0, -3)
-        await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+        desiredCap.deviceName = desiredCap.deviceName.slice(0, -3)
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
       })
     })
 
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, async () => {
+    describe('all devices', async () => {
       it('should run successfully test with substring PlatformVersion', async () => {
-        onlineCaps[0].platformVersion = onlineCaps[0].platformVersion.slice(0, -1)
+        desiredCap.platformVersion = desiredCap.platformVersion.slice(0, -1)
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
+      })
+    })
+
+    describe('on android devices', () => {
+      it('should work if UIAutomator2 is used for version >= 5.0', async () => {
+        let androidDevices = await Device.platformFilter(onlineDevices)
+        let onlineCaps = await convertToDesiredCapabilities(timestamps,
+          await Device.androidVersionFilter(androidDevices))
+        onlineCaps[0].automationName = 'UIAutomator2'
         await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
       })
     })
 
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, () => {
-      it('should work with asterisk at the beginning of deviceName', async () => {
-        const onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
-        onlineCaps[0].deviceName = `*${onlineCaps[0].deviceName}`
-        await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+    describe('on android devices', () => {
+      it('should work if Appium is used for android device', async() => {
+        desiredCap.automationName = 'Appium'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
       })
     })
 
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, () => {
-      it('should work with asterisk at the end of deviceName', async () => {
-        const onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
-        onlineCaps[0].deviceName = `${onlineCaps[0].deviceName}*`
-        await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
+    describe('on android devices', async () => {
+      it('should work if automationName is set to lowercase', async() => {
+        desiredCap.automationName = 'appium'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
+      })
+
+      it('should work if automationName is set to uppercase', async() => {
+        desiredCap.automationName = 'APPIUM'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
+      })
+
+      it('should work if automationName is mixed of uppercase and lowercase', async() => {
+        desiredCap.automationName = 'ApPium'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
       })
     })
 
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, () => {
-      it('should work with asterisk both at the beginning and at the end of deviceName',
-        async () => {
-          const onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
-          onlineCaps[0].deviceName = `*${onlineCaps[0].deviceName}*`
-          await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
-        })
-    })
-
-    describe(`${onlineCaps[0].deviceName} ${id}: ${onlineCaps[0].platformVersion}`, () => {
-      it('should throw error if asterisk in the middle of deviceName', async () => {
-        let onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
-        let deviceName = onlineCaps[0].deviceName
-        const newDeviceName = deviceName.insert(Math.floor(deviceName.length / 2), '*')
-        onlineCaps[0].deviceName = newDeviceName
-        const errorMsg =
-        'Only support wildcard character * (asterisk) with 3 formats: *text, text* and *text*.'
+    describe('on android device version < 5.0', () => {
+      it('should show error if UIAutomator2 is used', async() => {
+        const expectedErrorMsg = 'UIAutomator2 is not supported on Android device with version < 5'
+        let androidDevices = await Device.platformFilter(onlineDevices)
+        let onlineCaps = await convertToDesiredCapabilities(timestamps,
+          await Device.androidVersionFilter(androidDevices, '5-'))
+        onlineCaps[0].automationName = 'UIAutomator2'
         try {
-          await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout}, (err) => {
-            throw err
-          })
+          await executeMailinatorPageTest({desiredCapabilities: onlineCaps[0], timeout})
         }
         catch (error) {
-          assert.equal(error.message, errorMsg, 'The expected error message did not appear.')
+          assert.isTrue(error.toString()
+          .includes(expectedErrorMsg), 'expected error message was not found')
         }
+      })
+    })
+
+    describe('on android devices', () => {
+      it('should work if Espresso is used', async () => {
+        desiredCap.automationName = 'Espresso'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
+      })
+    })
+
+    describe('on android devices', () => {
+      it('should work if UIAutomator is used', async () => {
+        desiredCap.automationName = 'UIAutomator'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
+      })
+    })
+
+    describe('on android devices', () => {
+      it('should work if UIAutomation is used', async () => {
+        desiredCap.automationName = 'UIAutomation'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
+      })
+    })
+
+    describe('on android devices', () => {
+      it('should work if Selendroid is used', async () => {
+        desiredCap.automationName = 'Selendroid'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
+      })
+    })
+
+    describe('on android devices', () => {
+      it('should work if YouIEngine is used', async () => {
+        desiredCap.automationName = 'YouIEngine'
+        await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
       })
     })
 
   })
+
   run()
 }, 1000)

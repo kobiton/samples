@@ -5,8 +5,8 @@ import group from '../common/groupType/type-of-group'
 import config from '../config/test'
 
 const ANDROID_PLATFORM_VERSION = {
-  ABOVE_5: '5+',
-  BELOW_5: '5-'
+  BELOW_5: '5-',
+  ABOVE_5: '5+'
 }
 
 class Device extends Base {
@@ -294,6 +294,31 @@ class Device extends Base {
       return d.udid === udid
     })
     return matches[0]
+  }
+
+/**
+* filter array of android devices by their platform version-> support automaton web testing
+* @param list {array} - array of devices
+* @param version {string} - platform version to filter
+*/
+  async androidVersionFilter(list, version = ANDROID_PLATFORM_VERSION.ABOVE_5) {
+    if (version === ANDROID_PLATFORM_VERSION.ABOVE_5) {
+      return list.filter((device) => parseInt(device.platformVersion.split('.')[0]) >= 5)
+    }
+
+    if (version === ANDROID_PLATFORM_VERSION.BELOW_5) {
+      return list.filter((device) => parseInt(device.platformVersion.split('.')[0]) < 5)
+    }
+    return list
+  }
+
+/**
+* filter array of anroid devices by their platform
+* @param list {array} - array of devices
+* @param platform {string} - platform to filter
+*/
+  async platformFilter(list, platform = 'Android') {
+    return list.filter((device) => device.platformName === platform)
   }
 
 }
