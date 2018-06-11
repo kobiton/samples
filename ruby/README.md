@@ -10,11 +10,28 @@
 * Replace *username* and *api key* in configs.rb
 * Modify`desired_caps` to match with your available devices
 
-#### Prerequisites
-* Install Ruby:  `\curl -L https://get.rvm.io | bash -s stable --ruby`
-* Install Bundler:  `gem install bundler`
-* Install Gems:  `bundle install`
-* Update Gems: `bundle update`
+#### Environment Setup
+
+1. Global Dependencies
+    * Install [Ruby](https://www.ruby-lang.org/en/documentation/installation/)
+    * Or Install Ruby with [Homebrew](http://brew.sh/)
+    ```bash
+    $ brew install ruby
+    ```
+    * Or Install Ruby with CURL
+    ```bash
+    curl -L https://get.rvm.io | bash -s stable --ruby
+    ```
+    * Install bundler (Sudo may be necessary)
+    ```bash
+        gem install bundler
+    ```
+
+2. Project Dependencies
+    * Install packages (Use sudo if necessary)
+    ```
+    $ bundle install
+    ```
 
 #### Point to specific gem version
 * Edit gemfile: example `gem 'appium_lib', '~><version>'`
@@ -27,4 +44,3 @@ ruby test/androidAppTest.rb
 ruby test/iOSWebTest.rb
 ruby test/iOSAppTest.rb
 ```
-
