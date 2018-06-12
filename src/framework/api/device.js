@@ -4,6 +4,8 @@ import Base from './_base'
 import group from '../common/groupType/type-of-group'
 import config from '../config/test'
 
+const {username1: username, password1: password} = {...config}
+
 const ANDROID_PLATFORM_VERSION = {
   BELOW_5: '5-',
   ABOVE_5: '5+'
@@ -42,6 +44,72 @@ class Device extends Base {
   }
 
   /**
+   * Update Device Info into Hub
+   * @param data {Object} nodeId, udid, capabilities {} , machine {}
+   */
+  async updateDeviceInfo(token, data) {
+    return await this.post({
+      headers: {
+        'authorization': `Bearer ${token}`,
+        'content-type': 'application/json'
+      },
+      path: 'devices/update',
+      body: data
+    })
+  }
+  
+  /**
+   * Update Device Status
+   * @param udid {string} udid of device
+   * @param state {string} 'ACTIVATING' | ACTIVATED | DEACTIVATED
+   * @param message {string} The defined message to send to hub
+   */
+  async updateDeviceStatus(token, udid, status, message) {
+    return await this.put({
+      headers: {
+        'authorization': `Bearer ${token}`,
+        'content-type': 'application/json'
+      },
+      path: `devices/${udid}/status`,
+      body: {
+        deviceUDID: udid,
+        state: status,
+        message
+      }
+    })
+  }
+
+  /**
+   * get Hub Info
+   */
+  async getHub(token) {
+    return await this.get({
+      headers: {
+        'authorization': `Bearer ${token}`,
+        'content-type': 'application/json'
+      },
+      path: 'hubs/which'
+    })
+  }
+
+  /**
+   * Book device depends on deviceId
+   * @param deviceId {int} deviceId in DB
+   */
+  async bookDevice(token, deviceId) {
+    return await this.post({
+      headers: {
+        'authorization': `Bearer ${token}`,
+        'content-type': 'application/json'
+      },
+      path: 'hubs/book',
+      body: {
+        deviceId
+      }
+    })
+  }
+
+  /**
    * Filter devices by some criteria
    * @param groupType {string} - Private | Cloud | Favorite | All
    * @param platformName {string} - Android | iOS
@@ -53,7 +121,7 @@ class Device extends Base {
    * @param arrayUDID {array} - List of devices
    */
   async _getDevicesBy({
-    onlineDeviceOnly = true,
+    onlineDeviceOnly,
     groupType = 'all',
     platformName,
     platformVersion,
@@ -106,7 +174,6 @@ class Device extends Base {
       if (!isNaN(deviceNumbers)) {
         devices = devices.length > deviceNumbers ? devices.slice(0, deviceNumbers) : devices
       }
-
       if (arrayUDID) {
         const udids = arrayUDID.split(',')
         for (const udid of udids) {
@@ -119,7 +186,6 @@ class Device extends Base {
       }
 
     }
-
     return devices
   }
 
@@ -137,6 +203,7 @@ class Device extends Base {
     const indexBegin = -1
     const indexFinish = 1000
     const onlineDevices = await this._getDevicesBy({
+      onlineDeviceOnly: true,
       groupType,
       platformName,
       platformVersion,
@@ -217,16 +284,19 @@ class Device extends Base {
     platformVersion = config.device.version,
     deviceName = config.device.name,
     deviceNumbers = config.device.number,
+    indexBegin = config.device.indexBegin,
+    indexFinish = config.device.indexFinish,
     arrayUDID = config.device.arrayUDID
   } = {}) {
     return await this._getDevicesBy({
-      onlineDeviceOnly: false,
       groupType,
       platformName,
       platformVersion,
       deviceName,
       deviceNumbers,
-      arrayUDID
+      arrayUDID,
+      indexBegin,
+      indexFinish
     })
   }
 

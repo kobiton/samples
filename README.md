@@ -20,6 +20,7 @@
     * KOBITON_EMAIL_RETAINING_TOKEN
     * KOBITON_REPORT_SERVER_URL
     * KOBITON_REPORT_SECRET_KEY
+    * KOBITON_CONCURRENT_LOADTEST
 
   ##### Tips: You can create a file that contains all environment setter commands as below:
     * export KOBITON_API_URL='<api_url>'
@@ -28,6 +29,7 @@
     * export KOBITON_PASSWORD_1='<password>'
     * export KOBITON_API_KEY='<api_key>'
     * export KOBITON_DESKTOP_APP_URL='<Kobiton App S3 link>'
+    * export KOBITON_CONCURRENT_LOADTEST='<number of devices>'
 
   Run command to set variable environment
     ```bash
@@ -221,3 +223,9 @@ Append argument: --mobileTestDuration <minutes>
   yarn test -- --task multi-version-check --input php
   ```
 #####
+
+### LoadTest
+##### Run test
+```bash
+yarn test -- --input /console/api/test-manual-loadtest.js --reporter spec
+```

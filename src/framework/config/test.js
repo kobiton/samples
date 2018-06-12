@@ -14,7 +14,8 @@ const envVariablesToCheck = [
   'KOBITON_EMAIL_RETAINING_TOKEN',
   'KOBITON_REPORT_SERVER_URL',
   'KOBITON_REPORT_SECRET_KEY',
-  'KOBITON_LOGS_SERVER_URL'
+  'KOBITON_LOGS_SERVER_URL',
+  'KOBITON_CONCURRENT_LOADTEST'
 ]
 for (const envName of envVariablesToCheck) {
   if (!process.env[envName]) {
@@ -39,6 +40,7 @@ const config = {
   username2: process.env.KOBITON_USERNAME_2,
   password2: process.env.KOBITON_PASSWORD_2,
   emailRetainingToken: process.env.KOBITON_EMAIL_RETAINING_TOKEN,
+  concurrentLoadTest: process.env.KOBITON_CONCURRENT_LOADTEST || 20,
   longTestSuiteIterationAmount: args.longTestSuiteIterationAmount,
   expectedDurationInMinutes: args.mobileTestDuration,
   typeOfTest: args.type,
