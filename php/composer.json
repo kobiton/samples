@@ -7,7 +7,7 @@
         }
     ],
     "require": {
-        "appium/php-client": "^0.2.1",
+        "appium/php-client": "^0.3.0",
         "phpunit/phpunit": "^5.7.9",
         "facebook/webdriver": "^1.4.1",
         "phpunit/phpunit-selenium": "^3.0.3"
