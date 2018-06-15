@@ -68,7 +68,7 @@ class AndroidAppTest extends PHPUnit_Extensions_AppiumTestCase {
     print 'should allow to search iFixit on Home screen';
     $this->launchApp();
     sleep(5);
-    $this->byXpath("//*[@text='Search']")->click();
+    $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/action_search']")->click();
     sleep(2);
     $this->byXpath("//*[@resource-id='com.dozuki.ifixit:id/abs__search_src_text']")->click();
     sleep(2);
