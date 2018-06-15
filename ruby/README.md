@@ -46,7 +46,7 @@ ruby test/iOSAppTest.rb
 ```
 
 Note:
-- current packages's version (latest):
-appium_lib (9.14.1)
-appium_lib_core (1.7.1)
-selenium-webdriver (3.12.0)
+- Current packages's version (latest):
+  + appium_lib (9.14.1)
+  + appium_lib_core (1.7.1)
+  + selenium-webdriver (3.12.0)
