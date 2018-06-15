@@ -6,9 +6,9 @@ These are simple samples of how to use Python to run Appium tests. It is suggest
 ### Install libraries:
 
 ```shell
-pip install Appium-Python-Client
+pip install Appium-Python-Client==0.26
 pip install pytest
-pip install selenium==3.0.2
+pip install selenium==3.12.0
 pip install virtualenv
 pip install robotframework-selenium2library requests
 ```
@@ -16,9 +16,9 @@ pip install robotframework-selenium2library requests
 
 ### Kobiton Credentials
   * Access https://portal.kobiton.com/ with your account
-  * Get your username & API 
+  * Get your username & API
   * In the terminal export your Kobiton Credentials as environmental variables:
-  
+
   ```shell
   $ export KOBITON_USERNAME=<your Kobiton username>
   $ export KOBITON_ACCESS_KEY=<your Kobiton access key>
@@ -28,11 +28,11 @@ pip install robotframework-selenium2library requests
 ### 1. Pytest-Selenium
 
 - Create a virtual environment in your project folder the environment name is arbitrary.
-  
+
   ```shell
   $ virtualenv venv
   ```
-  
+
 - Activate the environment:
   ```shell
   $ source venv/bin/activate
