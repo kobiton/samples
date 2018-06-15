@@ -6,7 +6,7 @@ These are simple samples of how to use Python to run Appium tests. It is suggest
 ### Install libraries:
 
 ```shell
-pip install Appium-Python-Client (0.26)
+pip install Appium-Python-Client==0.26
 pip install pytest
 pip install selenium==3.12.0
 pip install virtualenv
