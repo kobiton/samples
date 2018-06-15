@@ -118,7 +118,7 @@ class AndroidAppTest < Test::Unit::TestCase
    
     @driver.launch_app
     sleep 2
-    @driver.find_element(:xpath, "//*[@text='Search']").click
+    @driver.find_element(:xpath, "//*[@resource-id='com.dozuki.ifixit:id/action_search']").click
     @driver.find_element(:xpath, "//*[@resource-id='com.dozuki.ifixit:id/abs__search_src_text']")
     .send_keys('Macbook Pro 2015')
     @driver.press_keycode(66);

@@ -102,7 +102,7 @@ public class AndroidAppTest {
 
 		driver.launchApp();
 		sleep(2);
-		driver.findElementByXPath("//*[@text='Search']").click();
+		driver.findElementByXPath("//*[@resource-id='com.dozuki.ifixit:id/action_search']").click();
 		driver.findElementByXPath("//*[@resource-id='com.dozuki.ifixit:id/abs__search_src_text']")
 	    .sendKeys("Macbook Pro 2015");
 		driver.pressKeyCode(66);

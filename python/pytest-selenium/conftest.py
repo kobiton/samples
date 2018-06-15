@@ -58,8 +58,6 @@ def driver(request, browser_config):
         command_executor=executor,
         desired_capabilities=desired_caps
     )
-
-    # This is specifically for SauceLabs plugin.
     # In case test fails after selenium session creation having this here will help track it down.
     # creates one file per test non ideal but xdist is awful
     if browser is not None:
@@ -76,15 +74,3 @@ def driver(request, browser_config):
     except WebDriverException:
         # we can ignore the exceptions of WebDriverException type -> We're done with tests.
         print('Warning: The driver failed to quit properly. Check test and server side logs.')
-
-
-@pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_makereport(item, call):
-    # this sets the result as a test attribute for SauceLabs reporting.
-    # execute all other hooks to obtain the report object
-    outcome = yield
-    rep = outcome.get_result()
-
-    # set an report attribute for each phase of a call, which can
-    # be "setup", "call", "teardown"
-    setattr(item, "rep_" + rep.when, rep)
