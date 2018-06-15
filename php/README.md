@@ -18,10 +18,10 @@
 ### To install custom packages, please follow the instruction below:
 
 ```
-composer require "appium/php-client=0.2.1"
-composer require "phpunit/phpunit=5.7.9"
+composer require "appium/php-client=0.3.0"
+composer require "phpunit/phpunit=5.7.27"
 composer require "phpunit/phpunit-selenium=3.0.3"
-composer require "facebook/webdriver=1.4.1"
+composer require "facebook/webdriver=1.6.0"
 ```
 
 #### Run tests

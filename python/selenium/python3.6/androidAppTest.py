@@ -105,7 +105,7 @@ class AndroidAppTest(unittest.TestCase):
     print ('should allow to search iFixit on Home screen')
     self.driver.launch_app()
     time.sleep(2)
-    self.driver.find_element_by_xpath("//*[@text='Search']").click()
+    self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/action_search']").click()
     self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/abs__search_src_text']").send_keys('Macbook Pro 2015')
     time.sleep(2)
     self.driver.press_keycode(66)

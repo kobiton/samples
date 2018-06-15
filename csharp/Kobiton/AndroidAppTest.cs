@@ -140,7 +140,7 @@ namespace Kobiton
 
       driver.LaunchApp();
       Thread.Sleep(2000);
-      driver.FindElementByXPath("//*[@text='Search']").Click();
+      driver.FindElementByXPath("//*[@resource-id='com.dozuki.ifixit:id/action_search']").Click();
       driver.FindElementByXPath("//*[@resource-id='com.dozuki.ifixit:id/abs__search_src_text']").SendKeys("Macbook Pro 2015");
       driver.PressKeyCode(66);
       Thread.Sleep(2000);
