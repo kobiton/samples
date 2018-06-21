@@ -258,6 +258,7 @@ class Device extends Base {
     arrayUDID = config.device.arrayUDID
   } = {}) {
     return await this._getDevicesBy({
+      onlineDeviceOnly: true,
       groupType,
       platformName,
       platformVersion,

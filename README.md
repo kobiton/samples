@@ -83,6 +83,8 @@ Append argument: --mobileTestDuration <minutes>
 #### UIs
   ```
   yarn test -- --task test-ui --type <file_test>
+  yarn test -- --task test-ui --type test-manual --platform Android
+  yarn test -- --task test-ui --type test-manual --platform iOS
   ```
 
 #### AUT
@@ -131,7 +133,7 @@ Append argument: --mobileTestDuration <minutes>
 
   ```bash
     yarn run test -- --input /console/appium/web/test-desired-caps.js --platform Android
-    yarn run test -- --input /console/appium/web/test-desirecap.js --platform iOS
+    yarn run test -- --input /console/appium/web/test-desired-caps.js --platform iOS
   ```
 
 ##### Test web:

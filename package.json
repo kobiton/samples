@@ -54,7 +54,7 @@
     "selenium-standalone": "^6.11.0",
     "spectron": "^3.7.2",
     "tmp": "0.0.28",
-    "wd": "^1.1.1",
+    "wd": "^1.9.0",
     "wdio-json-reporter": "0.0.1",
     "wdio-junit-reporter": "^0.1.0",
     "wdio-mocha-framework": "^0.5.12",
