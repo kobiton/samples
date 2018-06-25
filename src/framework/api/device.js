@@ -4,8 +4,6 @@ import Base from './_base'
 import group from '../common/groupType/type-of-group'
 import config from '../config/test'
 
-const {username1: username, password1: password} = {...config}
-
 const ANDROID_PLATFORM_VERSION = {
   BELOW_5: '5-',
   ABOVE_5: '5+'
@@ -57,7 +55,7 @@ class Device extends Base {
       body: data
     })
   }
-  
+
   /**
    * Update Device Status
    * @param udid {string} udid of device

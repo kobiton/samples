@@ -5,11 +5,13 @@ import config from '../config/test'
 
 export function convertToDesiredCapabilities(timestamp, devices, {
   deviceOrientation = config.device.orientation,
-  captureScreenshots = config.device.captureScreenshots
+  captureScreenshots = config.device.captureScreenshots,
+  automationName = config.device.automationName
 } = {}) {
   return devices
     .map((d) => {
-      const desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName', 'udid')
+      const desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName',
+        'udid', 'automationName')
       let deviceGroup = getDeviceGroup(d)
       if (deviceGroup === 'KOBITON') {
         delete desiredCapFields.udid
@@ -17,6 +19,10 @@ export function convertToDesiredCapabilities(timestamp, devices, {
       const sessionName = `${timestamp} - Auto web on ${d.udid}`
       const sessionDescription = `Auto web session on device ${d.deviceName}`
       const browserName = getDefaultBrowserBy(desiredCapFields.platformName)
+      if (d.platformName === 'Android' && automationName.toUpperCase() === 'UIAUTOMATOR2' &&
+       d.platformVersion.split('.')[0] >= 5) {
+        desiredCapFields.automationName = automationName
+      }
       return {...desiredCapFields, deviceOrientation, captureScreenshots,
         browserName, deviceGroup, sessionName, sessionDescription}
     })
@@ -24,11 +30,13 @@ export function convertToDesiredCapabilities(timestamp, devices, {
 
 export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
   deviceOrientation = config.device.orientation,
-  captureScreenshots = config.device.captureScreenshots
+  captureScreenshots = config.device.captureScreenshots,
+  automationName = config.device.automationName
 } = {}) {
-  return [devices]
+  return devices
     .map((d) => {
-      let desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName', 'udid')
+      let desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName',
+        'udid', 'automationName')
       let deviceGroup = getDeviceGroup(d)
       if (deviceGroup === 'KOBITON') {
         delete desiredCapFields.udid
@@ -36,6 +44,12 @@ export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
       const sessionName = `${timestamp} - Auto app session on ${d.udid}`
       const sessionDescription = `Auto app session on device ${d.deviceName}`
       const desiredCapApp = Object.assign(appInfor, desiredCapFields)
+
+      if (d.platformName === 'Android' && automationName.toUpperCase() === 'UIAUTOMATOR2' &&
+       d.platformVersion.split('.')[0] >= 5) {
+        desiredCapFields.automationName = automationName
+      }
+
       return {...desiredCapApp, deviceOrientation,
         captureScreenshots, deviceGroup, sessionName, sessionDescription}
     })
@@ -70,7 +84,7 @@ function getDeviceGroup(device) {
     return 'ORGANIZATION'
   }
   else {
-    throw new Error('This device doesn\'t belong any group')
+    throw new Error('This device doesn\'t belong to any group')
   }
 }
 

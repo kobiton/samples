@@ -168,6 +168,13 @@ const yargs = require('yargs')
     describe: 'Max concurrent device at a time',
     type: 'number'
   })
+  .options('automationName', {
+    alias: 'automationName',
+    demand: false,
+    default: 'Appium',
+    describe: 'the automation name to launch automaton session',
+    type: 'string'
+  })
   .help()
 
 export function help() {

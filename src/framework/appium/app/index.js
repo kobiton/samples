@@ -80,7 +80,7 @@ export async function fullApisCheck(timeStamp, targetDevice) {
 
 async function execute(timeStamp, onlineDevice, expectedDuration, runScript) {
   const jobs = onlineDevice
-    .map((cap) => runScript(timeStamp, cap, expectedDuration))
+    .map((cap) => runScript(timeStamp, [cap], expectedDuration))
     .map((promise) => reflect(promise).then(onComplete))
 
   const finishedJobs = await BPromise.all(jobs)

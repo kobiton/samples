@@ -54,7 +54,8 @@ const config = {
     captureScreenshots: args.captureScreenshots,
     indexBegin: args.indexBegin,
     indexFinish: args.indexFinish,
-    arrayUDID: args.arrayUDID
+    arrayUDID: args.arrayUDID,
+    automationName: args.automationName
   },
   browser: {
     screenQuality: args.screenQuality,

@@ -56,7 +56,7 @@ setTimeout(async () => {
     })
 
     describe('landscape supported devices', async () => {
-      it('`${timestamps} - should run successfully test with device orientation is landscape',
+      it(`${timestamps} - should run successfully test with device orientation is landscape`,
       async () => {
         desiredCap.deviceOrientation = 'landscape'
         await executeMailinatorPageTest({desiredCapabilities: desiredCap, timeout})
