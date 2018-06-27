@@ -48,7 +48,7 @@ export default class Koby extends EventEmitter {
       this._deviceInfo.message
     )
 
-    const getHub = await api.Device.getHub(this._token)
+    const getHub = await api.Hub.getHub(this._token)
     this._hub = await getHub[0]
     await this._establishControlConnection()
     await api.Device.updateDeviceStatus(

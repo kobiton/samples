@@ -17,7 +17,6 @@ class User extends Base {
         email
       }
     })
-
     return userInfo
   }
 

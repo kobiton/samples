@@ -9,17 +9,16 @@ describe('API / Repository', () => {
   const androidAppName = 'iFixit.apk'
   const iOSAppName = 'iFixit.ipa'
   const appTestFolder = 'apps-test'
-  
+
   let androidAppPath
   let iOSAppPath
   let androidAppId, androidAppVersionId
   let iOSAppId, iOSAppVersionId
 
   before(async () => {
-
     androidAppPath = getRealPath(appTestFolder, androidAppName)
     iOSAppPath = getRealPath(appTestFolder, iOSAppName)
-   
+
     if (!fileExists(androidAppPath)) {
       await downloadApp(androidApp, androidAppPath)
     }
@@ -69,7 +68,7 @@ describe('API / Repository', () => {
   it('should make Android & iOS app to private successfully', async () => {
     await api.AppsRepo.makeAnAppPrivate(androidAppId)
     await api.AppsRepo.makeAnAppPrivate(iOSAppId)
-    
+
     assert.isTrue((await getAppInfo(androidAppId))[0].privateAccess, 'Make the application private')
     assert.isTrue((await getAppInfo(iOSAppId))[0].privateAccess, 'Make the application private')
   })

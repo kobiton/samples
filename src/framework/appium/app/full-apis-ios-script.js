@@ -22,10 +22,12 @@ export async function fullApisIosScript(timestamps, onlineDevice, expectedDurati
     startedAt = moment.utc()
     driver = await createDriver(desiredCap[0])
     do {
+      // eslint-disable-next-line babel/no-await-in-loop
       const action = new wd.TouchAction(await driver)
       action.press({x: 0, y: 10})
       action.moveTo({x: 10, y: 10})
-      await driver
+      await driver // eslint-disable-line babel/no-await-in-loop
+      // eslint-disable-next-line max-len
         .performTouchAction(action) //To show the menu by swiping from left border of device to right side
         .status()
         .sessions()

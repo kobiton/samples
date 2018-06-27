@@ -32,8 +32,10 @@ const elements = {
     summaryLabel: '//input[@id="start-date"]/ancestor::div[6]/div[2]/div/div[1]/div[1]',
     sessionTypeChart: '(//input[@id="start-date"]/ancestor::div[6]/div[2]//*[name()="svg"])[1]',
     autoSessionNumber: '//span[text()="Automation"]/following-sibling::span',
+    // eslint-disable-next-line max-len
     autoSessionStateNumber: '//span[text()="Automation"]/../..//span[text()="Running"]/following-sibling::span',
     manualSessionNumber: '//span[text()="Manual"]/following-sibling::span',
+    // eslint-disable-next-line max-len
     manualSessionStateNumber: '//span[text()="Manual"]/../..//span[text()="Running"]/following-sibling::span',
     osTypeChart: '(//input[@id="start-date"]/ancestor::div[6]/div[2]//*[name()="svg"])[2]',
     iOSNumber: '//span[text()="iOS"]/following-sibling::span',
@@ -220,7 +222,7 @@ export default class SessionsPage extends Paging {
       }
       pageNumber++
     }
-    
+
     return sessionDataList
   }
 
@@ -437,6 +439,7 @@ export default class SessionsPage extends Paging {
    */
   getDashboardSessionsInfo() {
     let dashboardSessionInfo = {}
+    // eslint-disable-next-line max-len
     dashboardSessionInfo.TotalSessionsAndMinutes = this._browser.getText(elements.dashboard.summaryLabel)
     dashboardSessionInfo.AutoSessionsData = this._getSessionTypesData(sessionTypeEnum.AUTO)
     dashboardSessionInfo.ManualSessionsData = this._getSessionTypesData(sessionTypeEnum.MANUAL)
@@ -452,16 +455,20 @@ export default class SessionsPage extends Paging {
     let sessionTypesData = {}
     const statusList = Object.keys(statusEnum)
     if (sessionType === sessionTypeEnum.AUTO) {
+      // eslint-disable-next-line max-len
       sessionTypesData.TotalAutoSessions = this._browser.getText(elements.dashboard.autoSessionNumber)
       for (let i = 1; i < statusList.length; i++) {
         let status = statusEnum[statusList[i]]
+        // eslint-disable-next-line max-len
         sessionTypesData[status] = this._browser.getText(elements.dashboard.autoSessionStateNumber.replace('Running', status))
       }
     }
     else if (sessionType === sessionTypeEnum.MANUAL) {
+      // eslint-disable-next-line max-len
       sessionTypesData.TotalManualSessions = this._browser.getText(elements.dashboard.manualSessionNumber)
       for (let i = 1; i < statusList.length; i++) {
         let status = statusEnum[statusList[i]]
+        // eslint-disable-next-line max-len
         sessionTypesData[status] = this._browser.getText(elements.dashboard.manualSessionStateNumber.replace('Running', status))
       }
     }
@@ -493,7 +500,9 @@ export default class SessionsPage extends Paging {
     for (let i = 1; i <= userElements.length; i++) {
       let userData = {}
       userData.User = this._browser.getText(`${elements.dashboard.userSessionsInfo}[${i}]/div[1]`)
+      // eslint-disable-next-line max-len
       userData.Sessions = this._browser.getText(`${elements.dashboard.userSessionsInfo}[${i}]/div[2]`)
+      // eslint-disable-next-line max-len
       userData.Minutes = this._browser.getText(`${elements.dashboard.userSessionsInfo}[${i}]/div[3]`)
       usersData.push(userData)
     }

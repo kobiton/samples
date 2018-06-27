@@ -27,7 +27,7 @@ describe('HUB/ API', () => {
       'internal': false
     }
   }
-  
+
   /**
    * Generate device Info
    * @param capabilities {object}
@@ -81,7 +81,7 @@ describe('HUB/ API', () => {
     const devicesTest = await devices.map(async(d) => {
       let object = deviceInfo(d)
       await Device.updateDeviceInfo(token, object)
-      const onlineDevice = await Device.getOnlineDevices({
+      const onlineDevice = await Device.getDevices({
         groupType: 'private',
         arrayUDID: object.udid
       })

@@ -46,16 +46,15 @@ const config = {
   typeOfTest: args.type,
   device: {
     name: args.deviceName,
-    platform: args.devicePlatform,
-    version: args.platformVersion,
+    platformName: args.platformName,
+    platformVersion: args.platformVersion,
     orientation: args.deviceOrientation,
     group: args.deviceGroup,
     number: args.deviceNumbers,
     captureScreenshots: args.captureScreenshots,
-    indexBegin: args.indexBegin,
-    indexFinish: args.indexFinish,
     arrayUDID: args.arrayUDID,
-    automationName: args.automationName
+    automationName: args.automationName,
+    onlineDeviceOnly: args.onlineDeviceOnly
   },
   browser: {
     screenQuality: args.screenQuality,

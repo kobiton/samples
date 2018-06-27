@@ -16,7 +16,7 @@ export default async function launchBrowser() {
   }
 
   if (config.typeOfTest === 'test-manual') {
-    const onlineDevices = await Device.getOnlineDevices()
+    const onlineDevices = await Device.getDevices()
     if (onlineDevices.length > 0) {
     // Save list onlineDevices into a file to get from each of manual test
       ManualData.saveOnlineDevices(onlineDevices)

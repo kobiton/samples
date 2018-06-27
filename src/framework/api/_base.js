@@ -56,7 +56,6 @@ export default class Base {
     }
 
     const [response, resBody] = await requestAsync(finalOptions)
-
     return [resBody, response]
   }
 
@@ -68,7 +67,6 @@ export default class Base {
         password
       }
     })
-
     return userInfo
   }
 

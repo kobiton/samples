@@ -8,8 +8,6 @@ const accessLevelEnum = {
   PRIVATE: 'PRIVATE'
 }
 
-let appsList = {}
-
 class AppsRepo extends Base {
 
   /**

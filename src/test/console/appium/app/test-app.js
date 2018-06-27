@@ -26,9 +26,7 @@ setTimeout(async () => {
       const platformName = /(android)|(ios)/.exec(type)[0]
       const testMethod = testMethodList[type]
       debug.log('Start smoke test with:', type)
-      const devices = await Device.getOnlineDevices({
-        platformName: `${platformName}`
-      })
+      const devices = await Device.getDevices({platformName: `${platformName}`})
       assert.isAtLeast(devices.length, 1, 'Expected at least 1 online devices')
       for (const device of devices) {
         const id = (device.udid) ? `with udid ${device.udid}` : ''

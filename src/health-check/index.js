@@ -15,19 +15,19 @@ const initial = new BaseTest()
 
 class HealthChecker {
   async executeWebCheck() {
-    const devices = await Device.getAllDevices()
+    const devices = await Device.getDevices({onlineDeviceOnly: false})
     await this.execute(initial._getTimeStamp(),
       devices, expectedDurationInSeconds, new DailyWebTest())
   }
 
   async executeIOSAppCheck() {
-    const devices = await Device.getAllDevices()
+    const devices = await Device.getDevices({onlineDeviceOnly: false})
     await this.execute(initial._getTimeStamp(),
       devices, expectedDurationInSeconds, new IOSAppTest())
   }
 
   async executeAndroidAppCheck() {
-    const devices = await Device.getAllDevices()
+    const devices = await Device.getDevices({onlineDeviceOnly: false})
     await this.execute(initial._getTimeStamp(),
       devices, expectedDurationInSeconds, new AndroidAppTest())
   }
@@ -61,7 +61,7 @@ class HealthChecker {
       selectedDevices = await this._pickDevices(devices, checkedDeviceUUIDs, concurrentDevices)
     }
 
-    const allDevices = await Device.getAllDevices()
+    const allDevices = await Device.getDevices({onlineDeviceOnly: false})
     const unavailableDevices = allDevices.filter((d) => {
       return !checkedDeviceUUIDs.includes(d.udid)
     })
@@ -87,7 +87,7 @@ class HealthChecker {
   async _pickDevices(devices, ignoredDeviceUDIDs, amount = 1) {
     const devicesUDIDs = devices.map((d) => d.udid)
 
-    const allDevices = await Device.getAllDevices()
+    const allDevices = await Device.getDevices({onlineDeviceOnly: false})
     return allDevices
       .filter((d) => {
         return devicesUDIDs.includes(d.udid) &&

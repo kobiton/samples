@@ -219,6 +219,7 @@ async function getAllCommandsFromAPI(sessionID) {
   let totalCommands = []
   const totalPages = (await SessionAPI.getASession(sessionID))[0].totalPages
   for (let i = 1; i <= totalPages; i++) {
+    // eslint-disable-next-line babel/no-await-in-loop
     let commandsOnCurrentPage = (await SessionAPI.getASession(sessionID, i))[0].commands
     totalCommands = totalCommands.concat(commandsOnCurrentPage)
   }

@@ -11,7 +11,7 @@ const runLoop = config.longTestSuiteIterationAmount
 const timestamps = moment().format('YYYYMMDDHHmmss')
 
 setTimeout(async () => {
-  const neededDevices = await Device.getOnlineDevices()
+  const neededDevices = await Device.getDevices()
   assert.isAtLeast(neededDevices.length, 1, 'Expected at least 1 online devices')
   describe('[appium-web] : Mailinator page', async () => {
     for (const device of neededDevices) {

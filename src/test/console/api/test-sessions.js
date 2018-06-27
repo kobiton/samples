@@ -39,18 +39,18 @@ describe('API / Sessions', () => {
   it('should verify a test session', async () => {
     const errorMsg1 = 'Could not update session'
     const errorMsg2 = 'Session state must be PASSED, FAILED or COMPLETE'
-    
+
     // Init a test session on Android device
-    const androidDevice = await api.Device.getOnlineDevices(onlineAndroid)
+    const androidDevice = await api.Device.getDevices(onlineAndroid)
     assert.isAtLeast(androidDevice.length, 1, 'At least 1 device is online.')
     androidDesiredCaps.desiredCapabilities.deviceName = androidDevice[0].deviceName
 
     androidDriver = await api.Session.initSession(androidDesiredCaps)
     androidSessionId = androidDriver[0].sessionId
     androidKSessionId = androidDriver[0].value.kobitonSessionId
-    
+
     await api.Session.getUrl(androidSessionId, {url: 'https://www.google.com'})
-    
+
     // Try to change the state during running test
     let getSessionState = await api.Session.updateSessionInfo(androidKSessionId, completeState)
     assert.include(JSON.stringify(getSessionState), errorMsg1,
@@ -139,7 +139,7 @@ describe('API / Sessions', () => {
 
   it('should verify terminated state', async () => {
     // Init a test session on iOS device
-    const iOSDevice = await api.Device.getOnlineDevices(onlineIOS)
+    const iOSDevice = await api.Device.getDevices(onlineIOS)
     assert.isAtLeast(iOSDevice.length, 1, 'At least 1 device is online.')
     iOSDesiredCaps.desiredCapabilities.deviceName = iOSDevice[0].deviceName
 
@@ -158,7 +158,7 @@ describe('API / Sessions', () => {
 
   it('should verify timeout state', async () => {
     // Init a test session on Android device
-    const androidDevice = await api.Device.getOnlineDevices(onlineAndroid)
+    const androidDevice = await api.Device.getDevices(onlineAndroid)
     assert.isAtLeast(androidDevice.length, 1, 'At least 1 device is online.')
     androidDesiredCaps.desiredCapabilities.deviceName = androidDevice[0].deviceName
 
@@ -172,13 +172,13 @@ describe('API / Sessions', () => {
     else {
       await BPromise.delay(1000 * 60 * 4) // In web testing, the timeout is 3 minutes.
     }
-    
+
     let getSessionState = (await api.Session.getASession(androidKSessionId))[0].state
     assert.equal(getSessionState, 'TIMEOUT', 'The timeout state is set successfully.')
   })
 
   it('should not upload screenshots if captureScreenshots is false', async () => {
-    const androidDevice = await api.Device.getOnlineDevices(onlineAndroid)
+    const androidDevice = await api.Device.getDevices(onlineAndroid)
     assert.isAtLeast(androidDevice.length, 1, 'At least 1 device is online.')
     androidDesiredCaps.desiredCapabilities.deviceName = androidDevice[0].deviceName
     androidDesiredCaps.desiredCapabilities.captureScreenshots = false

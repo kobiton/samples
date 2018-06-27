@@ -42,11 +42,11 @@ const yargs = require('yargs')
     describe: 'Expected duration (minutes)',
     type: 'number'
   })
-  .options('platform', {
-    alias: 'devicePlatform',
+  .options('platformName', {
+    alias: 'platformName',
     demand: false,
     default: null,
-    describe: 'Specific device for mobile',
+    describe: 'Specific name of platform',
     type: 'string'
   })
   .options('platformVersion', {
@@ -60,7 +60,7 @@ const yargs = require('yargs')
     alias: 'deviceName',
     demand: false,
     default: null,
-    describe: 'Specify device name to run test',
+    describe: 'Specify name of device to run test',
     type: 'string'
   })
   .options('orientation', {
@@ -97,20 +97,6 @@ const yargs = require('yargs')
     default: null,
     describe: 'Array UDID of specific devices to test',
     type: 'string'
-  })
-  .options('indexBegin', {
-    alias: 'indexBegin',
-    demand: false,
-    default: -1,
-    describe: 'index begin to get device in a sorted array device',
-    type: 'number'
-  })
-  .options('indexFinish', {
-    alias: 'indexFinish',
-    demand: false,
-    default: 1000,
-    describe: 'index finish to get device in a sorted array device',
-    type: 'number'
   })
   .options('quality', {
     alias: 'screenQuality',
@@ -174,6 +160,13 @@ const yargs = require('yargs')
     default: 'Appium',
     describe: 'the automation name to launch automaton session',
     type: 'string'
+  })
+  .options('onlineDeviceOnly', {
+    alias: 'onlineDeviceOnly',
+    demand: false,
+    default: true,
+    describe: 'flag to get device is online or not',
+    type: 'boolean'
   })
   .help()
 

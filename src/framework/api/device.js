@@ -4,11 +4,6 @@ import Base from './_base'
 import group from '../common/groupType/type-of-group'
 import config from '../config/test'
 
-const ANDROID_PLATFORM_VERSION = {
-  BELOW_5: '5-',
-  ABOVE_5: '5+'
-}
-
 class Device extends Base {
 
   /**
@@ -78,19 +73,6 @@ class Device extends Base {
   }
 
   /**
-   * get Hub Info
-   */
-  async getHub(token) {
-    return await this.get({
-      headers: {
-        'authorization': `Bearer ${token}`,
-        'content-type': 'application/json'
-      },
-      path: 'hubs/which'
-    })
-  }
-
-  /**
    * Book device depends on deviceId
    * @param deviceId {int} deviceId in DB
    */
@@ -114,8 +96,6 @@ class Device extends Base {
    * @param platformVersion {string} - Platform Version
    * @param deviceName {string} - Device Name
    * @param deviceNumbers {integer} - Total devices
-   * @param indexBegin {integer} - The start index
-   * @param indexFinish {integer} - The end index
    * @param arrayUDID {array} - List of devices
    */
   async _getDevicesBy({
@@ -125,8 +105,6 @@ class Device extends Base {
     platformVersion,
     deviceName,
     deviceNumbers,
-    indexBegin,
-    indexFinish,
     arrayUDID
   } = {}) {
     const devicesGroups = await this._getDevices()
@@ -151,38 +129,32 @@ class Device extends Base {
       devices = devices.filter((d) => d.platformName.toLowerCase() === platformName)
     }
 
-    if (indexBegin !== -1) {
-      devices = devices.slice(indexBegin, indexFinish)
+    if (onlineDeviceOnly) {
+      devices = devices.filter((d) => d.isOnline && !d.isBooked)
     }
-    else {
 
-      if (onlineDeviceOnly) {
-        devices = devices.filter((d) => d.isOnline && !d.isBooked)
-      }
+    if (platformVersion) {
+      devices = devices.filter((d) => d.platformVersion.includes(platformVersion))
+    }
 
-      if (platformVersion) {
-        devices = devices.filter((d) => d.platformVersion.includes(platformVersion))
-      }
+    if (deviceName) {
+      deviceName = deviceName.toLowerCase()
+      devices = devices.filter((d) => d.deviceName.toLowerCase().includes(deviceName))
+    }
 
-      if (deviceName) {
-        deviceName = deviceName.toLowerCase()
-        devices = devices.filter((d) => d.deviceName.toLowerCase().includes(deviceName))
-      }
+    if (!isNaN(deviceNumbers)) {
+      devices = devices.length > deviceNumbers ? devices.slice(0, deviceNumbers) : devices
+    }
 
-      if (!isNaN(deviceNumbers)) {
-        devices = devices.length > deviceNumbers ? devices.slice(0, deviceNumbers) : devices
-      }
-      if (arrayUDID) {
-        const udids = arrayUDID.split(',')
-        for (const udid of udids) {
-          let specificDevice = devices.filter((d) => d.udid === udid)
-          if (specificDevice.length > 0) {
-            devicesByUDID.push(specificDevice[0])
-          }
+    if (arrayUDID) {
+      const udids = arrayUDID.split(',')
+      for (const udid of udids) {
+        let specificDevice = devices.filter((d) => d.udid === udid)
+        if (specificDevice.length > 0) {
+          devicesByUDID.push(specificDevice[0])
         }
-        devices = devicesByUDID
       }
-
+      devices = devicesByUDID
     }
     return devices
   }
@@ -198,8 +170,6 @@ class Device extends Base {
     let deviceName = device.deviceName
     const arrayUDID = (config.device.group === 'private') ? device.udid : ''
     const deviceNumbers = config.device.number
-    const indexBegin = -1
-    const indexFinish = 1000
     const onlineDevices = await this._getDevicesBy({
       onlineDeviceOnly: true,
       groupType,
@@ -207,8 +177,6 @@ class Device extends Base {
       platformVersion,
       deviceName,
       deviceNumbers,
-      indexBegin,
-      indexFinish,
       arrayUDID
     })
     let isOnline = (onlineDevices.length > 0)
@@ -222,8 +190,6 @@ class Device extends Base {
         // eslint-disable-next-line babel/no-await-in-loop
         const checkOnline = await this._getDevicesBy({
           groupType,
-          indexBegin,
-          indexFinish,
           arrayUDID
         })
         isOnline = (checkOnline.length > 0)
@@ -241,61 +207,25 @@ class Device extends Base {
    * @param platformVersion {string} - Platform Version
    * @param deviceName {string} - Device Name
    * @param deviceNumbers {integer} - Total devices
-   * @param indexBegin {integer} - The start index
-   * @param indexFinish {integer} - The end index
    * @param arrayUDID {array} - List of devices
    */
-  async getOnlineDevices({
+  async getDevices({
     groupType = config.device.group,
-    platformName = config.device.platform,
-    platformVersion = config.device.version,
+    platformName = config.device.platformName,
+    platformVersion = config.device.platformVersion,
     deviceName = config.device.name,
     deviceNumbers = config.device.number,
-    indexBegin = config.device.indexBegin,
-    indexFinish = config.device.indexFinish,
-    arrayUDID = config.device.arrayUDID
+    arrayUDID = config.device.arrayUDID,
+    onlineDeviceOnly = config.device.onlineDeviceOnly
   } = {}) {
     return await this._getDevicesBy({
-      onlineDeviceOnly: true,
+      onlineDeviceOnly,
       groupType,
       platformName,
       platformVersion,
       deviceName,
       deviceNumbers,
-      indexBegin,
-      indexFinish,
       arrayUDID
-    })
-  }
-
-  /**
-   * Query the device depends on some criteria
-   * @param groupType {string} - Private | Cloud | Favorite | All
-   * @param platformName {string} - Android | iOS
-   * @param platformVersion {string} - Platform Version
-   * @param deviceName {string} - Device Name
-   * @param deviceNumbers {integer} - Total devices
-   * @param arrayUDID {array} - List of devices
-   */
-  async getAllDevices({
-    groupType = config.device.group,
-    platformName = config.device.platform,
-    platformVersion = config.device.version,
-    deviceName = config.device.name,
-    deviceNumbers = config.device.number,
-    indexBegin = config.device.indexBegin,
-    indexFinish = config.device.indexFinish,
-    arrayUDID = config.device.arrayUDID
-  } = {}) {
-    return await this._getDevicesBy({
-      groupType,
-      platformName,
-      platformVersion,
-      deviceName,
-      deviceNumbers,
-      arrayUDID,
-      indexBegin,
-      indexFinish
     })
   }
 
@@ -348,46 +278,7 @@ class Device extends Base {
     if (platformVersion) {
       devices = devices.filter((d) => d.platformVersion.includes(platformVersion))
     }
-
     return devices.length
-  }
-
-  /**
-   * Query the device depends on UDID
-   * @param udid {string} - Device UDID
-   */
-  async getDevice(udid) {
-    const groups = await this._getDevices()
-    const allDevices = groups.privateDevices
-    const matches = allDevices.filter((d) => {
-      return d.udid === udid
-    })
-    return matches[0]
-  }
-
-/**
-* filter array of android devices by their platform version-> support automaton web testing
-* @param list {array} - array of devices
-* @param version {string} - platform version to filter
-*/
-  async androidVersionFilter(list, version = ANDROID_PLATFORM_VERSION.ABOVE_5) {
-    if (version === ANDROID_PLATFORM_VERSION.ABOVE_5) {
-      return list.filter((device) => parseInt(device.platformVersion.split('.')[0]) >= 5)
-    }
-
-    if (version === ANDROID_PLATFORM_VERSION.BELOW_5) {
-      return list.filter((device) => parseInt(device.platformVersion.split('.')[0]) < 5)
-    }
-    return list
-  }
-
-/**
-* filter array of anroid devices by their platform
-* @param list {array} - array of devices
-* @param platform {string} - platform to filter
-*/
-  async platformFilter(list, platform = 'Android') {
-    return list.filter((device) => device.platformName === platform)
   }
 
 }

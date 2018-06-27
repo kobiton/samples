@@ -199,10 +199,15 @@ export default class SessionDetailsPage extends Paging {
   */
   _getAutomationInfo() {
     let automationInfo = {}
+    // eslint-disable-next-line max-len
     automationInfo.WebDriverID = this._browser.getText(elements.sessionOverview.automationInfo.webDriverID)
+    // eslint-disable-next-line max-len
     automationInfo.CaptureScreenshot = this._browser.getText(elements.sessionOverview.automationInfo.capturedScreenshot)
+    // eslint-disable-next-line max-len
     automationInfo.DeviceOrentation = this._browser.getText(elements.sessionOverview.automationInfo.deviceOrientation)
+    // eslint-disable-next-line max-len
     automationInfo.AppiumVersion = this._browser.getText(elements.sessionOverview.automationInfo.appiumVersion)
+    // eslint-disable-next-line max-len
     automationInfo.NodeJSVersion = this._browser.getText(elements.sessionOverview.automationInfo.nodeJSVersion)
     return automationInfo
   }
@@ -217,9 +222,13 @@ export default class SessionDetailsPage extends Paging {
     let harFilesList = []
     if (harFileElements.length > 1) {
       for (let i = 2; i <= harFileElements.length; i++) {
+        // eslint-disable-next-line max-len
         harFilesInfo.StartTime = this._browser.getText(`${elements.sessionOverview.harFilesInfo.harFiles}[${i}]/div[1]`)
+        // eslint-disable-next-line max-len
         harFilesInfo.EndTime = this._browser.getText(`${elements.sessionOverview.harFilesInfo.harFiles}[${i}]/div[2]`)
+        // eslint-disable-next-line max-len
         harFilesInfo.DurationAndSize = this._browser.getText(`${elements.sessionOverview.harFilesInfo.harFiles}[${i}]/div[3]`)
+        // eslint-disable-next-line max-len
         harFilesInfo.DownloadLink = this._browser.getAttribute(`${elements.sessionOverview.harFilesInfo.harFiles}[${i}]/div[4]/a`, 'href')
         harFilesList.push(harFilesInfo)
         harFilesInfo = {}
@@ -238,9 +247,13 @@ export default class SessionDetailsPage extends Paging {
     let appsList = []
     if (appElements.length > 1) {
       for (let i = 2; i <= appElements.length; i++) {
+        // eslint-disable-next-line max-len
         appInfo.Name = this._browser.getText(`${elements.sessionOverview.installedAppsInfo.apps}[${i}]/div[1]`)
+        // eslint-disable-next-line max-len
         appInfo.SizeAndVersion = this._browser.getText(`${elements.sessionOverview.installedAppsInfo.apps}[${i}]/div[2]`)
+        // eslint-disable-next-line max-len
         appInfo.PackageName = this._browser.getText(`${elements.sessionOverview.installedAppsInfo.apps}[${i}]/div[3]`)
+        // eslint-disable-next-line max-len
         appInfo.Status = this._browser.getText(`${elements.sessionOverview.installedAppsInfo.apps}[${i}]/div[4]`)
         appsList.push(appInfo)
         appInfo = {}
@@ -303,8 +316,11 @@ export default class SessionDetailsPage extends Paging {
         if (actionElements.length > 1) {
           for (let i = 2; i <= actionElements.length; i++) {
             this._selectPerformedActionStep(i - 1)
+            // eslint-disable-next-line max-len
             actionInfo.Step = this._browser.getText(`${elements.actionsPerformed.actionsList}[${i}]/div[1]`)
+            // eslint-disable-next-line max-len
             actionInfo.Action = this._browser.getText(`${elements.actionsPerformed.actionsList}[${i}]/div[2]`)
+            // eslint-disable-next-line max-len
             actionInfo.Timestamp = this._browser.getText(`${elements.actionsPerformed.actionsList}[${i}]/div[3]`)
             actionInfo.Screenshot = this._getActionImage()
             actionsList.push(actionInfo)
@@ -325,9 +341,13 @@ export default class SessionDetailsPage extends Paging {
         if (actionElements.length > 1) {
           for (let i = 2; i <= actionElements.length; i++) {
             this._selectPerformedActionStep(i - 1)
+            // eslint-disable-next-line max-len
             actionInfo.Step = this._browser.getText(`${elements.httpCommands.commandsList}[${i}]/div[1]`)
+            // eslint-disable-next-line max-len
             actionInfo.Method = this._browser.getText(`${elements.httpCommands.commandsList}[${i}]/div[2]`)
+            // eslint-disable-next-line max-len
             actionInfo.Path = this._browser.getText(`${elements.httpCommands.commandsList}[${i}]/div[3]`)
+            // eslint-disable-next-line max-len
             actionInfo.Duration = this._browser.getText(`${elements.httpCommands.commandsList}[${i}]/div[4]`)
             actionInfo.RequestBody = this._getBodyData(areasEnum.REQUEST_BODY)
             actionInfo.ResponseBody = this._getBodyData(areasEnum.RESPONSE_BODY)
@@ -396,6 +416,7 @@ export default class SessionDetailsPage extends Paging {
   _getActionImage() {
     let imgPath
     if (this._isExisting(elements.actionsPerformed.actionImage)) {
+      // eslint-disable-next-line max-len
       imgPath = this._browser.getAttribute(`${elements.actionsPerformed.actionImage}/parent::div/img`, 'src')
     }
     else {
@@ -423,9 +444,11 @@ export default class SessionDetailsPage extends Paging {
       this._collapseTab(tabName)
       switch (tabName.toUpperCase()) {
         case areasEnum.REQUEST_BODY:
+        // eslint-disable-next-line max-len
           data = this._browser.getText(elements.httpCommands.requestBodyPreview).replace(/[\n_]/g, '')
           break
         case areasEnum.RESPONSE_BODY:
+        // eslint-disable-next-line max-len
           data = this._browser.getText(elements.httpCommands.responseBodyPreview).replace(/[\n_]/g, '')
           break
       }
@@ -443,9 +466,11 @@ export default class SessionDetailsPage extends Paging {
     let result = false
     switch (tabName.toUpperCase()) {
       case areasEnum.REQUEST_BODY:
+      // eslint-disable-next-line max-len
         result = !this._browser.getText(elements.httpCommands.requestBodyLabel).includes('No request body')
         break
       case areasEnum.RESPONSE_BODY:
+      // eslint-disable-next-line max-len
         result = !this._browser.getText(elements.httpCommands.responseBodyLabel).includes('No response body')
         break
     }

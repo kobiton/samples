@@ -37,8 +37,10 @@ describe('Users / Activate Devices', () => {
     }
     //Verify status of above devices registered to cloud
     for (let i = 0; i < indexes.length; i++) {
-      await devicesPage.pause(2)
+      await devicesPage.pause(2) // eslint-disable-line babel/no-await-in-loop
+      // eslint-disable-next-line babel/no-await-in-loop
       let deviceStatusInDesktop = await devicesPage.getDeviceStatus(indexes[i])
+      // eslint-disable-next-line babel/no-await-in-loop
       let deviceStatusFromAPI = await isOnlineDevice(udids[i])
       assert.equal('Registered', deviceStatusInDesktop, 'The device status is not expected')
       assert.isTrue(deviceStatusFromAPI, 'The device status is not expected')
@@ -57,8 +59,10 @@ describe('Users / Activate Devices', () => {
     }
     //Verify status of above devices unregistered above
     for (let i = 0; i < indexes.length; i++) {
-      await devicesPage.pause(2)
+      await devicesPage.pause(2) // eslint-disable-line babel/no-await-in-loop
+      // eslint-disable-next-line babel/no-await-in-loop
       let deviceStatusInDesktop = await devicesPage.getDeviceStatus(indexes[i])
+      // eslint-disable-next-line babel/no-await-in-loop
       let deviceStatusFromAPI = await isOnlineDevice(udids[i])
       assert.equal('ReadyToRegister', deviceStatusInDesktop, 'The device status is not expected')
       assert.isFalse(deviceStatusFromAPI, 'The device status is not expected')
@@ -74,7 +78,7 @@ describe('Users / Activate Devices', () => {
 */
 async function isOnlineDevice(udid) {
   let result = false
-  const onlineDevice = await DeviceAPI.getOnlineDevices({groupType: 'private', arrayUDID: udid}) // eslint-disable-line max-len
+  const onlineDevice = await DeviceAPI.getDevices({groupType: 'private', arrayUDID: udid}) // eslint-disable-line max-len
   if (onlineDevice.length > 0) {
     result = onlineDevice[0].isOnline
   }

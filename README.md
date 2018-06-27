@@ -62,44 +62,42 @@ Append argument: --arrayUDID <udid1,udid2,udid3,...>
 Append argument: --deviceNumbers <number_of_devices>
 
 #### 6. Get online devices with specific name
-Append argument: --deviceName <"device's name">
+Append argument: --deviceName <device's name>
 
-#### 7. Get devices from index x to index y in private group, default is from 0 to end
-Append argument: --indexBegin <index_begin> --indexFinish <index_finish>
-
-#### 8. Run test with loop n times
+#### 7. Run test with loop n times
 Append argument: --longTestSuiteIterationAmount <number_of_loop>
 
-#### 9. Run test with long duration
-Append argument: --mobileTestDuration <minutes>
+#### 8. Run test with long duration
+Append argument: --mobileTestDuration <run_in_mintues>
+
+#### 9. Get devices by platform name
+Append argument: --platformName <platformName>
+
+#### 10. Get devices by platform version
+Append argument: --platformVersion <version>
 
 ### Run a specific test suites
 #### API
 
    ```bash
-   yarn test -- --input /console/api
+   yarn run test -- --input /console/api
    ```
 
 #### UIs
-  ```
-  yarn test -- --task test-ui --type <file_test>
-  yarn test -- --task test-ui --type test-manual --platform Android
-  yarn test -- --task test-ui --type test-manual --platform iOS
+
+  ```bash
+  yarn run test -- --task test-ui --type <file_test>
+  Ex1: yarn run test -- --task test-ui --type test-manual
+  Ex2: yarn run test -- --task test-ui --type test-devices-page
   ```
 
 #### AUT
-  ```
-  yarn test -- --task test-aut --type <file_test>
+
+  ```bash
+  yarn run test -- --task test-aut --type <file_test>
   ```
 
 #### E2e
-
-##### Test manual:
-
-  ```bash
-    yarn run test -- --task test-manual --platform Android
-    yarn run test -- --task test-manual --platform iOS
-  ```
 
 ##### Test json wired protocol:
 
@@ -132,15 +130,13 @@ Append argument: --mobileTestDuration <minutes>
 ##### Test desired cap:
 
   ```bash
-    yarn run test -- --input /console/appium/web/test-desired-caps.js --platform Android
-    yarn run test -- --input /console/appium/web/test-desired-caps.js --platform iOS
+    yarn run test -- --input /console/appium/web/test-desired-caps.js
   ```
 
 ##### Test web:
 
   ```bash
-    yarn run test -- --input /console/appium/web/test-web-session-daily.js --platform Android
-    yarn run test -- --input /console/appium/web/test-web-session-daily.js --platform iOS
+    yarn run test -- --input /console/appium/web/test-web-session-daily.js
   ```
 
 ### Device health-check
