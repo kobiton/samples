@@ -37,7 +37,7 @@ export default class Page {
     width,
     height,
     isPortrait
-} = {}) {
+  } = {}) {
     if (width && height) {
       let _width = width
       let _height = height
@@ -84,6 +84,7 @@ export default class Page {
    * Get url of the page
    */
   getUrlPage() {
+    this.waitForLoadingProgressDone()
     return this._browser.getUrl()
   }
 

@@ -5,7 +5,7 @@
   "author": "Kobiton Inc.",
   "description": "Automation test suite for Kobiton",
   "scripts": {
-    "build": "gulp build",
+    "build": "gulp clean && gulp build",
     "test": "gulp run-test",
     "lint": "gulp lint",
     "gulp": "gulp",

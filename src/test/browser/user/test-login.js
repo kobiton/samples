@@ -55,7 +55,7 @@ describe('Users / Login', () => {
     loginPage.login(user[0].username, '1', 1)
     errMsg = loginPage.getErrorMessage()
     assert.equal(errMsg, expectedErrorMessage2, msg)
-    
+
     loginPage.login(user[0].username, user[0].password, 1)
     errMsg = loginPage.getErrorMessage()
     assert.equal(errMsg, expectedErrorMessage3, msg)
@@ -73,7 +73,7 @@ describe('Users / Login', () => {
     let urlPage = loginPage.getUrlPage()
     assert.equal(urlPage, config.portalUrl.concat('/devices'),
       'The expected url is devices page.')
-    
+
     // Verify that once logged in, clicking back button doesn't logout user
     devicesPage.back()
     urlPage = loginPage.getUrlPage()
@@ -87,7 +87,7 @@ describe('Users / Login', () => {
     devicesPage = loginPage.login(email, password)
     devicesPage.waitForLoadingProgressDone()
     devicesPage.logout()
-    
+
     // Verify that once logged in, clicking back button doesn't login user
     loginPage.back()
     assert.equal(loginPage.getUrlPage(), config.portalUrl.concat('/login'),

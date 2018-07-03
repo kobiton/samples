@@ -16,6 +16,7 @@
     * KOBITON_PORTAL_URL
     * KOBITON_DESKTOP_APP_URL
     * KOBITON_USERNAME_1
+    * KOBITON_EMAIL_USER_1
     * KOBITON_API_KEY
     * KOBITON_EMAIL_RETAINING_TOKEN
     * KOBITON_REPORT_SERVER_URL
@@ -27,6 +28,7 @@
     * export KOBITON_PORTAL_URL='<portal_url>'
     * export KOBITON_USERNAME_1='<username>'
     * export KOBITON_PASSWORD_1='<password>'
+    * export KOBITON_EMAIL_USER_1='<email>'
     * export KOBITON_API_KEY='<api_key>'
     * export KOBITON_DESKTOP_APP_URL='<Kobiton App S3 link>'
     * export KOBITON_CONCURRENT_LOADTEST='<number of devices>'
@@ -102,15 +104,15 @@ Append argument: --platformVersion <version>
 ##### Test json wired protocol:
 
   ```bash
-    yarn run test -- --input /console/appium/web/test-jsonwired-api.js --platform Android
-    yarn run test -- --input /console/appium/web/test-jsonwired-api.js --platform iOS
+    yarn run test -- --input /console/appium/web/test-jsonwired-api.js --platformName Android
+    yarn run test -- --input /console/appium/web/test-jsonwired-api.js --platformName iOS
   ```
 
 ##### Test web with devices parallel
 
   ```bash
-    yarn run test -- --input /console/appium/web/test-multiple-devices-parallel.js --platform Android
-    yarn run test -- --input /console/appium/web/test-multiple-devices-parallel.js --platform iOS
+    yarn run test -- --input /console/appium/web/test-multiple-devices-parallel.js --platformName Android
+    yarn run test -- --input /console/appium/web/test-multiple-devices-parallel.js --platformName iOS
   ```
 
 ##### Test native app:
@@ -142,22 +144,22 @@ Append argument: --platformVersion <version>
 ### Device health-check
 #### Android web:
   ```bash
-    yarn run test -- --task health-check --input daily-web  --platform Android
+    yarn run test -- --task health-check --input daily-web  --platformName Android
   ```
 
 #### iOS web:
   ```bash
-    yarn run test -- --task health-check --input daily-web  --platform iOS
+    yarn run test -- --task health-check --input daily-web  --platformName iOS
   ```
 
 #### Android app:
   ```bash
-    yarn run test -- --task health-check --input android-app  --platform Android
+    yarn run test -- --task health-check --input android-app  --platformName Android
   ```
 
 #### iOS app:
   ```bash
-    yarn run test -- --task health-check --input ios-app  --platform iOS
+    yarn run test -- --task health-check --input ios-app  --platformName iOS
   ```
 
 ### Automation test on multiple language

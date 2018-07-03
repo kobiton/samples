@@ -8,6 +8,7 @@ const args = parse()
 const envVariablesToCheck = [
   'KOBITON_USERNAME_1',
   'KOBITON_PASSWORD_1',
+  'KOBITON_EMAIL_USER_1',
   'KOBITON_API_URL',
   'KOBITON_API_KEY',
   'KOBITON_PORTAL_URL',

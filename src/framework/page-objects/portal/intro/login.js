@@ -27,7 +27,6 @@ const LOGIN_STATUSES = {
 export default class LoginPage extends Page {
   constructor(specificBrowser = browser) {
     super(specificBrowser)
-
     this._initElementsGetter(elements)
   }
 
@@ -86,13 +85,6 @@ export default class LoginPage extends Page {
   }
 
   /**
-  * Click on Element
-  */
-  click(element) {
-    return this._browser.click(elements[element])
-  }
-
-  /**
   * login action
   * @param {string} enter username or email
   * @param {string} enter password
@@ -105,6 +97,7 @@ export default class LoginPage extends Page {
     this.setPassword(password)
     this.clickLogin()
 
+    //For login test suite
     if (options === LOGIN_STATUSES.SUCCESSED) {
       this._waitForPageLoaded()
       const isSuccessful = this._browser.getUrl().indexOf('devices') >= 0
@@ -130,14 +123,6 @@ export default class LoginPage extends Page {
   getErrorMessage() {
     this._browser.waitForExist(elements.errorMsg, timeout)
     return this._browser.element(elements.errorMsg).getText()
-  }
-
-  /**
-  * Get the url of current opened website
-  */
-  getUrlPage() {
-    this.waitForLoadingProgressDone()
-    return this._browser.getUrl()
   }
 
  /**
