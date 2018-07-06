@@ -43,7 +43,7 @@ export default class Paging extends AuthenticatedPage {
   getTotalPages() {
     let total = 1
     if (this._hasMoreThanOnePage()) {
-      this.wait(5000)
+      this.pause(5000)
       this.moveToPage('LAST')
       this.waitForLoadingProgressDone()
       const lastPageNumber = this.getElements(elements.pages).length - 2
@@ -74,7 +74,7 @@ export default class Paging extends AuthenticatedPage {
     }
     this.waitForLoadingProgressDone()
   }
-  
+
   /**
   * Check a given button if it is clickable
   * @param buttonName {string} - button name, either FIRST or PREVIOUS or NEXT or LAST

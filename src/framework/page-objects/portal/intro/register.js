@@ -1,7 +1,8 @@
 import Page from '../base'
 
 const elements = {
-  fullNameInput: '//input[@type="text" and @name="name"]',
+  firstNameInput: '//input[@type="text" and @name="firstName"]',
+  lastNameInput: '//input[@type="text" and @name="lastName"]',
   userNameInput: '//input[@type="text" and @name="username"]',
   emailInput: '//input[@type="text" and @name="email"]',
   passwordInput: '//input[@type="password" and @name="password"]',
@@ -24,9 +25,11 @@ export default class RegisterPage extends Page {
     return this
   }
 
-  setFullName(value) {
-    this.elements.fullNameInput.clearElement()
-    this.elements.fullNameInput.setValue(value)
+  setFirstNameLastName(firstName, lastName) {
+    this.elements.firstNameInput.clearElement()
+    this.elements.firstNameInput.setValue(firstName)
+    this.elements.lastNameInput.clearElement()
+    this.elements.lastNameInput.setValue(lastName)
     return this
   }
 
@@ -57,7 +60,7 @@ export default class RegisterPage extends Page {
 
   getRegisterErrorMessage() {
     let errorMsg = ''
-    if (this._isElementExists(elements.errorSpan)) {
+    if (this._isExisting(elements.errorSpan)) {
       errorMsg = this._browser.getText(elements.errorSpan)
     }
     return errorMsg

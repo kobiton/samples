@@ -177,16 +177,6 @@ export default class Page {
   }
 
   /**
-  * Search for multiple elements on the page, starting from the document root.
-  * The located elements will be returned as a WebElement JSON objects.
-  * @param selectorValue {string} selector to query the elements
-  */
-  _isElementExists(selectorValue) {
-    let response = this._browser.elements(selectorValue)
-    return response.value && response.value.length > 0
-  }
-
-  /**
   * Returns true if at least one element is existing by given selector
   */
   _isExisting(selectorValue) {
@@ -256,12 +246,5 @@ export default class Page {
     catch (err) {
       throw new Error(`selector of ${selectorValue} is not existed. Please check ` + err)
     }
-  }
-
-  /**
-   * Sleep for milliseconds
-   */
-  wait(milliseconds) {
-    this._browser.pause(milliseconds)
   }
 }

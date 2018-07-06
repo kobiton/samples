@@ -1,41 +1,34 @@
+import faker from 'faker'
 import {assert} from 'chai'
 import RegisterPage from '../../../framework/page-objects/portal/intro/register'
 import APIKeysPage from '../../../framework/page-objects/portal/user/settings/api-keys'
-import data from '../data'
 
 describe('Setting / API Keys', () => {
-
-  beforeEach(() => {
-    browser.reload()
-  })
-
   it('Should have at least 01 key for new registered account', () => {
-    let randomUsers = data.generateRandomUsers(2)
-    randomUsers.forEach((user) => {
-      // Clear browser cookies and data
-      browser.reload()
+    const userName = faker.internet.userName(10)
+    // Clear browser cookies and data
+    browser.reload()
+    let registerPage = new RegisterPage()
+    registerPage.open()
+      .setFirstNameLastName(faker.name.firstName(), faker.name.lastName())
+      .setUserName(userName)
+      .setEmail(faker.internet.email())
+      .setPassword(faker.internet.password(20))
+      // Missing step check "I'm not robot"
+      .register()
 
-      let registerPage = new RegisterPage()
-      registerPage.open()
-        .setFullName(user.fullname)
-        .setUserName(user.username)
-        .setEmail(user.email)
-        .setPassword(user.password)
-        .register()
+    let errorMsg = registerPage.getRegisterErrorMessage()
+    assert.isTrue(errorMsg === null || errorMsg.length === 0,
+      `Error when register new user ${userName}`)
 
-      let errorMsg = registerPage.getRegisterErrorMessage()
-      assert.isTrue(errorMsg === null || errorMsg.length === 0,
-        `Error when register new user ${user.username}`)
+    const apiKeysPage = new APIKeysPage()
+    const keys = apiKeysPage.open()
+      .getAPIKeys()
 
-      let apiKeysPage = new APIKeysPage()
-      let keys = apiKeysPage.open()
-        .getAPIKeys()
-
-      assert.isNotNull(keys, 'keys is null')
-      assert.isAbove(keys.length, 0, 'No default keys found')
-      let key = keys[0]
-      assert.isAtLeast(key.length, 20, 'Key length is at least 20 characters')
-    })
+    assert.isNotNull(keys, 'keys are null')
+    assert.isAbove(keys.length, 0, 'No default keys found')
+    const key = keys[0]
+    assert.isAtLeast(key.length, 20, 'Key length is at least 20 characters')
   })
 })
 

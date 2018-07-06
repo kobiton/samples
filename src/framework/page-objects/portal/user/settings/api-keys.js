@@ -21,7 +21,6 @@ const POPUP_ACTIONS = {
 }
 
 export default class APIKeysPage extends AuthenticatedPage {
-
   constructor(specificBrowser = browser) {
     super(specificBrowser)
     this._initElementsGetter(elements)
@@ -74,7 +73,7 @@ export default class APIKeysPage extends AuthenticatedPage {
       this.getElements(elements.deleteAPIKeysDivs)[index].click()
       this._browser.waitForVisible(elements.deletePopupTitle, timeout)
       this._browser.click(elements.deletePopupTitle)
-      
+
       const keysLength = this.getAPIKeys().length
 
       switch (options) {
@@ -126,7 +125,7 @@ export default class APIKeysPage extends AuthenticatedPage {
   _waitUntilCountChanges(size, options = POPUP_ACTIONS.DELETE) {
     const deleteMessage = `Expected an API Key is deleted after ${timeout} milliseconds`
     const createMessage = `Expected new API Key is created after ${timeout} milliseconds`
-    
+
     switch (options) {
       case POPUP_ACTIONS.DELETE:
         this._browser.waitUntil(() => {

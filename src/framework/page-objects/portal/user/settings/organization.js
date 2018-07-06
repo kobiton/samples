@@ -53,7 +53,7 @@ export default class OrganizationPage extends SettingsPage {
    * Return an array of member info
    */
   getMemberList() {
-    this.wait(waitTime)
+    this.pause(waitTime)
     let memberElements = this.getElements(elements.memberList)
     let memberData = {}
     let memberDataList = []
@@ -96,7 +96,7 @@ export default class OrganizationPage extends SettingsPage {
    */
   filterMember(filterString) {
     this._browser.setValue(elements.filterInput, filterString)
-    this.wait(waitTime)
+    this.pause(waitTime)
   }
 
    /**

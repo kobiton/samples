@@ -129,7 +129,7 @@ export default class SessionsPage extends Paging {
   selectDropdownItem(value) {
     const optimizedValue = this.capitalizeFirstLetter(value.toLowerCase())
     const itemXpath = `${elements.dropDownItems}//div[text()='${optimizedValue}']`
-    this.wait(waitTime)
+    this.pause(waitTime)
     this._browser.click(itemXpath)
     this.waitForLoadingProgressDone()
   }
@@ -270,14 +270,14 @@ export default class SessionsPage extends Paging {
   selectStartAndEndDates(startDate, endDate) {
     if (startDate <= endDate) {
       this.openDatePicker('STARTDATE')
-      this.wait(waitTime)
+      this.pause(waitTime)
       this.selectDate(startDate)
-      this.wait(waitTime)
+      this.pause(waitTime)
       this.waitForLoadingProgressDone()
       this.openDatePicker('ENDDATE')
-      this.wait(waitTime)
+      this.pause(waitTime)
       this.selectDate(endDate)
-      this.wait(waitTime)
+      this.pause(waitTime)
       this.waitForLoadingProgressDone()
     }
     else {
@@ -322,7 +322,7 @@ export default class SessionsPage extends Paging {
       curMonth = this._getCurrentMonth()
     }
     //Select Day
-    this.wait(waitTime)
+    this.pause(waitTime)
     this._browser.click(`${elements.datePicker.days}[text()=${inputDay}]`)
   }
 
@@ -339,11 +339,11 @@ export default class SessionsPage extends Paging {
   _selectDate(inputDate, curDate) {
     if (inputDate < curDate) {
       this._browser.click(elements.datePicker.prev)
-      this.wait(waitTime)
+      this.pause(waitTime)
     }
     else {
       this._browser.click(elements.datePicker.next)
-      this.wait(waitTime)
+      this.pause(waitTime)
     }
   }
 
@@ -407,7 +407,7 @@ export default class SessionsPage extends Paging {
    */
   deleteASession(sessionName) {
     this.clickDeleteSessionButton(sessionName)
-    this.wait(waitTime)
+    this.pause(waitTime)
     this.confirmToDelete()
   }
 

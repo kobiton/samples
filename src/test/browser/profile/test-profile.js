@@ -67,7 +67,9 @@ describe('settings/ account', () => {
         accountPage.setTextIntoChangePasswordForm(passwordInput, passwordInput)
         assert.isFalse(accountPage.isExistingErrorMsgCurrentPassword(),
           'The expected currentPassword field must be between 5 and 32 characters.')
-        assert.isFalse(accountPage.isExistingErrorMsgNewPassword(),
+        // Verify new password must contain at least:
+        // 1 lowercase letter (a-z), 1 uppercase letter (A-Z) and 1 digit (0-9)
+        assert.isTrue(accountPage.isExistingErrorMsgNewPassword(),
           'The expected newPassword field must be between 5 and 32 characters.')
       })
 
@@ -86,6 +88,9 @@ describe('settings/ account', () => {
         // Update password
         newPassword = faker.internet.password(6)
         accountPage.updatePassword(password, newPassword, newPassword)
+        // Verify notification after updating password successfully
+        assert.isTrue(accountPage.isExistingSuccessfulPasswordUpdateMessage(),
+          'Account page shows notification after user updates successfully password')
         // Login with new password
         accountPage.logoutAccount()
         loginPage.open()
@@ -95,21 +100,11 @@ describe('settings/ account', () => {
           'The expected url is devices page.')
         // Update password to original state
         accountPage.open()
-        accountPage.wait(4000)
+        accountPage.pause(4000)
         accountPage.updatePassword(newPassword, password, password)
       })
 
-      it('should show notification after updating password successfully', () => {
-        // Update password
-        newPassword = faker.internet.password(6)
-        accountPage.updatePassword(password, newPassword, newPassword)
-        assert.isTrue(accountPage.isExistingSuccessfulPasswordUpdateMessage(),
-          'Account page shows notification after user updates successfully password')
-        // Update password to original state
-        accountPage.updatePassword(newPassword, password, password)
-      })
-
-      it(`should show error message when user updates password 
+      it(`should show error message when user updates password
         with incorrect current password`, () => {
         const wrongCurrentPassword = `${faker.internet.password(2)}${password}`
         passwordInput = `${faker.internet.password(7)}`
@@ -133,7 +128,7 @@ describe('settings/ account', () => {
       assert.isTrue(accountPage.isEnabledUpdateProfileButton(),
         'Account page must be enabled "Update profile" button if any changes.')
     })
-    
+
     it('shouldn\'t be empty for fullname', () => {
       accountPage.clearDataOnFirstNameField()
       assert.isFalse(accountPage.isEnabledUpdateProfileButton(),
@@ -150,17 +145,12 @@ describe('settings/ account', () => {
 
     it('should display profile correctly', () => {
       assert.equal(accountPage.getProfile().Email, email, 'The expected email displays correctly.')
-      assert.equal(accountPage.getProfile().UserName, username, `The expected 
+      assert.equal(accountPage.getProfile().UserName, username, `The expected
         username displays correctly.`)
     })
 
     it('should show notification after updating successfully username', () => {
-      const data = faker.name.firstName()
-      // Set data into firstname and lastname fields
-      accountPage.setTextIntoFirstNameField(data)
-      accountPage.setTextIntoLastNameField(data)
-      // Click "Update Profile" button to update profile
-      accountPage.clickUpdateProfileButton()
+      accountPage.updateFirstNameLastName(faker.name.firstName(), faker.name.lastName())
       assert.isTrue(accountPage.isExistingSuccessfulProfileUpdateMessage(),
         'Account page shows notify after updating profile successfully')
     })
@@ -171,19 +161,18 @@ describe('settings/ account', () => {
       assert.isTrue(accountPage.isExistingTimeZoneDropbox(),
         'The expected selectTimeZoneDropbox is existting')
       accountPage.clickTimezoneDropbox()
-      accountPage.wait(1000)
+      accountPage.pause(1000)
       assert.isTrue(accountPage.isExistingDefaultValueTimezone())
     })
 
     it('should allow users to select Timezone on Profile Settings', () => {
       const index = Math.floor(Math.random() * (249 - 2)) + 2
       accountPage.clickTimezoneDropbox()
-      accountPage.wait(1000)
+      accountPage.pause(1000)
       accountPage.clickOptionTimezone(index)
-      accountPage.wait(1000)
+      accountPage.pause(1000)
       const elementOptionTimezoneChecked = accountPage.getElementOptionTimezone(index)
-      const valueTimezoneChecked =
-        accountPage._browser.getValue(elementOptionTimezoneChecked)
+      const valueTimezoneChecked = accountPage._browser.getValue(elementOptionTimezoneChecked)
       const valueTimezone = accountPage.getValueTimezone()
       assert.equal(valueTimezone, valueTimezoneChecked,
         'The displayed option is the same with the chosen option.')
@@ -192,7 +181,7 @@ describe('settings/ account', () => {
     it('should save timezone settings successfully', () => {
       const index = Math.floor(Math.random() * (249 - 2)) + 2
       accountPage.updateTimezone(index)
-      accountPage.wait(1000)
+      accountPage.pause(1000)
       assert.isTrue(accountPage.isExistingSuccessfulTimezoneSetMessage(),
         'The expected accountPage shows notification when user updates settings successfully')
     })
@@ -202,7 +191,7 @@ describe('settings/ account', () => {
       // Getting datetime on Session page before updating Timezone
       sessionsPage.open()
       sessionsPage.selectStartAndEndDates(startDate, endDate)
-      accountPage.wait(3000)
+      accountPage.pause(3000)
       const getTimeBefore = sessionsPage.getTimeOfFirstSession()
       // Updating timezone on account page
       accountPage.open()
@@ -211,19 +200,19 @@ describe('settings/ account', () => {
       // Getting datetime on Session page after updating Timezone
       sessionsPage.open()
       sessionsPage.selectStartAndEndDates(startDate, endDate)
-      accountPage.wait(3000)
+      accountPage.pause(3000)
       const getTimeAfter = sessionsPage.getTimeOfFirstSession()
       assert.notEqual(getTimeBefore, getTimeAfter,
-        `Datetime of session before updating timezone is not equal 
+        `Datetime of session before updating timezone is not equal
         datetime of session after updating timezone.`)
     })
 
-    it(`should update datetime of session detail in session detail page 
+    it(`should update datetime of session detail in session detail page
       after updating Timezone in account page`, async () => {
       // Getting start/end time on Session page before updating timezone
       sessionsPage.open()
       sessionsPage.selectStartAndEndDates(startDate, endDate)
-      accountPage.wait(3000)
+      accountPage.pause(3000)
       let sessionDetail = sessionsPage.getFirstSessionDetail()
       const endTimeBefore = sessionDetail.EndTime
       const startTimeBefore = sessionDetail.StartTime
@@ -234,7 +223,7 @@ describe('settings/ account', () => {
       // Getting start/end time on Session page after updating timezone
       sessionsPage.open()
       sessionsPage.selectStartAndEndDates(startDate, endDate)
-      accountPage.wait(3000)
+      accountPage.pause(3000)
       sessionDetail = sessionsPage.getFirstSessionDetail()
       const startTimeAfter = sessionDetail.StartTime
       const endTimeAfter = sessionDetail.EndTime

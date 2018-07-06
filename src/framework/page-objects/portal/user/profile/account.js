@@ -56,7 +56,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   * Get the state of successfulProfileUpdateMessage
   */
   isExistingSuccessfulProfileUpdateMessage() {
-    this.wait(500)
+    this.pause(500)
     return this._isExisting(elements.successfulProfileUpdateMessage)
   }
 
@@ -64,7 +64,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   * Returns true if successfulTimezoneSetMessage field is existing
   */
   isExistingSuccessfulTimezoneSetMessage() {
-    this.wait(500)
+    this.pause(1000)
     return this._isExisting(elements.successfulTimezoneSetMessage)
   }
 
@@ -72,7 +72,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   * Returns true if successfulPasswordUpdateMessage field is existing
   */
   isExistingSuccessfulPasswordUpdateMessage() {
-    this.wait(500)
+    this.pause(1000)
     return this._isExisting(elements.successfulPasswordUpdateMessage)
   }
 
@@ -80,7 +80,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   * Returns true if errorMessageCurrentPassword field is existing
   */
   isExistingErrorMsgCurrentPassword() {
-    this.wait(100)
+    this.pause(1000)
     return this._isExisting(elements.errorMsgCurrentPasswordInput)
   }
 
@@ -88,7 +88,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   * Returns true if errorMsgConfirmPassword field is existing
   */
   isExistingErrorMsgConfirmPassword() {
-    this.wait(500)
+    this.pause(500)
     return this._isExisting(elements.errorMsgLabelConfirmPassword)
   }
 
@@ -96,7 +96,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   * Returns true if errorMsgNewPassword field is existing
   */
   isExistingErrorMsgNewPassword() {
-    this.wait(500)
+    this.pause(500)
     return this._isExisting(elements.errorMsgNewPasswordInput)
   }
 
@@ -104,7 +104,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   * Returns true if error  message current password field is existing
   */
   isExistingErrorMsgWrongCurrentPassword() {
-    this.wait(500)
+    this.pause(500)
     return this._isExisting(elements.errorMsgWrongCurrentPassword)
   }
 
@@ -115,6 +115,14 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   clickOptionTimezone(index) {
     const option = `//div[p[text()="Time Zone"]]//select/option[${index}]`
     this._browser.click(option)
+  }
+
+  /**
+  * Set text into last name field
+  * @param value {string} - Text
+  */
+  setTextIntoLastNameField(value) {
+    this._browser.setValue(elements.lastNameInput, value)
   }
 
   /**
@@ -131,10 +139,10 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   */
   updateTimezone(index) {
     this._browser.click(elements.selectTimeZoneDropbox)
-    this.wait(1000)
+    this.pause(1000)
     this.clickOptionTimezone(index)
     this._browser.click(elements.updateSettingsButton)
-    this.wait(1000)
+    this.pause(1000)
   }
 
   /**
@@ -168,10 +176,9 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   * @param confirmPassword {string} - Confirm password
   */
   updatePassword(currentPassword, newPassword, confirmPassword) {
-    this.setTextIntoCurrentPasswordField(currentPassword)
-    this.setTextIntoNewPasswordField(newPassword)
+    this.setTextIntoChangePasswordForm(currentPassword, newPassword)
     this.setTextIntoConfirmPasswordField(confirmPassword)
-    this.wait(500)
+    this.pause(1000)
     this._browser.click(elements.updatePasswordButton)
     this.waitForLoadingProgressDone()
   }
@@ -196,26 +203,23 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   }
 
   /**
-  * Set text into last name field
-  * @param value {string} - Text
+  * Set user's first name and last name
+  * @param firstName {string} - user's first name
+  * @param lastName {string} - user's last name
   */
-  setTextIntoLastNameField(value) {
-    this._browser.setValue(elements.lastNameInput, value)
-  }
-
-  /**
-  * Set text into first name field
-  * @param value {string} - Text
-  */
-  setTextIntoFirstNameField(value) {
-    this._browser.setValue(elements.firstNameInput, value)
+  updateFirstNameLastName(firstName, lastName) {
+    this._browser.setValue(elements.firstNameInput, firstName)
+    this._browser.setValue(elements.lastNameInput, lastName)
+    this.pause(1000)
+    this._browser.click(elements.updateProfileButton)
+    this.waitForLoadingProgressDone()
   }
 
   /**
    * Get the state of "Update profile" button
    */
   isEnabledUpdateProfileButton() {
-    this.wait(500)
+    this.pause(1000)
     return this._browser.isEnabled(elements.updateProfileButton)
   }
 
@@ -224,7 +228,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
    */
   clearDataOnFirstNameField() {
     this._browser.setValue(elements.firstNameInput, ['', '\uE003'])
-    this.wait(1000)
+    this.pause(1000)
   }
 
   /**
@@ -232,7 +236,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
    */
   clearDataOnLastNameField() {
     this._browser.setValue(elements.lastNameInput, ['', '\uE003'])
-    this.wait(1000)
+    this.pause(1000)
   }
 
   /**
@@ -256,15 +260,6 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   }
 
   /**
-   * Click "Update Profile" button
-   */
-  clickUpdateProfileButton() {
-    this.wait(1000)
-    this._browser.click(elements.updateProfileButton)
-    this.waitForLoadingProgressDone()
-  }
-
-  /**
    * Returns true if timezone dropbox is existing
    */
   isExistingTimeZoneDropbox() {
@@ -277,7 +272,7 @@ export default class AccountSettingsPage extends AuthenticatedPage {
   clickTimezoneDropbox() {
     this._browser.click(elements.selectTimeZoneDropbox)
   }
- 
+
   /**
    * Returns true if default option timezone is existing
    */
