@@ -64,18 +64,20 @@ export default class AutomationPracticePage {
   }
 
   async _run() {
-    return await this._browser
+    await this._browser
       .url(elements.authenticationUrl)
       .title()
       .getSource()
-      .pause(1000)
+      .waitForVisible(elements.searchText, this._timeOut)
       .click(elements.searchText)
+      .hideDeviceKeyboard('tapOutside')
       .addValue(elements.searchText, 't-shirt')
       .click(elements.searchButton)
       .timeoutsImplicitWait(this._timeOut)
       .back()
       .forward()
-      .back()
+      .url(elements.authenticationUrl)
+      .waitForVisible(elements.emailCreateText, this._timeOut)
       .setValue(elements.emailCreateText, faker.internet.email())
       .click(elements.createAnAccountButton)
       .timeouts('page load', this._timeOut)
@@ -95,9 +97,6 @@ export default class AutomationPracticePage {
       .getText(elements.pageHeading).then((text) => {
         debug.log('Current text:', text)
       })
-      .getValue(elements.email).then((value) => {
-        debug.log('Fake email:', value)
-      })
       .getUrl()
       .isEnabled(elements.customerLastNameText)
       .isExisting(elements.customerLastNameText)
@@ -105,12 +104,10 @@ export default class AutomationPracticePage {
       .isVisible(elements.customerLastNameText)
       .isVisibleWithinViewport(elements.email)
       .screenshot()
+      .saveScreenshot('./reports/screenshot.png')
       .setOrientation('portrait')
-      .screenshot()
       .setOrientation('landscape')
-      .screenshot()
       .setOrientation('portrait')
-      .screenshot()
       .getOrientation()
       .click(elements.genderOptionMrs)
       .waitForSelected(elements.genderOptionMrs, this._timeOut)
@@ -141,19 +138,77 @@ export default class AutomationPracticePage {
       .waitForEnabled(elements.customerFirstNameText, this._timeOut)
       .click(elements.registerButton)
       .waitForVisible(elements.registerError, this._timeOut)
-      .frame()
-      .waitForValue(elements.email, this._timeOut)
-      .screenshot()
-      .pause(this._timeOut)
-      .saveScreenshot('./reports/screenshot.png')
       .refresh()
       .getCommandHistory()
       .getCookie()
-      .url('http://webdriver.io')
-      .reload()
-      .pause(2000)
-
-    // List unsupported APIs
-    // executeAsync
+      .frame()
+      .middleClick(elements.searchText)
+      .getGridNodeDetails()
+      .contexts()
+      .getDeviceTime()
+      .isLocked()
+      .settings({ignoreUnimportantViews: true})
+      .settings()
+      .unlock()
+      .applicationCacheStatus()
+      .execute((a, b) => {
+        return a + b
+      }, 1, 2)
+      .keys('Home')
+      const logType = (await this._browser.logTypes()).value[0]
+      await this._browser
+      .log(logType)
+      .windowHandles()
+      .touch(elements.searchText, false)
+      .pause(1000)
+      .getCurrentTabId()
+      .getTabIds()
+      .getViewportSize()
+      if (await this._browser.isIOS) {
+        await this._browser.touchPerform([{
+          action: 'press',
+          options: {
+            x: 50,
+            y: 50
+          }
+        }])
+      }
+      await this._browser
+      .session()
+      .source()
+      .launch()
   }
 }
+
+    /** List unsupported APIs on iOS
+      .executeAsync
+      .doubleClick
+      .moveToObject
+      .frameParent
+      .deviceKeyEvent
+      .getNetworkConnection
+      .release
+      .touchAction
+      .rotate
+      .touchFlick
+      .toggleTouchIdEnrollment //Touch ID simulation not supported on real devices
+      .buttonPress
+      .doDoubleClick
+      .imeActivated //Unhandled endpoint
+      .imeActiveEngine
+      .imeAvailableEngines
+      .imeDeactivated
+      .imeActivate
+      .localStorageSize
+      .localStorage
+      .location
+      .windowHandleFullscreen
+      .windowHandlePosition
+      .scroll
+      .newWindow
+      .close
+      .touchDown
+      .setViewportSize
+      .setImmediateValue
+      .hold
+    **/
