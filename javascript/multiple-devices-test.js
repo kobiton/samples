@@ -5,8 +5,8 @@ import parallel from 'mocha.parallel'
 import {Builder, By, Key, until} from 'selenium-webdriver'
 
 const kobitonServerUrl = 'https://api.kobiton.com/wd/hub'
-const username = process.env.KOBITON_ACCESS_USERNAME
-const apiKey = process.env.KOBITON_ACCESS_API_KEY
+const username = process.env.KOBITON_USERNAME
+const apiKey = process.env.KOBITON_API_KEY
 
 let desiredCapabilities = [{
   sessionName:        'Automation test session on first device',
@@ -31,7 +31,7 @@ let desiredCapabilities = [{
 let driver
 
 if (!username || !apiKey) {
-  console.log('Error: Environment variables KOBITON_ACCESS_USERNAME and KOBITON_ACCESS_API_KEY are required to execute script')
+  console.log('Error: Environment variables KOBITON_USERNAME and KOBITON_API_KEY are required to execute script')
   process.exit(1)
 }
 
