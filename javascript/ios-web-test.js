@@ -26,7 +26,7 @@ const desiredCaps = {
 let driver
 
 if (!username || !apiKey) {
-  console.log('Error: Environment variables KOBITON_USERNAME and KOBITON_API_KEY are required to execute script')
+  console.log('Error: Environment variables KOBITON_ACCESS_USERNAME and KOBITON_ACCESS_API_KEY are required to execute script')
   process.exit(1)
 }
 
