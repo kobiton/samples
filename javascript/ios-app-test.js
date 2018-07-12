@@ -3,8 +3,8 @@ import 'colors'
 import wd from 'wd'
 import {assert} from 'chai'
 
-const username = 'your Kobiton username'
-const apiKey = 'your Kobiton api key'
+const username = process.env.KOBITON_USERNAME
+const apiKey = process.env.KOBITON_API_KEY
 
 const kobitonServerConfig = {
   protocol: 'https',
@@ -24,6 +24,11 @@ const desiredCaps = {
 }
 
 let driver
+
+if (!username || !apiKey) {
+  console.log('Error: Environment variables KOBITON_USERNAME and KOBITON_API_KEY are required to execute script')
+  process.exit(1)
+}
 
 describe('iOS App sample', () => {
 
