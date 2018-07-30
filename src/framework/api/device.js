@@ -117,6 +117,9 @@ class Device extends Base {
       case group.cloud:
         devices = devicesGroups.cloudDevices
         break
+      case group.favorite:
+        devices = devicesGroups.favoriteDevices
+        break
       default:
         devices = devicesGroups.cloudDevices.concat(devicesGroups.privateDevices)
         break
