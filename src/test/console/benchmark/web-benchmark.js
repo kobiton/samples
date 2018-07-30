@@ -8,7 +8,7 @@ const timestamps = moment().format('YYYYMMDDHHmmss')
 
 describe('web benchmark testing', () => {
   it('should show benchmark result', async () => {
-    const onlineDevices = await Device.getDevices()
+    const onlineDevices = await Device.getDevices({onlineDeviceOnly: true})
     if (onlineDevices.length > 0) {
       const onlineCloudDesiresCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
       const result = await _webBenchmark(onlineCloudDesiresCaps, url)

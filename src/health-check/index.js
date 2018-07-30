@@ -15,19 +15,19 @@ const initial = new BaseTest()
 
 class HealthChecker {
   async executeWebCheck() {
-    const devices = await Device.getDevices({onlineDeviceOnly: false})
+    const devices = await Device.getDevices({onlineDeviceOnly: true})
     await this.execute(initial._getTimeStamp(),
       devices, expectedDurationInSeconds, new DailyWebTest())
   }
 
   async executeIOSAppCheck() {
-    const devices = await Device.getDevices({onlineDeviceOnly: false})
+    const devices = await Device.getDevices({onlineDeviceOnly: true})
     await this.execute(initial._getTimeStamp(),
       devices, expectedDurationInSeconds, new IOSAppTest())
   }
 
   async executeAndroidAppCheck() {
-    const devices = await Device.getDevices({onlineDeviceOnly: false})
+    const devices = await Device.getDevices({onlineDeviceOnly: true})
     await this.execute(initial._getTimeStamp(),
       devices, expectedDurationInSeconds, new AndroidAppTest())
   }

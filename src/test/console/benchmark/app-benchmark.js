@@ -15,7 +15,7 @@ const uiKitCatalogApp = {
 
 describe('app benchmark testing', () => {
   it('should show benchmark result', async () => {
-    const onlineDevices = await Device.getDevices()
+    const onlineDevices = await Device.getDevices({onlineDeviceOnly: true})
     assert.isAtLeast(onlineDevices.length, 1, 'Expected at least one online device')
     const result = await _appBenchmark(onlineDevices, {apiDemoDebugApp, uiKitCatalogApp})
     _logResult(result, 'app_benchmark_result.csv')

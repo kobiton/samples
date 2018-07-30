@@ -56,7 +56,9 @@ export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
 }
 
 export async function getOnlineCaps() {
-  const devices = await api.Device.getDevices()
+  const devices = await api.Device.getDevices({
+    onlineDeviceOnly: true
+  })
   return convertToDesiredCapabilities(new Date(), devices)
 }
 
