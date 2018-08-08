@@ -92,11 +92,11 @@ export default class WebSocketClient extends EventEmitter {
     return new BPromise((resolve, reject) => {
       this._ignoreSocketError = false
 
-      const host = this._host.replace(/\/$/, '')
-      const protocol = API_URL.startsWith('https') ? 'wss' : 'ws'
       let socket
 
       try {
+        const host = this._host.replace(/\/$/, '')
+        const protocol = API_URL.startsWith('https') ? 'wss' : 'ws'
         debug.log(this._ns, 'Connecting ...')
         socket = new WebSocket(`${protocol}://${host}/ws`)
       }

@@ -31,7 +31,7 @@
     * export KOBITON_EMAIL_USER_1='<email>'
     * export KOBITON_API_KEY='<api_key>'
     * export KOBITON_DESKTOP_APP_URL='<Kobiton App S3 link>'
-    * export KOBITON_CONCURRENT_LOADTEST='<number of devices>'
+    * export KOBITON_CONCURRENT_LOADTEST=<number of devices>
 
   Run command to set variable environment
     ```bash
@@ -227,5 +227,6 @@ Append argument: --platformVersion <version>
 ### LoadTest
 ##### Run test
 ```bash
-yarn test -- --input /console/api/test-manual-loadtest.js --reporter spec
+yarn test -- --input /console/api/test-loadtest.js
+yarn test -- --input /console/api/test-loadtest.js --typeOfTest auto|manual|all
 ```

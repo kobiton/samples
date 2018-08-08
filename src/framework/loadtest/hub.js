@@ -1,4 +1,4 @@
-import Base from './_base'
+import Base from '../api/_base'
 
 class Hub extends Base {
   /**

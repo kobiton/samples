@@ -1,5 +1,5 @@
 import BPromise from 'bluebird'
-import WebSocketClient from '../../framework/api/websocket'
+import WebSocketClient from './websocket'
 import {debug, enums} from '@kobiton/core-util'
 import api from '../../framework/api'
 

@@ -4,7 +4,9 @@ import omit from 'lodash/omit'
 import request from 'request'
 import * as enums from '@kobiton/core-util/enum'
 import {debug} from '@kobiton/core-util'
-import TcpConnection from '../api/tcp'
+import TcpConnection from './tcp'
+import hub from './hub'
+import AppiumSession from './appium'
 import api from '../../framework/api'
 import config from '../config/test'
 
@@ -48,7 +50,7 @@ export default class Koby extends EventEmitter {
       this._deviceInfo.message
     )
 
-    const getHub = await api.Hub.getHub(this._token)
+    const getHub = await hub.getHub(this._token)
     this._hub = await getHub[0]
     await this._establishControlConnection()
     await api.Device.updateDeviceStatus(
@@ -60,11 +62,20 @@ export default class Koby extends EventEmitter {
   }
 
   /**
+   * Update status message
+   */
+  _updateStatusMessage(message) {
+    if (this._destroyed) return
+    debug.log(this._ns, 'Detail status message: ' + message)
+    this.emit('update-device', {...this._deviceInfo, status: this._status, message})
+  }
+
+  /**
    * Establish Control Connection
    */
   async _establishControlConnection() {
     const connectionInfo = {runningSession: !!this._session, ...this._authInfo}
-    await this._disconnectControlConnection()
+    await this.disconnectControlConnection()
     this._controlConnection = new TcpConnection(
       enums.CONNECTION_TYPES.CONTROL, this._hub, connectionInfo)
     this._controlConnection
@@ -81,7 +92,7 @@ export default class Koby extends EventEmitter {
   /**
    * Disconnect Control Connection
    */
-  async _disconnectControlConnection() {
+  async disconnectControlConnection() {
     if (this._controlConnection) {
       await this._controlConnection
         .removeAllListeners()
@@ -96,8 +107,8 @@ export default class Koby extends EventEmitter {
    */
   async _handleMessage(message) {
     debug.log(this._ns, `Receive message from hub: ${JSON.stringify(message)}`)
-    const {START_MANUAL, STOP_MANUAL} = enums.TEST_ACTIONS
-    const {type, quality, fps} = message
+    const {START_MANUAL, STOP_MANUAL, START_AUTO} = enums.TEST_ACTIONS
+    const {type, timeoutKey, quality, fps} = message
 
     switch (type) {
       case START_MANUAL:
@@ -127,7 +138,24 @@ export default class Koby extends EventEmitter {
           await this._endSession()
         }
         catch (err) {
-          debug.error(this._ns, 'Error while ending session on STOP_MANUAL message', err)
+          debug.error(this._ns, `Error while ending session on ${type} message`, err)
+        }
+        break
+      case START_AUTO:
+        try {
+          await this._startSession(
+            enums.CONNECTION_TYPES.AUTO,
+            {
+              ...this._authInfo, appium: this._appium, deviceInfo: this._deviceInfo,
+              timeoutKey
+            },
+            {json: false, reconnect: false}
+          )
+        }
+        catch (ignored) {
+          // Writes log for supporting investigating
+          debug.error(this._ns, `Unhandled error while processing message ${START_AUTO}`)
+          debug.error(this._ns, ignored)
         }
         break
     }
@@ -140,16 +168,55 @@ export default class Koby extends EventEmitter {
    * @param connectionOptions {object}
    */
   async _startSession(type, options, connectionOptions) {
-    this._sessionConnection = new TcpConnection(type, this._hub, this._authInfo, connectionOptions)
-    this._sessionConnection.on('message', ::this._onHubMessage)
-    await this._sessionConnection.establish()
+    try {
+      this._sessionConnection = new TcpConnection(
+        type,
+        this._hub,
+        this._authInfo,
+        connectionOptions
+      )
+      this._sessionConnection.on('message', ::this._onHubMessage)
 
-    await api.Device.updateDeviceStatus(
-      this._token,
-      this._deviceInfo.udid,
-      enums.DEVICE_STATES.UTILIZING,
-      this._deviceInfo.message
-    )
+      if (type === 'MANUAL') {
+        await this._sessionConnection.establish()
+
+        await api.Device.updateDeviceStatus(
+          this._token,
+          this._deviceInfo.udid,
+          enums.DEVICE_STATES.UTILIZING,
+          this._deviceInfo.message
+        )
+      }
+      else {
+        this._session = new AppiumSession(this._sessionConnection, options)
+        this._session
+          .on('send-control', :: this._controlConnection.sendJson)
+          .on('disconnect', async () => {
+            debug.log(this._ns, `Session ${type} for ${this._deviceInfo.udid} is disconnected`)
+            try {
+              await this._endSession()
+            }
+            catch (ignored) {
+              debug.error(this._ns, "Can't end session on session 'disconnect' event", ignored)
+            }
+          })
+
+        this._updateStatusMessage('Starting session.')
+        this._session.start()
+        await this._sessionConnection.establish()
+        await api.Device.updateDeviceStatus(
+          this._token,
+          this._deviceInfo.udid,
+          enums.DEVICE_STATES.UTILIZING,
+          this._deviceInfo.message
+        )
+      }
+      
+    }
+    catch (error) {
+      debug.log(error)
+    }
+    
   }
 
   /**
@@ -289,10 +356,41 @@ export default class Koby extends EventEmitter {
    * End Session
    */
   async _endSession() {
-    await this._disconnectControlConnection()
+    if (this._session) {
+      try {
+        this._cleaningSession = true
+        this._updateStatusMessage('Stopping running session.')
+        await this._session.end()
+      }
+      catch (ignored) {
+        debug.error(this._ns, "Can't end session", ignored)
+      }
+      finally {
+        this._cleaningSession = false
+
+        // Indicates session finished immediately after it clears up 100%
+        this._session = null
+      }
+
+      if (this._controlConnection) {
+        debug.log(this._ns, 'Notify Hub that device is ready')
+        this._controlConnection.sendJson({type: enums.TEST_STATES.DEVICE_READY})
+
+        await api.Device.updateDeviceStatus(
+          this._token,
+          this._deviceInfo.udid,
+          enums.DEVICE_STATES.ACTIVATED,
+          this._deviceInfo.message
+        )
+      }
+    }
+
+    // Handle end Session for Manual test
+    await this.disconnectControlConnection()
     await this._sessionConnection
       .removeAllListeners()
       .drop()
     this.emit('session-ended')
   }
+  
 }
