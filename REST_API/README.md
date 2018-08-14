@@ -14,6 +14,7 @@ Once you have everything set up, you can run the script by running the following
 npm install
 node get_session_info 
 ```
+> Note: You just use "npm install" for the first time
 ### The result: 
 The output should look something like below:
 ```
@@ -117,6 +118,7 @@ Once you have everything set up, you can run the script by running the following
 npm install
 node get_session_commands 
 ```
+> Note: You just use "npm install" for the first time
 ### The result: 
 ```
 { data:
