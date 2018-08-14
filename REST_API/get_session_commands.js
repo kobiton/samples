@@ -1,9 +1,9 @@
 const request = require('request');
 
-const username='YOUR_USERNAME';
-const apikey='YOUR_APIKEY';
+const username='<KOBITON_USERNAME>';
+const apikey='<KOBITON_API_KEY>';
 
-const session = SESSIONID;
+const session = '<SESSION_ID>';
 
 request({
   url: 'https://api.kobiton.com/v1/sessions/' + session + '/commands'  ,
@@ -15,5 +15,6 @@ request({
     }
   }, function (err, response, body){
   if (err) return console.error('Error:', err);
-  console.log(body);
+  console.log('Response:', response);
+  console.log('Response body:', body);
 });
