@@ -1,24 +1,25 @@
 const https = require('https')
-const username = process.env.username
-const apiKey = process.env.apikey
-const sessionId = process.env.sessionId
 
-var auth = 'Basic ' + Buffer.from(`${username}:${apiKey}`).toString('base64');
+const username = process.env.USERNAME
+const apiKey = process.env.API_KEY
+const sessionId = process.env.SESSION_ID
+
 const options = {
   host : 'api.kobiton.com',
   path: `/v1/sessions/${sessionId}/commands`,
-  method : 'GET',
-  json : true,
   headers: {
-    'Authorization': auth
+    'Authorization': 'Basic ' + new Buffer(`${username}:${apiKey}`).toString('base64')
   }
 };
-const req = https.request(options, (res) => {
-  res.on('data', (respon) => {
-    console.log(JSON.parse(respon))
+request = https.get(options, function(res){
+  var body = "";
+  res.on('data', function(data) {
+     body += data;
+  });
+  res.on('end', function() {
+     console.log(JSON.parse(body));
   })
-})
-req.on('error', (e) => {
-  console.error(`error: ${e.message}`)
-})
-req.end();
+  res.on('error', function(e) {
+     onsole.log("Error: " + e.message);
+  });
+ });

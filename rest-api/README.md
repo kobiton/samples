@@ -1,27 +1,27 @@
 # Sample code for Kobiton Rest API
 ## Prerequisites
   - Node 
-    Please visit here to install https://nodejs.org/en/download/
+    >Please visit here to install https://nodejs.org/en/download/
 
-  - Kobiton Username and Api key
-    Please visit our [blog](https://kobiton.com/blog/tutorial/parallel-testing-selenium-webdriver/) and navigate to `IV. Configure Test Scripts for Kobiton` for more details in getting Username and Api key
+  - Kobiton Username and API key
+    >Please visit our [blog](https://kobiton.com/blog/tutorial/parallel-testing-selenium-webdriver/) and navigate to `IV. Configure Test Scripts for Kobiton` for more details in getting Username and API key.
 
 ## Kobiton Rest API command
   This repository includes samples of simple NodeJS app for fetching test session data with Kobiton REST API.
 
   The sample contains scripts:
-   - [get-session-data.js](https://github.com/kobiton/samples/rest-api/get-session-data.js): Fetch a session data
-    - [get-session-commands.js](https://github.com/kobiton/samples/rest-api/get-session-commands.js): Fetch all commands of a session
+  - [get-session-data.js](https://github.com/kobiton/samples/rest-api/get-session-data.js): Fetch a session data
+  - [get-session-commands.js](https://github.com/kobiton/samples/rest-api/get-session-commands.js): Fetch all commands of a session
 
-> Note: Kobiton also provides other languages to fetch Kobiton Rest Api, visit [our docs](https://api.kobiton.com/docs) for more information.
+> Note: Kobiton also provides other languages to fetch Kobiton Rest API, visit [our docs](https://api.kobiton.com/docs) for more information.
 
 ## Setup
 - Clone this repository with
     ```
-      git clone git@github.com:kobiton/samples.git
+      https://github.com/kobiton/samples.git
     ```
 
-- Open `rest-api` folder
+- Open `rest-api` folder.
 
 ## Get sessions data
 
@@ -30,15 +30,15 @@
     `GET /sessions/{sessionId}`
 
  Retrieve a session info belonging to the current user or organization.
-> Note: Absolute urls in response body like 'screenshotDownloadUrl', 'previewUrl', etc. expire in 2 hours since the response is made.
+> Note: Absolute urls in response body like *"screenshotDownloadUrl"*, *"previewUrl"*, etc. expire in 2 hours since the response is made.
 
 
 - Execute: 
     ```bash
-    $ username=kobitonTester 
-    > apiKey=90bc23f4-58s3-4ds3-223a-ds42d45c085cf 
-    > sessionId=3894 
-    > node get-session-data.js 
+    $ export USERNAME=<YOUR_KOBITON_USERNAME>
+    $ export API_KEY=<YOUR_KOBITON_API_KEY> 
+    $ export SESSION_ID=<SESSION_ID>
+    $ node get-session-data.js 
     ```
 
   Sample Result:
@@ -77,10 +77,10 @@ Retrieves commands of a session belonging to the current user or organization.
 
 - Execute:
     ```bash
-    $ username=kobitonTester 
-    > apiKey=90bc23f4-58s3-4ds3-223a-ds42d45c085cf 
-    > sessionId=3894 
-    > node get-session-commnads.js 
+    $ export USERNAME=<YOUR_KOBITON_USERNAME>
+    $ export API_KEY=<YOUR_KOBITON_API_KEY> 
+    $ export SESSION_ID=<SESSION_ID> 
+    $ node get-session-commands.js 
     ```
 
   Sample Result:
