@@ -43,9 +43,9 @@
   **Example:**
 
   ``` bash
-   $ username=kobitonTester \
-    > apiKey=90bc23f4-58s3-4ds3-223a-ds42d45c085cf \
-    > sessionId=3894 \
+   $ USERNAME=kobitonTester \
+    > API_KEY=90bc23f4-58s3-4ds3-223a-ds42d45c085cf \
+    > SESSION_ID=3894 \
     > node get-session-data.js 
   ```
   **Example result:**
@@ -94,10 +94,10 @@ Retrieves commands of a session belonging to the current user or organization.
   **Example:**
 
   ``` bash
-   $ username=kobitonTester \
-    > apiKey=90bc23f4-58s3-4ds3-223a-ds42d45c085cf \
-    > sessionId=3894 \
-    > node get-session-data.js 
+   $ USERNAME=kobitonTester \
+    > API_KEY=90bc23f4-58s3-4ds3-223a-ds42d45c085cf \
+    > SESSION_ID=3894 \
+    > node get-session-commands.js 
   ```
   **Example result:**
     ```bash
