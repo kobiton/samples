@@ -35,10 +35,10 @@
 
 - Execute: 
     ```bash
-    $ export USERNAME=<YOUR_KOBITON_USERNAME>
-    $ export API_KEY=<YOUR_KOBITON_API_KEY> 
-    $ export SESSION_ID=<SESSION_ID>
-    $ node get-session-data.js 
+    $ USERNAME=<YOUR_KOBITON_USERNAME> \
+    > API_KEY=<YOUR_KOBITON_API_KEY> \
+    > SESSION_ID=<SESSION_ID> \
+    > node get-session-data.js 
     ```
 
   Sample Result:
@@ -77,10 +77,10 @@ Retrieves commands of a session belonging to the current user or organization.
 
 - Execute:
     ```bash
-    $ export USERNAME=<YOUR_KOBITON_USERNAME>
-    $ export API_KEY=<YOUR_KOBITON_API_KEY> 
-    $ export SESSION_ID=<SESSION_ID> 
-    $ node get-session-commands.js 
+    $ USERNAME=<YOUR_KOBITON_USERNAME> \
+    > API_KEY=<YOUR_KOBITON_API_KEY> \
+    > SESSION_ID=<SESSION_ID> \
+    > node get-session-commands.js 
     ```
 
   Sample Result:
