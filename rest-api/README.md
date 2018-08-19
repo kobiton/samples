@@ -1,7 +1,7 @@
-# Sample code for Kobiton Rest API
+# Sample code for fetching session data with Kobiton REST API
 ## Prerequisites
   - Node 
-    >Please visit here to install https://nodejs.org/en/download/
+    >Please visit here to install https://nodejs.org/en/download/.
 
   - Kobiton Username and API key
     >Please visit our [blog](https://kobiton.com/blog/tutorial/parallel-testing-selenium-webdriver/) and navigate to `IV. Configure Test Scripts for Kobiton` for more details in getting Username and API key.
@@ -13,12 +13,12 @@
   - [get-session-data.js](https://github.com/kobiton/samples/rest-api/get-session-data.js): Fetch a session data
   - [get-session-commands.js](https://github.com/kobiton/samples/rest-api/get-session-commands.js): Fetch all commands of a session
 
-> Note: Kobiton also provides other languages to fetch Kobiton Rest API, visit [our docs](https://api.kobiton.com/docs) for more information.
+> Note: Kobiton also provides other languages to fetch Kobiton REST API, visit [our docs](https://api.kobiton.com/docs) for more information.
 
 ## Setup
 - Clone this repository with
     ```
-      https://github.com/kobiton/samples.git
+      git clone git@github.com:kobiton/samples.git
     ```
 
 - Open `rest-api` folder.
@@ -40,9 +40,16 @@
     > SESSION_ID=<SESSION_ID> \
     > node get-session-data.js 
     ```
+  **Example:**
 
-  Sample Result:
-    ```bash
+  ``` bash
+   $ username=kobitonTester \
+    > apiKey=90bc23f4-58s3-4ds3-223a-ds42d45c085cf \
+    > sessionId=3894 \
+    > node get-session-data.js 
+  ```
+  **Example result:**
+  ```bash
     {
       "id" :  3894,
       "userId" :  113,
@@ -65,7 +72,7 @@
       }
     ```
 
-For more information, please visit https://api.kobiton.com/docs/#get-a-session
+For more information, please visit https://api.kobiton.com/docs/#get-a-session.
 
 ## Get session commands
 
@@ -76,14 +83,23 @@ For more information, please visit https://api.kobiton.com/docs/#get-a-session
 Retrieves commands of a session belonging to the current user or organization.
 
 - Execute:
-    ```bash
+
+  ```bash
     $ USERNAME=<YOUR_KOBITON_USERNAME> \
     > API_KEY=<YOUR_KOBITON_API_KEY> \
     > SESSION_ID=<SESSION_ID> \
     > node get-session-commands.js 
-    ```
+  ```
 
-  Sample Result:
+  **Example:**
+
+  ``` bash
+   $ username=kobitonTester \
+    > apiKey=90bc23f4-58s3-4ds3-223a-ds42d45c085cf \
+    > sessionId=3894 \
+    > node get-session-data.js 
+  ```
+  **Example result:**
     ```bash
     {
       "currentPage" :  1,
