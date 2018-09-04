@@ -65,7 +65,7 @@ describe('iOS Web sample', () => {
     .keys(wd.SPECIAL_KEYS.Enter)
     
     let msg = await driver.title()
-    assert.include(msg, 'Kobiton - Google Search')
+    assert.include(msg, 'Kobiton')
   })
 
   after(async () => {
