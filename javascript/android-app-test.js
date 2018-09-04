@@ -5,8 +5,7 @@ import {assert} from 'chai'
 
 const username = process.env.KOBITON_USERNAME
 const apiKey = process.env.KOBITON_API_KEY
-const deviceName = process.env.KOBITON_DEVICE_NAME || 'Galaxy Note3'
-const deviceOS = process.env.KOBITON_DEVICE_OS || 'Android'
+const deviceName = process.env.KOBITON_DEVICE_NAME || 'Galaxy*'
 
 const kobitonServerConfig = {
   protocol: 'https',
@@ -21,7 +20,7 @@ const desiredCaps = {
   captureScreenshots: true,
   deviceGroup:        'KOBITON',
   deviceName:         deviceName,
-  platformName:       deviceOS,
+  platformName:       'Android',
   app: 'https://appium.github.io/appium/assets/ApiDemos-debug.apk',
   appPackage: 'io.appium.android.apis',
   appActivity: '.ApiDemos'

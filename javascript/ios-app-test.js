@@ -5,6 +5,7 @@ import {assert} from 'chai'
 
 const username = process.env.KOBITON_USERNAME
 const apiKey = process.env.KOBITON_API_KEY
+const deviceName = process.env.KOBITON_DEVICE_NAME || 'iPhone*'
 
 const kobitonServerConfig = {
   protocol: 'https',
@@ -18,7 +19,7 @@ const desiredCaps = {
   deviceOrientation:  'portrait',  
   captureScreenshots: true, 
   deviceGroup:        'KOBITON', 
-  deviceName:         'iPhone X',
+  deviceName:         deviceName,
   platformName:       'iOS',
   app: 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/UIKitCatalog-Test-Adhoc.ipa'
 }

@@ -5,6 +5,7 @@ import {assert} from 'chai'
 
 const username = process.env.KOBITON_USERNAME
 const apiKey = process.env.KOBITON_API_KEY
+const deviceName = process.env.KOBITON_DEVICE_NAME || 'iPhone*'
 
 const kobitonServerConfig = {
   protocol: 'https',
@@ -19,7 +20,7 @@ const desiredCaps = {
   captureScreenshots: true, 
   browserName:        'safari', 
   deviceGroup:        'KOBITON', 
-  deviceName:         'iPhone X',
+  deviceName:         deviceName,
   platformName:       'iOS'
 }
 
