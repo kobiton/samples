@@ -62,7 +62,8 @@ describe('iOS Web sample', () => {
     .waitForElementByName('q')
     .sendKeys('Kobiton')
     .sleep(3000)
-    .keys(wd.SPECIAL_KEYS.Enter)
+    .waitForElementByXPath('//button[@aria-label="Google Search"]')
+    .click()
     
     let msg = await driver.title()
     assert.include(msg, 'Kobiton')
