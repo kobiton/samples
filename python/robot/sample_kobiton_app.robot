@@ -4,11 +4,10 @@ Library           AppiumLibrary
 *** Variables ***
 ${REMOTE_URL}           username:apiKey
 ${PLATFORM_NAME}        Android
-${PLATFORM_VERSION}     6.*
 ${DEVICE_NAME}          Galaxy*
 ${DEVICE_GROUP}         KOBITON
 ${AUTOMATION_NAME}      Appium
-${APP_LOCATION}         https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/ApiDemos-debug.apk
+${APP_PATH}         https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/ApiDemos-debug.apk
 ${ANIMATION_XPATH}      //android.widget.TextView[@content-desc="Animation"]
 ${BOUNCING_BALL_XPATH}  //android.widget.TextView[@content-desc="Bouncing Balls"]
 
@@ -17,11 +16,10 @@ Open App
     Open Application
     ...   remote_url=http://${REMOTE_URL}@api.kobiton.com/wd/hub
     ...   platformName=${PLATFORM_NAME}
-    ...   platformVersion=${PLATFORM_VERSION}
     ...   deviceName=${DEVICE_NAME}
     ...   deviceGroup=${DEVICE_GROUP}
     ...   automationName=${AUTOMATION_NAME}
-    ...   app=${APP_LOCATION}
+    ...   app=${APP_PATH}
 
 Test App
     Wait Until Element Is Visible   xpath=${ANIMATION_XPATH}   5s
