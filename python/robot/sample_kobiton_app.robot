@@ -24,7 +24,7 @@ Open App
     ...   app=${APP_LOCATION}
 
 Test App
-    Wait Until Element Is Visible   xpath = //android.widget.TextView[@content-desc="Animation"]    5s
+    Wait Until Element Is Visible   xpath=${ANIMATION_XPATH}    5s
     Click Element   xpath=${ANIMATION_XPATH}
     Click Element   xpath=${BOUNCING_BALL_XPATH}
     Sleep   5s
