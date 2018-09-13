@@ -7,7 +7,7 @@ Test Teardown  Close test browser
 
 *** Variables ***
 
-${CREDENTIALS}  key:secret
+${CREDENTIALS}  username:apiKey
 ${BROWSER_NAME}  chrome
 ${DEVICE_NAME}  Galaxy
 ${DEVICE_GROUP}  KOBITON
@@ -28,4 +28,3 @@ Open test browser
 
 Close test browser
 	Close all browsers
-	

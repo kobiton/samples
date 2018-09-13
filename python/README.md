@@ -57,7 +57,7 @@ $ rm -rf *.testlog
 
 ### 2. Robot framework
 
-- Modify `username`, `apiKey` and `desiredCaps` in `test_kobiton.robot` file
+- Modify `username`, `apiKey` and `desiredCaps` in `sample_kobiton_web.robot`, `sample_kobiton_app` file
 
 #### Usage:
 
