@@ -7,7 +7,7 @@ ${PLATFORM_NAME}        Android
 ${DEVICE_NAME}          Galaxy*
 ${DEVICE_GROUP}         KOBITON
 ${AUTOMATION_NAME}      Appium
-${APP_PATH}         https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/ApiDemos-debug.apk
+${APP_PATH}             https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/ApiDemos-debug.apk
 ${ANIMATION_XPATH}      //android.widget.TextView[@content-desc="Animation"]
 ${BOUNCING_BALL_XPATH}  //android.widget.TextView[@content-desc="Bouncing Balls"]
 
