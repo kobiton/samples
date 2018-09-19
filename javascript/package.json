@@ -9,8 +9,8 @@
     "ios-web-test": "mocha --require babel-core/register --no-timeouts ios-web-test.js",
     "ios-app-test": "mocha --require babel-core/register --no-timeouts ios-app-test.js",
     "multiple-devices-test": "mocha --require babel-core/register --no-timeouts multiple-devices-test.js",
-    "jasmine-web-test": "./node_modules/jasmine/bin/jasmine.js ./spec/jasmine-web-spec.js",
-    "jasmine-app-test": "./node_modules/jasmine/bin/jasmine.js ./spec/jasmine-app-spec.js"
+    "jasmine-android-web-test": "./node_modules/jasmine/bin/jasmine.js ./spec/jasmine-android-web-spec.js",
+    "jasmine-android-app-test": "./node_modules/jasmine/bin/jasmine.js ./spec/jasmine-android-app-spec.js"
   },
   "keywords": [
     "kobiton",
