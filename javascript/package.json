@@ -8,7 +8,9 @@
     "android-app-test": "mocha --require babel-core/register --no-timeouts android-app-test.js",
     "ios-web-test": "mocha --require babel-core/register --no-timeouts ios-web-test.js",
     "ios-app-test": "mocha --require babel-core/register --no-timeouts ios-app-test.js",
-    "multiple-devices-test": "mocha --require babel-core/register --no-timeouts multiple-devices-test.js"
+    "multiple-devices-test": "mocha --require babel-core/register --no-timeouts multiple-devices-test.js",
+    "jasmine_web_test": "./node_modules/jasmine/bin/jasmine.js ./spec/jasmine_web_spec.js",
+    "jasmine_app_test": "./node_modules/jasmine/bin/jasmine.js ./spec/jasmine_app_spec.js"
   },
   "keywords": [
     "kobiton",
@@ -35,6 +37,7 @@
     "bluebird": "^3.5.1",
     "chai": "^4.1.2",
     "colors": "^1.1.2",
+    "jasmine": "^3.2.0",
     "mocha": "^5.2.0",
     "mocha.parallel": "^0.15.5",
     "npm": "^6.1.0",
