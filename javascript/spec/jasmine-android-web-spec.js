@@ -57,9 +57,9 @@ describe("Android web sample", () => {
 
   it('should return the title that contains Kobiton', async () => {
     await driver.get('https://www.google.com')
-    .waitForElementByName('q')
-    .sendKeys('Kobiton')
-    .submit()
+      .waitForElementByName('q')
+      .sendKeys('Kobiton')
+      .submit()
 
     let msg = await driver.title();
     expect(msg).toContain('Kobiton');
