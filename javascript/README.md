@@ -93,8 +93,8 @@ npm run android-app-test
 npm run ios-web-test
 npm run ios-app-test
 npm run multiple-devices-test
-npm run jasmine_web_test
-npm run jasmine_app_test
+npm run jasmine-web-test
+npm run jasmine-app-test
 ```
 
 ## VI. Report on Test Results

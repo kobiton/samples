@@ -1,37 +1,41 @@
-import 'babel-polyfill';
+import 'babel-polyfill'
 import 'colors';
 import wd from 'wd';
+
+const username = process.env.KOBITON_USERNAME
+const apiKey = process.env.KOBITON_API_KEY
+const deviceName = process.env.KOBITON_DEVICE_NAME || '*'
 
 let driver;
 const kobitonServerConfig = {
   protocol: 'https',
   host: 'api.kobiton.com',
-  auth: 'username:api_key' //<- change this info to match user's credentials
+  auth: `${username}:${apiKey}`
 };
 const desiredCapabilities = {
   sessionName:        'Automation test session with jasmine',
   sessionDescription: 'This is an example for Android web using jasmine',
   deviceOrientation:  'portrait',
   captureScreenshots: true,
-  app:                'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/ApiDemos-debug.apk',
+  browserName:        'chrome',
   deviceGroup:        'KOBITON',
-  deviceName:         '*', // <- user can choose specific device's name or leave '*' for randomly
+  deviceName:         deviceName,
   platformName:       'Android'
 };
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 4 * 60 * 1000;
 
-describe("kobiton app test with jasmine", () => {
+describe("Android web sample", () => {
   beforeAll(async() => {
     driver = wd.promiseChainRemote(kobitonServerConfig);
     driver.on('status', (info) => {
       console.log(info.cyan);
-    })
+    });
     driver.on('command', (meth, path, data) => {
       console.log(' > ' + meth.yellow, path.grey, data || '');
-    })
+    });
     driver.on('http', (meth, path, data) => {
       console.log(' > ' + meth.magenta, path, (data || '').grey);
-    })
+    });
     try {
       await driver.init(desiredCapabilities);
     }
@@ -51,10 +55,13 @@ describe("kobiton app test with jasmine", () => {
     }
   });
 
-  it('should get correct category name', async () => {
-    await driver.elementByClassName("android.widget.TextView")
-     .text().then(function(text) {
-       expect(text.toLocaleLowerCase()).toEqual('api demos');
-     });
+  it('should return the title that contains Kobiton', async () => {
+    await driver.get('https://www.google.com')
+    .waitForElementByName('q')
+    .sendKeys('Kobiton')
+    .submit()
+
+    let msg = await driver.title();
+    expect(msg).toContain('Kobiton');
   });
 });
