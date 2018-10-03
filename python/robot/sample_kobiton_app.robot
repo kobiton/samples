@@ -4,6 +4,7 @@ Library           AppiumLibrary
 *** Variables ***
 ${REMOTE_URL}           username:apiKey
 ${PLATFORM_NAME}        Android
+${PLATFORM_VERSION}     8*
 ${DEVICE_NAME}          Galaxy*
 ${DEVICE_GROUP}         KOBITON
 ${AUTOMATION_NAME}      Appium
