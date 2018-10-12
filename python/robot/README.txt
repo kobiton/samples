@@ -4,4 +4,5 @@
 
 #### run test
 
-`robot filename.robot`
+`robot sample_kobiton_app.robot`
+`robot sample_kobiton_web.robot`
