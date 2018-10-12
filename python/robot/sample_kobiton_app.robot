@@ -22,7 +22,7 @@ Open Application With Session Timeout
 
 Open App
     Open Application With Session Timeout
-    ...   remote_url=http://${REMOTE_URL}@api.kobiton.com/wd/hub
+    ...   remote_url=https://${REMOTE_URL}@api.kobiton.com/wd/hub
     ...   platformName=${PLATFORM_NAME}
     ...   deviceName=${DEVICE_NAME}
     ...   deviceGroup=${DEVICE_GROUP}
