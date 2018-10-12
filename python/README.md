@@ -57,7 +57,7 @@ $ rm -rf *.testlog
 
 ### 2. Robot framework
 
-- Modify `username`, `apiKey` in `sample_kobiton_web.robot`, `sample_kobiton_app` file
+- Modify `username`, `apiKey` in `sample_kobiton_web.robot`, `sample_kobiton_app.robot` file
 
 - install appium library:
 
