@@ -4,7 +4,6 @@ Library           AppiumLibrary
 *** Variables ***
 ${REMOTE_URL}           username:apiKey
 ${PLATFORM_NAME}        Android
-${PLATFORM_VERSION}     8*
 ${DEVICE_NAME}          Galaxy*
 ${DEVICE_GROUP}         KOBITON
 ${AUTOMATION_NAME}      Appium
@@ -25,7 +24,6 @@ Open App
     Open Application With Session Timeout
     ...   remote_url=http://${REMOTE_URL}@api.kobiton.com/wd/hub
     ...   platformName=${PLATFORM_NAME}
-    ...   platformVersion=${PLATFORM_VERSION}
     ...   deviceName=${DEVICE_NAME}
     ...   deviceGroup=${DEVICE_GROUP}
     ...   automationName=${AUTOMATION_NAME}
