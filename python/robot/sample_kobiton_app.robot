@@ -12,9 +12,17 @@ ${ANIMATION_XPATH}      //android.widget.TextView[@content-desc="Animation"]
 ${BOUNCING_BALL_XPATH}  //android.widget.TextView[@content-desc="Bouncing Balls"]
 
 *** Keywords ***
+Open Application With Session Timeout
+    [Arguments]    ${remote_url}    ${alias}=${EMPTY}   ${resolve_ip}=False    ${session_timeout}=300    &{kwargs}
+    ${command_executor}=    Evaluate    selenium.webdriver.remote.remote_connection.RemoteConnection($remote_url, resolve_ip=${resolve_ip})    selenium
+    Evaluate    $command_executor.set_timeout(${session_timeout})
+    ${driver}=  Evaluate    appium.webdriver.Remote($command_executor, $kwargs)    appium
+    ${al}=    Get Library Instance    AppiumLibrary
+    Evaluate    $al._cache.register($driver, $alias)
+
 Open App
-    Open Application
-    ...   remote_url=http://${REMOTE_URL}@api.kobiton.com/wd/hub
+    Open Application With Session Timeout
+    ...   remote_url=https://${REMOTE_URL}@api.kobiton.com/wd/hub
     ...   platformName=${PLATFORM_NAME}
     ...   deviceName=${DEVICE_NAME}
     ...   deviceGroup=${DEVICE_GROUP}
