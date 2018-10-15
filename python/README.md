@@ -57,13 +57,16 @@ $ rm -rf *.testlog
 
 ### 2. Robot framework
 
-- Modify `username`, `apiKey` and `desiredCaps` in `sample_kobiton_web.robot`, `sample_kobiton_app` file
+- Modify `username`, `apiKey` in `sample_kobiton_web.robot`, `sample_kobiton_app.robot` file
+
+- install appium library:
+
+`pip install robotframework-appiumlibrary`
 
 #### Usage:
 
-```shell
- pybot test_kobiton.robot
-```
+`robot sample_kobiton_app.robot`
+`robot sample_kobiton_web.robot`
 
 
 ### 3. Selenium
