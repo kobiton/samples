@@ -59,12 +59,13 @@ parallel('Parallel Tests',() => {
 
   async function run(driver) {
     try {
-      await driver.get('http://www.google.com')
-      await driver.findElement(By.name('q')).sendKeys('Kobiton', Key.RETURN)
-      await driver.wait(until.titleContains('Kobiton'), 2000)
+      await driver.get('https://www.google.com')
+        await driver.findElement(By.name('q')).sendKeys('Kobiton')
+        await driver.findElement(By.xpath('//*[@id="tsf"]/div[2]/div[1]/div[1]/button')).click()
+        await driver.wait(until.titleContains('Kobiton'), 10000)
 
-      let msg = await driver.getTitle()
-      assert.include(msg, 'Kobiton')
+        let msg = await driver.getTitle()
+        assert.include(msg, 'Kobiton')
     }
     finally {
       if (driver != null) {
