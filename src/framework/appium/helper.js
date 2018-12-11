@@ -41,7 +41,7 @@ export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
       if (deviceGroup === 'KOBITON') {
         delete desiredCapFields.udid
       }
-      const sessionName = `${timestamp} - Auto app session on ${d.udid}`
+      const sessionName = `${timestamp} - Auto app on ${d.udid}`
       const sessionDescription = `Auto app session on device ${d.deviceName}`
       const desiredCapApp = Object.assign(appInfor, desiredCapFields)
 

@@ -155,8 +155,8 @@ export default class AutomationPracticePage {
         return a + b
       }, 1, 2)
       .keys('Home')
-      const logType = (await this._browser.logTypes()).value[0]
-      await this._browser
+    const logType = (await this._browser.logTypes()).value[0]
+    await this._browser
       .log(logType)
       .windowHandles()
       .touch(elements.searchText, false)
@@ -164,16 +164,16 @@ export default class AutomationPracticePage {
       .getCurrentTabId()
       .getTabIds()
       .getViewportSize()
-      if (await this._browser.isIOS) {
-        await this._browser.touchPerform([{
-          action: 'press',
-          options: {
-            x: 50,
-            y: 50
-          }
-        }])
-      }
-      await this._browser
+    if (await this._browser.isIOS) {
+      await this._browser.touchPerform([{
+        action: 'press',
+        options: {
+          x: 50,
+          y: 50
+        }
+      }])
+    }
+    await this._browser
       .session()
       .source()
       .launch()

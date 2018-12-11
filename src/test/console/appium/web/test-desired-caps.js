@@ -17,7 +17,7 @@ setTimeout(async () => {
     beforeEach(async () => {
       onlineDevices = await Device.getDevices()
       onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
-      assert.isAtLeast(onlineCaps.length, 1, 'Expected at least 1 online devices')
+      assert.isAtLeast(onlineCaps.length, 1, 'Expected at least 1 online device')
     })
 
     describe('cloud devices', async () => {

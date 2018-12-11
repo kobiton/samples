@@ -26,15 +26,15 @@
 
 - Run on Android devices:
 
-> `yarn run build && yarn run test -- --input /console/benchmark/web-benchmark.js` --platform Android --numbers 2
+> `yarn run build && yarn run test -- --input /console/benchmark/web-benchmark.js` --platformName Android --numbers 2
 
 - Run on Android devices with specific automation name:
 
-> `yarn run build && yarn run test -- --input /console/benchmark/web-benchmark.js` --platform Android --automationName UIAutomator2 --numbers 2
+> `yarn run build && yarn run test -- --input /console/benchmark/web-benchmark.js` --platformName Android --automationName UIAutomator2 --numbers 2
 
 - Run on iOS devices:
 
-> `yarn run build && yarn run test -- --input /console/benchmark/web-benchmark.js` --platform iOS --numbers 2
+> `yarn run build && yarn run test -- --input /console/benchmark/web-benchmark.js` --platformName iOS --numbers 2
 
 ## Run the app automation benchmark test
 
@@ -48,11 +48,11 @@
 
 - Run on Android devices:
 
-> `yarn run build && yarn run test -- --input /console/benchmark/app-benchmark.js` --platform Android --numbers 2
+> `yarn run build && yarn run test -- --input /console/benchmark/app-benchmark.js` --platformName Android --numbers 2
 
 - Run on Android devices with specific automation name:
 
-> `yarn run build && yarn run test -- --input /console/benchmark/web-benchmark.js` --platform Android --automationName UIAutomator2 --numbers 2
+> `yarn run build && yarn run test -- --input /console/benchmark/web-benchmark.js` --platformName Android --automationName UIAutomator2 --numbers 2
 
 **Note:**
 
@@ -61,3 +61,5 @@
 - /console/benchmark/app_benchmark_result.csv file will be created in benchmark folder for app sessions
 
 - Known issue `502 Bad Gateway` if run more than 5 parallel auto sessions (should limit total session less than 5 by using '--number' option)
+
+- The result file will be overwrited for each running test

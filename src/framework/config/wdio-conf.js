@@ -22,6 +22,7 @@ exports.config = {
   waitforTimeout: 30000,  // 30 seconds, can not use moment to calculate here
   connectionRetryTimeout: 90000,  // 90 seconds
   connectionRetryCount: 3,
+  deprecationWarnings: false,
   services: ['selenium-standalone'],
   framework: 'mocha',
   reporters: config.report.reporter || ['dot', 'junit', 'json', WdioTestCaseReporter],

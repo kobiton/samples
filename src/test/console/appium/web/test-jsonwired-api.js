@@ -12,7 +12,7 @@ const timestamps = moment().format('YYYYMMDDHHmmss')
 
 setTimeout(async () => {
   const neededDevices = await Device.getDevices({onlineDeviceOnly: true})
-  assert.isAtLeast(neededDevices.length, 1, 'Expected at least 1 online devices')
+  assert.isAtLeast(neededDevices.length, 1, 'Expected at least 1 online device')
   describe('[Test Webdriverio apis] : automation practice page', async () => {
     for (const device of neededDevices) {
       let id = (device.udid) ? `with udid ${device.udid}` : ''

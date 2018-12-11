@@ -20,7 +20,7 @@ export async function _webBenchmark(onlineCloudDesiredCaps, url) {
     }
     catch (err) {
       writeFailure('Benchmark Error', err)
-      return
+      return {desireCaps: cap, benchmark: 'Error'}
     }
   })
   return await Promise.all(inProgressTests)
@@ -28,10 +28,10 @@ export async function _webBenchmark(onlineCloudDesiredCaps, url) {
 
 export async function _appBenchmark(onlineDevices, appInfo) {
   let inProgressTests = await onlineDevices.map(async(d) => {
+    let driver
+    let device = []
+    let cap = []
     try {
-      let driver
-      let device = []
-      let cap = []
       if (d.platformName === 'Android') {
         device.push(d)
         cap = await convertToDesiredCapabilitiesApp(
@@ -64,7 +64,7 @@ export async function _appBenchmark(onlineDevices, appInfo) {
     }
     catch (err) {
       writeFailure('Benchmark Error', err)
-      return
+      return {desireCaps: cap[0], benchmark: 'Error'}
     }
   })
   return await Promise.all(inProgressTests)
@@ -72,12 +72,17 @@ export async function _appBenchmark(onlineDevices, appInfo) {
 
 export function _logResult(result, filename = 'result') {
   const lines = result.map((r) => {
-    const line = (!r) ? 'Error, Error, Error, Error\n' : `${r.desireCaps.deviceName},` +
+    const line = `${r.desireCaps.deviceName},` +
       `${r.desireCaps.sessionName.substring(r.desireCaps.sessionName.indexOf('on') + 2)}, ` +
       `${r.desireCaps.platformVersion}, ${r.benchmark}\n`
     return line
   })
   const headers = 'Device Name, UDID, PlatformVersion, Benchmark\n'
-  fs.writeFileSync(`src/test/console/benchmark/${filename}`,
-    headers + lines.join(''))
+  const filePath = `src/test/console/benchmark/${filename}`
+  if (!fs.existsSync(filePath)) {
+    fs.appendFileSync(filePath, headers)
+  }
+  else {
+    fs.appendFileSync(filePath, lines.join(''))
+  }
 }

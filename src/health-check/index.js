@@ -61,7 +61,7 @@ class HealthChecker {
       selectedDevices = await this._pickDevices(devices, checkedDeviceUUIDs, concurrentDevices)
     }
 
-    const allDevices = await Device.getDevices({onlineDeviceOnly: false})
+    const allDevices = await Device.getDevices({onlineDeviceOnly: true})
     const unavailableDevices = allDevices.filter((d) => {
       return !checkedDeviceUUIDs.includes(d.udid)
     })
@@ -87,7 +87,7 @@ class HealthChecker {
   async _pickDevices(devices, ignoredDeviceUDIDs, amount = 1) {
     const devicesUDIDs = devices.map((d) => d.udid)
 
-    const allDevices = await Device.getDevices({onlineDeviceOnly: false})
+    const allDevices = await Device.getDevices({onlineDeviceOnly: true})
     return allDevices
       .filter((d) => {
         return devicesUDIDs.includes(d.udid) &&

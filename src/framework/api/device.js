@@ -110,14 +110,14 @@ class Device extends Base {
     const devicesGroups = await this._getDevices()
     let devices
     let devicesByUDID = []
-    switch (groupType) {
-      case group.private:
+    switch (groupType.toLowerCase()) {
+      case groupType.private:
         devices = devicesGroups.privateDevices.sort((a, b) => a.id - b.id)
         break
-      case group.cloud:
+      case groupType.cloud:
         devices = devicesGroups.cloudDevices
         break
-      case group.favorite:
+      case groupType.favorite:
         devices = devicesGroups.favoriteDevices
         break
       default:
