@@ -8,8 +8,9 @@ export default class DailyWebTest {
   async execute(timeStamp, targetDevice, expectedDuration) {
     const desiredCapabilities = this._getCap(timeStamp, targetDevice)
     desiredCapabilities.newCommandTimeout = 60000
-    const browser = webdriverio.remote({desiredCapabilities, ...server})
-    const mailinatorPage = new MailinatorPage(browser, timeout, targetDevice)
+    let browser = webdriverio.remote({desiredCapabilities, ...server})
+    const mailinatorPage = new MailinatorPage(browser, timeout)
+    mailinatorPage.targetDevice = targetDevice
     await mailinatorPage.executeTest(expectedDuration)
   }
 

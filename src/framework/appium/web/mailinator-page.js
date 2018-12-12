@@ -16,10 +16,13 @@ const networkErrorMessages = [
 ]
 
 export default class MailinatorPage {
-  constructor(browser, timeout, targetDevice) {
+  constructor(browser, timeout) {
     this._browser = browser
     this._timeout = timeout * 2
-    this._targetDevice = targetDevice
+  }
+
+  set targetDevice(value) {
+    this._getTargetDevice = value
   }
 
   async executeTest(expectedDurationInSeconds) {
@@ -30,17 +33,19 @@ export default class MailinatorPage {
       await this._browser
         .init()
 
-      if (this._targetDevice.platformName === 'iOS') {
-        await this._browser.timeouts({'type': 'script', 'ms': this._timeout})
-        await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
-        await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
-      }
-      else {
-        await this._browser.timeouts({
-          'script': this._timeout,
-          'pageLoad': this._timeout,
-          'implicit': this._timeout
-        })
+      if (this._getTargetDevice) {
+        if (this._getTargetDevice.platformName === 'iOS') {
+          await this._browser.timeouts({'type': 'script', 'ms': this._timeout})
+          await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
+          await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
+        }
+        else {
+          await this._browser.timeouts({
+            'script': this._timeout,
+            'pageLoad': this._timeout,
+            'implicit': this._timeout
+          })
+        }
       }
 
       await this._browser
@@ -89,4 +94,5 @@ export default class MailinatorPage {
     }
     return isContain
   }
+
 }
