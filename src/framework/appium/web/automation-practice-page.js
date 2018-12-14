@@ -42,9 +42,10 @@ const elements = {
 }
 
 export default class AutomationPracticePage {
-  constructor(browser, timeOut) {
+  constructor(browser, timeOut, desiredCapabilities) {
     this._browser = browser
     this._timeOut = timeOut
+    this._desiredCapabilities = desiredCapabilities
   }
 
   async executeTest(expectedDurationInMinutes) {
@@ -52,6 +53,18 @@ export default class AutomationPracticePage {
     const startedAt = moment.utc()
     try {
       await this._browser.init()
+      
+      if (this._desiredCapabilities.platformName === 'iOS') {
+        await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
+        await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
+      }
+      else {
+        await this._browser.timeouts({
+          'pageLoad': this._timeout,
+          'implicit': this._timeout
+        })
+      }
+
       do {
         await this._run() // eslint-disable-line babel/no-await-in-loop
         const endedAt = moment.utc()

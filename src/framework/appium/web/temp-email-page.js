@@ -9,9 +9,10 @@ const elements = {
 }
 
 export default class TempEmailPage {
-  constructor(browser, timeout) {
+  constructor(browser, timeout, desiredCapabilities) {
     this._browser = browser
     this._timeout = timeout
+    this._desiredCapabilities = desiredCapabilities
   }
 
   async executeTest(expectedDurationInMinutes) {
@@ -20,6 +21,19 @@ export default class TempEmailPage {
     try {
       await this._browser
         .init()
+
+      if (this._desiredCapabilities.platformName === 'iOS') {
+        await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
+        await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
+      }
+      else {
+        await this._browser.timeouts({
+          'pageLoad': this._timeout,
+          'implicit': this._timeout
+        })
+      }
+
+      await this._browser
         .url(elements.url)
       do {
         await this._browser // eslint-disable-line babel/no-await-in-loop

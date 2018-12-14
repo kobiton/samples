@@ -20,34 +20,52 @@ export async function androidHybridAppScript(timestamps, onlineDevice, expectedD
   let startedAt, endedAt
   try {
     startedAt = moment.utc()
+    desiredCap[0].autoGrantPermissions = true
     driver = await createDriver(desiredCap[0])
     do {
       await driver // eslint-disable-line babel/no-await-in-loop
-      .elementById('my_text_field')
-      .getAttribute('enabled')
-      .waitForElementById('my_text_field', waitingTime)
-      .sendKeys('test hybrid 1')
-      .hideKeyboard()
-      .waitForElementById('buttonStartWebview', waitingTime)
-      .click()
-      .source()
-      .contexts()
-      .context('NATIVE_APP') // here is in native app
-      .waitForElementByXPath('//android.widget.TableRow', waitingTime)
-      .click()
-      .source()
-      .waitForElementByXPath(
-        "//android.widget.EditText[@content-desc='Enter your name here!']")
-      .text()
-      .waitForElementByXPath(
-        "//android.widget.EditText[@content-desc='Enter your name here!']")
-      .clear()
-      .waitForElementByXPath("//android.widget.EditText[@content-desc='']")
-      .sendKeys('test hybrid 2')
-      .waitForElementByXPath("//android.widget.EditText[@content-desc='test hybrid 2']")
-      .getAttribute('enabled')
-      .waitForElementByXPath("//android.widget.Button[@content-desc='Send me your name!']")
-      .click()
+        .sleep(5000)
+        .source()
+        .waitForElementByXPath('//android.widget.EditText', waitingTime)
+        .clear()
+        .waitForElementByXPath('//android.widget.EditText', waitingTime)
+        .getAttribute('enabled')
+        .waitForElementByXPath('//android.widget.EditText', waitingTime)
+        .sendKeys('test hybrid 1')
+
+      if (await driver.isKeyboardShown()) { // eslint-disable-line babel/no-await-in-loop
+        await driver.hideKeyboard()  // eslint-disable-line babel/no-await-in-loop
+      }
+
+      await driver // eslint-disable-line babel/no-await-in-loop
+        .waitForElementById('buttonStartWebview', waitingTime)
+        .click()
+        .sleep(5000)
+        .contexts()
+        .context('NATIVE_APP')
+        .waitForElementByXPath('//*[@resource-id="io.selendroid.testapp:id/tableRowWebview"]', waitingTime) // eslint-disable-line max-len
+        .contexts()
+        .source()
+        .waitForElementByXPath('//*[@text="Enter your name here!" or @content-desc="Enter your name here!"]') // eslint-disable-line max-len
+        .click()
+        .clear()
+        .sendKeys('test hybrid 2')
+
+      if (await driver.isKeyboardShown()) { // eslint-disable-line babel/no-await-in-loop
+        await driver.hideKeyboard()  // eslint-disable-line babel/no-await-in-loop
+      }
+
+      await driver // eslint-disable-line babel/no-await-in-loop
+        .waitForElementByXPath('//android.widget.EditText')
+        .getAttribute('enabled')
+        .source()
+        .hasElementByXPath('//*[resource-id="io.selendroid.testapp:id/tableRowWebview"]/android.webkit.WebView') // eslint-disable-line max-len
+        .waitForElementByXPath("//android.widget.Button[@text='Send me your name!' or @content-desc='Send me your name!']") // eslint-disable-line max-len
+        .click()
+        .sleep(5000)
+        .waitForElementByXPath("//android.widget.Button[@text='Go to home screen']")
+        .click()
+        .sleep(5000)
 
       endedAt = moment.utc()
       duration = endedAt.diff(startedAt, 'seconds')

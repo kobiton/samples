@@ -18,7 +18,7 @@ setTimeout(async () => {
   const onlineCaps = await getOnlineCaps({
     deviceNumbers: config.device.number
   })
-  const timeout = 30000 // milliseconds
+  const timeout = 60000 // milliseconds
 
   describe('[appium-web]: multiple desired capabilities', async () => {
 

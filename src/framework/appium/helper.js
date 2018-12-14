@@ -1,4 +1,5 @@
 import pick from 'lodash/pick'
+import moment from 'moment'
 import api from '../api'
 import Key from '../api/key'
 import config from '../config/test'
@@ -59,7 +60,8 @@ export async function getOnlineCaps() {
   const devices = await api.Device.getDevices({
     onlineDeviceOnly: true
   })
-  return convertToDesiredCapabilities(new Date(), devices)
+  const timestamps = moment().format('YYYYMMDDHHmmss')
+  return convertToDesiredCapabilities(timestamps, devices)
 }
 
 function getDefaultBrowserBy(platformName) {

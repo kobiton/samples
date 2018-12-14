@@ -7,7 +7,7 @@ setTimeout(async () => {
   const onlineCaps = await getOnlineCaps({
     deviceNumbers: config.device.number
   })
-  const timeout = 30000 // milliseconds
+  const timeout = 60000 // milliseconds
 
   for (let i = 0; i < config.longTestSuiteIterationAmount; i++) {
     describe(`[appium-web]: run ${onlineCaps.length} devices parallel iteration: ${i}`,

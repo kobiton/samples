@@ -1,6 +1,5 @@
 import * as webdriverio from 'webdriverio'
 import AutomationPracticePage from './automation-practice-page'
-import KobitonPage from './kobiton-page'
 import MailinatorPage from './mailinator-page'
 import RandomPage from './random-page'
 import BPromise from 'bluebird'
@@ -16,29 +15,19 @@ const server = {
 
 export async function executeDesiredCapabilitiesTest({desiredCapabilities, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
-  browser.timeouts('script', 5 * 60 * 1000)
-  const mailinatorPage = new MailinatorPage(browser, timeout)
+  const mailinatorPage = new MailinatorPage(browser, timeout, desiredCapabilities)
   return await mailinatorPage.executeTest(1)
 }
 
 export async function executeJsonwiredTest({desiredCapabilities, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
-  browser.timeouts('script', 5 * 60 * 1000)
-  const automationPracticePage = new AutomationPracticePage(browser, timeout)
+  const automationPracticePage = new AutomationPracticePage(browser, timeout, desiredCapabilities)
   return await automationPracticePage.executeTest(duration)
-}
-
-export async function executeKobitonPageTest({desiredCapabilities, timeout}) {
-  const browser = webdriverio.remote({desiredCapabilities, ...server})
-  browser.timeouts('script', 5 * 60 * 1000)
-  const kobitonPage = new KobitonPage(browser, timeout)
-  return await kobitonPage.executeTest(duration)
 }
 
 export async function executeMailinatorPageTest({desiredCapabilities, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
-  browser.timeouts('script', 5 * 60 * 1000)
-  const mailinatorPage = new MailinatorPage(browser, timeout)
+  const mailinatorPage = new MailinatorPage(browser, timeout, desiredCapabilities)
   return await mailinatorPage.executeTest(duration)
 }
 
@@ -59,7 +48,7 @@ executeMultipleDevicesParallelTest({desiredCapsList, durationInMinutes, timeout}
 
 async function _launchSession({desiredCapabilities, durationInMinutes, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
-  const randomPage = new RandomPage(browser, timeout)
+  const randomPage = new RandomPage(browser, timeout, desiredCapabilities)
   await randomPage.executeTest(durationInMinutes)
 }
 
