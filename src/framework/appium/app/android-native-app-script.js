@@ -5,7 +5,6 @@ import * as logger from '../../../framework/common/logger'
 import {createDriver, quitDriver} from '../../appium/driver'
 import {convertToDesiredCapabilitiesApp} from '../../appium/helper'
 
-const waitingTime = 60000
 const apiDemoDebugApp = {
   app: 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/ApiDemos-debug.apk',
   appPackage: 'io.appium.android.apis',
@@ -20,20 +19,29 @@ export async function androidNativeAppScript(timestamps, onlineDevice, expectedD
   let startedAt, endedAt
   try {
     startedAt = moment.utc()
+    desiredCap[0].automationName = 'Appium' // https://github.com/appium/appium-uiautomator2-server/pull/235
     driver = await createDriver(desiredCap[0])
+
+    const getWindowSize = await driver.getWindowSize()
+    const getHeight = getWindowSize.height
+    const getWidth = getWindowSize.width
+
+    await driver // eslint-disable-line babel/no-await-in-loop
+        .source()
+        .waitForElementByXPath("//android.widget.TextView[@content-desc='Animation']")
+        .click()
+        .sleep(1000)
+        .elementByXPath("//android.widget.TextView[@content-desc='Bouncing Balls']")
+        .click()
+        .sleep(5000)
+
     do {
-      await driver // eslint-disable-line babel/no-await-in-loop
-        .waitForElementByXPath("//android.widget.TextView[@content-desc='App']",
-          waitingTime)
-        .click()
-        .waitForElementByXPath("//android.widget.TextView[@content-desc='Activity']", waitingTime)
-        .elementByXPath("//android.widget.TextView[@content-desc='Activity']")
-        .click()
-        .sleep(10)
-        .flick(0, -700, 200)
-        .flick(0, -700, 200)
-        .back()
-        .back()
+
+      const xSpeed = getRandomInt(0, getHeight)
+      const ySpeed = getRandomInt(0, getWidth)
+
+      await driver.flick(xSpeed, ySpeed, 200) // eslint-disable-line babel/no-await-in-loop
+        .sleep(1000)
 
       endedAt = moment.utc()
       duration = endedAt.diff(startedAt, 'seconds')
@@ -48,4 +56,8 @@ export async function androidNativeAppScript(timestamps, onlineDevice, expectedD
   finally {
     await quitDriver(driver)
   }
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min)
 }
