@@ -74,13 +74,14 @@ export function _logResult(result, filename = 'result') {
   const lines = result.map((r) => {
     const line = `${r.desireCaps.deviceName},` +
       `${r.desireCaps.sessionName.substring(r.desireCaps.sessionName.indexOf('on') + 2)}, ` +
-      `${r.desireCaps.platformVersion}, ${r.benchmark}\n`
+      `${r.desireCaps.platformVersion}, ${new Date().toISOString()}, ${r.benchmark}\n`
     return line
   })
-  const headers = 'Device Name, UDID, PlatformVersion, Benchmark\n'
+  const headers = 'Device Name, UDID, PlatformVersion, Time, Benchmark\n'
   const filePath = `src/test/console/benchmark/${filename}`
   if (!fs.existsSync(filePath)) {
     fs.appendFileSync(filePath, headers)
+    fs.appendFileSync(filePath, lines.join(''))
   }
   else {
     fs.appendFileSync(filePath, lines.join(''))
