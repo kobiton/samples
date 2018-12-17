@@ -1,19 +1,16 @@
 # Getting session data and commands
 
-Kobiton has provided sample script for utilizing Kobiton REST API `/sessions` endpoint. The provided script demonstrates :
+This guideline gives sample code (written in nodejs) to demonstrate the consuming Kobiton REST API. In our example of running code, we assume your machine is either Mac OS or Linux but there is no problem if you're on Windows, just run them in Windows manner
+
+We has provided sample script for utilizing Kobiton REST API `/sessions` endpoint. The provided script demonstrates :
 - [get-session-data.js](./get-session-data.js): Getting data of a session.
 - [get-session-commands.js](./get-session-commands.js): Getting commands of a session.
 
-> Note : 
-> - The provided scripts are written in NodeJS. You can take a look at the provided script to view the flow, concepts and idea.
-> - The flow, concepts and idea in the provided script can also be applied into other programming languages.
-
-> More information about Kobiton REST API `/sessions` endpoint can be found at https://api.kobiton.com/docs/#sessions
+> More information about Kobiton REST API `/sessions` endpoint can be found at [Api documentation](https://api.kobiton.com/docs/#sessions)
 
 ## A. Preparations
 ### 1. Prerequisites
-- NodeJS installed.
-> Refer to https://nodejs.org/en/download/ for instructions on how to download and install NodeJS.
+- NodeJS: Follow [the installation document](https://nodejs.org/en/download/) for instructions on how to download and install NodeJS.
 
 ### 2. Getting Kobiton Username and API Key: 
 Kobiton Username and API key are required for authenticating with Kobiton API.
