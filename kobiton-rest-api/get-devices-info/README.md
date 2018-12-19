@@ -1,8 +1,6 @@
 # Getting device(s) information
 
 **Table of contents**
-<!-- TOC -->
-
 - [Getting device(s) information](#getting-devices-information)
   - [A. Overview](#a-overview)
   - [B. Preparations](#b-preparations)
@@ -14,8 +12,6 @@
     - [2. Getting online devices](#2-getting-online-devices)
     - [3. Getting online Android/iOS devices](#3-getting-online-android-ios-devices)
     - [4. Getting online Galaxy S8 and running Android 7.0](#4-getting-online-galaxy-s8-and-running-android-70)
-
-<!-- /TOC -->
 
 ## A. Overview
 This guideline will provide instructions and sample cases to demonstrate the consuming of `/devices` endpoint in Kobiton REST API.
@@ -54,10 +50,12 @@ In this section, we will provide sample use cases for `/devices` endpoint using 
 {"privateDevices":[...],"favoriteDevices":[...],"cloudDevices":[...]}
 ```
 
+>**Note**: If you are in org and in groups but you do not specify param `groupId` when running below commands, Kobiton REST API will fetch all devices info in all group that you are assigned in.
+
 ### 1. Get all devices
 Basic command to get devices data from Kobiton REST API. This will get all devices and devices info that the current user can access. 
 
-**Smaple:**
+**Sample:**
 ```bash
 curl -X GET 'https://api.kobiton.com/v1/devices' \
   -H 'Accept: application/json' \
@@ -94,7 +92,7 @@ Filter and get only online Android devices from all devices that current user ca
 - `isOnline`: Check if the device is online **(True/False)**
 - `platformName`: The device platform **(Android/iOS)**
 
-**Smaple:**
+**Sample:**
 ```bash
 curl -X GET 'https://api.kobiton.com/v1/devices?platformName=Android&isOnline=true' \
   -H 'Accept: application/json' \
@@ -118,7 +116,7 @@ Filter and get specific devices, for this sample we will show to get all **Galax
 > - The devices name **'Galaxy S8'** should convert to **'Galaxy%20S8'** in the curl command. Since `%20` stand for blank space in curl command.
 > - This commands can do the same for any iOS devices, you just need to replace the value in `deviceName` param
 
-**Smaple:**
+**Sample:**
 - Get all online Galaxy S8 with OS Android 7.0 
 ```bash
 curl -X GET 'https://api.kobiton.com/v1/devices?deviceName=Galaxy%20S8&platformName=Android&platformVersion=7.0' \
