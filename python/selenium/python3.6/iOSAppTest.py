@@ -6,7 +6,7 @@ from selenium.webdriver.remote.remote_connection import RemoteConnection
 import unittest
 import time
 import sys
-sys.path.append('../..')
+sys.path.append('..')
 from python import configs
 
 class iOSAppTest(unittest.TestCase):

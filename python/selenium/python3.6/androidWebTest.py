@@ -2,7 +2,7 @@ from selenium import webdriver
 import unittest
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 import sys
-sys.path.append('../..')
+sys.path.append('..')
 from python import configs
 
 class AndroidWebTest(unittest.TestCase):
