@@ -1,7 +1,7 @@
 kobitonServerUrl = 'https://userName:apiKey@api.kobiton.com/wd/hub'
 
 # 100 seconds
-session_timeout = 100
+session_timeout = 120
 
 desired_caps_android_web = {
   'sessionName': '[Python] Android web',
@@ -11,7 +11,8 @@ desired_caps_android_web = {
   'captureScreenshots': True,
   'deviceGroup':        'KOBITON',
   'deviceName':         'Galaxy S5',
-  'platformName':       'Android'
+  'platformName':       'Android',
+  'newCommandTimeout':  120
 }
 
 desired_caps_android_app = {
@@ -22,7 +23,8 @@ desired_caps_android_app = {
   'captureScreenshots': True,
   'deviceGroup':        'KOBITON',
   'deviceName':         'Galaxy S5',
-  'platformName':       'Android'
+  'platformName':       'Android',
+  'newCommandTimeout':  120
 }
 
 desired_caps_ios_web = {
@@ -33,7 +35,8 @@ desired_caps_ios_web = {
   'captureScreenshots': True,
   'deviceGroup':        'KOBITON',
   'deviceName':         'iPhone 7',
-  'platformName':       'iOS'
+  'platformName':       'iOS',
+  'newCommandTimeout':  120
 }
 
 desired_caps_ios_app = {
@@ -44,5 +47,6 @@ desired_caps_ios_app = {
   'captureScreenshots': True,
   'deviceGroup':        'KOBITON',
   'deviceName':         'iPhone 7',
-  'platformName':       'iOS'
+  'platformName':       'iOS',
+  'newCommandTimeout':  120
 }

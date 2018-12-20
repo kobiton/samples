@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 import unittest
+import urllib3
+urllib3.disable_warnings()
 import sys
 sys.path.append('..')
 import configs
@@ -15,6 +17,11 @@ class iOSWebTest(unittest.TestCase):
     self._command_executor = RemoteConnection(configs.kobitonServerUrl, resolve_ip=False)
     self._command_executor.set_timeout(configs.session_timeout)
     self.driver = webdriver.Remote(configs.kobitonServerUrl, configs.desired_caps_ios_web)
+    self.driver.implicitly_wait(configs.session_timeout)
+    self.driver.set_page_load_timeout(configs.session_timeout)
+
+    kobitonSessionId = self.driver.desired_capabilities.get('kobitonSessionId')
+    print("https://portal.kobiton.com/sessions/%s" % (kobitonSessionId))
 
   def tearDown(self):
     self.driver.quit()
