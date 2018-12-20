@@ -7,8 +7,8 @@ import unittest
 import re
 import time
 import sys
-sys.path.append('../..')
-from python import configs
+sys.path.append('..')
+import configs
 
 class AndroidAppTest(unittest.TestCase):
 

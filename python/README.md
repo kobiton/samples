@@ -6,11 +6,8 @@ These are simple samples of how to use Python to run Appium tests. It is suggest
 ### Install libraries:
 
 ```shell
-pip install Appium-Python-Client==0.26
-pip install pytest
-pip install selenium==3.12.0
-pip install virtualenv
-pip install robotframework-selenium2library requests
+pip install Appium-Python-Client
+pip install selenium
 ```
 
 
@@ -30,6 +27,7 @@ pip install robotframework-selenium2library requests
 - Create a virtual environment in your project folder the environment name is arbitrary.
 
   ```shell
+  $ pip install virtualenv
   $ virtualenv venv
   ```
 
@@ -40,6 +38,7 @@ pip install robotframework-selenium2library requests
 
 - Install the required packages:
   ```shell
+  $ pip install pytest
   $ pip install -r pytest-selenium/requirements.txt
   ```
 
@@ -61,7 +60,10 @@ $ rm -rf *.testlog
 
 - install appium library:
 
-`pip install robotframework-appiumlibrary`
+```
+  $ pip install robotframework-appiumlibrary
+  $ pip install robotframework-selenium2library requests
+```
 
 #### Usage:
 
@@ -77,10 +79,19 @@ $ rm -rf *.testlog
 #### Usage:
 
 ```shell
-python selenium/androidWebTest.py
-python selenium/androidAppTest.py
-python selenium/iOSWebTest.py
-python selenium/iOSAppTest.py
+cd python/selenium/python2.7
+python androidWebTest.py
+python androidAppTest.py
+python iOSWebTest.py
+python /iOSAppTest.py
+```
+
+```shell
+cd python/selenium/python3.6
+python androidWebTest.py
+python androidAppTest.py
+python iOSWebTest.py
+python /iOSAppTest.py
 ```
 
 ### Resources
