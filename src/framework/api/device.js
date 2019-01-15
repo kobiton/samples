@@ -111,13 +111,13 @@ class Device extends Base {
     let devices
     let devicesByUDID = []
     switch (groupType.toLowerCase()) {
-      case groupType.private:
+      case 'private':
         devices = devicesGroups.privateDevices.sort((a, b) => a.id - b.id)
         break
-      case groupType.cloud:
+      case 'cloud':
         devices = devicesGroups.cloudDevices
         break
-      case groupType.favorite:
+      case 'favorite':
         devices = devicesGroups.favoriteDevices
         break
       default:

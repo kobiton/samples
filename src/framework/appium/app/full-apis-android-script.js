@@ -20,6 +20,7 @@ export async function fullApisAndroidScript(timestamps, onlineDevice, expectedDu
   let startedAt, endedAt
   try {
     startedAt = moment.utc()
+    desiredCap[0].automationName = 'Appium' // https://github.com/appium/appium-uiautomator2-server/pull/235
     driver = await createDriver(desiredCap[0])
     do {
       await driver // eslint-disable-line babel/no-await-in-loop
