@@ -1,15 +1,14 @@
 def generateGemFiles(gemName, numberOfVersion)
-  cmd = "gem list ^#{gemName}$ --remote --all"
+  cmd = "gem list --exact #{gemName} --remote --all"
   response = `#{cmd}`
 
-  # # Get selected versions
+  # Get selected versions
   versionsInParenttheses = /\(.*?\)/.match(response)[0]
   versions = versionsInParenttheses
     .sub('(', '').sub(')', '')
     .split(', ')
 
-
-  # selectedVersions = versions.first numberOfVersion
+  selectedVersions = versions.first numberOfVersion
 
   # Read from gemfile template and generate gemfiles
   gemFileTemplate = File.read 'gemtemplates/Gemfile.template'

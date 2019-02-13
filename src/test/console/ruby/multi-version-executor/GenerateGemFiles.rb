@@ -1,5 +1,5 @@
 def generateGemFiles(gemName, numberOfVersion)
-  cmd = "gem list #{gemName} --remote --all"
+  cmd = "gem list --exact #{gemName} --remote --all"
   response = `#{cmd}`
 
   # Get selected versions
@@ -7,9 +7,8 @@ def generateGemFiles(gemName, numberOfVersion)
   versions = versionsInParenttheses
     .sub('(', '').sub(')', '')
     .split(', ')
-    .sort
 
-  selectedVersions = versions.last numberOfVersion
+  selectedVersions = versions.first numberOfVersion
 
   # Read from gemfile template and generate gemfiles
   gemFileTemplate = File.read 'gemtemplates/Gemfile.template'

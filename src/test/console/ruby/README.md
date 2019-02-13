@@ -1,10 +1,10 @@
 ### Ruby sample
 
 #### Init
-* Check config/config.ruby to check configuration
+* Check config/config.rb to check configuration
 
 #### Prerequisites
-* Install Ruby via RVM
+* Install Ruby via RVM `curl -sSL https://get.rvm.io | bash -s stable --ruby`
 * Install Bundler:  `gem install bundle`
 * Install Gems:  `bundle update`
 

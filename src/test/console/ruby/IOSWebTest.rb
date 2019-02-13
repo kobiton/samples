@@ -5,20 +5,23 @@ require_relative './data/Device'
 require_relative './config/config'
 
 class IOSWebTest < Test::Unit::TestCase
-  def test_should_search_Google
+  def test_should_navigate_to_heroku
     device = getABookableDevice 'iOS'
     options = {
       browserName: 'Safari'
     }
     desired_caps = getWebCapabilitiesFor device, options
-
     @driver = Appium::Driver.new(desired_caps, false)
-    @driver.start_driver
-    @driver.driver.navigate.to('https://www.google.com')
-    @driver.find_element(:name, 'q').send_keys('Kobiton.com')
-    @driver.find_element(:name, 'btnG').click
-    sleep(3)
-    assert_equal(true, (@driver.driver.title.include? 'Kobiton.com'))
-    @driver.driver.quit
+
+    begin
+      @driver.start_driver
+      puts "https://portal.kobiton.com/sessions/#{@driver.driver.capabilities['kobitonSessionId']}"
+      @driver.driver.navigate.to('http://the-internet.herokuapp.com/login')
+      @driver.find_element(:id, 'username').send_keys('tomsmith')
+      @driver.find_element(:id, 'password').send_keys('SuperSecretPassword!')
+      @driver.find_element(:xpath, "//form[@name='login']").submit
+    ensure
+      @driver.driver.quit
+    end
   end
 end

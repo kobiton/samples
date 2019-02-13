@@ -12,12 +12,11 @@ class IOSAppTest < Test::Unit::TestCase
       app: 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/UIKitCatalog-Test-Adhoc.ipa', # Need to re-sign app from External Developer
     }
     desired_caps = getAppCapabilitiesFor device, options
-    puts desired_caps
-
-    @driver = Appium::Driver.new desired_caps, false
+    @driver = Appium::Driver.new(desired_caps, false)
 
     begin
       @driver.start_driver
+      puts "https://portal.kobiton.com/sessions/#{@driver.driver.capabilities['kobitonSessionId']}"
       @driver.find_element(:xpath, '//*[@name="UIKitCatalog"]').click
     ensure
       @driver.driver.quit
