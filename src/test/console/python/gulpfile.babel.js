@@ -30,6 +30,6 @@ gulp.task('check-with', () => {
     numberOfVersion,
     specificVersions,
     testScripts: args.scripts,
-    reportToServer: false
+    reportToServer: true
   })
 })

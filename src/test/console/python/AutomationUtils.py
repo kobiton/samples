@@ -1,24 +1,43 @@
-from urllib.parse import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+     from urlparse import urlparse
+import requests
+import urllib3
+urllib3.disable_warnings()
 import sys
-sys.path.append('../..')
+sys.path.append('..')
+import configs
 
-from python import configs
-from python.services.KeyService import KeyService
+def getApiKey():
+    hostUrl = configs.testServerUrl
+    headers = {'token': configs.testServerSecretKey}
+
+    rq = requests.get(hostUrl + '/api-keys', headers = headers)
+
+    if rq.status_code == 200:
+      key = rq.json()[0]
+    else:
+      key = None
+    return key
+
+def getOnlineDevice(platformName):
+    hostUrl = configs.testServerUrl
+    headers = {'token': configs.testServerSecretKey}
+    url = '{}/devices/bookable/{}/1'.format(hostUrl, platformName)
+    rq = requests.get(url, headers = headers)
+
+    if rq.status_code == 200:
+      device = rq.json()[0]
+    else:
+      device = None
+    return device
 
 def kobitonServerUrl():
-  service = KeyService()
-  key = service.getApiKey()
-  apiUrl = urlparse(configs.apiUrl)
-
-  port = 80
-  if not (apiUrl.port is None):
-    port = apiUrl.port
-
-  return "{}://{}:{}@{}/wd/hub".format(
-    apiUrl.scheme,
+  key = getApiKey()
+  return "https://{}:{}@api.kobiton.com/wd/hub".format(
     key['username'],
-    key['key'],
-    apiUrl.hostname
+    key['key']
   )
 
 def desiredCapabilitiesAndroidWeb(device):
@@ -53,7 +72,7 @@ def createCapabilitiesFor(device):
   return {
     'deviceOrientation':  'portrait',
     'captureScreenshots': True,
-    'deviceGroup':        'ORGANIZATION',
+    'deviceGroup':        'KOBITON',
     'deviceName': device['deviceName'],
     'platformName': device['platformName'],
     'platformVersion': device['platformVersion']

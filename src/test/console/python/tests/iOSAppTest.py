@@ -6,19 +6,20 @@ from selenium.webdriver.remote.remote_connection import RemoteConnection
 import unittest
 import time
 import sys
-sys.path.append('../..')
-from python import configs
-from python.utils.AutomationUtils import *
-from python.services.DeviceService import DeviceService
+sys.path.append('..')
+import configs
+import AutomationUtils
 
 class iOSAppTest(unittest.TestCase):
 
   def setUp(self):
-    self._command_executor = RemoteConnection(kobitonServerUrl())
+    self._command_executor = RemoteConnection(AutomationUtils.kobitonServerUrl(), resolve_ip=False)
     self._command_executor.set_timeout(configs.session_timeout)
-    device = DeviceService().getOnlineDevice('iOS')
+    device = AutomationUtils.getOnlineDevice('iOS')
     print('setUp - device:', device)
-    self.driver = webdriver.Remote(self._command_executor, desiredCapabilitiesiOSApp(device))
+    self.driver = webdriver.Remote(self._command_executor, AutomationUtils.desiredCapabilitiesiOSApp(device))
+    kobitonSessionId = self.driver.desired_capabilities.get('kobitonSessionId')
+    print('https://portal.kobiton.com/sessions/{}'.format(kobitonSessionId))
 
   def tearDown(self):
     self.driver.quit()
