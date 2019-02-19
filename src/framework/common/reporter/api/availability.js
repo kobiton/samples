@@ -27,7 +27,7 @@ class AvailabitityAPI extends BaseAPI {
   _add(availabitities) {
     return this._send({
       method: 'POST',
-      url: `${removeSlash(config.report.serverUrl)}/availability`,
+      url: `${removeSlash(config.report.serverUrl)}/availabilities`,
       body: availabitities
     })
   }
