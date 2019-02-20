@@ -1,4 +1,12 @@
 ### Prerequisites
+
+  ##### Warning:
+  * should use nodejs version from 6.x.x to 9.x.x (recommended)
+  Or
+  * if use latest nodejs version, should manually upgrade specific packages to work with latest nodejs, this way takes time and need to see the error log to know which package is outdated
+  ex: one of the package need to upgrade to work with nodejs 11 is 'canvas-prebuilt', in package.json:
+      change "resemblejs": "^2.6.0" -> "resemblejs": "^3.0.1"
+
   ##### Install yarn
   `$ brew install yarn`
 
