@@ -11,7 +11,10 @@ namespace Appium.Testcases
         UIKitCatalog_IOS testAppIOS_;
         Capabilities capabilites;
         private String categoryTitle;
-        public AppTest(){ capabilites = new Capabilities();}
+        public AppTest()
+        {
+          capabilites = new Capabilities();
+        }
 
         [Fact]
         public void SearchForCatagoryNameOnAndroidApp()

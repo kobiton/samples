@@ -22,15 +22,9 @@ namespace Appium.Utils
             capabilities_.SetCapability("captureScreenshots", true);
             capabilities_.SetCapability("deviceGroup", "KOBITON");
             capabilities_.SetCapability("browserName", "chrome");
-            capabilities_.SetCapability("deviceGroup", "KOBITON");
             capabilities_.SetCapability("platformName", "Android");
             capabilities_.SetCapability("deviceName", "*");
             capabilities_.SetCapability("platformVersion", "*");
-
-
-            // capabilities_.SetCapability("automationName", "UIAutomator2");
-            // capabilities_.SetCapability("udid", "940337a");
-            // capabilities_.SetCapability("forceMjsonwp", false);
             return capabilities_;
         }
 
@@ -62,7 +56,7 @@ namespace Appium.Utils
             capabilities_.SetCapability("deviceGroup", "KOBITON");
             capabilities_.SetCapability("platformName", "Android");
             capabilities_.SetCapability("deviceName", "*");
-            capabilities_.SetCapability("platformVersion", "*");    
+            capabilities_.SetCapability("platformVersion", "*");
             return capabilities_;
         }
 
@@ -81,6 +75,5 @@ namespace Appium.Utils
             capabilities_.SetCapability("platformVersion", "*");
             return capabilities_;
         }
-
     }
 }

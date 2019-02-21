@@ -31,6 +31,6 @@ namespace Appium.Models
             return driver_.Title;
         }
 
-        public void CleanUp() => driver_.Dispose(); //body expression
+        public void CleanUp() => driver_.Dispose();
     }
 }

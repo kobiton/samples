@@ -10,7 +10,6 @@ namespace Appium.Utils
     public class Environments
     {
         public EnvironemntInfo env;
-
         public Environments()
         {
             env = new EnvironemntInfo();
@@ -23,6 +22,5 @@ namespace Appium.Utils
         {
             return env;
         }
-
     }
 }

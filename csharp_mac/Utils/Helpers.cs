@@ -8,14 +8,17 @@ namespace Appium.Utils
     {
         public static void Pause(int seconds)
         {
-            try { Thread.Sleep(seconds * 1000); }
-            catch (Exception err){ throw err; }
+            try {
+              Thread.Sleep(seconds * 1000);
+            }
+            catch (Exception err){
+              throw err;
+            }
         }
 
         public static void GetSessionID(RemoteWebDriver driver)
         {
-          Console.Write("- WD Session ID: ");
-          Console.WriteLine(driver.SessionId);
+          Console.WriteLine("- WD Session ID: " + driver.SessionId);
           Console.Write("- Kobiton Session ID: ");
           Console.WriteLine(driver.Capabilities.GetCapability("kobitonSessionId").ToString());
         }
