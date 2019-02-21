@@ -57,18 +57,9 @@ $ rm -rf *.testlog
 ### 2. Robot framework
 
 - Modify `username`, `apiKey` in `sample_kobiton_web.robot`, `sample_kobiton_app.robot` file
-<<<<<<< HEAD
 
 - install appium library:
 
-`pip install robotframework-appiumlibrary`
-=======
->>>>>>> upstream/master
-
-- install appium library:
-
-<<<<<<< HEAD
-=======
 ```
   $ pip install robotframework-appiumlibrary
   $ pip install robotframework-selenium2library requests
@@ -76,7 +67,6 @@ $ rm -rf *.testlog
 
 #### Usage:
 
->>>>>>> upstream/master
 `robot sample_kobiton_app.robot`
 `robot sample_kobiton_web.robot`
 
