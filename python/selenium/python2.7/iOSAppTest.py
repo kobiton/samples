@@ -5,6 +5,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 import unittest
 import time
+import urllib3
+urllib3.disable_warnings()
 import sys
 sys.path.append('..')
 import configs
@@ -15,6 +17,10 @@ class iOSAppTest(unittest.TestCase):
     self._command_executor = RemoteConnection(configs.kobitonServerUrl, resolve_ip=False)
     self._command_executor.set_timeout(configs.session_timeout)
     self.driver = webdriver.Remote(configs.kobitonServerUrl, configs.desired_caps_ios_app)
+    self.driver.implicitly_wait(configs.session_timeout)
+
+    kobitonSessionId = self.driver.desired_capabilities.get('kobitonSessionId')
+    print("https://portal.kobiton.com/sessions/%s" % (kobitonSessionId))
 
   def tearDown(self):
     self.driver.quit()

@@ -6,9 +6,11 @@ from selenium.webdriver.remote.remote_connection import RemoteConnection
 import unittest
 import re
 import time
+import urllib3
+urllib3.disable_warnings()
 import sys
-sys.path.append('../..')
-from python import configs
+sys.path.append('..')
+import configs
 
 class AndroidAppTest(unittest.TestCase):
 
@@ -19,7 +21,11 @@ class AndroidAppTest(unittest.TestCase):
     self._command_executor = RemoteConnection(configs.kobitonServerUrl, resolve_ip=False)
     self._command_executor.set_timeout(configs.session_timeout)
     self.driver = webdriver.Remote(self._command_executor, configs.desired_caps_android_app)
-
+    self.driver.implicitly_wait(configs.session_timeout)
+    
+    kobitonSessionId = self.driver.desired_capabilities.get('kobitonSessionId')
+    print("https://portal.kobiton.com/sessions/%s" % (kobitonSessionId))
+    
   def tearDown(self):
     self.driver.quit()
 
@@ -55,7 +61,7 @@ class AndroidAppTest(unittest.TestCase):
     acuraIntegraText = self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=3]").text
     acuraMDXText = self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=4]").text
     acuraRLText = self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=5]").text
-    acuraTSXText = self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=6]").text
+    acuraTLText = self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=6]").text
     acuraTSXText = self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/topic_title' and @index=7]").text
 
     self.assertEqual('Acura', acuraText)
