@@ -19,10 +19,6 @@ export default class BaseAPI {
     }
 
     const [response, resBody] = await requestAsync(finalOptions)
-    if (response.statusCode >= 400) {
-      const bodyMsg = (resBody instanceof String) ? resBody : JSON.stringify(resBody)
-      throw new Error(`statusCode: ${response.statusCode}, body message: ${bodyMsg}`)
-    }
 
     return [resBody, response]
   }

@@ -1,10 +1,9 @@
-import childProcess from 'child_process'
+import * as cmd from '../CmdExecutor'
 
 export async function execute() {
+  await cmd.executeTestCmdSync('curl -sSL https://get.rvm.io | bash -s stable --ruby')
+  await cmd.executeTestCmdSync('gem install bundle')
+  await cmd.executeTestCmdSync('bundle update')
   const executorDir = 'build/test/console/ruby/multi-version-executor/'
-  const spawn = childProcess.spawn
-  const ls = spawn(`cd ${executorDir} && ruby ExecuteTests.rb`, [], {shell: true})
-
-  ls.stdout.pipe(process.stdin)
-  ls.stderr.pipe(process.stderr)
+  return await cmd.executeTestCmdSync(`cd ${executorDir} && ruby ExecuteTests.rb`)
 }

@@ -16,11 +16,11 @@ class AvailabitityAPI extends BaseAPI {
     }
 
     if (!parallelSending) {
-      return this._add(availabitities)
+      return await this._add(availabitities)
     }
     else {
       const jobs = availabitities.map((a) => this._add([a]))
-      return BPromise.all(jobs)
+      return await BPromise.all(jobs)
     }
   }
 

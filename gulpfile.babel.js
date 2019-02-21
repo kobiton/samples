@@ -27,19 +27,28 @@ gulp.task('build', ['copy-external-tests'], build(['src/**/*.js'], 'build'))
 gulp.task('run-test', async () => {
   // Initialize value for test such as: default url, username, password
   const preSetupTests = require('./build/test/setup.js')
-  await preSetupTests()
+  try {
+    await preSetupTests()
 
-  //Execute test base on 'task' then 'input'
-  let taskName = argv.task
-  if (taskName) {
-    return executeDefinedTask(taskName)
-  } else {
-    let inputPath = argv.input
-    if (inputPath.includes('/console')) {
-      return startConsoleTests('./build/test' + inputPath)
-    } else {
-      throw new Error(`File path ${inputPath} is not valid.`)
+    //Execute test base on 'task' then 'input'
+    let taskName = argv.task
+    
+    if (taskName) {
+      return await executeDefinedTask(taskName)
+    } 
+    else {
+      let inputPath = argv.input
+
+      if (inputPath.includes('/console')) {
+        return await startConsoleTests('./build/test' + inputPath)
+      } 
+      else {
+        throw new Error(`File path ${inputPath} is not valid.`)
+      }
     }
+  }
+  catch (e) {
+    debug.log(`Error: ${e}`)
   }
 
 })
@@ -51,7 +60,7 @@ async function executeDefinedTask(taskName) {
     case 'test-aut':
       return await startAutTest()
     case 'multi-version-check':
-      return startMultipleVersionCheck(argv.input)
+      return await startMultipleVersionCheck(argv.input)
     case 'health-check':
       return await startHealthCheck(argv.input)
   }
@@ -80,6 +89,7 @@ async function startAutTest() {
 async function startMultipleVersionCheck(language) {
   const languageExecutorMap = {
     ruby: './build/test/console/ruby/RubyExecutor',
+    'ruby-selenium': './build/test/console/ruby-selenium/RubyExecutor',
     java: './build/test/console/java/JavaExecutor',
     dotnet: './build/test/console/dotnet/DotNetExecutor',
     nodejs: './build/test/console/nodejs/NodejsExecutor',
@@ -90,7 +100,7 @@ async function startMultipleVersionCheck(language) {
   if (language && languageExecutorMap[language]) {
     debug.log('startMultipleVersionCheck language:', language)
     const executor = require(languageExecutorMap[language])
-    await executor.execute()
+    return await executor.execute()
   }
   else {
     throw new Error(`Not valid language: ${language}` )
@@ -127,7 +137,6 @@ function startConsoleTests(inputPath) {
     mochaFile: `reports/console/${moment().format('YYYY-MM-DD-HH-mm')}.xml`,
     reportDir: 'reports/console'
   })
-
   return gulp.src(inputPath, {read: false})
           .pipe(plumber())
           .pipe(mocha(mochaOption))
