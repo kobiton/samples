@@ -1,64 +1,72 @@
-import {spawnSync} from 'child_process'
 import {debug} from '@kobiton/core-util'
 import fs from 'fs'
 import request from 'request'
 import moment from 'moment'
 import reporterAPI from '../../../framework/common/reporter/api'
+import BPromise from 'bluebird'
+import * as cmd from '../CmdExecutor'
 
-const LIB_NAME = 'io.appium:java-client'
-const NUMBER_OF_VERSION = 1
+const LIB_NAMES = ['io.appium:java-client']
+const NUMBER_OF_VERSION = 2
 
-export async function execute(dirPath) {
+export async function execute({
+  dirPath = __dirname,
+  libNames = LIB_NAMES,
+  numberOfVersion = NUMBER_OF_VERSION,
+  specificVersions,
+  reportToServer = true
+  } = {}) {
   const targetDir = dirPath || __dirname
 
   fs.unlinkSync(`${targetDir}/build.gradle`)
 
-  await getTargetLibraryVersions(
-    LIB_NAME,
-    NUMBER_OF_VERSION,
-    (versions) => {
-      const templatePath = `${targetDir}/gradle-template/build.gradle.template`
-      const buildFilePath = `${targetDir}/build.gradle`
-      const results = []
-      for (const {v} of versions) {
-        generateBuildFile(
-          templatePath, buildFilePath,
-          [
-            {
-              specifier: '<dependencyName>',
-              value: LIB_NAME
-            },
-            {
-              specifier: '<dependencyVersion>',
-              value: v
-            }
-          ]
-        )
+  await initPackages()
+  
+  await BPromise.mapSeries(libNames, async(libName) => {
+    await getTargetLibraryVersions(
+      libName,
+      NUMBER_OF_VERSION,
+      async (versions) => {
+        const templatePath = `${targetDir}/gradle-template/build.gradle.template`
+        const buildFilePath = `${targetDir}/build.gradle`
+        const results = []
+        for (const {v} of versions) {
+          generateBuildFile(
+            templatePath, buildFilePath,
+            [
+              {
+                specifier: '<dependencyName>',
+                value: libName
+              },
+              {
+                specifier: '<dependencyVersion>',
+                value: v
+              }
+            ]
+          )
+  
+          debug.log(`execute test with ${libName} - ${v}`)
 
-        debug.log(`execute test with ${LIB_NAME} - ${v}`)
-        const ls = spawnSync(`cd ${targetDir} && gradle build --info`,
-          [],
-          {
-            shell: true, encoding: 'utf8'
-          }
-        )
+          //eslint-disable-next-line babel/no-await-in-loop
+          const ls = await cmd.executeTestCmdSync(`cd ${targetDir} && gradle build --info`)
+          results.push({
+            language: 'java',
+            libName,
+            libVersion: v,
+            checkedDate: moment().toDate(),
+            state: ls.status === 0 ? 'passed' : 'failed',
+            stdout: ls.stdout,
+            stderr: ls.stderr,
+            error: ls.error
+          })
+          reporterAPI.Availability.add(results, {parallelSending: true})
+        }
+      })
+  })
+}
 
-        debug.log('status:', ls.status)
-        debug.log('err:', ls.error)
-
-        results.push({
-          language: 'java',
-          libName: LIB_NAME,
-          libVersion: v,
-          checkedDate: moment().toDate(),
-          state: ls.status === 0 ? 'passed' : 'failed',
-          stdout: ls.stdout,
-          stderr: ls.stderr,
-          error: ls.error
-        })
-      }
-      reporterAPI.Availability.add(results)
-    })
+async function initPackages() {
+  await cmd.executeTestCmdSync('brew install gradle')
 }
 
 function getTargetLibraryVersions(libName, numberToTake, callback) {

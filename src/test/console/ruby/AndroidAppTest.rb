@@ -20,7 +20,7 @@ class AndroidAppTest < Test::Unit::TestCase
       @driver.start_driver
       puts "https://portal.kobiton.com/sessions/#{@driver.driver.capabilities['kobitonSessionId']}"
       @element = @driver.find_element(:class_name, 'android.widget.TextView')
-      assert_equal('API Demos', @element.text)
+      assert_equal('API DEMOS', @element.text.upcase)
     ensure
       @driver.driver.quit
     end

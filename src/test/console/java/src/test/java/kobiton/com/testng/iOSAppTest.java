@@ -27,6 +27,8 @@ public class iOSAppTest {
             System.out.println(String.format("Execute with: %s  udid: %s", device.getDeviceName(), device.getUdid()));
             driver = new IOSDriver<>(AutomationUtils.kobitonServerUrl(), AutomationUtils.desiredCapabilitiesiOSApp(device));
             driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+            String kobitonSessionId = driver.getSessionDetails().get("kobitonSessionId").toString();
+            System.out.println("https://portal.kobiton.com/sessions/" + kobitonSessionId);
         } catch (IOException ex) {
             Assert.fail("set up failed", ex);
         }
@@ -43,35 +45,9 @@ public class iOSAppTest {
         }
     }
 
-    @Test(priority = 1, description = "should allow to navigate to some devices on Acura Support Community")
-    public void testNavigationOnAcuraSupportCommunity() {
-
-        /*
-      * Steps:
-      * 1. Click on "Car and Truck" Categories on Homepage
-      * 2. Click on "Acura" Categories
-      *
-      * Expected:
-      * 1. General Information is "Acura".
-      * 2.Verify Acura Integra displays.
-        */
-
+    @Test
+    public void test() {
         driver.findElementByXPath("//XCUIElementTypeButton[@name='START A REPAIR']").click();
-        sleep(2);
-        driver.findElementByXPath("//*[@name='Car and Truck']").click();
-        driver.findElementByXPath("//*[@name='Acura']").click();
-        sleep(2);
-        (new WebDriverWait(driver, 60))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//XCUIElementTypeNavigationBar")));
-
-        String acuraText = driver.findElementByXPath("//XCUIElementTypeNavigationBar").getAttribute("name");
-        boolean hasAcuraIntegra = driver.findElementByXPath("//XCUIElementTypeStaticText[@name='Acura Integra']")
-                .isDisplayed();
-
-        driver.closeApp();
-
-        Assert.assertEquals(acuraText, "Acura");
-        Assert.assertEquals(hasAcuraIntegra, true);
     }
 
     public void sleep(int seconds) {

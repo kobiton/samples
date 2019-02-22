@@ -13,12 +13,11 @@ public class Config {
         return INSTANCE;
     }
 
-    private String apiUrl;
+    private String apiUrl = "https://api.kobiton.com";
     private String testServerUrl;
     private String testServerSecretKey;
 
     private Config() {
-        apiUrl = System.getenv("KOBITON_API_URL");
         testServerUrl = System.getenv("KOBITON_REPORT_SERVER_URL");
         testServerSecretKey = System.getenv("KOBITON_REPORT_SECRET_KEY");
     }

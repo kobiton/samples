@@ -28,6 +28,8 @@ public class AndroidAppTest {
             System.out.println(String.format("Execute with: %s  udid: %s", device.getDeviceName(), device.getUdid()));
             driver = new AndroidDriver<>(AutomationUtils.kobitonServerUrl(), AutomationUtils.desiredCapabilitiesAndroidApp(device));
             driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+            String kobitonSessionId = driver.getSessionDetails().get("kobitonSessionId").toString();
+            System.out.println("https://portal.kobiton.com/sessions/" + kobitonSessionId);
         } catch (IOException ex) {
             Assert.fail("set up failed", ex);
         }

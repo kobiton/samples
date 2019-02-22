@@ -17,7 +17,7 @@ export async function execute({
   reportToServer = true
   } = {}) {
   const targetDir = dirPath || __dirname
-  initPackages(targetDir)
+  await initPackages(targetDir)
 
   await BPromise.mapSeries(libNames, async(libName) => {
     let versions = specificVersions || (await getTargetPackageVersions(libName, numberOfVersion))
@@ -34,8 +34,8 @@ export async function execute({
   })
 }
 
-function initPackages(dirPath) {
-  cmd.executeTestCmdSync(`cd ${dirPath} && pip3 install requests`)
+async function initPackages(dirPath) {
+  await cmd.executeTestCmdSync(`cd ${dirPath} && pip3 install requests`)
 }
 
 async function getTargetPackageVersions(packageName, numberToTake) {

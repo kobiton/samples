@@ -23,6 +23,8 @@ public class iOSWebTest {
             System.out.println(String.format("Execute with: %s  udid: %s", device.getDeviceName(), device.getUdid()));
             driver = new RemoteWebDriver(AutomationUtils.kobitonServerUrl(), AutomationUtils.desiredCapabilitiesiOSWeb(device));
             driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+            String kobitonSessionId = driver.getCapabilities().getCapability("kobitonSessionId").toString();
+            System.out.println("https://portal.kobiton.com/sessions/" + kobitonSessionId);
         } catch (IOException ex) {
             Assert.fail("set up failed", ex);
         }
