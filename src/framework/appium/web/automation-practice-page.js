@@ -42,9 +42,9 @@ const elements = {
 }
 
 export default class AutomationPracticePage {
-  constructor(browser, timeOut, desiredCapabilities) {
+  constructor(browser, timeout, desiredCapabilities) {
     this._browser = browser
-    this._timeOut = timeOut
+    this._timeout = timeout
     this._desiredCapabilities = desiredCapabilities
   }
 
@@ -81,24 +81,34 @@ export default class AutomationPracticePage {
       .url(elements.authenticationUrl)
       .title()
       .getSource()
-      .waitForVisible(elements.searchText, this._timeOut)
+      .status()
+      .waitForVisible(elements.searchText, this._timeout)
       .click(elements.searchText)
-      .hideDeviceKeyboard('tapOutside')
+      .rightClick(elements.searchText, 4, 4)
+
+    const isAndroid = await this._browser.isAndroid
+    if (isAndroid) {
+      await this._browser.hideDeviceKeyboard('tapOutside')
+    }
+
+    await this._browser
       .addValue(elements.searchText, 't-shirt')
-      .click(elements.searchButton)
-      .timeoutsImplicitWait(this._timeOut)
+      .leftClick(elements.searchButton, 4, 4)
+      .timeoutsImplicitWait(this._timeout)
       .back()
-      .forward()
+      .forward() // It is a protocol of w3c Webdriver
       .url(elements.authenticationUrl)
-      .waitForVisible(elements.emailCreateText, this._timeOut)
+      .timeouts('page load', this._timeout)
+      .waitForVisible(elements.emailCreateText, this._timeout)
       .setValue(elements.emailCreateText, faker.internet.email())
       .click(elements.createAnAccountButton)
-      .timeouts('page load', this._timeOut)
+      .timeouts('page load', this._timeout)
       .getTitle()
       .cookie()
       .setCookie({name: 'test', value: '123'})
+      .getCookie('test')
       .deleteCookie('test')
-    // Property: get an attribute from a DOM-element based on the selector and attribute name
+      // Property: get an attribute from a DOM-element based on the selector and attribute name
       .getAttribute(elements.customerLastNameText, 'type')
       .getCssProperty(elements.registerButton, 'color')
       .getElementSize(elements.customerLastNameText)
@@ -107,6 +117,7 @@ export default class AutomationPracticePage {
       .getLocation(elements.customerLastNameText)
       .getLocationInView(elements.genderOptionMrs)
       .getTagName(elements.customerLastNameText)
+      .waitForText(elements.pageHeading, this._timeout)
       .getText(elements.pageHeading).then((text) => {
         debug.log('Current text:', text)
       })
@@ -116,6 +127,8 @@ export default class AutomationPracticePage {
       .isSelected(elements.genderOptionMr)
       .isVisible(elements.customerLastNameText)
       .isVisibleWithinViewport(elements.email)
+      .waitForValue(elements.email, this._timeout)
+      .getValue(elements.email)
       .screenshot()
       .saveScreenshot('./reports/screenshot.png')
       .setOrientation('portrait')
@@ -123,19 +136,19 @@ export default class AutomationPracticePage {
       .setOrientation('portrait')
       .getOrientation()
       .click(elements.genderOptionMrs)
-      .waitForSelected(elements.genderOptionMrs, this._timeOut)
+      .waitForSelected(elements.genderOptionMrs, this._timeout)
       .clearElement(elements.email)
       .selectByAttribute(elements.dateOfBirthSelect, 'value', '2')
       .selectByIndex(elements.monthOfBirthSelect, 4)
       .selectByValue(elements.yearOfBirthSelect, '1991')
-      .waitForExist(elements.customerFirstNameText, this._timeOut)
+      .waitForExist(elements.customerFirstNameText, this._timeout)
       .setValue(elements.customerFirstNameText, faker.name.firstName())
       .setValue(elements.customerLastNameText, faker.name.lastName())
       .setValue(elements.passwordText, faker.internet.password())
       .selectByIndex(elements.dateOfBirthSelect, 3)
       .selectByValue(elements.monthOfBirthSelect, '3')
       .selectByValue(elements.yearOfBirthSelect, '1980')
-      .click(elements.newsLetterCheckbox)
+      .touch(elements.newsLetterCheckbox, false)
       .click(elements.specialOfferCheckbox)
       .setValue(elements.firstAddressText, faker.address.streetAddress())
       .setValue(elements.cityText, faker.address.city())
@@ -145,39 +158,83 @@ export default class AutomationPracticePage {
         return `${divs.length} message`
       }, 'input on the page')
       .submitForm(elements.accountCreationForm)
-      .waitForExist(elements.createAnAccountButton, this._timeOut)
+      .waitForExist(elements.createAnAccountButton, this._timeout)
       .setValue(elements.emailCreateText, faker.internet.email())
       .click(elements.createAnAccountButton)
-      .waitForEnabled(elements.customerFirstNameText, this._timeOut)
+      .waitForEnabled(elements.customerFirstNameText, this._timeout)
       .click(elements.registerButton)
-      .waitForVisible(elements.registerError, this._timeOut)
+      .waitForVisible(elements.registerError, this._timeout)
       .refresh()
       .getCommandHistory()
-      .getCookie()
       .frame()
-      .middleClick(elements.searchText)
+      .waitForExist(elements.searchText, this._timeout)
+      .middleClick(elements.searchText, 2, 2)
       .getGridNodeDetails()
-      .contexts()
-      .getDeviceTime()
-      .isLocked()
-      .settings({ignoreUnimportantViews: true})
-      .settings()
-      .unlock()
-      .applicationCacheStatus()
-      .execute((a, b) => {
-        return a + b
-      }, 1, 2)
-      .keys('Home')
+      .leftClick(elements.searchText, 2, 2)
+      .rightClick(elements.searchText, 2, 2)
+
+    if (isAndroid) {
+      await this._browser
+        .touchDown(10, 30)
+        .touchUp(10, 30)
+        .scroll(0, 150)
+        .moveToObject(elements.searchText)
+        .swipe(elements.searchText, 0, 10, 10)
+        .swipeDown(elements.searchText, 10, 10)
+        .swipeUp(elements.searchText, -10, 10)
+        .swipeLeft(elements.searchText, 10, 10)
+        .swipeRight(elements.searchText, -10, 10)
+        .click(elements.searchText)
+        .hasFocus(elements.searchText)
+        .pressKeycode(3)
+        .longPressKeycode(3)
+        .setGeoLocation({latitude: 5, longitude: 6, altitude: 7})
+        .getGeoLocation()
+        .applicationCacheStatus()
+        .windowHandles()
+        .windowHandle()
+        .keys('Home')
+        .localStorageSize()
+        .localStorage()
+        .windowHandlePosition()
+        .execute((a, b) => {
+          return a + b
+        }, 1, 2)
+        .selectorExecuteAsync('//div', function (divs, message, callback) {
+          callback(divs.length + message)
+        }, 'divs on the page')
+        .settings({ignoreUnimportantViews: false})
+        .settings({ignoreUnimportantViews: true})
+        .toggleData()
+    }
+
+    const contextId = (await this._browser.contexts()).value[0]
+    const currentContextId = await this._browser.context()
     const logType = (await this._browser.logTypes()).value[0]
     await this._browser
-      .log(logType)
-      .windowHandles()
-      .touch(elements.searchText, false)
       .pause(1000)
+      .log(logType)
       .getCurrentTabId()
       .getTabIds()
       .getViewportSize()
-    if (await this._browser.isIOS) {
+      .context(contextId)
+      .context()
+      .context(currentContextId)
+      .getDeviceTime()
+      .isLocked()
+      .settings({shouldUseCompactResponses: true})
+      .settings({shouldUseCompactResponses: false})
+      .settings({elementResponseAttributes: 'text'})
+      .settings({elementResponseAttributes: 'name'})
+      .settings({elementResponseAttributes: 'rect'})
+      .settings({elementResponseAttributes: 'attribute/name'})
+      .settings({elementResponseAttributes: 'attribute/value'})
+      .settings({enableNotificationListener: true})
+      .settings()
+      .unlock()
+
+    const isIOS = await this._browser.isIOS
+    if (isIOS) {
       await this._browser.touchPerform([{
         action: 'press',
         options: {
@@ -186,9 +243,10 @@ export default class AutomationPracticePage {
         }
       }])
     }
+
     await this._browser
-      .session()
-      .source()
+      .session() // It is a protocol of w3c Webdriver
+      .source()  // It is a protocol of w3c Webdriver
       .launch()
   }
 }
@@ -224,4 +282,21 @@ export default class AutomationPracticePage {
       .setViewportSize
       .setImmediateValue
       .hold
+    **/
+
+    /** List unimplemented APIs
+      .addCommand
+      .call
+      .doubleClick
+      .setViewportSize
+    **/
+
+    /** List error APIs
+      .release
+      .newWindow
+    **/
+
+    /** List APIs are not used in the script
+      .endAll
+      .close
     **/
