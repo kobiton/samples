@@ -3,9 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "test": "mocha --require babel-register --timeout 600000 src/test/*.js",
-    "wd-test": "mocha --require babel-register --timeout 600000 src/test/wd/*.js",
-    "selenium-webdriver-test": "mocha --require babel-register --timeout 600000 src/test/*-selenium.js",
+    "test": "mocha --require babel-register --no-timeouts src/test/*.js",
+    "wd-test": "mocha --require babel-register --no-timeouts src/test/wd/*.js",
+    "selenium-webdriver-test": "mocha --require babel-register --no-timeouts src/test/selenium-webdriver/*-selenium.js",
     "execute-check": "gulp check-with"
   },
   "devDependencies": {

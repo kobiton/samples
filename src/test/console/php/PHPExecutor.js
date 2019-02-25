@@ -1,43 +1,48 @@
 import fs from 'fs'
+import BPromise from 'bluebird'
+import {spawn} from 'child_process'
 import request from 'request-promise'
 import Url from 'url'
 import {debug} from '@kobiton/core-util'
-import * as cmd from '../CmdExecutor'
 import configs from '../../../framework/config/test'
 import reporterAPI from '../../../framework/common/reporter/api'
+import * as cmd from '../CmdExecutor'
 
-const LIB_NAME = 'appium/php-client'
+const LIB_NAMES = ['facebook/webdriver', 'appium/php-client']
 const NUMBER_OF_VERSION = 2
 
 const composer = 'php /usr/local/bin/composer.phar'
 
 export async function execute({
   dirPath = __dirname,
-  libName = LIB_NAME,
+  libNames = LIB_NAMES,
   numberOfVersion = NUMBER_OF_VERSION,
   specificVersions,
   reportToServer = true
 } = {}) {
   const targetDir = dirPath || __dirname
-  const versions = specificVersions || (await getTargetPackageVersions(libName, numberOfVersion))
 
   await initPackages(targetDir)
-  const results = []
-  for (const v of versions) {
-    debug.log(`execute php test package: ${libName} - ${v}`)
+  await BPromise.mapSeries(libNames, async(libName) => {
+    const versions = specificVersions || (await getTargetPackageVersions(libName, numberOfVersion))
+    const results = []
+    await BPromise.mapSeries(versions, async(version) => {
+      debug.log(`execute php test package: ${libName} - ${version}`)
 
-    // eslint-disable-next-line babel/no-await-in-loop
-    const testResults = await executeTestScripts(targetDir, libName, v)
+      // eslint-disable-next-line babel/no-await-in-loop
+      let testResults = await executeTestScripts(targetDir, libName, version)
 
-    results.push(...testResults)
-  }
-
-  reportToServer && (await reporterAPI.Availability.add(results, {parallelSending: true}))
+      results.push(...testResults)
+    })
+    reportToServer && reporterAPI.Availability.add(results, {parallelSending: true})
+  })
 }
 
 async function initPackages(dirPath) {
   debug.log('Start initializing packages')
-  await cmd.spawnSyncWrap(`cd ${dirPath} && ${composer} install`)
+  await cmd.executeTestCmdSync(`curl -sS https://getcomposer.org/installer | php`)
+  await cmd.executeTestCmdSync(`mv composer.phar /usr/local/bin/composer.phar`)
+  await cmd.executeTestCmdSync(`cd ${dirPath} && ${composer} install`)
 }
 
 async function getTargetPackageVersions(packageFullName, numberToTake) {
@@ -47,8 +52,7 @@ async function getTargetPackageVersions(packageFullName, numberToTake) {
   const responseJson = JSON.parse(responseText)
   const allVersions = Object.keys(responseJson.package.versions)
     .filter((v) => !(v.includes('dev') || v.includes('rc')))
-    .map((v) => v.replace('v', ''))
-    .sort()
+  allVersions.sort(cmd.compareVersions)
 
   return allVersions.slice(allVersions.length - numberToTake, allVersions.length)
 }
@@ -136,11 +140,8 @@ async function executeTestCase(rootDir, libName, libVersion, testCaseName) {
 
   debug.log(`${testCaseName}.php`)
   const testCaseFolderName = libName.replace('/', '-')
-  let testResult = await cmd.spawnSyncWrap(
-    `${setUpCmd} && vendor/phpunit/phpunit/phpunit ${testCaseFolderName}/${testCaseName}.php`)
-    .catch((err) => {
-      return err
-    })
+  let testResult = await cmd.executeTestCmdSync(`${setUpCmd} && vendor/phpunit/phpunit/phpunit ${testCaseFolderName}/${testCaseName}.php`)
   testResult.testCaseName = testCaseName
+  
   return testResult
 }

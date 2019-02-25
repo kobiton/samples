@@ -30,10 +30,6 @@ describe('iOS app', () => {
 
   it('should navigate to UIKit Catalog menu', async () => {
     await kobitonIOSDemoApp.gotoUIKitCatalogMenu()
-    const uiKitCatalogMenuExisted = await driver
-      .hasElementByXPath(kobitonIOSDemoApp.elements.activity.xPath)
-
-    assert.isTrue(uiKitCatalogMenuExisted, true, 'activity element not found')
   })
 
 })

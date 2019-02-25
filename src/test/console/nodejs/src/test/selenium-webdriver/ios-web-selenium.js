@@ -3,10 +3,10 @@ import 'colors'
 import {assert} from 'chai'
 import * as WebDriver from 'selenium-webdriver'
 import {debug} from '@kobiton/core-util'
-import * as automationUtils from '../utils/automation'
-import {quitDriver} from '../common/driver'
-import DeviceService from '../service/DeviceService'
-import KobitonDemoPage from '../common/kobiton-demo-page'
+import * as automationUtils from '../../utils/automation'
+import {quitDriver} from '../../common/driver'
+import DeviceService from '../../service/DeviceService'
+import KobitonDemoPage from '../../common/kobiton-demo-page'
 
 let driver
 let kobitonDemoPage
