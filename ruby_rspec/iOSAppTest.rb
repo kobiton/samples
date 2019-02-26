@@ -2,19 +2,18 @@ require "appium_lib"
 require_relative "configs" 
 require "selenium-webdriver"
 
-
 describe "iOS App Test" do
 
     before(:all) do
         caps = DesiredCapabilities.new
-        @driver = Appium::Driver.new({:caps => caps.desired_caps_ios_app[:caps], :appium_lib =>{ :server_url => caps.desired_caps_ios_app[:url]}},true).start_driver()
+        @driver = Appium::Driver.new({:caps => caps.desired_caps_ios_app[:caps],
+        :appium_lib =>{ :server_url => caps.desired_caps_ios_app[:url]}},true).start_driver()
         @driver.manage.timeouts.implicit_wait = 300
     end
 
     after(:all) do
         @driver.quit
     end 
-
 
     it 'Navigate to some devices on Acura Support Community' do
         puts "Test case 1: it should allow to search some questions on Acura Support Community"
