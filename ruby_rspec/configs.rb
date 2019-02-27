@@ -1,6 +1,6 @@
 class DesiredCapabilities
-  USER_NAME = ""
-  API_KEY = ""
+  USER_NAME = ''
+  API_KEY = ''
   
   def desired_caps_android_web
     desired_caps = {
@@ -15,7 +15,7 @@ class DesiredCapabilities
         :platformName       => 'Android',
         :newCommandTimeout  => 300
       },
-      :url => "https://#{USER_NAME}:#{API_KEY}@api.kobiton.com/wd/hub"
+      :url => 'https://#{USER_NAME}:#{API_KEY}@api.kobiton.com/wd/hub'
     }
     return desired_caps
   end    
@@ -32,7 +32,7 @@ class DesiredCapabilities
         :deviceName         => 'Galaxy*',
         :platformName       => 'Android'
       },
-      :url => "https://#{USER_NAME}:#{API_KEY}@api.kobiton.com/wd/hub"
+      :url => 'https://#{USER_NAME}:#{API_KEY}@api.kobiton.com/wd/hub'
     }
     return desired_caps
   end
@@ -49,7 +49,7 @@ class DesiredCapabilities
         :deviceName         => 'iPhone*',
         :platformName       => 'iOS'
       },
-      :url => "https://#{USER_NAME}:#{API_KEY}@api.kobiton.com/wd/hub"
+      :url => 'https://#{USER_NAME}:#{API_KEY}@api.kobiton.com/wd/hub'
     }
     return desired_caps
   end
@@ -66,7 +66,7 @@ class DesiredCapabilities
         :deviceName         => 'iPhone*',
         :platformName       => 'iOS'
       },
-      :url => "https://#{USER_NAME}:#{API_KEY}@api.kobiton.com/wd/hub"
+      :url => 'https://#{USER_NAME}:#{API_KEY}@api.kobiton.com/wd/hub'
     }
     return desired_caps
   end

@@ -7,7 +7,7 @@ describe "Android App Test" do
   before(:all) do
     caps = DesiredCapabilities.new
     @driver = Appium::Driver.new({:caps => caps.desired_caps_android_app[:caps], 
-    :appium_lib =>{ :server_url => caps.desired_caps_android_app[:url]}},true).start_driver()
+      :appium_lib =>{ :server_url => caps.desired_caps_android_app[:url]}},true).start_driver()
     @driver.manage.timeouts.implicit_wait = 300
   end
 

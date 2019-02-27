@@ -5,8 +5,9 @@ describe "iOS Web Test" do
 
   before(:all) do
     caps = DesiredCapabilities.new
-    @driver = Selenium::WebDriver.for(:remote, :url => caps.desired_caps_ios_web[:url],
-    :desired_capabilities => caps.desired_caps_ios_web[:caps])
+    @driver = Selenium::WebDriver.for(:remote,
+      :url => caps.desired_caps_ios_web[:url],
+      :desired_capabilities => caps.desired_caps_ios_web[:caps])
   end
     
   after(:all) do

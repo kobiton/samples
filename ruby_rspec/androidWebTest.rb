@@ -6,8 +6,9 @@ describe "Android Web Test" do
 
   before(:all) do 
     caps = DesiredCapabilities.new
-    @driver = Selenium::WebDriver.for(:remote, :url => caps.desired_caps_android_web[:url],
-    :desired_capabilities => caps.desired_caps_android_web[:caps])
+    @driver = Selenium::WebDriver.for(:remote,
+      :url => caps.desired_caps_android_web[:url],
+      :desired_capabilities => caps.desired_caps_android_web[:caps])
     @wait = Selenium::WebDriver::Wait.new(:timeout => 10)
     @driver.manage.timeouts.implicit_wait = 300 
   end
