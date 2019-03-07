@@ -9,8 +9,6 @@ if (suite === 'androidWeb'){
   capability = androidWebCapability
 } else if (suite === 'iOSWeb'){
   capability = iOSWebCapability
-} else {
-  suite === 'androidweb'
 }
 
 exports.config = {

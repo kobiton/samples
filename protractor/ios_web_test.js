@@ -14,19 +14,18 @@ describe('Protractor Demo iOS Web Testing With Kobiton', function() {
   })
 
   it('should add one and two', function() {
-    firstNumber.sendKeys(1);
-    secondNumber.sendKeys(2);
-    goButton.click();
-    expect(latestResult.getText()).toEqual('0');
+    firstNumber.sendKeys(1)
+    secondNumber.sendKeys(2)
+    goButton.click()
+    expect(latestResult.getText()).toEqual('0')
   })
 
   it('should add four and six', function() {
-    // Fill this in.
-    expect(latestResult.getText()).toEqual('0');
+    expect(latestResult.getText()).toEqual('0')
   })
 
   it('should read the value from an input', function() {
-    firstNumber.sendKeys(1);
-    expect(firstNumber.getAttribute('value')).toEqual('1');
+    firstNumber.sendKeys(1)
+    expect(firstNumber.getAttribute('value')).toEqual('1')
   })
 })
