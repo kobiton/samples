@@ -23,7 +23,7 @@ npm install -g protractor
 
   ```shell
   $ export KOBITON_USERNAME=<your Kobiton username>
-  $ export KOBITON_ACCESS_KEY=<your Kobiton access key>
+  $ export KOBITON_API_KEY=<your Kobiton api key>
   ```
 
 
