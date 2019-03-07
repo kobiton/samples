@@ -1,6 +1,7 @@
 import faker from 'faker'
 import {debug} from '@kobiton/core-util'
 import moment from 'moment'
+import config from '../../config/test'
 
 const elements = {
   // Authntication screen
@@ -53,7 +54,9 @@ export default class AutomationPracticePage {
     const startedAt = moment.utc()
     try {
       await this._browser.init()
-      
+      const sessionInfo = await this._browser.session()
+      debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
+
       if (this._desiredCapabilities.platformName === 'iOS') {
         await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
         await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})

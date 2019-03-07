@@ -7,7 +7,7 @@ const elements = {
   loadingHidden: '#app [data-state= "hidden"]',
   loadingRunning: '#app [data-state= "running"]'
 }
-const timeout = 5000
+const timeout = 60000
 
 export default class Page {
 

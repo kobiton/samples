@@ -1,5 +1,7 @@
 import moment from 'moment'
 import faker from 'faker'
+import config from '../../config/test'
+import {debug} from '@kobiton/core-util'
 
 const elements = {
   url: 'http://newtours.demoaut.com/mercuryregister.php',
@@ -19,6 +21,9 @@ export default class NewTourPage {
     try {
       await this._browser
         .init()
+      
+      const sessionInfo = await this._browser.session()
+      debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
       if (this._desiredCapabilities.platformName === 'iOS') {
         await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})

@@ -15,7 +15,7 @@ const server = {
 
 export async function executeDesiredCapabilitiesTest({desiredCapabilities, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
-  const mailinatorPage = new MailinatorPage(browser, timeout, desiredCapabilities)
+  const mailinatorPage = new RandomPage(browser, timeout, desiredCapabilities)
   return await mailinatorPage.executeTest(1)
 }
 

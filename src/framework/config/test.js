@@ -77,7 +77,8 @@ const config = {
     onDeviceBusyRetryInterval: args.onDeviceBusyRetryInterval * 1000,
     maxRetry: args.onBusyDeviceRetryTimes,
     maxConcurrentDevices: args.healthCheckConcurrentDevices || 1
-  }
+  },
+  timeout: 120000
 }
 
 const parsedUrl = Url.parse(apiUrl)

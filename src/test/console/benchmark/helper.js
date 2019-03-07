@@ -4,7 +4,7 @@ import {writeFailure} from '../../../framework/common/logger/index'
 import {convertToDesiredCapabilitiesApp} from '../../../framework/appium/helper'
 import moment from 'moment'
 
-const waitingTime = 60000
+const waitingTime = 120000
 const timestamps = moment().format('YYYYMMDDHHmmss')
 
 export async function _webBenchmark(onlineCloudDesiredCaps, url) {

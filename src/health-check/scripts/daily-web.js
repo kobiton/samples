@@ -3,11 +3,11 @@ import server from '../config/server'
 import {convertToDesiredCapabilities} from '../../framework/appium/helper'
 import MailinatorPage from '../../framework/appium/web/mailinator-page'
 
-const timeout = 60000
+const timeout = 120000
 export default class DailyWebTest {
   async execute(timeStamp, targetDevice, expectedDuration) {
     const desiredCapabilities = this._getCap(timeStamp, targetDevice)
-    desiredCapabilities.newCommandTimeout = 60000
+    desiredCapabilities.newCommandTimeout = 120000
     let browser = webdriverio.remote({desiredCapabilities, ...server})
     const mailinatorPage = new MailinatorPage(browser, timeout, desiredCapabilities)
     await mailinatorPage.executeTest(expectedDuration)

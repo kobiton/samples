@@ -1,17 +1,17 @@
 import moment from 'moment'
 import faker from 'faker'
-import config from '../../config/test'
 import {debug} from '@kobiton/core-util'
+import config from '../../config/test'
 
 const elements = {
-  url: 'http://demoqa.com/contact/',
-  nameInput: '//input[@name="your-name"]',
-  emailInput: '//input[@name="your-email"]',
-  subjectInput: '//input[@name="your-subject"]',
-  messageInput: '//textarea[@name="your-message"]'
+  url: 'https://katalon-demo-cura.herokuapp.com/',
+  makeAppointmentButton: '//a[@id="btn-make-appointment"]',
+  usernameInput: '//input[@name="username"]',
+  passwordInput: '//input[@name="password"]',
+  LoginButton: '//button[@id="btn-login"]'
 }
 
-export default class DemoQAPage {
+export default class KatalonDemoCuraPage {
   constructor(browser, timeout, desiredCapabilities) {
     this._browser = browser
     this._timeout = timeout
@@ -38,20 +38,18 @@ export default class DemoQAPage {
           'implicit': this._timeout
         })
       }
-
-      await this._browser
-        .url(elements.url)
+      
       do {
         const word = faker.lorem.word()
         await this._browser // eslint-disable-line babel/no-await-in-loop
-          .waitForExist(elements.nameInput, this._timeout)
-          .setValue(elements.nameInput, word)
-          .waitForExist(elements.emailInput, this._timeout)
-          .setValue(elements.emailInput, word)
-          .waitForExist(elements.subjectInput, this._timeout)
-          .setValue(elements.subjectInput, word)
-          .waitForExist(elements.messageInput, this._timeout)
-          .setValue(elements.messageInput, word)
+          .url(elements.url)
+          .waitForExist(elements.makeAppointmentButton, this._timeout)
+          .click(elements.makeAppointmentButton)
+          .waitForExist(elements.usernameInput, this._timeout)
+          .setValue(elements.usernameInput, word)
+          .waitForExist(elements.passwordInput, this._timeout)
+          .setValue(elements.passwordInput, word)
+          .click(elements.LoginButton)
         const endedAt = moment.utc()
         duration = endedAt.diff(startedAt, 'minutes')
       } while (duration < expectedDurationInMinutes)

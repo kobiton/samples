@@ -60,7 +60,7 @@
   ```
 
 #### 2. If you want mocha/wdio to use specific reporter instead of default reporter, please use argument --reporter
-e.g: yarn test -- --input /console/api/test-register.js --reporter spec
+e.g: yarn test --input /console/api/test-register.js --reporter spec
 
 #### 3. Get online devices belong to private group, default is devices on cloud group
 Append argument: --deviceGroup private
@@ -90,21 +90,21 @@ Append argument: --platformVersion <version>
 #### API
 
    ```bash
-   yarn run test -- --input /console/api
+   yarn run test --input /console/api
    ```
 
 #### UIs
 
   ```bash
-  yarn run test -- --task test-ui --type <file_test>
-  Ex1: yarn run test -- --task test-ui --type test-manual
-  Ex2: yarn run test -- --task test-ui --type test-devices-page
+  yarn run test --task test-ui --type <file_test>
+  Ex1: yarn run test --task test-ui --type test-manual
+  Ex2: yarn run test --task test-ui --type test-devices-page
   ```
 
 #### AUT
 
   ```bash
-  yarn run test -- --task test-aut --type <file_test>
+  yarn run test --task test-aut --type <file_test>
   ```
 
 #### E2e
@@ -112,31 +112,31 @@ Append argument: --platformVersion <version>
 ##### Test json wired protocol:
 
   ```bash
-    yarn run test -- --input /console/appium/web/test-jsonwired-api.js --platformName Android
-    yarn run test -- --input /console/appium/web/test-jsonwired-api.js --platformName iOS
-    yarn run test -- --input /console/appium/app/test-app.js --type android_full_apis
-    yarn run test -- --input /console/appium/app/test-app.js --type ios_full_apis
+    yarn run test --input /console/appium/web/test-jsonwired-api.js --platformName Android
+    yarn run test --input /console/appium/web/test-jsonwired-api.js --platformName iOS
+    yarn run test --input /console/appium/app/test-app.js --type android_full_apis
+    yarn run test --input /console/appium/app/test-app.js --type ios_full_apis
   ```
 
 ##### Test web with devices parallel
 
   ```bash
-    yarn run test -- --input /console/appium/web/test-multiple-devices-parallel.js --platformName Android
-    yarn run test -- --input /console/appium/web/test-multiple-devices-parallel.js --platformName iOS
+    yarn run test --input /console/appium/web/test-multiple-devices-parallel.js --platformName Android
+    yarn run test --input /console/appium/web/test-multiple-devices-parallel.js --platformName iOS
   ```
 
 ##### Test native app:
 
   ```bash
-    yarn run test -- --input /console/appium/app/test-app.js --type android_native_app
-    yarn run test -- --input /console/appium/app/test-app.js --type ios_native_app
+    yarn run test --input /console/appium/app/test-app.js --type android_native_app
+    yarn run test --input /console/appium/app/test-app.js --type ios_native_app
   ```
 
 ##### Test hybrid app:
 
   ```bash
-    yarn run test -- --input /console/appium/app/test-app.js --type android_hybrid_app
-    yarn run test -- --input /console/appium/app/test-app.js --type ios_hybrid_app
+    yarn run test --input /console/appium/app/test-app.js --type android_hybrid_app
+    yarn run test --input /console/appium/app/test-app.js --type ios_hybrid_app
   ```
 
 ##### Test desired cap:
@@ -154,22 +154,22 @@ Append argument: --platformVersion <version>
 ### Device health-check
 #### Android web:
   ```bash
-    yarn run test -- --task health-check --input daily-web  --platformName Android
+    yarn run test --task health-check --input daily-web  --platformName Android
   ```
 
 #### iOS web:
   ```bash
-    yarn run test -- --task health-check --input daily-web  --platformName iOS
+    yarn run test --task health-check --input daily-web  --platformName iOS
   ```
 
 #### Android app:
   ```bash
-    yarn run test -- --task health-check --input android-app  --platformName Android
+    yarn run test --task health-check --input android-app  --platformName Android
   ```
 
 #### iOS app:
   ```bash
-    yarn run test -- --task health-check --input ios-app  --platformName iOS
+    yarn run test --task health-check --input ios-app  --platformName iOS
   ```
 
 ### Automation test on multiple language
@@ -178,7 +178,7 @@ Append argument: --platformVersion <version>
 * Install Ruby via RVM
 ##### Run test
   ```bash
-  yarn test -- --task multi-version-check --input ruby
+  yarn test --task multi-version-check --input ruby
   ```
 #####
 
@@ -188,7 +188,7 @@ Append argument: --platformVersion <version>
 * gradle installed
 ##### Run test
   ```bash
-  yarn test -- --task multi-version-check --input java
+  yarn test --task multi-version-check --input java
   ```
 #####
 
@@ -201,7 +201,7 @@ Append argument: --platformVersion <version>
 * Mono Framework installed
 ##### Run test
   ```bash
-  yarn test -- --task multi-version-check --input dotnet
+  yarn test --task multi-version-check --input dotnet
   ```
 #####
 
@@ -211,7 +211,7 @@ Append argument: --platformVersion <version>
 * yarn installed
 ##### Run test
   ```bash
-  yarn test -- --task multi-version-check --input nodejs
+  yarn test --task multi-version-check --input nodejs
   ```
 #####
 
@@ -221,7 +221,7 @@ Append argument: --platformVersion <version>
 * yarn installed
 ##### Run test
   ```bash
-  yarn test -- --task multi-version-check --input python
+  yarn test --task multi-version-check --input python
   ```
 
 #### PHP
@@ -230,13 +230,13 @@ Append argument: --platformVersion <version>
 * php composer installed at '/usr/local/bin/composer.phar'
 ##### Run test
   ```bash
-  yarn test -- --task multi-version-check --input php
+  yarn test --task multi-version-check --input php
   ```
 #####
 
 ### LoadTest
 ##### Run test
 ```bash
-yarn test -- --input /console/api/test-loadtest.js
-yarn test -- --input /console/api/test-loadtest.js --typeOfTest auto|manual|all
+yarn test --input /console/api/test-loadtest.js
+yarn test --input /console/api/test-loadtest.js --typeOfTest auto|manual|all
 ```

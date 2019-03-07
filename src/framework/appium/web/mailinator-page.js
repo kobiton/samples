@@ -1,6 +1,7 @@
 import moment from 'moment'
 import faker from 'faker'
 import {debug} from '@kobiton/core-util'
+import config from '../../config/test'
 
 const elements = {
   url: 'https://www.mailinator.com/manyauth/login.jsp',
@@ -29,6 +30,9 @@ export default class MailinatorPage {
     try {
       await this._browser
         .init()
+        
+      const sessionInfo = await this._browser.session()
+      debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
       if (this._desiredCapabilities.platformName === 'iOS') {
         await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
