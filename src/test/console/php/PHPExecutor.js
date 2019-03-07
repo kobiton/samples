@@ -41,7 +41,8 @@ export async function execute({
 async function initPackages(dirPath) {
   debug.log('Start initializing packages')
   await cmd.executeTestCmdSync(`curl -sS https://getcomposer.org/installer | php`)
-  await cmd.executeTestCmdSync(`mv composer.phar /usr/local/bin/composer.phar`)
+  //remove `sudo` when run in local
+  await cmd.executeTestCmdSync(`sudo mv composer.phar /usr/local/bin/composer.phar`)
   await cmd.executeTestCmdSync(`cd ${dirPath} && ${composer} install`)
 }
 
@@ -83,7 +84,7 @@ async function executeTestScripts(dirPath, libName, libVersion) {
 
 async function executeRemoteWebTest(dirPath, libName, libVersion) {
   const results = []
-  let testCaseResult = await executeTestCase(dirPath, libName, libVersion, 'androidWebTest')
+  let testCaseResult = await executeTestCase(dirPath, libName, libVersion, 'AndroidWebTest')
   results.push(testCaseResult)
 
   testCaseResult = await executeTestCase(dirPath, libName, libVersion, 'iOSWebTest')
@@ -95,8 +96,8 @@ async function executeRemoteWebTest(dirPath, libName, libVersion) {
 async function executeAppTest(dirPath, libName, libVersion) {
   const results = []
 
-  await prepareAppTestCase(dirPath, libName, 'androidAppTest', 'Android')
-  let tcResult = await executeTestCase(dirPath, libName, libVersion, 'androidAppTest')
+  await prepareAppTestCase(dirPath, libName, 'AndroidAppTest', 'Android')
+  let tcResult = await executeTestCase(dirPath, libName, libVersion, 'AndroidAppTest')
   results.push(tcResult)
 
   await prepareAppTestCase(dirPath, libName, 'iOSAppTest', 'iOS')
@@ -136,7 +137,7 @@ async function getPHPAutomationHost() {
 }
 
 async function executeTestCase(rootDir, libName, libVersion, testCaseName) {
-  const setUpCmd = `cd ${rootDir} && ${composer} require "${libName}=${libVersion}"`
+  const setUpCmd = `cd ${rootDir} && composer.phar require "${libName}=${libVersion}"`
 
   debug.log(`${testCaseName}.php`)
   const testCaseFolderName = libName.replace('/', '-')

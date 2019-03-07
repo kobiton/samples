@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'test/unit'
 require 'selenium-webdriver'
-require_relative './data/device'
+require_relative './data/Device'
 require_relative './config/config'
 
 class AndroidWebTest < Test::Unit::TestCase
