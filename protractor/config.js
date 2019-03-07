@@ -3,7 +3,6 @@ const apiKey = process.env.KOBITON_API_KEY
 const {androidWebCapability, iOSWebCapability} = require('./capability')
 
 const suite = process.argv[3].slice(8)
-let capability
 
 if (suite === 'androidWeb'){
   capability = androidWebCapability
@@ -20,8 +19,5 @@ exports.config = {
   },
   capabilities: capability,
   jasmineNodeOpts: {defaultTimeoutInterval: 200000},
-  allScriptsTimeout: 200000,
-  onPrepare: function() {
-    browser.resetUrl = 'about:blank'
-  }
+  allScriptsTimeout: 260000
 }

@@ -1,8 +1,8 @@
 describe('Protractor Demo Android Web Testing With Kobiton', function() {
-  var firstNumber = element(by.model('first'))
-  var secondNumber = element(by.model('second'))
-  var goButton = element(by.id('gobutton'))
-  var latestResult = element(by.binding('latest'))
+  const firstNumber = element(by.model('first'))
+  const secondNumber = element(by.model('second'))
+  const goButton = element(by.id('gobutton'))
+  const latestResult = element(by.binding('latest'))
 
   beforeAll(function() {
     browser.get('http://juliemr.github.io/protractor-demo/', 300000)
@@ -16,11 +16,7 @@ describe('Protractor Demo Android Web Testing With Kobiton', function() {
     firstNumber.sendKeys(1)
     secondNumber.sendKeys(2)
     goButton.click()
-    expect(latestResult.getText()).toEqual('0')
-  })
-
-  it('should add four and six', function() {
-    expect(latestResult.getText()).toEqual('0')
+    expect(latestResult.getText()).toEqual('3')
   })
 
   it('should read the value from an input', function() {
