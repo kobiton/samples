@@ -37,8 +37,6 @@ npm install -g protractor
 
 - [Protractor Documentation](https://www.protractortest.org)
 
-- [Selenium Repository](https://pypi.python.org/simple/selenium)
-
 
 #### Notes:
 * We cannot use Protractor to run Android app/iOs app testting with Kobiton due to ScriptTimeout.
