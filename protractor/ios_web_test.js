@@ -1,27 +1,27 @@
 describe('Protractor Demo iOS Web Testing With Kobiton', function() {
-  const firstNumber = element(by.model('first'))
-  const secondNumber = element(by.model('second'))
-  const goButton = element(by.id('gobutton'))
-  const latestResult = element(by.binding('latest'))
+  const todoList = element.all(by.repeater('todo in todoList.todos'))
+  const todoText = element(by.model('todoList.todoText'))
+  const addButton = element(by.css('[value="add"]'))
+  const completedAmount = element.all(by.css('.done-true'))
 
   beforeAll(function() {
     browser.waitForAngularEnabled(false)
-    browser.get('https://juliemr.github.io/protractor-demo/', 300000)
+    browser.get('https://angularjs.org', 20000)
   })
 
-  it('should have a title', function() {
-    expect(browser.getTitle()).toEqual('Super Calculator')
+  it('should add a todo', function() {
+    browser.get('https://angularjs.org')
+    todoText.sendKeys('new ticket')
+    addButton.click()
+    expect(todoList.count()).toEqual(3)
   })
 
-  it('should add two and one', function() {
-    firstNumber.sendKeys(2)
-    secondNumber.sendKeys(1)
-    goButton.click()
-    expect(latestResult.getText()).toEqual('3')
+  it('should display a new ticket in todo list', function() {
+    expect(todoList.get(2).getText()).toEqual('new ticket')
   })
 
-  it('should read the value from an input', function() {
-    firstNumber.sendKeys(3)
-    expect(firstNumber.getAttribute('value')).toEqual('3')
+  it('should check completed ticket', function() {
+    todoList.get(2).element(by.css('input')).click()
+    expect(completedAmount.count()).toEqual(2)
   })
 })
