@@ -18,6 +18,6 @@ exports.config = {
     iOSWeb :'ios_web_test.js'
   },
   capabilities: capability,
-  jasmineNodeOpts: {defaultTimeoutInterval: 200000},
-  allScriptsTimeout: 260000
+  jasmineNodeOpts: {defaultTimeoutInterval: 240000},
+  allScriptsTimeout: 240000
 }

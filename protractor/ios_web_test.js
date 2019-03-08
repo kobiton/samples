@@ -5,12 +5,12 @@ describe('Protractor Demo iOS Web Testing With Kobiton', function() {
   const latestResult = element(by.binding('latest'))
 
   beforeAll(function() {
-    browser.waitForAngularEnabled(false);
-    browser.get('http://juliemr.github.io/protractor-demo/', 200000);
+    browser.waitForAngularEnabled(false)
+    browser.get('https://juliemr.github.io/protractor-demo/', 300000)
   })
 
   it('should have a title', function() {
-    expect(browser.getTitle()).toEqual('Super Calculator');
+    expect(browser.getTitle()).toEqual('Super Calculator')
   })
 
   it('should add two and one', function() {
