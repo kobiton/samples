@@ -54,7 +54,7 @@ export async function execute({
             libName,
             libVersion: v,
             checkedDate: moment().toDate(),
-            state: ls.status === 0 ? 'passed' : 'failed',
+            state: ls.state,
             stdout: ls.stdout,
             stderr: ls.stderr,
             error: ls.error
