@@ -26,11 +26,9 @@ namespace MobileAutomation.Config
 
         private Configs()
         {
-            ApiUrl = Environment.GetEnvironmentVariable("KOBITON_API_URL");
-            TestSeverUrl = Environment.GetEnvironmentVariable("KOBITON_REPORT_SERVER_URL");
-            TestSeverSecretKey = Environment.GetEnvironmentVariable("KOBITON_REPORT_SECRET_KEY");
-
-            RequestTimeout = 30 * 1000;
+          ApiUrl = Environment.GetEnvironmentVariable("KOBITON_API_URL");
+          TestSeverUrl = Environment.GetEnvironmentVariable("KOBITON_REPORT_SERVER_URL");
+          TestSeverSecretKey = Environment.GetEnvironmentVariable("KOBITON_REPORT_SECRET_KEY");
         }
     }
 }
