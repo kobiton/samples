@@ -13,11 +13,9 @@ import AutomationUtils
 class iOSAppTest(unittest.TestCase):
 
   def setUp(self):
-    self._command_executor = RemoteConnection(AutomationUtils.kobitonServerUrl(), resolve_ip=False)
-    self._command_executor.set_timeout(configs.session_timeout)
     device = AutomationUtils.getOnlineDevice('iOS')
     print('setUp - device:', device)
-    self.driver = webdriver.Remote(self._command_executor, AutomationUtils.desiredCapabilitiesiOSApp(device))
+    self.driver = webdriver.Remote(AutomationUtils.kobitonServerUrl(), AutomationUtils.desiredCapabilitiesiOSApp(device))
     kobitonSessionId = self.driver.desired_capabilities.get('kobitonSessionId')
     print('https://portal.kobiton.com/sessions/{}'.format(kobitonSessionId))
 
@@ -33,7 +31,6 @@ class iOSAppTest(unittest.TestCase):
     time.sleep(2)
     self.driver.find_element_by_xpath("//XCUIElementTypeButton[@name='START A REPAIR']").click()
     time.sleep(2)
-    self.driver.find_element_by_xpath("//*[@name='Search']").click()
     self.driver.find_element_by_xpath("//XCUIElementTypeSearchField[@name='Search']").send_keys('Macbook Pro 2015')
 
     time.sleep(2)

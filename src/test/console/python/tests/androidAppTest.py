@@ -14,11 +14,9 @@ import AutomationUtils
 class AndroidAppTest(unittest.TestCase):
 
   def setUp(self):
-    self._command_executor = RemoteConnection(AutomationUtils.kobitonServerUrl(), resolve_ip=False)
-    self._command_executor.set_timeout(configs.session_timeout)
     device = AutomationUtils.getOnlineDevice('Android')
     print('setUp - device:', device)
-    self.driver = webdriver.Remote(self._command_executor, AutomationUtils.desiredCapabilitiesAndroidApp(device))
+    self.driver = webdriver.Remote(AutomationUtils.kobitonServerUrl(), AutomationUtils.desiredCapabilitiesAndroidApp(device))
     kobitonSessionId = self.driver.desired_capabilities.get('kobitonSessionId')
     print('https://portal.kobiton.com/sessions/{}'.format(kobitonSessionId))
 
@@ -32,7 +30,7 @@ class AndroidAppTest(unittest.TestCase):
     print ('should allow to search iFixit on Home screen')
     self.driver.launch_app()
     time.sleep(2)
-    self.driver.find_element_by_xpath("//*[@text='Search']").click()
+    self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/action_search']").click()
     self.driver.find_element_by_xpath("//*[@resource-id='com.dozuki.ifixit:id/abs__search_src_text']").send_keys('Macbook Pro 2015')
     time.sleep(2)
     self.driver.press_keycode(66)
