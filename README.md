@@ -142,7 +142,10 @@ Append argument: --platformVersion <version>
 ##### Test desired cap:
 
   ```bash
-    yarn run test -- --input /console/appium/web/test-desired-caps.js
+    yarn run test --input /console/appium/web/test-android-web-desired-caps.js
+    yarn run test --input /console/appium/web/test-ios-web-desired-caps.js
+    yarn run test --input /console/appium/app/test-android-app-desired-caps.js
+    yarn run test --input /console/appium/app/test-ios-app-desired-caps.js
   ```
 
 ##### Test web:
