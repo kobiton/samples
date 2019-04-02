@@ -1,6 +1,7 @@
 import * as webdriverio from 'webdriverio'
 import AutomationPracticePage from './automation-practice-page'
 import MailinatorPage from './mailinator-page'
+import DesiredCapsTestPage from './desired-caps-test-page'
 import RandomPage from './random-page'
 import BPromise from 'bluebird'
 import config from '../../config/test'
@@ -29,6 +30,12 @@ export async function executeMailinatorPageTest({desiredCapabilities, timeout}) 
   const browser = webdriverio.remote({desiredCapabilities, ...server})
   const mailinatorPage = new MailinatorPage(browser, timeout, desiredCapabilities)
   return await mailinatorPage.executeTest(duration)
+}
+
+export async function executeDesiredCapsTestPage({desiredCapabilities, timeout}) {
+  const browser = webdriverio.remote({desiredCapabilities, ...server})
+  const desiredCapsTestPage = new DesiredCapsTestPage(browser, timeout, desiredCapabilities)
+  return await desiredCapsTestPage.executeTest(duration)
 }
 
 export async function
