@@ -61,7 +61,8 @@ const config = {
     screenQuality: args.screenQuality,
     maxBrowserInstances: args.maxBrowserInstances,
     numberOfBrowser: args.numberOfBrowser,
-    browserName: args.browserName
+    browserName: args.browserName,
+    maxDevices: args.maxDevices
   },
   report: {
     reporter: args.reporter,

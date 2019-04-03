@@ -4,10 +4,14 @@ import ManualPage from './manual'
 
 let elements = {
   // Group device
-  favorite: '//div[span//h3[contains(., "Favorite Devices")]]/../following-sibling::div/div/div',
-  cloud: '//div[span//h3[contains(., "Cloud Devices")]]/../following-sibling::div/div/div',
-  private: '//div[span//h3[contains(., "orgName Devices")]]/../following-sibling::div/div/div',
-  admin: '//div[span//h3[contains(., "Private Devices")]]/../following-sibling::div/div/div',
+  favorite:
+    '//div/h3[contains(., "Favorite Devices")]/../../following-sibling::div/div[1]/div[1]/div[2]',
+  cloud:
+    '//div/h3[contains(., "Cloud Devices")]/../../following-sibling::div/div/div[1]/div[2]',
+  private:
+    '//div/h3[contains(., "orgName Devices")]/../../following-sibling::div/div[1]/div[1]/div[2]',
+  admin:
+    '//div/h3[contains(., "Private Devices")]/../../following-sibling::div/div[1]/div[1]/div[2]',
   orgTitle: '//h3[contains(., "orgName Devices")]',
 
   // Header Checkboxs
@@ -39,22 +43,21 @@ let elements = {
 
   // Search box
   iconSearch: '//input[contains(@placeholder, "Search")]',
-  searchTextbox: '//input[contains(@placeholder, "Model, platform or device name")]',
+  searchTextbox: '//input[@placeholder="Platform, device name or UDID"]',
 
   // Status of device
-  isOnline: '//div[contains(@style, "rgb(104, 159, 56)")]',
+  isOnline: '/p[text()="Online"]',
   isUtilizing: '//div[contains(@style, "rgb(251, 192, 45)")]',
   isOffline: '//div[contains(@style, "background-color: rgb(97, 97, 97)")]',
   isFavorite: '',
 
   // Buttons on each device
-  launchButton: '//ancestor::div//div[2]/div[2]/span[1]/button',
+  launchButton: '/../../..//div[contains(@class,"device-card-hover")]/div/div[1]',
   favoriteButton: '//ancestor::div//div[2]/div[1]/span/button',
 
   // Device Info
-  android: '//div[contains(text(),"Android")]',
-  ios: '//div[contains(text(),"iOS")]',
-  name: '/div/div[2]/div[1]/div',
+  android: '//span[contains(text(),"Android")]',
+  ios: '//span[contains(text(),"iOS")]',
 
   deviceTag: '//div[contains(@style, "background-color: rgb(224, 224, 224)")]',
   closeDialogButton: '//*[div/div/h2[contains(.,"Help us, help you.")]]/*[local-name()="svg"]',
@@ -73,6 +76,8 @@ export default class DevicesPage extends AuthenticatedPage {
    */
   open() {
     super.open('devices')
+    this.waitForLoadingProgressDone()
+    return this
   }
 
   /**
@@ -160,6 +165,10 @@ export default class DevicesPage extends AuthenticatedPage {
     this._browser.clearElement(elements.searchTextbox)
     this._browser.setValue(elements.searchTextbox, value)
     this._browser.pause(3000)
+    this._browser.setValue(elements.searchTextbox, ['', '\uE007'])
+    this._browser.pause(3000)
+    this._browser.setValue(elements.searchTextbox, ['', '\ue00c'])
+    this._browser.click(elements.searchTextbox)
   }
 
   /**
@@ -197,37 +206,26 @@ export default class DevicesPage extends AuthenticatedPage {
       {group, nameOfDevice, platformVersionOfDevice}), platformVersionOfDevice)
   }
 
-  getTotalOnlineDevices({group, nameOfDevice, platformVersionOfDevice}) {
-    const onlineDevices = this._getOnlineDevicesLocator(
-      {group, nameOfDevice, platformVersionOfDevice})
+  getTotalOnlineDevices({group}) {
+    const onlineDevices = this._getDeviceLocator({group})
     return this.getTotalVisibleElements(onlineDevices)
   }
 
-  _getOnlineDevicesLocator({group, nameOfDevice, platformVersionOfDevice}) {
-    const deviceLocators = this._getDeviceLocator({group, nameOfDevice, platformVersionOfDevice})
-    return deviceLocators.concat(`/../..${elements.isOnline}`)
-  }
-
-  _getDeviceLocator({group, nameOfDevice, platformVersionOfDevice}) {
+  _getDeviceLocator({group, nameOfDevice}) {
     const groupLocators = elements[group]
     let deviceLocators = nameOfDevice
-      ? groupLocators.concat(`[${elements.name.substr(1)}[text()="${nameOfDevice}"]]`)
+      ? groupLocators.concat(`/p/span[1][text()="${nameOfDevice}"]`)
       : groupLocators
-    deviceLocators = platformVersionOfDevice ? deviceLocators.concat(`/div/div[2]/div[3]/div
-      [text()="${platformVersionOfDevice}"]`) : deviceLocators
+
     return deviceLocators
   }
 
   /**
    * Move to specific device and click on button
    */
-  _moveToDeviceAndClickButton(device, button) {
-    this._browser.scroll(device)
-    this._browser.click(device)
-    this.waitForLoadingProgressRunning()
-    this.waitForLoadingProgressDone()
-    this._browser.waitForExist(button)
-    this._browser.click(button)
+  _moveToDeviceAndClickButton(deviceName, LaunchIcon) {
+    this._browser.doubleClick(deviceName)
+    this._browser.click(`${deviceName}${LaunchIcon}`)
   }
 
   /**
@@ -243,12 +241,10 @@ export default class DevicesPage extends AuthenticatedPage {
       // This is ancestor element which used to mix with deviceName, onlineStatus,
       // and launchButton
       const deviceSelector = listDeviceLocator.concat(`[${i}]`)
-      const onlineStatusLocator = platformVersionOfDevice ? `${deviceSelector}/../..
-      ${elements.isOnline}` : `${deviceSelector}${elements.isOnline}`
-      foundDevice = this._browser.isExisting(onlineStatusLocator)
+      foundDevice = this._browser.isExisting(deviceSelector)
 
       if (foundDevice) {
-        this._moveToDeviceAndClickButton(onlineStatusLocator, elements.launchButtonOnPopUp)
+        this._moveToDeviceAndClickButton(deviceSelector, elements.launchButton)
         this.waitForLoadingProgressRunning()
         this.waitForLoadingProgressDone()
         const manualPage = new ManualPage()

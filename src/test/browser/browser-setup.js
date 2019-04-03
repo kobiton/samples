@@ -8,6 +8,8 @@ export default async function launchBrowser() {
   const capabilities = []
   // Produce the number of browsers to run test manual
   const openBrowsers = config.browser.numberOfBrowser
+  const maxDevices = config.browser.maxDevices
+
   for (let i = 0; i < openBrowsers; i++) {
     capabilities.push({
       maxInstances: 1,
@@ -16,9 +18,10 @@ export default async function launchBrowser() {
   }
 
   if (config.typeOfTest === 'test-manual') {
-    const onlineDevices = await Device.getDevices({onlineDeviceOnly: true})
+    let onlineDevices = await Device.getDevices({onlineDeviceOnly: true})
     if (onlineDevices.length > 0) {
-    // Save list onlineDevices into a file to get from each of manual test
+      onlineDevices = onlineDevices.slice(0, maxDevices)
+      // Save list onlineDevices into a file to get from each of manual test
       ManualData.saveOnlineDevices(onlineDevices)
       for (let i = 0; i < onlineDevices.length; i++) {
         // Init launcher to run test with specific wdio cofig file

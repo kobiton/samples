@@ -126,6 +126,13 @@ const yargs = require('yargs')
     describe: 'Name of browser you want to launch',
     type: 'string'
   })
+  .options('maxDevices', {
+    alias: 'maxDevices',
+    demand: false,
+    default: 1,
+    describe: 'Total devices that you want to launch',
+    type: 'number'
+  })
   .options('logs', {
     alias: 'pushLogs',
     demand: false,

@@ -9,12 +9,11 @@ import LoginPage from '../../../framework/page-objects/portal/intro/login'
 const expectedDurationInMinutes = config.expectedDurationInMinutes
 const {username1: username, password1: password} = {...config}
 let deviceGroup = config.device.group.toLowerCase()
-let {deviceName, platformVersion} = ManualData.getADevice()
+let {deviceName, platformVersion, platformName} = ManualData.getADevice()
 const s3AppLink = 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/'
 describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   let devicesPage
   let manualPage
-  let platformName
   let startedAt, endedAt
   let duration = 0
   let appTestPath
@@ -42,11 +41,18 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     }
     const numOfOnlineDevices =
       devicesPage.getTotalOnlineDevices({
-        group: deviceGroup, nameOfDevice: deviceName, platformVersionOfDevice: platformVersion
+        group: deviceGroup,
+        nameOfDevice: deviceName,
+        platformVersionOfDevice:
+        platformVersion,
+        platformName
       })
-    assert.isAtLeast(numOfOnlineDevices, 1, `Expected at least one online ${deviceName} device`)
+
+    assert.isAtLeast(numOfOnlineDevices, 1, `Expected at least one online ${deviceName} device(s)`)
     devicesPage.cleanUpFolder('images')
     devicesPage.cleanUpFolder('reports')
+    devicesPage.searchText(deviceName)
+
     manualPage = devicesPage.launchAnOnlineDevice({
       group: deviceGroup, nameOfDevice: deviceName, platformVersionOfDevice: platformVersion
     })
@@ -68,19 +74,19 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   it('should change quality successfully', () => {
     // Change to low quality
     manualPage.selectQuality('Low')
-    assert.isTrue(manualPage.isContaining('lowQuality'))
+    assert.isTrue(manualPage.isContaining('lowQuality'), 'Low quality is selected.')
     // Change to High quality
     manualPage.selectQuality('High')
-    assert.isTrue(manualPage.isContaining('highQuality'))
+    assert.isTrue(manualPage.isContaining('highQuality'), 'High quality is selected.')
     // Change to Medium quality
     manualPage.selectQuality('Medium')
-    assert.isTrue(manualPage.isContaining('mediumQuality'))
+    assert.isTrue(manualPage.isContaining('mediumQuality'), 'Medium quality is selected.')
   })
 
   it('should have correct format for counting time', () => {
     const timeRegex = manualPage.timeRegex()
     let time = manualPage.getCountingTime()
-    assert.isTrue(timeRegex.test(time))
+    assert.isTrue(timeRegex.test(time), 'The format 00:00:00 is shown.')
 
     // It causes automatically exit session on Firefox
     // Refresh page
@@ -104,15 +110,16 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
 
     // Verify there is screenshot board
   it('should take screenshot', () => {
-    assert.isTrue(manualPage.isContaining('screenshotBoard'))
+    assert.isTrue(manualPage.isContaining('screenshotBoard'), 'Screenshots label is shown.')
 
     // Verify there isn't a screenshot was captured
-    assert.isFalse(manualPage.isContaining('downloadScreenshotButton'))
+    assert.isFalse(manualPage.isContaining('downloadScreenshotButton'), 'No screenshot is shown.')
 
     // Take screenshot
     manualPage.takeScreenShot()
     // Verify there is a screenshot was captured
-    assert.equal(manualPage.countElements('downloadScreenshotButton'), 1)
+    assert.equal(manualPage.countElements('downloadScreenshotButton'), 1,
+      'First screenshot is uploaded.')
     manualPage.pause(1000)
 
     manualPage.takeScreenShot()
@@ -120,40 +127,26 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     manualPage.takeScreenShot()
     manualPage.waitForUploadScreenshotDone(uploadScreenshotTimeout)
     // Verify number of screenshots were captured
-    assert.equal(manualPage.countElements('downloadScreenshotButton'), 4)
-  })
-
-  it('should have default touch mode', () => {
-    let styleOfTouchButton = manualPage.getStyleOfButton('touchButton')
-    assert.isTrue(styleOfTouchButton.includes('fill: white'))
-    let styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
-    assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'))
-    if (config.browser.browserName === 'chrome') {
-      startedAt = moment.utc()
-      do {
-        _doDeviceActions()
-        endedAt = moment.utc()
-        duration = endedAt.diff(startedAt, 'minutes')
-      } while (duration < expectedDuration)
-    }
+    assert.equal(manualPage.countElements('downloadScreenshotButton'), 4,
+      'Total 4 screenshots are taken.')
   })
 
   it('should pinch or zoom successfully', async () => {
     let styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
-    assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'))
+    assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'), 'Pinch button is shown.')
     manualPage.takeScreenshotPage('manual', 'beforePinchZoom')
 
     manualPage.clickButtonOnMenuBar('pinchButton')
     styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
-    assert.isTrue(styleOfPinchButton.includes('fill: white'))
+    assert.isTrue(styleOfPinchButton.includes('fill: white'), 'Pinch button is shown.')
     manualPage.takeScreenshotPage('manual', 'afterPinchZoom')
 
     manualPage.clickButtonOnMenuBar('touchButton')
     styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
-    assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'))
+    assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'), 'Pinch button is shown.')
     // eslint-disable-next-line max-len
     const result = await manualPage.compareImages('manual', 'beforePinchZoom', 'afterPinchZoom', 'beforeAndAfterPinchZoom')
-    assert.isAtLeast(result.misMatchPercentage, 1)
+    assert.isAtLeast(result.misMatchPercentage, 1, 'The percentage is >= 1.')
   })
 
   it('should rotate screen', () => {
@@ -163,37 +156,54 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
 
   it('should set device location successfully', () => {
     manualPage.setDeviceLocation({lat: '10.802216', long: '106.645714'})
-    assert.isTrue(manualPage.isContaining('setNewLocationStatus'))
+    assert.isTrue(manualPage.isContaining('setNewLocationStatus'),
+      'The new location status is shown.')
     manualPage.setDeviceLocation({lat: '-90', long: '-180'})
-    assert.isTrue(manualPage.isContaining('setNewLocationStatus'))
+    assert.isTrue(manualPage.isContaining('setNewLocationStatus'),
+      'The new location status is shown.')
 
     // Input wrong latitude
     manualPage.setDeviceLocation({lat: 'abc', long: '-180'})
-    assert.isTrue(manualPage.isContaining('wrongLatitudeWarning'))
-    assert.isFalse(manualPage.isVisableButton('setLocationButton'))
+    assert.isTrue(manualPage.isContaining('wrongLatitudeWarning'),
+      'The wrong Latitude status is shown.')
+    assert.isFalse(manualPage.isVisableButton('setLocationButton'),
+      'The Set button is invisable.')
     manualPage.elements.cancelLocationButton.click()
 
     // Input wrong longitude
     manualPage.setDeviceLocation({lat: '23', long: '-180.32'})
-    assert.isTrue(manualPage.isContaining('wrongLongitudeWarning'))
-    assert.isFalse(manualPage.isVisableButton('setLocationButton'))
+    assert.isTrue(manualPage.isContaining('wrongLongitudeWarning'),
+      'The wrong Longitude status is shown.')
+    assert.isFalse(manualPage.isVisableButton('setLocationButton'),
+      'The Set button is invisable.')
     manualPage.elements.cancelLocationButton.click()
   })
 
   it('should record network activity', function () {
     if ((platformName === 'Android' && platformVersion >= 6) || platformName === 'iOS') {
-      let styleOfRecordNetworkButton = manualPage.getStyleOfElement('styleRecordNetworkButton')
-      assert.isTrue(styleOfRecordNetworkButton.includes('background-color: rgb(97, 97, 97)'))
-      // Turn on recording network activity
-      manualPage.recordNetworkActivity()
-      assert.isTrue(manualPage.isContaining('recordingNetworkActivityMessage'))
-      styleOfRecordNetworkButton = manualPage.getStyleOfElement('styleRecordingNetworkButton')
-      assert.isTrue(styleOfRecordNetworkButton.includes('background-color: rgb(244, 67, 54)'))
-      // Turn off recording network activity
-      manualPage.stopRecordingNetworkActivity()
-      assert.isTrue(manualPage.isContaining('endRecordNetworkActivityMessage'))
-      styleOfRecordNetworkButton = manualPage.getStyleOfElement('styleRecordNetworkButton')
-      assert.isTrue(styleOfRecordNetworkButton.includes('background-color: rgb(97, 97, 97)'))
+      if (manualPage.doesRecordNetworkActivityExist()) {
+        let styleOfRecordNetworkButton = manualPage.getStyleOfElement('styleRecordNetworkButton')
+        assert.isTrue(styleOfRecordNetworkButton.includes('background-color: rgb(97, 97, 97)'),
+          'Record Network button exists.')
+        // Turn on recording network activity
+        manualPage.recordNetworkActivity()
+        assert.isTrue(manualPage.isContaining('recordingNetworkActivityMessage'),
+          'Record Network Activity message exists.')
+        styleOfRecordNetworkButton = manualPage.getStyleOfElement('styleRecordingNetworkButton')
+        assert.isTrue(styleOfRecordNetworkButton.includes('background-color: rgb(244, 67, 54)'),
+          'Record Network Activity button exists.')
+
+        // Turn off recording network activity
+        manualPage.stopRecordingNetworkActivity()
+        assert.isTrue(manualPage.isContaining('endRecordNetworkActivityMessage'),
+          'Stop Network button exists.')
+        styleOfRecordNetworkButton = manualPage.getStyleOfElement('styleRecordNetworkButton')
+        assert.isTrue(styleOfRecordNetworkButton.includes('background-color: rgb(97, 97, 97)'),
+          'Record Network Activity button exists.')
+      }
+      else {
+        debug.log('record network activity function has been disabled on this device.')
+      }
     }
     else {
       debug.log('Kobiton hasn\'t supported record network activity on Android 4.x.x and 5.x.x')
@@ -209,29 +219,35 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     else {
       // Verify Cancel action on set device time zone dialog
       const defaultTimezone = manualPage.getDefaultTimezone()
-      assert.equal(defaultTimezone, 'Select a time zone')
-      assert.isFalse(manualPage.isVisableButton('setTimezoneButton'))
+      assert.equal(defaultTimezone, 'Select a time zone',
+        'Select a time zone lable exists.')
+      assert.isFalse(manualPage.isVisableButton('setTimezoneButton'),
+        'Set Timezone button is disable.')
       manualPage.elements.cancelSetTimezoneButton.click()
 
       manualPage.setDeviceTimezone('(GMT-10:00) Hawaii Time')
-      assert.isTrue(manualPage.isContaining('setNewTimezoneStatus'))
+      assert.isTrue(manualPage.isContaining('setNewTimezoneStatus'),
+        'The message for set new timezone displays.')
 
       manualPage.setDeviceTimezone('(GMT+00:00) London')
-      assert.isTrue(manualPage.isContaining('setNewTimezoneStatus'))
+      assert.isTrue(manualPage.isContaining('setNewTimezoneStatus'),
+        'The message for set new timezone displays.')
     }
   })
 
   it('should power off/on device', () => {
     // Turn off screen
     manualPage.clickButtonOnMenuBar('powerButton')
-    manualPage.pause(3000)
-    assert.isTrue(manualPage.isContaining('powerOffAlert'))
+    manualPage.pause(5000)
+    assert.isTrue(manualPage.isContaining('powerOffAlert'),
+      'Power Off alert is shown.')
     // Dissmiss message
     manualPage.elements.dismissMessage.click()
     // Turn on screen
     manualPage.clickButtonOnMenuBar('powerButton')
-    manualPage.pause(3000)
-    assert.isFalse(manualPage.isContaining('powerOffAlert'))
+    manualPage.pause(5000)
+    assert.isFalse(manualPage.isContaining('powerOffAlert'),
+      'Power Off alert is hidden.')
   })
 
   it('should show recent apps on Android device', async function () {
@@ -242,7 +258,7 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
       manualPage.elements.homeButton.click()
       manualPage.pause(2000)
       // eslint-disable-next-line max-len
-      const result = await manualPage.compareImage('manual', 'beforeClickRecentApp', 'afterClickRecentApp', 'beforeAndAfterClickRecentApp')
+      const result = await manualPage.compareImages('manual', 'beforeClickRecentApp', 'afterClickRecentApp', 'beforeAndAfterClickRecentApp')
       assert.isAtLeast(result.misMatchPercentage, 1)
     }
     else {
@@ -255,26 +271,34 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     // Turn off screen
     manualPage.clickButtonOnMenuBar('powerButton')
     manualPage.pause(3000)
-    assert.isTrue(manualPage.isContaining('powerOffAlert'))
+    assert.isTrue(manualPage.isContaining('powerOffAlert'),
+      'Power Off alert is shown.')
+
     // Click Home to turn on screen
     manualPage.clickButtonOnMenuBar('homeButton')
     manualPage.pause(3000)
-    assert.isFalse(manualPage.isContaining('powerOffAlert'))
+    assert.isFalse(manualPage.isContaining('powerOffAlert'),
+      'Power Off alert is hidden.')
+
     // Turn off screen
     manualPage.clickButtonOnMenuBar('powerButton')
     manualPage.pause(3000)
-    assert.isTrue(manualPage.isContaining('powerOffAlert'))
+    assert.isTrue(manualPage.isContaining('powerOffAlert'),
+      'Power Off alert is shown.')
+
     // Turn on screen by touching on device screen
     manualPage.touchOnCanvasScreen()
     manualPage.pause(3000)
-    assert.isFalse(manualPage.isContaining('powerOffAlert'))
+    assert.isFalse(manualPage.isContaining('powerOffAlert'),
+      'Power Off alert is hidden.')
 
     if (platformName === 'iOS') {
       // Double Home on iOS device
       manualPage.elements.homeButton.doubleClick()
       manualPage.pause(3000)
       if (platformVersion > 10.3) {
-        assert.isTrue(manualPage.isContaining('notSupportDoubleHomeMessage'))
+        assert.isTrue(manualPage.isContaining('notSupportDoubleHomeMessage'),
+          'Not Support Double Home message is displayed.')
       }
       // Long press on iOS device (TBD)
     }
@@ -293,14 +317,15 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   it('should have function share manual testing screen', () => {
     manualPage.shareScreenView()
     // eslint-disable-next-line max-len
-    assert.isTrue(manualPage.isContaining('shareSessionViewPopup'), 'There is no share screen pop up')
-    assert.isTrue(manualPage.isContaining('linkShare'), 'There is no share link')
-    assert.isTrue(manualPage.isContaining('copyLinkButton'), 'There is no copy link button')
+    assert.isTrue(manualPage.isContaining('shareSessionViewPopup'), 'There is share screen pop up.')
+    assert.isTrue(manualPage.isContaining('linkShare'), 'There is share link.')
+    assert.isTrue(manualPage.isContaining('copyLinkButton'), 'There is copy link button.')
 
     // Close share session pop up
     manualPage.elements.closeShareSessionPopUpButton.click()
     manualPage.pause(2000)
-    assert.isFalse(manualPage.isContaining('shareSessionViewPopup'))
+    assert.isFalse(manualPage.isContaining('shareSessionViewPopup'),
+      'There is no share screen pop up.')
   })
 
   function _doDeviceActions() {
@@ -313,18 +338,23 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     manualPage.doTouch({x: 10, y: 10})
   }
 
-  it('should end session automatically afer staying idle for 5 minutes', () => {
+  it('should end session automatically after staying idle for [x] minutes', () => {
     if (deviceGroup === 'private' || deviceGroup === 'admin') {
       const defaultValueCheckbox = manualPage.getStyleOfElement('attributeIdleCheckbox')
       // Verify default value is unchecked
-      assert.isTrue(defaultValueCheckbox.includes('opacity 1000ms'))
+      assert.isTrue(defaultValueCheckbox.includes('opacity 1000ms'),
+        'Idle default value is unchecked.')
+
       // Check on auto quick session after 5 minutes if you do not anything
       manualPage.clickIdleCheckbox()
     }
     manualPage.waitForIdlePopUp(stayIdleTimeout)
-    assert.isTrue(manualPage.isContaining('idlePopUp'))
+    assert.isTrue(manualPage.isContaining('idlePopUp'),
+      'Idle popup is shown.')
+
     manualPage.continueManualSession()
-    assert.isFalse(manualPage.isContaining('idlePopUp'))
+    assert.isFalse(manualPage.isContaining('idlePopUp'),
+      'Idle popup isn\'t shown.')
     manualPage.clickIdleCheckbox()
     manualPage.pause(1000)
   })
@@ -332,10 +362,12 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   it('should have checkbox Clean up device on private devices', () => {
     if (deviceGroup === 'private' || deviceGroup === 'admin') {
       const defaultValueCheckbox = manualPage.getStyleOfElement('attributeCleanUpCheckbox')
-      assert.isTrue(defaultValueCheckbox.includes('opacity 1000ms'))
+      assert.isTrue(defaultValueCheckbox.includes('opacity 1000ms'),
+        'cleanUp checkbox is displayed.')
     }
     else {
-      assert.isFalse(manualPage.isContaining('cleanUpCheckbox'))
+      assert.isFalse(manualPage.isContaining('cleanUpCheckbox'),
+        'cleanUp checkbox isn\'t displayed.')
     }
   })
 
@@ -344,27 +376,44 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     // Verify default session name
     const dateTimeRegex = manualPage.dateTimeRegex()
     const defaultSessionName = manualPage.getSessionName()
-    assert.isTrue(dateTimeRegex.test(defaultSessionName))
-    assert.include(defaultSessionName, 'Session created at')
 
-    // Edit session name with invalid value
-    manualPage.editSessionName('test')
-    assert.isTrue(manualPage.isContaining('invalidSessionNameMessage'))
-    manualPage.closeSystemMessage('closeInvalidSessionNameWarningButton')
-    // eslint-disable-next-line max-len
-    manualPage.editSessionName('Our platform gives developers and businesses access to the real mobile devices they want and manage the devices they own')
-    assert.isTrue(manualPage.isContaining('invalidSessionNameMessage'))
-    manualPage.closeSystemMessage('closeInvalidSessionNameWarningButton')
-
-    // Edit session name with valid value
-    manualPage.editSessionName('Kobiton test 12/4$5)')
-    assert.isFalse(manualPage.isContaining('invalidSessionNameMessage'))
-    const sessionName = manualPage.getSessionName()
-    assert.equal(sessionName, 'Kobiton test 12/4$5)')
+    assert.isTrue(dateTimeRegex.test(defaultSessionName),
+      'The session name is displayed with expected regular expression.')
+    assert.include(defaultSessionName, 'Session created at',
+      'The session name contains "Session created at".')
 
     // Verify message required session name
-    manualPage.inputEmptySessionName(' ')
-    assert.isTrue(manualPage.isContaining('requiredSessionNameMessage'))
+    manualPage.editSessionName(' ')
+    assert.isTrue(manualPage.isContaining('requiredSessionNameMessage'),
+      'Session Name is required.')
+
+    // Verify message required session name
+    manualPage.editSessionName('', false)
+    assert.isTrue(manualPage.isContaining('requiredSessionNameMessage'),
+      'Session Name is required.')
+
+    // Edit session name with valid value
+    manualPage.editSessionName('Kobiton test 12/4$5)', false)
+    assert.isFalse(manualPage.isContaining('invalidSessionNameMessage'),
+      'Invalid Session Name message is not shown.')
+
+    const sessionName = manualPage.getSessionName()
+    assert.equal(sessionName, 'Kobiton test 12/4$5)',
+      'Session Name is updated.')
+
+    // eslint-disable-next-line max-len
+    manualPage.editSessionName('Our platform gives developers and businesses access to the real mobile devices they want and manage the devices they own')
+    assert.isTrue(manualPage.isContaining('invalidSessionNameMessage'),
+      'Invalid Session Name message is shown.')
+
+    manualPage.closeSystemMessage('closeInvalidSessionNameWarningButton')
+
+    // eslint-disable-next-line max-len
+    manualPage.editSessionName('test')
+    assert.isTrue(manualPage.isContaining('invalidSessionNameMessage'),
+      'Invalid Session Name message is shown.')
+
+    manualPage.closeSystemMessage('closeInvalidSessionNameWarningButton')
   })
 
   it('should change session description successfully', () => {
@@ -395,8 +444,9 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     if (appTestPath) {
       manualPage.pause(2000)
       manualPage.chooseFileFromLocalFile(appTestPath)
-      manualPage.waitForInstallingAppDone(installAppTimeout)
-      assert.isTrue(manualPage.isContaining('installedAppMessage'))
+
+      assert.isTrue(manualPage.isContaining('installedAppMessage'),
+        'Install app message is shown.')
       manualPage.closeSystemMessage('dismissMessage')
       manualPage.pause(1000)
     }
@@ -411,8 +461,9 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
     // Input invalid url
     appUrl = s3AppLink.concat('result_smoke_test_prod.txt.zip')
     manualPage.fillInAppUrlAndInstall(appUrl)
-    manualPage.waitForInstallingAppDone(installAppTimeout)
-    assert.isTrue(manualPage.isContaining('failedToInstallAppMessage'))
+
+    assert.isTrue(manualPage.isContaining('failedToInstallAppMessage'),
+      'Error message is shown when we install invalid app.')
     manualPage.closeSystemMessage('dismissMessage')
     manualPage.pause(1000)
 
@@ -424,23 +475,40 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
       appUrl = s3AppLink.concat('iFixit.ipa')
     }
     manualPage.fillInAppUrlAndInstall(appUrl)
-    manualPage.waitForInstallingAppDone(installAppTimeout)
-    assert.isTrue(manualPage.isContaining('installedAppMessage'))
+    manualPage.pause(2000)
+
+    assert.isTrue(manualPage.isContaining('installedAppMessage'),
+      'Install app message is shown.')
     manualPage.closeSystemMessage('dismissMessage')
     manualPage.pause(1000)
+
+    let styleOfTouchButton = manualPage.getStyleOfButton('touchButton')
+    assert.isTrue(styleOfTouchButton.includes('fill: white'), 'Touch button is shown.')
+    let styleOfPinchButton = manualPage.getStyleOfButton('pinchButton')
+    assert.isTrue(styleOfPinchButton.includes('fill: rgb(97, 97, 97)'), 'Pinch button is shown.')
+    if (config.browser.browserName === 'chrome') {
+      startedAt = moment.utc()
+      do {
+        _doDeviceActions()
+        endedAt = moment.utc()
+        duration = endedAt.diff(startedAt, 'minutes')
+      } while (duration < expectedDuration)
+    }
   })
 
   it('should copy paste on clipboard successfully', function () {
     if (platformName === 'Android' && config.browserName === 'firefox') {
       manualPage.copyAndPasteOnClipboard()
       manualPage.pause(10000)
-      assert.isFalse(manualPage.isContaining('dismissMessage'))
+      assert.isFalse(manualPage.isContaining('dismissMessage'),
+        'copyAndPaste message is shown.')
 
       // Invalid text
       const value = BaseData.generateParagraphs(50)
       manualPage.copyAndPasteOnClipboard({textValue: value})
       manualPage.pause(5000)
-      assert.isTrue(manualPage.isContaining('tooLongTextToPasteMessage'))
+      assert.isTrue(manualPage.isContaining('tooLongTextToPasteMessage'),
+        'Invalid message for copyAndPaste is shown.')
     }
     else {
       debug.log('Kobiton hasn\'t supported function copy paste on iOS devices')
@@ -454,7 +522,9 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
       const orderOfValidApp = Math.floor(Math.random() * numberOfAppToInstall) + 1
       manualPage.installAppFromAppRepo(orderOfValidApp.toString())
       manualPage.waitForInstallingAppDone(installAppTimeout)
-      assert.isTrue(manualPage.isContaining('installedAppMessage'))
+
+      assert.isTrue(manualPage.isContaining('installedAppMessage'),
+        'Install app message is shown.')
     }
     else {
       debug.log('There isn\'t an app in App Repo to install')
@@ -465,29 +535,41 @@ describe(`Manual feature for ${deviceName}:${platformVersion} `, () => {
   it('should show lives log', () => {
     assert.isTrue(manualPage.isContaining('liveLogsTab'))
     manualPage.elements.liveLogsTab.click()
+    
     // Verify control buttons of live logs
-    assert.isTrue(manualPage.isContaining('pauseButton'))
-    assert.isTrue(manualPage.isContaining('clearLogsButton'))
-    assert.isTrue(manualPage.isContaining('downloadLogsButton'))
+    assert.isTrue(manualPage.isContaining('pauseButton'),
+      'Pause button is existed.')
+    assert.isTrue(manualPage.isContaining('clearLogsButton'),
+      'Clear Logs button is existed.')
+    assert.isTrue(manualPage.isContaining('downloadLogsButton'),
+      'Download Logs button is existed.')
+
     // Verify live logs is loading
     let styleOfGrid = manualPage.getStyleOfElement('liveLogsBoard')
     assert.isNotNull(styleOfGrid, 'There is not live logs')
+
     // Click pause live logs
     manualPage.elements.pauseButton.click()
     manualPage.pause(1000)
+
     // Verify live log is stopped loading
     const styleOfGridAtPausing = manualPage.getStyleOfElement('liveLogsBoard')
     manualPage.pause(5000)
     const styleOfGridAfterPausing = manualPage.getStyleOfElement('liveLogsBoard')
-    assert.equal(styleOfGridAtPausing, styleOfGridAfterPausing)
+    assert.equal(styleOfGridAtPausing, styleOfGridAfterPausing,
+      'The live logs is stopped.')
+
     // Verify clear logs
     manualPage.elements.clearLogsButton.click()
     manualPage.pause(2000)
-    assert.isFalse(manualPage.isContaining('liveLogsBoard'))
+    assert.isFalse(manualPage.isContaining('liveLogsBoard'),
+      'The livelogs is stopping.')
+
     // Verify live log is loading
     manualPage.elements.resumeButton.click()
     manualPage.pause(2000)
     styleOfGrid = manualPage.getStyleOfElement('liveLogsBoard')
-    assert.notEqual(styleOfGrid, styleOfGridAfterPausing)
+    assert.notEqual(styleOfGrid, styleOfGridAfterPausing,
+      'The livelogs is running.')
   })
 })

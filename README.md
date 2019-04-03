@@ -202,9 +202,14 @@ Append argument: --platformVersion <version>
 * MSBuild included in PATH
 ##### 2. Linux, Mac
 * Mono Framework installed
+
+```
+brew install mono
+```
+
 ##### Run test
   ```bash
-  yarn test --task multi-version-check --input dotnet
+  yarn test --task multi-version-check --input dotnet 
   ```
 #####
 

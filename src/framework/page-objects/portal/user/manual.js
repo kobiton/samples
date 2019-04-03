@@ -27,7 +27,7 @@ const elements = {
   reConnectingStatus: '//div[normalize-space(text())="Re-connecting ..."]',
   canvasScreen: '//div[@data-radium="true"]/canvas[@tabindex="10000"]',
   setNewDeviceLocationProcessing:
-  '//p[contains(normalize-space(text()),"Setting new device location")]',
+    '//p[contains(normalize-space(text()),"Setting new device location")]',
   setNewLocationStatus: '//div[contains(.,"Device location successfully set to")]',
   // eslint-disable-next-line max-len
   powerOffAlert: '//div[contains(normalize-space(text()),"Please press Power / Home button or tap on screen to wake up device")]',
@@ -73,14 +73,15 @@ const elements = {
   setDeviceLocationPopup: '//h3[text()="Set device location"]',
   latitudeField: '//div[contains(.,"Latitude")]/input',
   longitudeField: '//div[contains(.,"Longitude")]/input',
-  setLocationButton: '//h3[text()="Set device location"]/../div/form//button[contains(.,"Set")]',
+  setLocationButton:
+    '//h3[contains(text(),"Set device location")]/../div/form//button[contains(.,"Set")]',
   cancelLocationButton:
-  '//h3[text()="Set device location"]/../div/form//button[contains(.,"Cancel")]',
+    '//h3[text()="Set device location"]/../div/form//button[contains(.,"Cancel")]',
   helpLocationButton: '//h3[text()="Set device location"]/../div/form//button[div/a]',
   wrongLatitudeWarning:
-  '//div[contains(normalize-space(text()),"Latitude value must be between -90 to 90")]',
+    '//div[contains(normalize-space(text()),"Latitude value must be between -90 to 90")]',
   wrongLongitudeWarning:
-  '//div[contains(normalize-space(text()),"Longitude value must be between -180 to 180")]',
+    '//div[contains(normalize-space(text()),"Longitude value must be between -180 to 180")]',
 
 // Record network activity
   recordNetworkPopup: '//div[h3[contains(.,"Record network traffic")]]',
@@ -121,15 +122,15 @@ const elements = {
   cleanUpCheckbox: '//label[text()="Clean up device on exit"]/parent::div/parent::div/input[@type="checkbox"]',
   // eslint-disable-next-line max-len
   attributeCleanUpCheckbox: '//label[contains(text(),"Clean up device")]/../div/div/*[local-name()="svg"][1]',
-  sessionNameForm: '//div[text()="Session name"]/../form',
+  sessionNameForm: '//div[text()="Session name"]/../form/div/span',
   editSessionNameButton: '//div[text()="Session name"]/../form/div/button',
-  sessionNameField: '//div[text()="Session name"]/../form/div/input',
+  sessionNameField: '//div[text()="Session name"]/../form//input',
   // eslint-disable-next-line max-len
   invalidSessionNameMessage: '//span[contains(text(),"Session name must be between 5 and 80 characters")]',
   // eslint-disable-next-line max-len
   closeInvalidSessionNameWarningButton: '//span[contains(text(),"sessionName must be between")]/../following-sibling::div/*[local-name()="svg"]',
   requiredSessionNameMessage: '//div[text()="Session name is required"]',
-  sessionDescriptionForm: '//div[text()="Description"]/../form/div/div',
+  sessionDescriptionForm: '//div[text()="Description"]/../form/div',
   editSessionDescriptionButton: '//div[text()="Description"]/../form/div/button',
   sessionDescriptionField: '//div[text()="Description"]/../form/div/div/textarea[2]',
   // eslint-disable-next-line max-len
@@ -184,7 +185,7 @@ export default class ManualPage extends AuthenticatedPage {
   }
 
   isContaining(ele) {
-    return this._isExisting(elements[ele])
+    return this._browser.isExisting(elements[ele])
   }
 
   isVisableButton(ele) {
@@ -207,9 +208,7 @@ export default class ManualPage extends AuthenticatedPage {
     this._browser.click(elements.takeScreenShotButton)
     this._browser.waitForExist(elements.uploadingScreenshot, 5000)
     this._browser.waitForExist(elements.downloadScreenshotButton, 60000)
-    this._browser.waitUntil(() => {
-      return !this._browser.isExisting(elements.loadingIcon)
-    }, 5000, 'should take screenshot done', 10000)
+    this._browser.pause(5000)
   }
 
   getStyleOfButton(ele) {
@@ -245,15 +244,29 @@ export default class ManualPage extends AuthenticatedPage {
     const longitude = parseFloat(long)
     this.clickButtonOnMenuBar('setDeviceLocationButton')
     this._browser.waitForExist(elements.setDeviceLocationPopup)
+    this._browser.click(elements.latitudeField)
+    this.clearField(elements.latitudeField)
+
     this._browser.setValue(elements.latitudeField, lat)
+    this._browser.click(elements.longitudeField)
+    this.clearField(elements.longitudeField)
+
     this._browser.setValue(elements.longitudeField, long)
     this._browser.click(elements.setDeviceLocationPopup)
+
     if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
       this._browser.waitForEnabled(elements.setLocationButton)
       this._browser.click(elements.setLocationButton)
       this._browser.waitForExist(elements.setNewLocationStatus)
       this._browser.pause(2000)
     }
+  }
+
+  /**
+   * Check record network activity function exists or not
+   */
+  doesRecordNetworkActivityExist() {
+    return this._browser.isExisting(elements.recordNetworkActivityButton)
   }
 
   /**
@@ -357,10 +370,14 @@ export default class ManualPage extends AuthenticatedPage {
   /**
    * Set up session name
    */
-  editSessionName(sessionName) {
-    this._browser.click(elements.editSessionNameButton)
+  editSessionName(sessionName, clickEditIcon = true) {
+    if (clickEditIcon) this._browser.click(elements.editSessionNameButton)
     this._browser.pause(2000)
+    this.clearField(elements.sessionNameField, 'add')
+    this._browser.pause(1000)
+    this.clearField(elements.sessionNameField, 'add')
     this._browser.setValue(elements.sessionNameField, sessionName)
+    this._browser.pause(1000)
     this._browser.click(elements.screenshotBoard)
     this._browser.pause(2000)
   }
@@ -425,9 +442,10 @@ export default class ManualPage extends AuthenticatedPage {
    * Wait for upload screenshot
    */
   waitForUploadScreenshotDone(timeout) {
+    this._browser.pause(5000)
     this._browser.waitUntil(() => {
       return !this._browser.isExisting(elements.loadingIcon)
-    }, timeout, 'should upload screenshot done', 3000)
+    }, timeout, 'should upload screenshot done', 10000)
   }
 
   /**
@@ -441,7 +459,6 @@ export default class ManualPage extends AuthenticatedPage {
     this._browser.setValue(elements.apkUrlTextbox, appUrl)
     this._browser.waitForEnabled(elements.installAppsButton)
     this._browser.click(elements.installAppsButton)
-    this._browser.waitForExist(elements.loadingIcon, 3000)
   }
 
   copyAndPasteOnClipboard({textValue} = {}) {
@@ -465,9 +482,10 @@ export default class ManualPage extends AuthenticatedPage {
    * Waiting for install app
    */
   waitForInstallingAppDone(timeout) {
+    this._browser.waitForExist(elements.loadingIcon, timeout)
     this._browser.waitUntil(() => {
       return !this._browser.isExisting(elements.loadingIcon)
-    }, timeout, 'should install app done', 10000)
+    }, timeout, 'should install app done', 1000)
   }
 
   /**

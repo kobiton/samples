@@ -4,7 +4,7 @@ const base = require('../../framework/config/wdio-conf')
 const fileTest = config.typeOfTest ? `${config.typeOfTest}` : 'test-*'
 const chromeDriver = {
   chrome: {
-    version: 2.36,
+    version: '2.46',
     baseURL: 'https://chromedriver.storage.googleapis.com'
   }
 }

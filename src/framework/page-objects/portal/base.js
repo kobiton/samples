@@ -180,7 +180,7 @@ export default class Page {
   * Returns true if at least one element is existing by given selector
   */
   _isExisting(selectorValue) {
-    return this._browser.isExisting(selectorValue)
+    return this._browser.isExisting(selectorValue, timeout)
   }
 
   /**
@@ -247,4 +247,28 @@ export default class Page {
       throw new Error(`selector of ${selectorValue} is not existed. Please check ` + err)
     }
   }
+
+  /**
+   * Clear the current value on text field
+   * @param element {object} the element
+   */
+  clearField(element, type = 'set') {
+    try {
+      this._browser.click(element)
+      const getValue = this._browser.getValue(element)
+    
+      for (let i = 0; i < getValue.length; i++) {
+        if (type.toLowerCase() === 'set') {
+          this._browser.setValue(element, ['', '\uE003'])
+        }
+        else {
+          this._browser.addValue(element, ['', '\uE003'])
+        }
+      }
+    }
+    catch (err) {
+      throw new Error(`Can't clear value on element ${element} ${err}`)
+    }
+  }
+
 }

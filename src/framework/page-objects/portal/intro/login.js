@@ -1,7 +1,7 @@
 import Page from '../base'
 import DevicesPage from '../user/devices'
 
-const timeout = 5000
+const timeout = 30000
 const elements = {
   usernameLabel: '//input[@name="emailOrUsername"]/../label',
   usernameTextInput: 'input[name="emailOrUsername"]',
@@ -16,7 +16,7 @@ const elements = {
   logoImageHeader: '//img',
   form: '#app form',
   errorMsg: '//form/span',
-  locator: '//span[contains(text(), "Invalid email and/or password") or text()="Sessions"]'
+  locator: '//*[contains(text(), "Invalid email and/or password") or text()="Devices"]'
 }
 
 const LOGIN_STATUSES = {
@@ -55,7 +55,7 @@ export default class LoginPage extends Page {
   * @param {string} enter username or email
   */
   setUserName(value) {
-    this._browser.waitForExist(elements.usernameTextInput)
+    this._browser.waitForExist(elements.usernameTextInput, timeout)
     this._browser.clearElement(elements.usernameTextInput)
     if (value) {
       this._browser.setValue(elements.usernameTextInput, value)
@@ -130,6 +130,6 @@ export default class LoginPage extends Page {
   * it could be loginPage or sessionPage
   */
   _waitForPageLoaded() {
-    this._browser.waitForExist(elements.locator)
+    this._browser.waitForExist(elements.locator, timeout * 2)
   }
 }
