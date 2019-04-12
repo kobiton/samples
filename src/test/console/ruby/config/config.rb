@@ -16,6 +16,10 @@ $config['apiKey'] = testAccountInfo['key']
 
 $config['serverUrl'] = "https://#{$config['username']}:#{$config['apiKey']}@api.kobiton.com/wd/hub"
 
+def getServerUrl()
+  return $config['serverUrl']
+end
+
 def getAppCapabilitiesFor(device, options)
   return {
     caps: {
@@ -29,7 +33,8 @@ def getAppCapabilitiesFor(device, options)
       bundleId: options[:bundleId],
       app: options[:app],
       appPackage: options[:appPackage],
-      appActivity: options[:appActivity]
+      appActivity: options[:appActivity],
+      wait_timeout: 300
     },
     appium_lib: {
       server_url: $config['serverUrl'],

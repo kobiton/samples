@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'test/unit'
 require 'appium_lib'
-require_relative './data/Device'
-require_relative './config/config'
+require_relative '../../data/Device'
+require_relative '../../config/config'
 
 class AndroidAppTest < Test::Unit::TestCase
   def test_should_navigate_on_APIDemos_app

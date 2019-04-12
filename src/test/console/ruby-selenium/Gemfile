@@ -1,7 +1,0 @@
-# filename: Gemfile
-
-source 'https://rubygems.org'
-
-gem 'selenium-webdriver', '3.6.0'
-gem "test-unit", "3.1.5"
-gem 'rest-client', '~> 2.0.1'

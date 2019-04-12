@@ -1,18 +1,18 @@
 require 'rubygems'
 require 'test/unit'
 require 'appium_lib'
-require_relative './data/Device'
-require_relative './config/config'
+require_relative '../../data/Device'
+require_relative '../../config/config'
 
-class AndroidWebTest < Test::Unit::TestCase
+class IOSWebTest < Test::Unit::TestCase
   def test_should_navigate_to_heroku
-    device = getABookableDevice 'Android'
+    device = getABookableDevice 'iOS'
     options = {
-      browserName: 'chrome'
+      browserName: 'Safari'
     }
     desired_caps = getWebCapabilitiesFor device, options
     @driver = Appium::Driver.new(desired_caps, false)
-    
+
     begin
       @driver.start_driver
       puts "https://portal.kobiton.com/sessions/#{@driver.driver.capabilities['kobitonSessionId']}"
