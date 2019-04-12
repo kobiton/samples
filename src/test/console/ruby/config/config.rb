@@ -33,8 +33,7 @@ def getAppCapabilitiesFor(device, options)
       bundleId: options[:bundleId],
       app: options[:app],
       appPackage: options[:appPackage],
-      appActivity: options[:appActivity],
-      wait_timeout: 300
+      appActivity: options[:appActivity]
     },
     appium_lib: {
       server_url: $config['serverUrl'],
