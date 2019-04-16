@@ -138,8 +138,6 @@ export const listOfDesiredCaps = [
   {name: 'wdaEventloopIdleDelay', value: 'five', expectedResult: 'failed'},
   {name: 'wdaEventloopIdleDelay', value: null, expectedResult: 'passed'},
   {name: 'processArguments', value: null, expectedResult: 'passed'},
-  // eslint-disable-next-line max-len
-  {name: 'processArguments', value: '{args : ["a"], env : {a:b, c:d}}', expectedResult: 'failed'},
   // General appium-xcuitest-driver capabilities
   {name: 'resetOnSessionStartOnly', value: false, expectedResult: 'passed'},
   {name: 'resetOnSessionStartOnly', value: null, expectedResult: 'passed'},
