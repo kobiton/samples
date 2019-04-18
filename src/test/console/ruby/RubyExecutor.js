@@ -83,7 +83,7 @@ async function executeSeleniumTest() {
     testCaseResult.testCaseName = scriptName
     results.push(testCaseResult)
   }
-  return results
+  return await BPromise.all(results)
 }
 
 async function executeAppiumTest() {
@@ -97,5 +97,5 @@ async function executeAppiumTest() {
     testCaseResult.testCaseName = scriptName
     results.push(testCaseResult)
   }
-  return await Promise.all(results)
+  return await BPromise.all(results)
 }
