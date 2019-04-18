@@ -36,16 +36,12 @@ async function getTargetPackageVersions(libName, numberOfVersion) {
   let ls = await cmd.executeTestCmdSync(`gem list --exact ${libName} --remote --all`)
   let allVersions = ls.stdout.replace(/selenium-webdriver|appium_lib|[() ]|\n/g, '').split(',')
   allVersions.sort(cmd.compareVersions)
-  const sliceBegin = allVersions.length - numberOfVersion
-  const sliceEnd = allVersions.length
-  return allVersions.slice(sliceBegin, sliceEnd)
+  return allVersions.slice(allVersions.length - numberOfVersion, allVersions.length)
 }
 
 async function generateGemfile(dirPath, version, libName) {
   fs.readFile(dirPath + '/Gemfile.template', 'utf8', function (err, data) {
-    if (err) {
-      return err
-    }
+    if (err) return err
     let result = data.replace(/<bundle-name>/g, libName)
     .replace(/<bundle-version>/g, version)
   
@@ -101,5 +97,5 @@ async function executeAppiumTest() {
     testCaseResult.testCaseName = scriptName
     results.push(testCaseResult)
   }
-  return results
+  return await Promise.all(results)
 }
