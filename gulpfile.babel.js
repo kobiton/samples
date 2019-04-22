@@ -89,7 +89,6 @@ async function startAutTest() {
 async function startMultipleVersionCheck(language) {
   const languageExecutorMap = {
     ruby: './build/test/console/ruby/RubyExecutor',
-    'ruby-selenium': './build/test/console/ruby-selenium/RubyExecutor',
     java: './build/test/console/java/JavaExecutor',
     dotnet: './build/test/console/dotnet/DotNetExecutor',
     nodejs: './build/test/console/nodejs/NodejsExecutor',

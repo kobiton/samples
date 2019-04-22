@@ -16,6 +16,10 @@ $config['apiKey'] = testAccountInfo['key']
 
 $config['serverUrl'] = "https://#{$config['username']}:#{$config['apiKey']}@api.kobiton.com/wd/hub"
 
+def getServerUrl()
+  return $config['serverUrl']
+end
+
 def getAppCapabilitiesFor(device, options)
   return {
     caps: {

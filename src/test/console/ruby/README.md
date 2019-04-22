@@ -8,8 +8,18 @@
 * Install Bundler:  `gem install bundle`
 * Install Gems:  `bundle update`
 
-#### Run tests
-cd into multi-version-executor
+#### Run Appium tests
+cd into Tests/Appium
 ```bash
-  ruby ExecuteTest.rb
+  ruby AndroidWebTest.rb
+  ruby IOSWebTest.rb
+  ruby AndroidAppTest.rb
+  ruby IOSAppTest.rb
+```
+
+#### Run Selenium tests
+cd into Tests/Selenium
+```bash
+  ruby AndroidWebTest.rb
+  ruby IOSWebTest.rb
 ```
