@@ -158,10 +158,8 @@ class AndroidAppTest(unittest.TestCase):
     self.swipe(element, 'RightLeft')
     time.sleep(3)
     self.driver.find_element_by_xpath("//*[@resource-id='answersSearch']").send_keys(self.question)
-    self.driver.find_element_by_xpath("//*[@resource-id='searchIcon']").click()
-    time.sleep(5)
 
-    return self.driver.find_element_by_xpath("//android.view.View[contains(@content-desc,'questions') and @index=1]").get_attribute('name')
+    return self.driver.find_element_by_xpath("//*[contains(@text,'Acura questions') and @index=1]").text
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(AndroidAppTest)
