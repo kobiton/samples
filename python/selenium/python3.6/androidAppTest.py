@@ -22,10 +22,10 @@ class AndroidAppTest(unittest.TestCase):
     self._command_executor.set_timeout(configs.session_timeout)
     self.driver = webdriver.Remote(self._command_executor, configs.desired_caps_android_app)
     self.driver.implicitly_wait(configs.session_timeout)
-    
+
     kobitonSessionId = self.driver.desired_capabilities.get('kobitonSessionId')
     print("https://portal.kobiton.com/sessions/%s" % (kobitonSessionId))
-    
+
   def tearDown(self):
     self.driver.quit()
 
@@ -161,10 +161,8 @@ class AndroidAppTest(unittest.TestCase):
     self.swipe(element, 'RightLeft')
     time.sleep(3)
     self.driver.find_element_by_xpath("//*[@resource-id='answersSearch']").send_keys(self.question)
-    self.driver.find_element_by_xpath("//*[@resource-id='searchIcon']").click()
-    time.sleep(5)
 
-    return self.driver.find_element_by_xpath("//android.view.View[contains(@content-desc,'questions') and @index=1]").get_attribute('name')
+    return self.driver.find_element_by_xpath("//*[contains(@text,'Acura questions') and @index=1]").text
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(AndroidAppTest)
