@@ -311,13 +311,13 @@ export default class SessionsPage extends Paging {
     const inputDay = date.getDate()
     //Select Year
     let curYear = this._getCurrentYear()
-    while (inputYear != curYear) {
+    while (inputYear !== curYear) {
       this._selectDate(inputYear, curYear)
       curYear = this._getCurrentYear()
     }
     //Select Month
     let curMonth = this._getCurrentMonth()
-    while (inputMonth != monthEnum[curMonth.toUpperCase()]) {
+    while (inputMonth !== monthEnum[curMonth.toUpperCase()]) {
       this._selectDate(inputMonth, monthEnum[curMonth.toUpperCase()])
       curMonth = this._getCurrentMonth()
     }

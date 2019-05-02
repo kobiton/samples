@@ -1,6 +1,5 @@
 import 'babel-polyfill'
 import 'colors'
-import {assert} from 'chai'
 import {debug} from '@kobiton/core-util'
 import * as automationUtils from '../../utils/automation'
 import {createDriver, quitDriver} from '../../common/driver'

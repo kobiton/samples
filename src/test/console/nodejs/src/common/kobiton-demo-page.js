@@ -30,7 +30,8 @@ export default class HerokuPage {
       return this._driver.findElement(seleniumWebDriver.By.id(elements.usernameId)).isDisplayed()
     }, 2000)
 
-    await this._driver.findElement(seleniumWebDriver.By.id(elements.usernameId)).sendKeys('tomsmith')
+    await this._driver.findElement(seleniumWebDriver.By.id(elements.usernameId))
+      .sendKeys('tomsmith')
 
     await this._driver.wait(() => {
       return this._driver.findElement(seleniumWebDriver.By.id(elements.passwordId)).isDisplayed()
