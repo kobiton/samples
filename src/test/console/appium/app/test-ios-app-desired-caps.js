@@ -7,7 +7,6 @@ import {listOfiOSDesiredCaps} from './data'
 //eslint-disable-next-line
 import {excuteiOSAppDesiredCapsScript, uiKitCatalogApp} from '../../../../framework/appium/app/ios-app-desired-caps-script'
 
-const duration = 60 // seconds
 const timestamps = moment().format('YYYYMMDDHHmmss')
 let onlineiOSDevices = []
 let onlineCaps = []
@@ -39,7 +38,7 @@ async function testSingleDesiredCap(listOfiOSDesiredCaps) {
       newDesiredCap = `{"${listOfiOSDesiredCaps.name}": ${listOfiOSDesiredCaps.value}}`
       const cloneObj = {...desiredCap}
       desiredCap = Object.assign(cloneObj, JSON.parse(newDesiredCap))
-      result = await excuteiOSAppDesiredCapsScript(desiredCap, duration)
+      result = await excuteiOSAppDesiredCapsScript(desiredCap)
       const state = (result) ? 'failed' : 'passed'
       assert.equal(state, listOfiOSDesiredCaps.expectedResult, result)
     })

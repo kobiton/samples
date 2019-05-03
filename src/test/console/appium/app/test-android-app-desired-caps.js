@@ -7,7 +7,6 @@ import {listOfSingleAndroidDesiredCaps, listOfMultipleAndroidDesiredCaps} from '
 //eslint-disable-next-line
 import {excuteAndroidAppDesiredCapsScript, apiDemoDebugApp} from '../../../../framework/appium/app/android-app-desired-caps-script'
 
-const duration = 60 // seconds
 const timestamps = moment().format('YYYYMMDDHHmmss')
 let onlineAndroidDevices = []
 let onlineCaps = []
@@ -42,7 +41,7 @@ async function testSingleDesiredCap(listOfSingleAndroidDesiredCaps) {
       newDesiredCap = `{"${listOfSingleAndroidDesiredCaps.name}": ${listOfSingleAndroidDesiredCaps.value}}`
       const cloneObj = {...desiredCap}
       desiredCap = Object.assign(cloneObj, JSON.parse(newDesiredCap))
-      result = await excuteAndroidAppDesiredCapsScript(desiredCap, duration)
+      result = await excuteAndroidAppDesiredCapsScript(desiredCap)
       const state = (result) ? 'failed' : 'passed'
       assert.equal(state, listOfSingleAndroidDesiredCaps.expectedResult, result)
     })
@@ -56,7 +55,7 @@ async function testMultipleDesiredCap(listOfMultipleAndroidDesiredCaps) {
       desiredCap = await getOnlineDesiredCap()
       const cloneObj = {...desiredCap}
       desiredCap = Object.assign(cloneObj, listDesiredCap.desiredCaps)
-      result = await excuteAndroidAppDesiredCapsScript(desiredCap, duration)
+      result = await excuteAndroidAppDesiredCapsScript(desiredCap)
       const state = (result) ? 'failed' : 'passed'
       assert.equal(state, listDesiredCap.expectedResult, result)
     })
