@@ -10,7 +10,6 @@ import java.net.URLConnection;
 
 public class Main {
 
-    static int appId = 57;
     static  String filePath ="com.dozuki.ifixit.apk";
     static  String fileName ="iFixit";
 

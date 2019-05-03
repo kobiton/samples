@@ -20,7 +20,7 @@ static String apiKey = "";
  Common.downloadFile("https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk", "com.dozuki.ifixit.apk");
 ```
 
-- If you want to upload your app from local, please update filePath & fileName on Main class
+- If you want to upload your app from local, please update variables filePath & fileName on Main class
 
 ```
 static  String filePath ="com.dozuki.ifixit.apk";
