@@ -1,4 +1,4 @@
-export const listOfDesiredCaps = [
+export const listOfiOSDesiredCaps = [
   // Appium Capabilities
   {name: 'automationName', value: '"XCUITest"', expectedResult: 'passed'},
   {name: 'automationName', value: '"YouiEngine"', expectedResult: 'passed'},
@@ -10,7 +10,7 @@ export const listOfDesiredCaps = [
   {name: 'newCommandTimeout', value: null, expectedResult: 'passed'},
   {name: 'language', value: '"fr"', expectedResult: 'passed'},
   {name: 'language', value: null, expectedResult: 'passed'},
-  {name: 'locale', value: '"fr_CA', expectedResult: 'passed'},
+  {name: 'locale', value: '"fr_CA"', expectedResult: 'passed'},
   {name: 'locale', value: null, expectedResult: 'passed'},
   {name: 'locale', value: '"xyz"', expectedResult: 'failed'},
   {name: 'autoWebview', value: true, expectedResult: 'passed'},
@@ -179,9 +179,115 @@ export const listOfDesiredCaps = [
   {name: 'skipLogCapture', value: null, expectedResult: 'passed'}]
 
   /**
-   * Note: Error capabilities:
+   * Note: Error iOS capabilities:
    * startIWDP: true
    * useSimpleBuildTest: true
    * useXctestrunFile: null
    * useXctestrunFile: false
    */
+
+export const listOfSingleAndroidDesiredCaps = [
+  {name: 'appActivity', value: '"io.appium.android.apis.ApiDemos"', expectedResult: 'passed'},
+  {name: 'appActivity', value: '"io.appium.android."', expectedResult: 'failed'},
+  {name: 'appActivity', value: null, expectedResult: 'passed'},
+  {name: 'appWaitActivity', value: '"SplashActivity"', expectedResult: 'failed'},
+  {name: 'appWaitActivity', value: null, expectedResult: 'passed'},
+  {name: 'appWaitPackage', value: '"com.android.settings"', expectedResult: 'passed'},
+  {name: 'appWaitPackage', value: '"ABC"', expectedResult: 'passed'},
+  {name: 'appWaitPackage', value: null, expectedResult: 'passed'},
+  {name: 'allowTestPackages', value: true, expectedResult: 'passed'},
+  {name: 'allowTestPackages', value: false, expectedResult: 'passed'},
+  {name: 'allowTestPackages', value: '"yes"', expectedResult: 'failed'},
+  {name: 'androidInstallTimeout', value: 10, expectedResult: 'passed'},
+  {name: 'androidInstallTimeout', value: '"ten"', expectedResult: 'passed'},
+  {name: 'androidInstallPath', value: '"/sdcard/Downloads/"', expectedResult: 'passed'},
+  {name: 'androidInstallPath', value: '"/123/456/"', expectedResult: 'passed'},
+  {name: 'androidInstallPath', value: null, expectedResult: 'passed'},
+  {name: 'deviceOrientation', value: '"portrait"', expectedResult: 'passed'},
+  {name: 'deviceOrientation', value: '"landscape"', expectedResult: 'passed'},
+  {name: 'deviceOrientation', value: '"landpor"', expectedResult: 'failed'},
+  {name: 'captureScreenshots', value: true, expectedResult: 'passed'},
+  {name: 'captureScreenshots', value: false, expectedResult: 'passed'},
+  {name: 'captureScreenshots', value: null, expectedResult: 'passed'},
+  {name: 'newCommandTimeout', value: 60, expectedResult: 'passed'},
+  {name: 'newCommandTimeout', value: '"Sixty"', expectedResult: 'passed'},
+  {name: 'useKeystore', value: true, expectedResult: 'passed'},
+  {name: 'useKeystore', value: false, expectedResult: 'passed'},
+  {name: 'useKeystore', value: null, expectedResult: 'passed'},
+  {name: 'deviceReadyTimeout', value: 5, expectedResult: 'passed'},
+  {name: 'deviceReadyTimeout', value: '"five"', expectedResult: 'passed'},
+  {name: 'androidDeviceReadyTimeout', value: 30, expectedResult: 'passed'},
+  {name: 'androidDeviceReadyTimeout', value: '"thirty"', expectedResult: 'passed'},
+  {name: 'skipDeviceInitialization', value: true, expectedResult: 'passed'},
+  {name: 'skipDeviceInitialization', value: false, expectedResult: 'passed'},
+  {name: 'skipDeviceInitialization', value: null, expectedResult: 'passed'},
+  {name: 'disableAndroidWatchers', value: true, expectedResult: 'passed'},
+  {name: 'disableAndroidWatchers', value: false, expectedResult: 'passed'},
+  {name: 'autoGrantPermissions', value: true, expectedResult: 'passed'},
+  {name: 'autoGrantPermissions', value: false, expectedResult: 'passed'},
+  {name: 'enablePerformanceLogging', value: true, expectedResult: 'passed'},
+  {name: 'enablePerformanceLogging', value: false, expectedResult: 'passed'},
+  {name: 'enablePerformanceLogging', value: null, expectedResult: 'passed'},
+  {name: 'printPageSourceOnFindFailure', value: true, expectedResult: 'passed'},
+  {name: 'printPageSourceOnFindFailure', value: false, expectedResult: 'passed'},
+  {name: 'printPageSourceOnFindFailure', value: null, expectedResult: 'passed'},
+  {name: 'autoGrantPermissions', value: null, expectedResult: 'passed'},
+  {name: 'gpsEnabled', value: true, expectedResult: 'passed'},
+  {name: 'gpsEnabled', value: false, expectedResult: 'passed'},
+  {name: 'gpsEnabled', value: null, expectedResult: 'passed'},
+  {name: 'isHeadless', value: true, expectedResult: 'passed'},
+  {name: 'isHeadless', value: false, expectedResult: 'passed'},
+  {name: 'isHeadless', value: null, expectedResult: 'passed'},
+  {name: 'dontStopAppOnReset', value: true, expectedResult: 'passed'},
+  {name: 'dontStopAppOnReset', value: '"yes"', expectedResult: 'failed'},
+  {name: 'autoLaunch', value: true, expectedResult: 'passed'},
+  {name: 'autoLaunch', value: false, expectedResult: 'failed'},
+  {name: 'autoLaunch', value: '"yes"', expectedResult: 'failed'},
+  {name: 'uninstallOtherPackages', value: '"*"', expectedResult: 'passed'},
+  {name: 'automationName', value: '"Espresso"', expectedResult: 'passed'},
+  {name: 'automationName', value: '"UIAutomator"', expectedResult: 'passed'},
+  {name: 'automationName', value: '"Selendroid"', expectedResult: 'passed'},
+  {name: 'automationName', value: '"YouIEngine"', expectedResult: 'passed'},
+  {name: 'automationName', value: '"Appium"', expectedResult: 'passed'}]
+
+export const listOfMultipleAndroidDesiredCaps = [
+  {
+    description: 'appWaitDuration',
+    desiredCaps: {'appWaitDuration': '1000', 'appWaitActivity': 'SplashActivity'},
+    expectedResult: 'failed'
+  },
+  {
+    description: 'UIAutomator2 otherApps',
+    desiredCaps: {'automationName': 'UIAutomator2', 'otherApps': 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/hybrid-app-debug.apk'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'uiautomator2ServerLaunchTimeout = 1000',
+    desiredCaps: {'automationName': 'UIAutomator2', 'otheuiautomator2ServerLaunchTimeoutrApps': '1000'}, // eslint-disable-line max-len
+    expectedResult: 'passed'
+  },
+  {
+    description: 'uiautomator2ServerLaunchTimeout = null',
+    desiredCaps: {'automationName': 'UIAutomator2', 'otheuiautomator2ServerLaunchTimeoutrApps': null}, // eslint-disable-line max-len
+    expectedResult: 'passed'
+  },
+  {
+    description: 'uiautomator2ServerInstallTimeout = 1000',
+    desiredCaps: {'automationName': 'UIAutomator2', 'uiautomator2ServerInstallTimeout': '1000'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'uiautomator2ServerInstallTimeout = null',
+    desiredCaps: {'automationName': 'UIAutomator2', 'uiautomator2ServerInstallTimeout': null},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'skipServerInstallation = true',
+    desiredCaps: {'automationName': 'UIAutomator2', 'skipServerInstallation': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'skipServerInstallation = 123',
+    desiredCaps: {'automationName': 'UIAutomator2', 'skipServerInstallation': '123'},
+    expectedResult: 'passed'
+  }]
