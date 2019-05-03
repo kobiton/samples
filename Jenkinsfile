@@ -11,10 +11,6 @@ pipeline {
     }
   }
 
-  tools {
-    nodejs 'Node 8.x'
-  }
-
   environment {
     NPM_ACCESS_KEY = credentials("npm_access_token")
   }

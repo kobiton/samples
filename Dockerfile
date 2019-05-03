@@ -1,4 +1,4 @@
-FROM node:7.6
+FROM node:8.16.0
 
 # Global install yarn package manager
 RUN apt-get update && apt-get install -y apt-utils curl build-essential apt-transport-https && \
