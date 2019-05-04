@@ -27,13 +27,25 @@ public class Main {
 
         System.out.println("Step 2: Upload file to S3");
 
-        Common. uploadFileToS3(filePath, appURL);
+        Common.uploadFileToS3(filePath, appURL);
 
         System.out.println("Step 3: Create an app or app version");
-        Common. createAnAppOrVersion(fileName, appPath);
+        String appResult = Common.createAnAppOrVersion(fileName, appPath);
 
+        jsonObject =(JsonObject) (new JsonParser()).parse(appResult);
+        int appId = jsonObject.getAsJsonPrimitive("appId").getAsInt();
+        int versionId = jsonObject.getAsJsonPrimitive("versionId").getAsInt();
+
+        System.out.println("Wait for few seconds to sync data");
+        Common.sleep(3000);
+
+        System.out.println("Step 4: Get App Info");
+        Common.getApp(appId);
+        Common.getAppVersion(versionId);
         Common.getApps();
+
+        System.out.println("Step 5: Remove App");
+//        Common.deleteAppVersion(versionId);
+//        Common.deleteApp(appId);
     }
-
-
 }
