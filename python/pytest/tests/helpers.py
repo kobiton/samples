@@ -1,5 +1,5 @@
 DESIRED_CAPS_ANDROID_WEB = {
-  'sessionName': 		'[Python] Android web',
+  'sessionName':        '[Python] Android web',
   'sessionDescription': 'This is an example for Android web testing',
   'browserName':        'chrome',
   'deviceGroup':        'KOBITON',
@@ -9,11 +9,11 @@ DESIRED_CAPS_ANDROID_WEB = {
 }
 
 DESIRED_CAPS_ANDROID_APP = {
-  'sessionName': 		'[Python] Android app',
+  'sessionName':        '[Python] Android app',
   'sessionDescription': 'This is an example for Android app testing',
   'app':                'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/ContactManager.apk',
-  'appPackage': 		'com.example.android.contactmanager',
-  'appActivity': 		'.ContactManager',
+  'appPackage':         'com.example.android.contactmanager',
+  'appActivity':        '.ContactManager',
   'deviceGroup':        'KOBITON',
   'deviceName':         'Galaxy*',
   'platformName':       'Android',
@@ -21,7 +21,7 @@ DESIRED_CAPS_ANDROID_APP = {
 }
 
 DESIRED_CAPS_IOS_WEB = {
-  'sessionName': 		'[Python] iOS web',
+  'sessionName':        '[Python] iOS web',
   'sessionDescription': 'This is an example for iOS web testing',
   'browserName':        'safari', 
   'deviceGroup':        'KOBITON',
@@ -31,7 +31,7 @@ DESIRED_CAPS_IOS_WEB = {
 }
 
 DESIRED_CAPS_IOS_APP = {
-  'sessionName': 		'[Python] iOS app',
+  'sessionName':        '[Python] iOS app',
   'sessionDescription': 'This is an example for iOS app testing',
   'app':                'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa',
   'deviceGroup':        'KOBITON',
