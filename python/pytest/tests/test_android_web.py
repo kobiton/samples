@@ -3,7 +3,6 @@ import pytest
 
 from appium import webdriver
 from helpers import DESIRED_CAPS_ANDROID_WEB
-from selenium.common.exceptions import InvalidSessionIdException
 
 class TestAndroidWeb():
 
