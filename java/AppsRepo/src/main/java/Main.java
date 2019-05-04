@@ -11,7 +11,7 @@ import java.net.URLConnection;
 public class Main {
 
     static  String filePath ="com.dozuki.ifixit.apk";
-    static  String fileName ="iFixit";
+    static  String fileName ="iFixit.apk";
 
     public static void main(String[] args) {
 
@@ -19,7 +19,10 @@ public class Main {
         Common.downloadFile("https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk", "com.dozuki.ifixit.apk");
         System.out.println("Step 1: Generate Upload URL");
 
-        String jsonData = Common.generateUploadURL(filePath);
+        File file = new File(filePath);
+        filePath = file.getAbsolutePath();
+
+        String jsonData = Common.generateUploadURL(fileName);
         JsonObject jsonObject =(JsonObject) (new JsonParser()).parse(jsonData);
 
         String appPath = jsonObject.getAsJsonPrimitive("appPath").getAsString();
