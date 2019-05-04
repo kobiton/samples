@@ -19,10 +19,16 @@ public class Common {
         return "Basic " + authStringEnc;
     }
 
-    public static void createAnAppOrVersion(String filename, String appPath) {
+    public static String createAnAppOrVersion(String appPath) {
+        return createAnAppOrVersion("", appPath);
+    }
+
+    public static String createAnAppOrVersion(String filename, String appPath) {
         try {
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("filename", filename);
+            if (filename != null && filename.length() > 0) {
+                jsonObject.addProperty("filename", filename);
+            }
             jsonObject.addProperty("appPath", appPath);
 
             URL uri = new URL("https://api.kobiton.com/v1/apps");
@@ -53,12 +59,15 @@ public class Common {
             }
 
             in.close();
-            System.out.println("createAnAppOrVersion: " + response.toString());
-
             con.disconnect();
+
+            System.out.println("createAnAppOrVersion: " + response.toString());
+            return response.toString();
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
+
+        return "";
     }
 
     public static String generateUploadURL(String filePath) {
@@ -100,6 +109,10 @@ public class Common {
         }
     }
 
+    static String getFileSizeBytes(File file) {
+        return file.length() + " bytes";
+    }
+
     public static void uploadFileToS3(String filePath, String presignedUrl) {
         try {
             URLConnection urlconnection = null;
@@ -107,25 +120,27 @@ public class Common {
             URL url = new URL(presignedUrl);
 
             urlconnection = url.openConnection();
+            urlconnection.setUseCaches(false);
             urlconnection.setDoOutput(true);
             urlconnection.setDoInput(true);
 
             if (urlconnection instanceof HttpURLConnection) {
                 ((HttpURLConnection) urlconnection).setRequestMethod("PUT");
-                ((HttpURLConnection) urlconnection).setRequestProperty("Content-type", "application/octet-stream");
+                ((HttpURLConnection) urlconnection).setRequestProperty("Content-Type", "application/octet-stream");
                 ((HttpURLConnection) urlconnection).setRequestProperty("x-amz-tagging", "unsaved=true");
+                ((HttpURLConnection) urlconnection).setRequestProperty("Content-Length", getFileSizeBytes(appFile));
                 ((HttpURLConnection) urlconnection).connect();
             }
 
             BufferedOutputStream bos = new BufferedOutputStream(urlconnection.getOutputStream());
             FileInputStream bis = new FileInputStream(appFile);
+            System.out.println("Total file size to read (in bytes) : " + bis.available());
             int i;
             while ((i = bis.read()) != -1) {
                 bos.write(i);
             }
+            bos.close();
             bis.close();
-
-            System.out.println("uploadFileToS3:" + ((HttpURLConnection) urlconnection).getResponseMessage());
 
             InputStream inputStream;
             int responseCode = ((HttpURLConnection) urlconnection).getResponseCode();
@@ -140,6 +155,7 @@ public class Common {
                 inputStream = ((HttpURLConnection) urlconnection).getErrorStream();
             }
             ((HttpURLConnection) urlconnection).disconnect();
+            System.out.println("uploadFileToS3: " + ((HttpURLConnection) urlconnection).getResponseMessage());
 
         } catch (Exception ex) {
             System.out.println(ex.toString());
@@ -195,6 +211,7 @@ public class Common {
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", generateBasicAuth());
             int responseCode = con.getResponseCode();
+
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
             String inputLine;
@@ -203,7 +220,7 @@ public class Common {
                 response.append(inputLine);
             }
             in.close();
-            System.out.println(response.toString());
+            System.out.println("getApp: " + response.toString());
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
@@ -224,7 +241,7 @@ public class Common {
                 response.append(inputLine);
             }
             in.close();
-            System.out.println(response.toString());
+            System.out.println("getAppVersion: " + response.toString());
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
@@ -245,12 +262,11 @@ public class Common {
                 response.append(inputLine);
             }
             in.close();
-            System.out.println(response.toString());
+            System.out.println("getApps: " + response.toString());
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
     }
-
 
     public static void downloadFile(final String urlString, final String filename) {
         BufferedInputStream in = null;
@@ -274,6 +290,15 @@ public class Common {
         } catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    public static void sleep(int milliseconds){
+        try{
+            Thread.sleep(milliseconds);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+
     }
 
 }
