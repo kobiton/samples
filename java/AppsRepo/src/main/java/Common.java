@@ -71,10 +71,17 @@ public class Common {
     }
 
     public static String generateUploadURL(String filePath) {
+        return generateUploadURL(filePath, 0);
+    }
+    
+    public static String generateUploadURL(String filePath, int appId) {
         try {
 
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("filename", filePath);
+            if (appId != 0) {
+                jsonObject.addProperty("appId", appId);
+            }
 
             URL obj = new URL("https://api.kobiton.com/v1/apps/uploadUrl");
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
