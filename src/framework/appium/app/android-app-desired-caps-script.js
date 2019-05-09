@@ -1,5 +1,4 @@
 import {createServerConfig} from '../../appium/helper'
-import {assert} from 'chai'
 import wd from 'wd'
 
 const waitingTime = 60000
@@ -14,18 +13,12 @@ export async function excuteAndroidAppDesiredCapsScript(desiredCap) {
     const server = await createServerConfig()
     driver = await wd.promiseChainRemote(server)
     await driver.init(desiredCap)
-    await driver.elementByClassName('android.widget.TextView', waitingTime)
-      .text().then(function (text) {
-        assert.equal(text.toLocaleLowerCase(), 'api demos')
-      })
+      .elementByClassName('android.widget.TextView', waitingTime)
+      .quit()
   }
   catch (err) {
-    return err.message
+    return err
   }
-  finally {
-    if (driver !== null) {
-      await driver.quit()
-    }
-  }
+  
   return null
 }

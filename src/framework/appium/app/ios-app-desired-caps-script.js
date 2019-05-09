@@ -13,15 +13,13 @@ export async function excuteiOSAppDesiredCapsScript(desiredCap) {
     const server = await createServerConfig()
     driver = await wd.promiseChainRemote(server)
     await driver.init(desiredCap)
-    await driver
       .waitForElementByXPath('//*[@name="UIKitCatalog"]', waitingTime)
       .click()
+      .quit()
   }
   catch (err) {
-    return err.message
+    return err
   }
-  finally {
-    await driver.quit()
-  }
+  
   return null
 }
