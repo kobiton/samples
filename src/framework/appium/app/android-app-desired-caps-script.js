@@ -1,5 +1,6 @@
 import {createServerConfig} from '../../appium/helper'
 import {assert} from 'chai'
+import {debug} from '@kobiton/core-util'
 import wd from 'wd'
 
 const waitingTime = 60000
@@ -15,15 +16,22 @@ export async function excuteAndroidAppDesiredCapsScript(desiredCap) {
     driver = await wd.promiseChainRemote(server)
     await driver.init(desiredCap)
     await driver.elementByClassName('android.widget.TextView', waitingTime)
-    .text().then(function (text) {
-      assert.equal(text.toLocaleLowerCase(), 'api demos')
-    })
+      .text().then(function (text) {
+        assert.equal(text.toLocaleLowerCase(), 'api demos')
+      })
   }
   catch (err) {
     return err.message
   }
   finally {
-    await driver.quit()
+    if (driver !== null) {
+      try {
+        await driver.quit()
+      }
+      catch (err) {
+        debug.error(`quit driver: ${err}`)
+      }
+    }
   }
   return null
 }
