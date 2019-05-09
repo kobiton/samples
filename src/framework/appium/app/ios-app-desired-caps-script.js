@@ -1,4 +1,3 @@
-import moment from 'moment'
 import {createServerConfig} from '../../appium/helper'
 import wd from 'wd'
 
@@ -8,23 +7,15 @@ export const uiKitCatalogApp = {
   bundleId: 'com.example.apple-samplecode.UIKitCatalog'
 }
 
-export async function excuteiOSAppDesiredCapsScript(desiredCap, expectedDuration) {
-  let duration = 0
-  let startedAt, endedAt
+export async function excuteiOSAppDesiredCapsScript(desiredCap) {
   let driver
   try {
-    startedAt = moment.utc()
     const server = await createServerConfig()
     driver = await wd.promiseChainRemote(server)
     await driver.init(desiredCap)
-    do {
-      await driver // eslint-disable-line babel/no-await-in-loop
-        .waitForElementByXPath('//*[@name="UIKitCatalog"]', waitingTime)
-        .click()
-
-      endedAt = moment.utc()
-      duration = endedAt.diff(startedAt, 'seconds')
-    } while (duration < expectedDuration)
+    await driver
+      .waitForElementByXPath('//*[@name="UIKitCatalog"]', waitingTime)
+      .click()
   }
   catch (err) {
     return err.message

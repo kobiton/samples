@@ -1,4 +1,3 @@
-import moment from 'moment'
 import faker from 'faker'
 
 const elements = {
@@ -14,10 +13,7 @@ export default class DesiredCapsTestPage {
     this._desiredCapabilities = desiredCapabilities
   }
 
-  async executeTest(expectedDurationInSeconds) {
-    let duration = 0
-    const startedAt = moment.utc()
-    
+  async executeTest() {
     try {
       await this._browser
         .init()
@@ -37,16 +33,12 @@ export default class DesiredCapsTestPage {
         .url(elements.url)
         .getUrl()
 
-      do {
-        const word = faker.lorem.word()
-        await this._browser // eslint-disable-line babel/no-await-in-loop
-          .waitForExist(elements.emailInput, this._timeout)
-          .waitForVisible(elements.emailInput, this._timeout)
-          .setValue(elements.emailInput, word)
-          .setValue(elements.passwordInput, word)
-        const endedAt = moment.utc()
-        duration = endedAt.diff(startedAt, 'seconds')
-      } while (duration < expectedDurationInSeconds)
+      const word = faker.lorem.word()
+      await this._browser // eslint-disable-line babel/no-await-in-loop
+        .waitForExist(elements.emailInput, this._timeout)
+        .waitForVisible(elements.emailInput, this._timeout)
+        .setValue(elements.emailInput, word)
+        .setValue(elements.passwordInput, word)
     }
     catch (err) {
       return err.message

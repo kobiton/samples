@@ -3,11 +3,10 @@ import moment from 'moment'
 import Device from '../../../../framework/api/device'
 import {convertToDesiredCapabilitiesApp} from '../../../../framework/appium/helper'
 import BPromise from 'bluebird'
-import {listOfDesiredCaps} from './data'
+import {listOfiOSDesiredCaps} from './data'
 //eslint-disable-next-line
 import {excuteiOSAppDesiredCapsScript, uiKitCatalogApp} from '../../../../framework/appium/app/ios-app-desired-caps-script'
 
-const duration = 60 // seconds
 const timestamps = moment().format('YYYYMMDDHHmmss')
 let onlineiOSDevices = []
 let onlineCaps = []
@@ -16,7 +15,7 @@ let result
 let newDesiredCap
 
 setTimeout(async () => {
-  await testSingleDesiredCap(listOfDesiredCaps)
+  await testSingleDesiredCap(listOfiOSDesiredCaps)
   run()
 }, 1000)
 
@@ -31,17 +30,17 @@ async function getOnlineDesiredCap() {
   return onlineCaps[0]
 }
 
-async function testSingleDesiredCap(listOfDesiredCaps) {
-  await BPromise.mapSeries(listOfDesiredCaps, async(listOfDesiredCaps) => {
+async function testSingleDesiredCap(listOfiOSDesiredCaps) {
+  await BPromise.mapSeries(listOfiOSDesiredCaps, async(listOfiOSDesiredCaps) => {
     // eslint-disable-next-line max-len
-    it(`{"${listOfDesiredCaps.name}": ${listOfDesiredCaps.value} expected result ${listOfDesiredCaps.expectedResult}`, async () => {
+    it(`{"${listOfiOSDesiredCaps.name}": ${listOfiOSDesiredCaps.value} expected result ${listOfiOSDesiredCaps.expectedResult}`, async () => {
       desiredCap = await getOnlineDesiredCap()
-      newDesiredCap = `{"${listOfDesiredCaps.name}": ${listOfDesiredCaps.value}}`
+      newDesiredCap = `{"${listOfiOSDesiredCaps.name}": ${listOfiOSDesiredCaps.value}}`
       const cloneObj = {...desiredCap}
       desiredCap = Object.assign(cloneObj, JSON.parse(newDesiredCap))
-      result = await excuteiOSAppDesiredCapsScript(desiredCap, duration)
+      result = await excuteiOSAppDesiredCapsScript(desiredCap)
       const state = (result) ? 'failed' : 'passed'
-      assert.equal(state, listOfDesiredCaps.expectedResult, result)
+      assert.equal(state, listOfiOSDesiredCaps.expectedResult, result)
     })
   })
 }

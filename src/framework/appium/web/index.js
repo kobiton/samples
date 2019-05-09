@@ -35,7 +35,7 @@ export async function executeMailinatorPageTest({desiredCapabilities, timeout}) 
 export async function executeDesiredCapsTestPage({desiredCapabilities, timeout}) {
   const browser = webdriverio.remote({desiredCapabilities, ...server})
   const desiredCapsTestPage = new DesiredCapsTestPage(browser, timeout, desiredCapabilities)
-  return await desiredCapsTestPage.executeTest(duration)
+  return await desiredCapsTestPage.executeTest()
 }
 
 export async function
