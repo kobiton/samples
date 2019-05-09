@@ -1,6 +1,5 @@
 import {createServerConfig} from '../../appium/helper'
 import {assert} from 'chai'
-import {debug} from '@kobiton/core-util'
 import wd from 'wd'
 
 const waitingTime = 60000
@@ -25,12 +24,7 @@ export async function excuteAndroidAppDesiredCapsScript(desiredCap) {
   }
   finally {
     if (driver !== null) {
-      try {
-        await driver.quit()
-      }
-      catch (err) {
-        debug.error(`quit driver: ${err}`)
-      }
+      await driver.quit()
     }
   }
   return null
