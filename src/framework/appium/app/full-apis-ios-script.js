@@ -187,4 +187,3 @@ unsupported api
   .doubleClick()
   .flick()
   **/
- 
