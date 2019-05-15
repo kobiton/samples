@@ -34,6 +34,17 @@ export default class Base {
     this._token = newToken
   }
 
+  /**
+   * Return a custom Bearer header with prepared token.
+   * @param {String} token - Generated from username and password
+   */
+  customBearerHeaders(token) {
+    return {
+      'authorization': `Bearer ${token}`,
+      'content-type': 'application/json'
+    }
+  }
+
   _getAbsoluteUrl(path) {
     const pageUrl = this._baseUrl ? this._baseUrl : config.apiUrl
     return `${pageUrl}/v1/${removeSlash(path)}`
@@ -73,7 +84,7 @@ export default class Base {
   async getBearerToken(username, password) {
     const res = await this.login(username, password)
     return res.token
-
+    
   }
 
   async get(options = {}) {

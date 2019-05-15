@@ -102,6 +102,29 @@ class APIData extends BaseData {
   getFormatsSubscription() {
     return formatsSubscription
   }
+
+  generateInvalidEmails() {
+    return [
+      'plainaddress',
+      '#@%^%#$@#$@#.com',
+      '@example.com',
+      'Joe Smith <email@example.com>',
+      'email.example.com',
+      'email@example@example.com',
+      '.email@example.com',
+      'email.@example.com',
+      'email..email@example.com',
+      'あいうえお@0-mail.com',
+      'email@example.com (Joe Smith)',
+      'email@example',
+      'email@-example.com',
+      'email@111.222.333.44444',
+      'email@example..com',
+      'Abc..123@example.com',
+      '”(),:;<>[]@example.com',
+      'this is"really"notallowed@example.com'
+    ]
+  }
 }
 
 export default new APIData()
