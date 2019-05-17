@@ -17,8 +17,8 @@ let result
 
 setTimeout(async () => {
   debug.log('Test android web desired capability')
-  await testSingleDesiredCap(data.listOfSingleDesiredCaps)
-  await testMultipleDesiredCap(data.listOfMultipleDesiredCaps)
+  await testSingleDesiredCap(data.listOfSingleAndroidDesiredCaps)
+  await testMultipleDesiredCap(data.listOfMultipleAndroidDesiredCaps)
   run()
 }, 1000)
 
@@ -29,8 +29,8 @@ async function getOnlineDesiredCap() {
   return onlineCaps[0]
 }
 
-async function testSingleDesiredCap(listOfSingleDesiredCaps) {
-  await BPromise.mapSeries(listOfSingleDesiredCaps, async(listDesiredCap) => {
+async function testSingleDesiredCap(listOfSingleAndroidDesiredCaps) {
+  await BPromise.mapSeries(listOfSingleAndroidDesiredCaps, async(listDesiredCap) => {
     // eslint-disable-next-line max-len
     it(`{"${listDesiredCap.name}": ${listDesiredCap.value}} expected result ${listDesiredCap.expectedResult}`, async () => {
       desiredCap = await getOnlineDesiredCap()
@@ -43,8 +43,8 @@ async function testSingleDesiredCap(listOfSingleDesiredCaps) {
   })
 }
 
-async function testMultipleDesiredCap(listOfMultipleDesiredCaps) {
-  await BPromise.mapSeries(listOfMultipleDesiredCaps, async(listDesiredCap) => {
+async function testMultipleDesiredCap(listOfMultipleAndroidDesiredCaps) {
+  await BPromise.mapSeries(listOfMultipleAndroidDesiredCaps, async(listDesiredCap) => {
     // eslint-disable-next-line max-len
     it(`${listDesiredCap.description} expected result ${listDesiredCap.expectedResult}`, async () => {
       desiredCap = await getOnlineDesiredCap()
