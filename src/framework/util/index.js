@@ -65,6 +65,16 @@ export function generateRandomText(length = 100) {
 }
 
 /**
+ * Return a random item of list.
+ * @param {Array} items -  List items
+ */
+export function getRandomItems(items) {
+  const index = Math.floor(Math.random() * items.length)
+  const item = items[index]
+  return item
+}
+
+/**
 * Create a folder to save files into it
 * @param folderPath {string} The folder path
 */
