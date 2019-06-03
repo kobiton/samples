@@ -34,7 +34,21 @@ export async function androidNativeAppScript(timestamps, onlineDevice, expectedD
         .elementByXPath("//android.widget.TextView[@content-desc='Bouncing Balls']")
         .click()
         .sleep(5000)
-
+        .back()
+        .back()
+        .flick(10, getHeight/-2, 200)
+        .waitForElementByXPath("//android.widget.TextView[@content-desc='Views']")
+        .click()
+        .sleep(5000)
+        .element('xpath', "//android.widget.TextView[@content-desc='Controls']")
+        .flick(10, getHeight/-2, 200)
+        .flick(10, getHeight/-2, 200)
+        .waitForElementByXPath("//android.widget.TextView[@content-desc='WebView']")
+        .click()
+        .sleep(2000)
+        .contexts()
+        .context('WEBVIEW_io.appium.android.apis')
+        .context('NATIVE_APP')
     do {
 
       const xSpeed = getRandomInt(0, getHeight)
