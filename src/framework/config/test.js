@@ -24,7 +24,7 @@ for (const envName of envVariablesToCheck) {
   }
 }
 
-const apiUrl = removeSlash(process.env.KOBITON_API_URL)
+const apiUrl = removeSlash(process.env.KOBITON_API_URL) || 'LOCAL'
 const defaultAutoTestHostName = Url.parse(apiUrl).hostname
 const defaultAutoTestPort = ((Url.parse(apiUrl).port === 443) ? 80 : Url.parse(apiUrl).port) || 80
 
@@ -86,12 +86,18 @@ const parsedUrl = Url.parse(apiUrl)
 config.autoTestHostname = parsedUrl.hostname
 config.autoTestPort = (parsedUrl.protocol === 'https' ? 80 : parsedUrl.port) || 80
 
-let environment = 'PRODUCTION'
-if (config.autoTestHostname.includes('-staging')) {
+let environment
+if (config.apiUrl.includes('-staging')) {
   environment = 'STAGING'
 }
-else if (config.autoTestHostname.includes('-test')) {
+else if (config.apiUrl.includes('-test')) {
   environment = 'TEST'
+}
+else if (config.apiUrl === 'https://api.kobiton.com') {
+  environment = 'PRODUCTION'
+}
+else {
+  environment = 'LOCAL'
 }
 config.environment = environment
 

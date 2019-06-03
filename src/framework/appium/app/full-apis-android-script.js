@@ -1,9 +1,10 @@
 import moment from 'moment'
 import {debug} from '@kobiton/core-util'
 import {errorToJSON} from '../../util'
-import * as logger from '../../../framework/common/logger'
-import {createDriver, quitDriver} from '../../appium/driver'
-import {convertToDesiredCapabilitiesApp} from '../../appium/helper'
+import * as logger from '../../common/logger'
+import {createDriver, quitDriver} from '../driver'
+import {convertToDesiredCapabilitiesApp, convertToLocalDesiredCapabilitiesApp} from '../helper'
+import config from '../../config/test'
 
 const waitingTime = 60000
 const apiDemoDebugApp = {
@@ -11,17 +12,29 @@ const apiDemoDebugApp = {
   appPackage: 'io.appium.android.apis',
   appActivity: '.ApiDemos'
 }
+const isRunningLocalhost = (config.environment === 'LOCAL')
 
 export async function fullApisAndroidScript(timestamps, onlineDevice, expectedDuration) {
-  const desiredCap = convertToDesiredCapabilitiesApp(
+  let desiredCap
+  if (isRunningLocalhost) {
+    desiredCap = convertToLocalDesiredCapabilitiesApp(apiDemoDebugApp, onlineDevice)
+  }
+  else {
+    desiredCap = convertToDesiredCapabilitiesApp(
     timestamps, apiDemoDebugApp, onlineDevice)
+  }
   let driver
   let duration = 0
   let startedAt, endedAt
   try {
     startedAt = moment.utc()
-    desiredCap[0].automationName = 'Appium' // https://github.com/appium/appium-uiautomator2-server/pull/235
-    driver = await createDriver(desiredCap[0])
+    if (!isRunningLocalhost) {
+      desiredCap[0].automationName = 'Appium' // https://github.com/appium/appium-uiautomator2-server/pull/235
+      driver = await createDriver(desiredCap[0])
+    }
+    else {
+      driver = await createDriver(desiredCap)
+    }
     do {
       await driver // eslint-disable-line babel/no-await-in-loop
         .waitForElementByXPath("//android.widget.TextView[@content-desc='App']", waitingTime)
@@ -136,7 +149,7 @@ export async function fullApisAndroidScript(timestamps, onlineDevice, expectedDu
         .setGeoLocation(10, 10, 10)
         .getGeoLocation()
         .configureHttp(10)
-        .isAppInstalledOnDevice('io.appium.android.apis') 
+        .isAppInstalledOnDevice('io.appium.android.apis')
         .removeAppFromDevice('io.appium.android.apis')
 
       endedAt = moment.utc()

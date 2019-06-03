@@ -3,24 +3,37 @@ import {debug} from '@kobiton/core-util'
 import {errorToJSON} from '../../util'
 import * as logger from '../../../framework/common/logger'
 import {createDriver, quitDriver} from '../../appium/driver'
-import {convertToDesiredCapabilitiesApp} from '../../appium/helper'
+import {convertToDesiredCapabilitiesApp, convertToLocalDesiredCapabilitiesApp} from '../helper'
 import wd from 'wd'
+import config from '../../config/test'
 
 const waitingTime = 60000
 const uiKitCatalogApp = {
   app: 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/UIKitCatalog-Test-Adhoc.ipa',
   bundleId: 'com.example.apple-samplecode.UIKitCatalog'
 }
+let isRunningLocalhost
+isRunningLocalhost = (config.environment === 'LOCAL')
 
 export async function fullApisIosScript(timestamps, onlineDevice, expectedDuration) {
-  const desiredCap = convertToDesiredCapabilitiesApp(
-    timestamps, uiKitCatalogApp, onlineDevice)
+  let desiredCap
+  if (isRunningLocalhost) {
+    desiredCap = convertToLocalDesiredCapabilitiesApp(uiKitCatalogApp, onlineDevice)
+  }
+  else {
+    desiredCap = convertToDesiredCapabilitiesApp(timestamps, uiKitCatalogApp, onlineDevice)
+  }
   let driver
   let duration = 0
   let startedAt, endedAt
   try {
     startedAt = moment.utc()
-    driver = await createDriver(desiredCap[0])
+    if (!isRunningLocalhost) {
+      driver = await createDriver(desiredCap[0])
+    }
+    else {
+      driver = await createDriver(desiredCap)
+    }
     do {
       // eslint-disable-next-line babel/no-await-in-loop
       const action = new wd.TouchAction(await driver)

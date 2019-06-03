@@ -7,11 +7,21 @@ import BPromise from 'bluebird'
 import config from '../../config/test'
 
 const duration = config.expectedDurationInMinutes * 60
-const server = {
-  host: config.autoTestHostname,
-  port: config.autoTestPort,
-  user: config.username1,
-  key: config.apiKey
+let server
+if (config.environment === 'LOCAL') {
+  server = {
+    protocol: 'http',
+    host: '127.0.0.1',
+    port: 4723
+  }
+}
+else {
+  server = {
+    host: config.autoTestHostname,
+    port: config.autoTestPort,
+    user: config.username1,
+    key: config.apiKey
+  }
 }
 
 export async function executeDesiredCapabilitiesTest({desiredCapabilities, timeout}) {

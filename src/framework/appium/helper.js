@@ -29,7 +29,13 @@ export function convertToDesiredCapabilities(timestamp, devices, {
     })
 }
 
-export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
+export function convertToLocalDesiredCapabilitiesApp(appInfo, device) {
+  const deviceName = '*'
+  const platformName = device[0].platformName
+  return {...appInfo, deviceName, platformName}
+}
+
+export function convertToDesiredCapabilitiesApp(timestamp, appInfo, devices, {
   deviceOrientation = config.device.orientation,
   captureScreenshots = config.device.captureScreenshots,
   automationName = config.device.automationName
@@ -44,7 +50,7 @@ export function convertToDesiredCapabilitiesApp(timestamp, appInfor, devices, {
       }
       const sessionName = `${timestamp} - Auto app on ${d.udid}`
       const sessionDescription = `Auto app session on device ${d.deviceName}`
-      const desiredCapApp = Object.assign(appInfor, desiredCapFields)
+      const desiredCapApp = Object.assign(appInfo, desiredCapFields)
 
       if (d.platformName === 'Android' && automationName.toUpperCase() === 'UIAUTOMATOR2' &&
        d.platformVersion.split('.')[0] >= 5) {
@@ -64,7 +70,7 @@ export async function getOnlineCaps() {
   return convertToDesiredCapabilities(timestamps, devices)
 }
 
-function getDefaultBrowserBy(platformName) {
+export function getDefaultBrowserBy(platformName) {
   let browserName
   if (platformName) {
     switch (platformName.toLowerCase()) {
@@ -105,6 +111,13 @@ export async function getApiKey() {
 }
 
 export async function createServerConfig() {
+  if (config.environment === 'LOCAL') {
+    return {
+      protocol: 'http',
+      host: '127.0.0.1',
+      port: 4723
+    }
+  }
   return {
     host: config.autoTestHostname,
     auth: `${config.username1}:${config.apiKey}`,

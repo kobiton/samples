@@ -21,7 +21,6 @@ export async function androidNativeAppScript(timestamps, onlineDevice, expectedD
     startedAt = moment.utc()
     desiredCap[0].automationName = 'Appium' // https://github.com/appium/appium-uiautomator2-server/pull/235
     driver = await createDriver(desiredCap[0])
-
     const getWindowSize = await driver.getWindowSize()
     const getHeight = getWindowSize.height
     const getWidth = getWindowSize.width

@@ -25,7 +25,7 @@ export default class KatalonDemoCuraPage {
       await this._browser
         .init()
       
-      const sessionInfo = await this._browser.session()
+      const sessionInfo = await this._browser.session() 
       debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
       if (this._desiredCapabilities.platformName === 'iOS') {

@@ -114,8 +114,12 @@ Append argument: --platformVersion <version>
   ```bash
     yarn run test --input /console/appium/web/test-jsonwired-api.js --platformName Android
     yarn run test --input /console/appium/web/test-jsonwired-api.js --platformName iOS
+    yarn run test --input /console/appium/web/test-jsonwired-api-localhost.js --platformName Android
+    yarn run test --input /console/appium/web/test-jsonwired-api-localhost.js --platformName iOS
     yarn run test --input /console/appium/app/test-app.js --type android_full_apis
     yarn run test --input /console/appium/app/test-app.js --type ios_full_apis
+    yarn run test --input /console/appium/app/test-app-localhost.js --type android_full_apis
+    yarn run test --input /console/appium/app/test-app-localhost.js --type ios_full_apis
   ```
 
 ##### Test web with devices parallel
