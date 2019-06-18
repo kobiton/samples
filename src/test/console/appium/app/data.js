@@ -1,4 +1,4 @@
-export const listOfiOSDesiredCaps = [
+export const listOfSingleiOSDesiredCaps = [
   // Appium Capabilities
   {name: 'automationName', value: '"XCUITest"', expectedResult: 'passed'},
   {name: 'automationName', value: '"YouiEngine"', expectedResult: 'passed'},
@@ -41,7 +41,6 @@ export const listOfiOSDesiredCaps = [
   {name: 'udid', value: null, expectedResult: 'passed'},
   {name: 'udid', value: '"ABC"', expectedResult: 'failed'},
   {name: 'launchTimeout', value: 20000, expectedResult: 'passed'},
-  {name: 'launchTimeout', value: 'Three thousand', expectedResult: 'passed'},
   {name: 'locationServicesEnabled', value: true, expectedResult: 'passed'},
   {name: 'locationServicesEnabled', value: false, expectedResult: 'passed'},
   {name: 'locationServicesEnabled', value: null, expectedResult: 'passed'},
@@ -76,115 +75,270 @@ export const listOfiOSDesiredCaps = [
   {name: 'appName', value: '"UICatalog"', expectedResult: 'passed'},
   {name: 'appName', value: 123, expectedResult: 'failed'},
   {name: 'enableAsyncExecuteFromHttps', value: true, expectedResult: 'passed'},
-  {name: 'enableAsyncExecuteFromHttps', value: false, expectedResult: 'passed'},
-  // WebDriverAgent Desired Capabilities
-  {name: 'xcodeOrgId', value: '"iPhone Developer"', expectedResult: 'passed'},
-  {name: 'xcodeOrgId', value: null, expectedResult: 'passed'},
-  {name: 'xcodeSigningId', value: '"iPhone Developer"', expectedResult: 'passed'},
-  {name: 'xcodeSigningId', value: null, expectedResult: 'passed'},
-  {name: 'xcodeConfigFile', value: '"iPhone Developer"', expectedResult: 'passed'},
-  {name: 'xcodeConfigFile', value: null, expectedResult: 'passed'},
-  // eslint-disable-next-line max-len
-  {name: 'updatedWDABundleId', value: '"io.appium.WebDriverAgentRunner"', expectedResult: 'passed'},
-  {name: 'updatedWDABundleId', value: null, expectedResult: 'passed'},
-  {name: 'keychainPath', value: '"/path/to/MyPrivateKey.p12"', expectedResult: 'passed'},
-  {name: 'keychainPath', value: null, expectedResult: 'passed'},
-  {name: 'derivedDataPath', value: '"/path/to/MyData"', expectedResult: 'passed'},
-  {name: 'derivedDataPath', value: null, expectedResult: 'passed'},
-  {name: 'preventWDAAttachments', value: true, expectedResult: 'passed'},
-  {name: 'preventWDAAttachments', value: false, expectedResult: 'passed'},
-  {name: 'preventWDAAttachments', value: null, expectedResult: 'passed'},
-  {name: 'webDriverAgentUrl', value: null, expectedResult: 'passed'},
-  {name: 'webDriverAgentUrl', value: '"invalidate"', expectedResult: 'passed'},
-  {name: 'useNewWDA', value: true, expectedResult: 'passed'},
-  {name: 'useNewWDA', value: false, expectedResult: 'passed'},
-  {name: 'useNewWDA', value: null, expectedResult: 'passed'},
-  {name: 'wdaLaunchTimeout', value: 30000, expectedResult: 'passed'},
-  {name: 'wdaLaunchTimeout', value: null, expectedResult: 'passed'},
-  {name: 'wdaConnectionTimeout', value: 180000, expectedResult: 'passed'},
-  {name: 'wdaConnectionTimeout', value: null, expectedResult: 'passed'},
-  {name: 'wdaStartupRetries', value: 2, expectedResult: 'passed'},
-  {name: 'wdaStartupRetries', value: null, expectedResult: 'passed'},
-  {name: 'wdaStartupRetries', value: '"Three"', expectedResult: 'failed'},
-  {name: 'wdaStartupRetryInterval', value: 20000, expectedResult: 'passed'},
-  {name: 'wdaStartupRetryInterval', value: null, expectedResult: 'passed'},
-  {name: 'wdaStartupRetryInterval', value: '"ten"', expectedResult: 'failed'},
-  {name: 'wdaLocalPort', value: 8100, expectedResult: 'passed'},
-  {name: 'wdaLocalPort', value: null, expectedResult: 'passed'},
-  {name: 'wdaLocalPort', value: '"8100"', expectedResult: 'passed'},
-  {name: 'showXcodeLog', value: true, expectedResult: 'passed'},
-  {name: 'showXcodeLog', value: false, expectedResult: 'passed'},
-  {name: 'showXcodeLog', value: null, expectedResult: 'passed'},
-  {name: 'iosInstallPause', value: 8000, expectedResult: 'passed'},
-  {name: 'iosInstallPause', value: '"8000"', expectedResult: 'failed'},
-  {name: 'iosInstallPause', value: null, expectedResult: 'passed'},
-  {name: 'usePrebuiltWDA', value: false, expectedResult: 'passed'},
-  {name: 'usePrebuiltWDA', value: true, expectedResult: 'passed'},
-  {name: 'usePrebuiltWDA', value: null, expectedResult: 'passed'},
-  {name: 'useCarthageSsl', value: false, expectedResult: 'passed'},
-  {name: 'useCarthageSsl', value: true, expectedResult: 'passed'},
-  {name: 'useCarthageSsl', value: null, expectedResult: 'passed'},
-  {name: 'shouldUseSingletonTestManager', value: false, expectedResult: 'passed'},
-  {name: 'shouldUseSingletonTestManager', value: true, expectedResult: 'passed'},
-  {name: 'shouldUseSingletonTestManager', value: null, expectedResult: 'passed'},
-  {name: 'useXctestrunFile', value: false, expectedResult: 'passed'},
-  {name: 'useXctestrunFile', value: true, expectedResult: 'passed'},
-  {name: 'useXctestrunFile', value: null, expectedResult: 'passed'},
-  {name: 'useSimpleBuildTest', value: false, expectedResult: 'passed'},
-  {name: 'useSimpleBuildTest', value: true, expectedResult: 'passed'},
-  {name: 'useSimpleBuildTest', value: null, expectedResult: 'passed'},
-  {name: 'useSimpleBuildTest', value: '"true"', expectedResult: 'failed'},
-  {name: 'wdaEventloopIdleDelay', value: 5, expectedResult: 'passed'},
-  {name: 'wdaEventloopIdleDelay', value: 'five', expectedResult: 'failed'},
-  {name: 'wdaEventloopIdleDelay', value: null, expectedResult: 'passed'},
-  {name: 'processArguments', value: null, expectedResult: 'passed'},
-  // General appium-xcuitest-driver capabilities
-  {name: 'resetOnSessionStartOnly', value: false, expectedResult: 'passed'},
-  {name: 'resetOnSessionStartOnly', value: null, expectedResult: 'passed'},
-  {name: 'resetOnSessionStartOnly', value: true, expectedResult: 'passed'},
-  {name: 'commandTimeouts', value: 120000, expectedResult: 'passed'},
-  {name: 'commandTimeouts', value: null, expectedResult: 'passed'},
-  {name: 'commandTimeouts', value: '"120000"', expectedResult: 'passed'},
-  {name: 'maxTypingFrequency', value: null, expectedResult: 'passed'},
-  {name: 'maxTypingFrequency', value: 30, expectedResult: 'passed'},
-  {name: 'simpleIsVisibleCheck', value: null, expectedResult: 'passed'},
-  {name: 'simpleIsVisibleCheck', value: true, expectedResult: 'passed'},
-  {name: 'simpleIsVisibleCheck', value: false, expectedResult: 'passed'},
-  {name: 'startIWDP', value: null, expectedResult: 'passed'},
-  {name: 'startIWDP', value: true, expectedResult: 'passed'},
-  {name: 'startIWDP', value: false, expectedResult: 'passed'},
-  {name: 'startIWDP', value: '"1.0"', expectedResult: 'failed'},
-  {name: 'webkitDebugProxyPort', value: 12021, expectedResult: 'passed'},
-  {name: 'webkitDebugProxyPort', value: null, expectedResult: 'passed'},
-  {name: 'absoluteWebLocations', value: true, expectedResult: 'passed'},
-  {name: 'absoluteWebLocations', value: false, expectedResult: 'passed'},
-  {name: 'absoluteWebLocations', value: null, expectedResult: 'passed'},
-  {name: 'absoluteWebLocations', value: '"xyz"', expectedResult: 'failed'},
-  {name: 'useJSONSource', value: true, expectedResult: 'passed'},
-  {name: 'useJSONSource', value: false, expectedResult: 'passed'},
-  {name: 'useJSONSource', value: null, expectedResult: 'passed'},
-  {name: 'realDeviceScreenshotter', value: '"idevicescreenshot"', expectedResult: 'passed'},
-  {name: 'realDeviceScreenshotter', value: null, expectedResult: 'passed'},
-  {name: 'mjpegServerPort', value: 12000, expectedResult: 'passed'},
-  {name: 'mjpegServerPort', value: null, expectedResult: 'passed'},
-  {name: 'waitForQuiescence', value: false, expectedResult: 'passed'},
-  {name: 'waitForQuiescence', value: true, expectedResult: 'passed'},
-  {name: 'waitForQuiescence', value: null, expectedResult: 'passed'},
-  {name: 'waitForQuiescence', value: '"null"', expectedResult: 'failed'},
-  {name: 'screenshotQuality', value: false, expectedResult: 'passed'},
-  {name: 'screenshotQuality', value: true, expectedResult: 'passed'},
-  {name: 'screenshotQuality', value: null, expectedResult: 'passed'},
-  {name: 'skipLogCapture', value: true, expectedResult: 'passed'},
-  {name: 'skipLogCapture', value: false, expectedResult: 'passed'},
-  {name: 'skipLogCapture', value: null, expectedResult: 'passed'}]
+  {name: 'enableAsyncExecuteFromHttps', value: false, expectedResult: 'passed'}]
 
-  /**
-   * Note: Error iOS capabilities:
-   * startIWDP: true
-   * useSimpleBuildTest: true
-   * useXctestrunFile: null
-   * useXctestrunFile: false
-   */
+export const listOfMultipleiOSDesiredCaps = [
+  // WebDriverAgent capabilities
+  {
+    description: 'XCUITest xcodeOrgId = JWL241K123',
+    desiredCaps: {'automationName': 'XCUITest', 'xcodeOrgId': 'JWL241K123'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest xcodeSigningId = iPhone Developer',
+    desiredCaps: {'automationName': 'XCUITest', 'xcodeSigningId': 'iPhone Developer'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest xcodeConfigFile = /path/to/myconfig.xcconfig',
+    desiredCaps: {'automationName': 'XCUITest', 'xcodeConfigFile': '/path/to/myconfig.xcconfig'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest updatedWDABundleId = io.appium.WebDriverAgentRunner',
+    desiredCaps: {'automationName': 'XCUITest', 'updatedWDABundleId': 'io.appium.WebDriverAgentRunner'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest keychainPath = /path/to/MyPrivateKey.p12',
+    desiredCaps: {'automationName': 'XCUITest', 'keychainPath': '/path/to/MyPrivateKey.p12'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest keychainPassword = super awesome password',
+    desiredCaps: {'automationName': 'XCUITest', 'keychainPassword': 'super awesome password'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest derivedDataPath = /path/t',
+    desiredCaps: {'automationName': 'XCUITest', 'derivedDataPath': '/path/to'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest webDriverAgentUrl = http://localhost:8100',
+    desiredCaps: {'automationName': 'XCUITest', 'webDriverAgentUrl': 'http://localhost:8100'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest useNewWDA = true',
+    desiredCaps: {'automationName': 'XCUITest', 'useNewWDA': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest useNewWDA = false',
+    desiredCaps: {'automationName': 'XCUITest', 'useNewWDA': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest wdaLaunchTimeout = 30000',
+    desiredCaps: {'automationName': 'XCUITest', 'wdaLaunchTimeout': 30000},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest wdaConnectionTimeout = 1000',
+    desiredCaps: {'automationName': 'XCUITest', 'wdaConnectionTimeout': 1000},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest wdaStartupRetries = 4',
+    desiredCaps: {'automationName': 'XCUITest', 'wdaStartupRetries': 4},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest wdaStartupRetryInterval = 20000',
+    desiredCaps: {'automationName': 'XCUITest', 'wdaStartupRetryInterval': 20000},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest wdaLocalPort = 8100',
+    desiredCaps: {'automationName': 'XCUITest', 'wdaLocalPort': 8100},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest wdaBaseUrl = http://192.168.1.100',
+    desiredCaps: {'automationName': 'XCUITest', 'wdaBaseUrl': 'http://192.168.1.100'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest showXcodeLog = true',
+    desiredCaps: {'automationName': 'XCUITest', 'showXcodeLog': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest showXcodeLog = false',
+    desiredCaps: {'automationName': 'XCUITest', 'showXcodeLog': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest iosInstallPause = 8000',
+    desiredCaps: {'automationName': 'XCUITest', 'iosInstallPause': 8000},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest usePrebuiltWDA = true',
+    desiredCaps: {'automationName': 'XCUITest', 'usePrebuiltWDA': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest usePrebuiltWDA = false',
+    desiredCaps: {'automationName': 'XCUITest', 'usePrebuiltWDA': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest useCarthageSsl = true',
+    desiredCaps: {'automationName': 'XCUITest', 'useCarthageSsl': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest useCarthageSsl = false',
+    desiredCaps: {'automationName': 'XCUITest', 'useCarthageSsl': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest shouldUseSingletonTestManager = true',
+    desiredCaps: {'automationName': 'XCUITest', 'shouldUseSingletonTestManager': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest shouldUseSingletonTestManager = false',
+    desiredCaps: {'automationName': 'XCUITest', 'shouldUseSingletonTestManager': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest useXctestrunFile = true',
+    desiredCaps: {'automationName': 'XCUITest', 'useXctestrunFile': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest useXctestrunFile = false',
+    desiredCaps: {'automationName': 'XCUITest', 'useXctestrunFile': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest useSimpleBuildTest = true',
+    desiredCaps: {'automationName': 'XCUITest', 'useSimpleBuildTest': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest useSimpleBuildTest = false',
+    desiredCaps: {'automationName': 'XCUITest', 'useSimpleBuildTest': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest wdaEventloopIdleDelay = 5',
+    desiredCaps: {'automationName': 'XCUITest', 'wdaEventloopIdleDelay': 5},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest processArguments = null',
+    desiredCaps: {'automationName': 'XCUITest', 'processArguments': null},
+    expectedResult: 'passed'
+  },
+  // General appium-xcuitest-driver capabilities
+  {
+    description: 'XCUITest resetOnSessionStartOnly = true',
+    desiredCaps: {'automationName': 'XCUITest', 'resetOnSessionStartOnly': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest resetOnSessionStartOnly = false',
+    desiredCaps: {'automationName': 'XCUITest', 'resetOnSessionStartOnly': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest commandTimeouts = 1200',
+    desiredCaps: {'automationName': 'XCUITest', 'commandTimeouts': 1200},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest maxTypingFrequency = 5',
+    desiredCaps: {'automationName': 'XCUITest', 'maxTypingFrequency': 5},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest simpleIsVisibleCheck = true',
+    desiredCaps: {'automationName': 'XCUITest', 'simpleIsVisibleCheck': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest simpleIsVisibleCheck = false',
+    desiredCaps: {'automationName': 'XCUITest', 'simpleIsVisibleCheck': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest startIWDP = true',
+    desiredCaps: {'automationName': 'XCUITest', 'startIWDP': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest startIWDP = false',
+    desiredCaps: {'automationName': 'XCUITest', 'startIWDP': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest webkitDebugProxyPort = 1200',
+    desiredCaps: {'automationName': 'XCUITest', 'webkitDebugProxyPort': 1200},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest absoluteWebLocations = true',
+    desiredCaps: {'automationName': 'XCUITest', 'absoluteWebLocations': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest absoluteWebLocations = false',
+    desiredCaps: {'automationName': 'XCUITest', 'absoluteWebLocations': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest useJSONSource = true',
+    desiredCaps: {'automationName': 'XCUITest', 'useJSONSource': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest useJSONSource = false',
+    desiredCaps: {'automationName': 'XCUITest', 'useJSONSource': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest realDeviceScreenshotter = idevicescreenshot',
+    desiredCaps: {'automationName': 'XCUITest', 'realDeviceScreenshotter': 'idevicescreenshot'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest mjpegServerPort = 1200',
+    desiredCaps: {'automationName': 'XCUITest', 'mjpegServerPort': 1200},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest waitForQuiescence = true',
+    desiredCaps: {'automationName': 'XCUITest', 'waitForQuiescence': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest waitForQuiescence = false',
+    desiredCaps: {'automationName': 'XCUITest', 'waitForQuiescence': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest screenshotQuality = true',
+    desiredCaps: {'automationName': 'XCUITest', 'screenshotQuality': true},
+    expectedResult: 'passed'
+  },{
+    description: 'XCUITest screenshotQuality = false',
+    desiredCaps: {'automationName': 'XCUITest', 'screenshotQuality': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest skipLogCapture = true',
+    desiredCaps: {'automationName': 'XCUITest', 'skipLogCapture': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'XCUITest skipLogCapture = false',
+    desiredCaps: {'automationName': 'XCUITest', 'skipLogCapture': false},
+    expectedResult: 'passed'
+  }]
 
 export const listOfSingleAndroidDesiredCaps = [
   {name: 'appActivity', value: '"io.appium.android.apis.ApiDemos"', expectedResult: 'passed'},
@@ -199,7 +353,6 @@ export const listOfSingleAndroidDesiredCaps = [
   {name: 'allowTestPackages', value: false, expectedResult: 'passed'},
   {name: 'allowTestPackages', value: '"yes"', expectedResult: 'failed'},
   {name: 'androidInstallTimeout', value: 10, expectedResult: 'passed'},
-  {name: 'androidInstallTimeout', value: '"ten"', expectedResult: 'passed'},
   {name: 'androidInstallPath', value: '"/sdcard/Downloads/"', expectedResult: 'passed'},
   {name: 'androidInstallPath', value: '"/123/456/"', expectedResult: 'passed'},
   {name: 'androidInstallPath', value: null, expectedResult: 'passed'},
@@ -210,14 +363,11 @@ export const listOfSingleAndroidDesiredCaps = [
   {name: 'captureScreenshots', value: false, expectedResult: 'passed'},
   {name: 'captureScreenshots', value: null, expectedResult: 'passed'},
   {name: 'newCommandTimeout', value: 60, expectedResult: 'passed'},
-  {name: 'newCommandTimeout', value: '"Sixty"', expectedResult: 'passed'},
   {name: 'useKeystore', value: true, expectedResult: 'passed'},
   {name: 'useKeystore', value: false, expectedResult: 'passed'},
   {name: 'useKeystore', value: null, expectedResult: 'passed'},
   {name: 'deviceReadyTimeout', value: 5, expectedResult: 'passed'},
-  {name: 'deviceReadyTimeout', value: '"five"', expectedResult: 'passed'},
   {name: 'androidDeviceReadyTimeout', value: 30, expectedResult: 'passed'},
-  {name: 'androidDeviceReadyTimeout', value: '"thirty"', expectedResult: 'passed'},
   {name: 'skipDeviceInitialization', value: true, expectedResult: 'passed'},
   {name: 'skipDeviceInitialization', value: false, expectedResult: 'passed'},
   {name: 'skipDeviceInitialization', value: null, expectedResult: 'passed'},
@@ -239,10 +389,8 @@ export const listOfSingleAndroidDesiredCaps = [
   {name: 'isHeadless', value: false, expectedResult: 'passed'},
   {name: 'isHeadless', value: null, expectedResult: 'passed'},
   {name: 'dontStopAppOnReset', value: true, expectedResult: 'passed'},
-  {name: 'dontStopAppOnReset', value: '"yes"', expectedResult: 'failed'},
   {name: 'autoLaunch', value: true, expectedResult: 'passed'},
   {name: 'autoLaunch', value: false, expectedResult: 'failed'},
-  {name: 'autoLaunch', value: '"yes"', expectedResult: 'failed'},
   {name: 'uninstallOtherPackages', value: '"*"', expectedResult: 'passed'},
   {name: 'automationName', value: '"Espresso"', expectedResult: 'passed'},
   {name: 'automationName', value: '"UIAutomator"', expectedResult: 'passed'},
