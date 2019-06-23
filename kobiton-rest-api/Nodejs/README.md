@@ -3,14 +3,14 @@
 **Table of contents**
 - [A. Overview](#a-overview)
 - [B. Preparations](#b-preparations)
-    - [1. Prerequisites](#1-prerequisites)
-    - [2. Getting Kobiton Username and API Key](#2-getting-kobiton-username-and-api-key)
-    - [3. Getting Kobiton Group ID](#3-getting-kobiton-group-id)
-  - [C. Samples](#c-samples)
-    - [Device](./Device)
-    - [Session](./Session)
-    - [User](./User)
-    - [Apps Repository](./App-Repository)
+  - [1. Prerequisites](#1-prerequisites)
+  - [2. Getting Kobiton Username and API Key](#2-getting-kobiton-username-and-api-key)
+  - [3. Getting Kobiton Group ID](#3-getting-kobiton-group-id)
+- [C. Samples](#c-samples)
+  - [Device](./Device)
+  - [Session](./Session)
+  - [User](./User)
+  - [Apps Repository](./App-Repository)
 
 ## A. Overview
 This guideline will provide instructions and sample cases to ultilize some of Kobiton REST API endpoints by `Nodejs` script.

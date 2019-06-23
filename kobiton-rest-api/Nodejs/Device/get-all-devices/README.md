@@ -4,7 +4,7 @@
 - [Getting device(s) information](#getting-devices-information)
 - [A. Overview](#a-overview)
 - [B. Samples](#b-samples)
-  - [1. Get all devices](#1-get-all-device)
+  - [1. Get all devices](#1-get-all-devices)
   - [2. Fetch available devices](#2-fetch-available-devices)
   - [3. Fetch available devices can run automation](#3-fetch-available-devices-can-run-automation)
   - [4. Fetch devices running Android 7.0](#4-fetch-devices-running-android-7.0)
