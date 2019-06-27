@@ -6,4 +6,4 @@ const headers = {
     'Accept': 'application/json',
 }
 
-export {username, apiKey, groupId}
+export {headers, username, apiKey, groupId}
