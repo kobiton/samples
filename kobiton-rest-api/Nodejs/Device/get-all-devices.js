@@ -3,7 +3,7 @@ import {headers, username, apiKey, groupId} from '../config'
 
 if(!username || !apiKey)
 {
-    console.log("KOBITON_USERNAME and KOBITON_APIKEY variables are need to execute the script")
+    console.log('KOBITON_USERNAME and KOBITON_APIKEY variables are need to execute the script')
     process.exit(1)
 }
 
