@@ -11,7 +11,7 @@ export function convertToDesiredCapabilities(timestamp, devices, {
 } = {}) {
   return devices
     .map((d) => {
-      const desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName',
+      let desiredCapFields = pick(d, 'platformName', 'platformVersion', 'deviceName',
         'udid', 'automationName')
       let deviceGroup = getDeviceGroup(d)
       if (deviceGroup === 'KOBITON') {
@@ -20,9 +20,14 @@ export function convertToDesiredCapabilities(timestamp, devices, {
       const sessionName = `${timestamp} - Auto web on ${d.udid}`
       const sessionDescription = `Auto web session on device ${d.deviceName}`
       const browserName = getDefaultBrowserBy(desiredCapFields.platformName)
-      if (d.platformName === 'Android' && automationName.toUpperCase() === 'UIAUTOMATOR2' &&
-       d.platformVersion.split('.')[0] >= 5) {
-        desiredCapFields.automationName = automationName
+      const supportedPlatformVersion = parseInt(d.platformVersion.split('.')[0])
+
+      if (d.platformName === 'Android') {
+        if (supportedPlatformVersion >= 5) {
+            desiredCapFields.automationName = 'UIAUTOMATOR2'
+        } else {
+          desiredCapFields.automationName = 'Appium'
+        }
       }
       return {...desiredCapFields, deviceOrientation, captureScreenshots,
         browserName, deviceGroup, sessionName, sessionDescription}
@@ -51,12 +56,15 @@ export function convertToDesiredCapabilitiesApp(timestamp, appInfo, devices, {
       const sessionName = `${timestamp} - Auto app on ${d.udid}`
       const sessionDescription = `Auto app session on device ${d.deviceName}`
       const desiredCapApp = Object.assign(appInfo, desiredCapFields)
+      const supportedPlatformVersion = parseInt(d.platformVersion.split('.')[0])
 
-      if (d.platformName === 'Android' && automationName.toUpperCase() === 'UIAUTOMATOR2' &&
-       d.platformVersion.split('.')[0] >= 5) {
-        desiredCapFields.automationName = automationName
+      if (d.platformName === 'Android') {
+        if (supportedPlatformVersion >= 5) {
+            desiredCapFields.automationName = 'UIAUTOMATOR2'
+        } else {
+          desiredCapFields.automationName = 'Appium'
+        }
       }
-
       return {...desiredCapApp, deviceOrientation,
         captureScreenshots, deviceGroup, sessionName, sessionDescription}
     })
@@ -119,6 +127,7 @@ export async function createServerConfig() {
     }
   }
   return {
+    protocol: 'https',
     host: config.autoTestHostname,
     auth: `${config.username1}:${config.apiKey}`,
     port: config.autoTestPort

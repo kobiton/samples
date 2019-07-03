@@ -43,10 +43,9 @@ const elements = {
 }
 
 export default class AutomationPracticePage {
-  constructor(browser, timeout, desiredCapabilities) {
+  constructor(browser, timeout) {
     this._browser = browser
     this._timeout = timeout
-    this._desiredCapabilities = desiredCapabilities
   }
 
   async executeTest(expectedDurationInMinutes) {
@@ -57,7 +56,7 @@ export default class AutomationPracticePage {
       const sessionInfo = await this._browser.session()
       debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
-      if (this._desiredCapabilities.platformName === 'iOS') {
+      if (sessionInfo.value.platform === 'iOS') {
         await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
         await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
       }
@@ -75,7 +74,7 @@ export default class AutomationPracticePage {
       } while (duration < expectedDurationInMinutes)
     }
     finally {
-      await this._browser.end()
+      this._driver && await this._browser.end()
     }
   }
 

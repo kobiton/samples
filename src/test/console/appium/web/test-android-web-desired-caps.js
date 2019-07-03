@@ -23,7 +23,7 @@ setTimeout(async () => {
 }, 1000)
 
 async function getOnlineDesiredCap() {
-  onlineDevices = await Device.getDevices({platformName: 'Android'})
+  onlineDevices = await Device.getDevices({platformName: 'Android', onlineDeviceOnly: true})
   onlineCaps = await convertToDesiredCapabilities(timestamps, onlineDevices)
   assert.isAtLeast(onlineCaps.length, 1, 'Expected at least 1 online device')
   return onlineCaps[0]

@@ -1,4 +1,4 @@
-import * as webdriverio from 'webdriverio'
+import {remote} from 'webdriverio'
 import AutomationPracticePage from './automation-practice-page'
 import MailinatorPage from './mailinator-page'
 import DesiredCapsTestPage from './desired-caps-test-page'
@@ -17,6 +17,7 @@ if (config.environment === 'LOCAL') {
 }
 else {
   server = {
+    protocol: 'https',
     host: config.autoTestHostname,
     port: config.autoTestPort,
     user: config.username1,
@@ -25,26 +26,26 @@ else {
 }
 
 export async function executeDesiredCapabilitiesTest({desiredCapabilities, timeout}) {
-  const browser = webdriverio.remote({desiredCapabilities, ...server})
-  const mailinatorPage = new RandomPage(browser, timeout, desiredCapabilities)
+  const browser = remote({desiredCapabilities, ...server})
+  const mailinatorPage = new RandomPage(browser, timeout)
   return await mailinatorPage.executeTest(1)
 }
 
 export async function executeJsonwiredTest({desiredCapabilities, timeout}) {
-  const browser = webdriverio.remote({desiredCapabilities, ...server})
-  const automationPracticePage = new AutomationPracticePage(browser, timeout, desiredCapabilities)
+  const browser = remote({desiredCapabilities, ...server})
+  const automationPracticePage = new AutomationPracticePage(browser, timeout)
   return await automationPracticePage.executeTest(duration)
 }
 
 export async function executeMailinatorPageTest({desiredCapabilities, timeout}) {
-  const browser = webdriverio.remote({desiredCapabilities, ...server})
-  const mailinatorPage = new MailinatorPage(browser, timeout, desiredCapabilities)
+  const browser = remote({desiredCapabilities, ...server})
+  const mailinatorPage = new MailinatorPage(browser, timeout)
   return await mailinatorPage.executeTest(duration)
 }
 
 export async function executeDesiredCapsTestPage({desiredCapabilities, timeout}) {
-  const browser = webdriverio.remote({desiredCapabilities, ...server})
-  const desiredCapsTestPage = new DesiredCapsTestPage(browser, timeout, desiredCapabilities)
+  const browser = remote({desiredCapabilities, ...server})
+  const desiredCapsTestPage = new DesiredCapsTestPage(browser, timeout)
   return await desiredCapsTestPage.executeTest()
 }
 
@@ -64,8 +65,8 @@ executeMultipleDevicesParallelTest({desiredCapsList, durationInMinutes, timeout}
 }
 
 async function _launchSession({desiredCapabilities, durationInMinutes, timeout}) {
-  const browser = webdriverio.remote({desiredCapabilities, ...server})
-  const randomPage = new RandomPage(browser, timeout, desiredCapabilities)
+  const browser = remote({desiredCapabilities, ...server})
+  const randomPage = new RandomPage(browser, timeout)
   await randomPage.executeTest(durationInMinutes)
 }
 

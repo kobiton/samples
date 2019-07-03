@@ -25,7 +25,7 @@ export default class Base {
   }
 
   getToken() {
-    const encode = new Buffer(`${config.username1}:${config.apiKey}`).toString('base64')
+    const encode = new Buffer.from(`${config.username1}:${config.apiKey}`).toString('base64')
     this._token = this._token ? this._token : encode
     return this._token
   }

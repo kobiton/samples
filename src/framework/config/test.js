@@ -40,7 +40,7 @@ const config = {
   password1: process.env.KOBITON_PASSWORD_1,
   username2: process.env.KOBITON_USERNAME_2,
   password2: process.env.KOBITON_PASSWORD_2,
-  emailRetainingToken: process.env.KOBITON_EMAIL_RETAINING_TOKEN,
+  emailRetainingToken: process.env.KOBITON_EMAIL_RETAINING_TOKEN || 'xRT8KJ',
   concurrentLoadTest: process.env.KOBITON_CONCURRENT_LOADTEST || 20,
   longTestSuiteIterationAmount: args.longTestSuiteIterationAmount,
   expectedDurationInMinutes: args.mobileTestDuration,
@@ -84,7 +84,7 @@ const config = {
 
 const parsedUrl = Url.parse(apiUrl)
 config.autoTestHostname = parsedUrl.hostname
-config.autoTestPort = (parsedUrl.protocol === 'https' ? 80 : parsedUrl.port) || 80
+config.autoTestPort = (parsedUrl.protocol === 'https:' ? 443 : parsedUrl.port) || 80
 
 let environment
 if (config.apiUrl.includes('-staging')) {

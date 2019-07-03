@@ -12,10 +12,9 @@ const elements = {
 }
 
 export default class KatalonDemoCuraPage {
-  constructor(browser, timeout, desiredCapabilities) {
+  constructor(browser, timeout) {
     this._browser = browser
     this._timeout = timeout
-    this._desiredCapabilities = desiredCapabilities
   }
 
   async executeTest(expectedDurationInMinutes) {
@@ -24,8 +23,8 @@ export default class KatalonDemoCuraPage {
     try {
       await this._browser
         .init()
-      
-      const sessionInfo = await this._browser.session() 
+
+      const sessionInfo = await this._browser.session()
       debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
       if (this._desiredCapabilities.platformName === 'iOS') {
@@ -38,7 +37,7 @@ export default class KatalonDemoCuraPage {
           'implicit': this._timeout
         })
       }
-      
+
       do {
         const word = faker.lorem.word()
         await this._browser // eslint-disable-line babel/no-await-in-loop
@@ -55,7 +54,7 @@ export default class KatalonDemoCuraPage {
       } while (duration < expectedDurationInMinutes)
     }
     finally {
-      await this._browser.end()
+      this._driver && await this._browser.end()
     }
   }
 }

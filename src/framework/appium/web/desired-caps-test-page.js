@@ -1,4 +1,6 @@
 import faker from 'faker'
+import {debug} from '@kobiton/core-util'
+import config from '../../config/test'
 
 const elements = {
   url: 'https://www.mailinator.com/manyauth/login.jsp',
@@ -7,18 +9,18 @@ const elements = {
 }
 
 export default class DesiredCapsTestPage {
-  constructor(browser, timeout, desiredCapabilities) {
+  constructor(browser, timeout) {
     this._browser = browser
     this._timeout = timeout
-    this._desiredCapabilities = desiredCapabilities
   }
 
   async executeTest() {
     try {
-      await this._browser
-        .init()
+      await this._browser.init()
+      const sessionInfo = await this._browser.session()
+      debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
-      if (this._desiredCapabilities.platformName === 'iOS') {
+      if (sessionInfo.value.platform === 'iOS') {
         await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
         await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
       }
@@ -39,12 +41,15 @@ export default class DesiredCapsTestPage {
         .waitForVisible(elements.emailInput, this._timeout)
         .setValue(elements.emailInput, word)
         .setValue(elements.passwordInput, word)
+        .end()
     }
     catch (err) {
+      debug.log('DesiredCapsTestPage:executeTest', err.message)
+      this._driver && await this._browser.end()
       return err.message
     }
     finally {
-      await this._browser.end()
+      return new Error('Have an error during running the test session')
     }
     return null
   }

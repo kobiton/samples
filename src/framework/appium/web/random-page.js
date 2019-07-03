@@ -18,15 +18,14 @@ const pages = [
 
 // This test is to make sure that the test won't be cached on the devices
 export default class RandomPage {
-  constructor(browser, timeout, desiredCapabilities) {
+  constructor(browser, timeout) {
     this._browser = browser
     this._timeout = timeout
-    this._desiredCapabilities = desiredCapabilities
   }
 
   async executeTest(durationInMinutes) {
     const id = Math.floor(Math.random() * pages.length)
-    const pageTest = new (pages[id])(this._browser, this._timeout, this._desiredCapabilities)
+    const pageTest = new (pages[id])(this._browser, this._timeout)
     return await pageTest.executeTest(durationInMinutes)
   }
 

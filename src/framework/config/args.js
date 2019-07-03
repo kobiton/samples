@@ -45,7 +45,7 @@ const yargs = require('yargs')
   .options('platformName', {
     alias: 'platformName',
     demand: false,
-    default: null,
+    default: '*',
     describe: 'Specific name of platform',
     type: 'string'
   })
@@ -164,7 +164,7 @@ const yargs = require('yargs')
   .options('automationName', {
     alias: 'automationName',
     demand: false,
-    default: 'Appium',
+    default: 'UIAUTOMATOR2',
     describe: 'the automation name to launch automaton session',
     type: 'string'
   })
