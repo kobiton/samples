@@ -75,7 +75,10 @@ export const listOfSingleiOSDesiredCaps = [
   {name: 'appName', value: '"UICatalog"', expectedResult: 'passed'},
   {name: 'appName', value: 123, expectedResult: 'failed'},
   {name: 'enableAsyncExecuteFromHttps', value: true, expectedResult: 'passed'},
-  {name: 'enableAsyncExecuteFromHttps', value: false, expectedResult: 'passed'}]
+  {name: 'enableAsyncExecuteFromHttps', value: false, expectedResult: 'passed'},
+  {name: 'reduceMotion', value: true, expectedResult: 'passed'},
+  {name: 'reduceMotion', value: false, expectedResult: 'passed'},
+  {name: 'reduceMotion', value: null, expectedResult: 'passed'}]
 
 export const listOfMultipleiOSDesiredCaps = [
   // WebDriverAgent capabilities
@@ -96,6 +99,7 @@ export const listOfMultipleiOSDesiredCaps = [
   },
   {
     description: 'XCUITest updatedWDABundleId = io.appium.WebDriverAgentRunner',
+    // eslint-disable-next-line max-len
     desiredCaps: {'automationName': 'XCUITest', 'updatedWDABundleId': 'io.appium.WebDriverAgentRunner'},
     expectedResult: 'passed'
   },
@@ -324,7 +328,8 @@ export const listOfMultipleiOSDesiredCaps = [
     description: 'XCUITest screenshotQuality = true',
     desiredCaps: {'automationName': 'XCUITest', 'screenshotQuality': true},
     expectedResult: 'passed'
-  },{
+  },
+  {
     description: 'XCUITest screenshotQuality = false',
     desiredCaps: {'automationName': 'XCUITest', 'screenshotQuality': false},
     expectedResult: 'passed'
@@ -337,6 +342,11 @@ export const listOfMultipleiOSDesiredCaps = [
   {
     description: 'XCUITest skipLogCapture = false',
     desiredCaps: {'automationName': 'XCUITest', 'skipLogCapture': false},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'set Permissions',
+    desiredCaps: {'permissions': '{"com.apple.mobilecal": {"calendar": "YES"}}'},
     expectedResult: 'passed'
   }]
 
@@ -396,7 +406,8 @@ export const listOfSingleAndroidDesiredCaps = [
   {name: 'automationName', value: '"UIAutomator"', expectedResult: 'passed'},
   {name: 'automationName', value: '"Selendroid"', expectedResult: 'passed'},
   {name: 'automationName', value: '"YouIEngine"', expectedResult: 'passed'},
-  {name: 'automationName', value: '"Appium"', expectedResult: 'passed'}]
+  {name: 'automationName', value: '"Appium"', expectedResult: 'passed'},
+  {name: 'localeScript', value: '"Latn"', expectedResult: 'passed'}]
 
 export const listOfMultipleAndroidDesiredCaps = [
   {

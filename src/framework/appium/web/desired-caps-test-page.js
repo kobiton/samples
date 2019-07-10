@@ -20,7 +20,7 @@ export default class DesiredCapsTestPage {
       const sessionInfo = await this._browser.session()
       debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
-      if (sessionInfo.value.platform === 'iOS') {
+      if (sessionInfo.value.platformName === 'iOS') {
         await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
         await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
       }
@@ -47,9 +47,6 @@ export default class DesiredCapsTestPage {
       debug.log('DesiredCapsTestPage:executeTest', err.message)
       this._driver && await this._browser.end()
       return err.message
-    }
-    finally {
-      return new Error('Have an error during running the test session')
     }
     return null
   }

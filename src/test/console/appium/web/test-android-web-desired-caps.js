@@ -35,7 +35,8 @@ async function testSingleDesiredCap(listOfSingleAndroidDesiredCaps) {
     it(`{"${listDesiredCap.name}": ${listDesiredCap.value}} expected result ${listDesiredCap.expectedResult}`, async () => {
       desiredCap = await getOnlineDesiredCap()
       newDesiredCap = `{"${listDesiredCap.name}": ${listDesiredCap.value}}`
-      desiredCap = Object.assign(desiredCap, JSON.parse(newDesiredCap))
+      const cloneObj = {...desiredCap}
+      desiredCap = Object.assign(cloneObj, JSON.parse(newDesiredCap))
       result = await executeDesiredCapsTestPage({desiredCapabilities: desiredCap, timeout})
       const state = (result) ? 'failed' : 'passed'
       assert.equal(state, listDesiredCap.expectedResult, result)
@@ -48,7 +49,8 @@ async function testMultipleDesiredCap(listOfMultipleAndroidDesiredCaps) {
     // eslint-disable-next-line max-len
     it(`${listDesiredCap.description} expected result ${listDesiredCap.expectedResult}`, async () => {
       desiredCap = await getOnlineDesiredCap()
-      desiredCap = Object.assign(desiredCap, listDesiredCap.desiredCaps)
+      const cloneObj = {...desiredCap}
+      desiredCap = Object.assign(cloneObj, listDesiredCap.desiredCaps)
       result = await executeDesiredCapsTestPage({desiredCapabilities: desiredCap, timeout})
       const state = (result) ? 'failed' : 'passed'
       assert.equal(state, listDesiredCap.expectedResult, result)

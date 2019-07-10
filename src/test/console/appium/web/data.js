@@ -90,7 +90,8 @@ export const listOfSingleAndroidDesiredCaps = [
   {name: 'unlockType', value: '"password"', expectedResult: 'passed'},
   {name: 'unlockType', value: '"pattern"', expectedResult: 'passed'},
   {name: 'unlockType', value: '"fingerprint"', expectedResult: 'passed'},
-  {name: 'unlockType', value: true, expectedResult: 'failed'}]
+  {name: 'unlockType', value: true, expectedResult: 'failed'},
+  {name: 'localeScript', value: '"Latn"', expectedResult: 'passed'}]
 
 export const listOfMultipleAndroidDesiredCaps = [
   {
@@ -284,7 +285,6 @@ export const listOfiOSDesiredCaps = [
   {name: 'reduceMotion', value: true, expectedResult: 'passed'},
   {name: 'reduceMotion', value: false, expectedResult: 'passed'},
   {name: 'reduceMotion', value: null, expectedResult: 'passed'},
-  {name: 'permissions', value: null, expectedResult: 'passed'},
   {name: 'screenshotQuality', value: false, expectedResult: 'passed'},
   {name: 'screenshotQuality', value: true, expectedResult: 'passed'},
   {name: 'screenshotQuality', value: null, expectedResult: 'passed'},
@@ -303,8 +303,14 @@ export const listOfiOSDesiredCaps = [
   {name: 'processArguments', value: null, expectedResult: 'passed'},
   {name: 'wdaLocalPort', value: 8100, expectedResult: 'passed'},
   {name: 'wdaLocalPort', value: null, expectedResult: 'passed'},
-  {name: 'wdaLocalPort', value: '"8100"', expectedResult: 'passed'}
-]
+  {name: 'wdaLocalPort', value: '"8100"', expectedResult: 'passed'}]
+
+export const listOfMultipleIOSDesiredCaps = [
+  {
+    description: 'set Permissions',
+    desiredCaps: {'permissions': '{"com.apple.mobilecal": {"calendar": "YES"}}'},
+    expectedResult: 'passed'
+  }]
 
   /**
    * Note: Error iOS web capabilities:

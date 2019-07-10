@@ -24,7 +24,7 @@ export default class GiveTourPage {
       const sessionInfo = await this._browser.session()
       debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
-      if (sessionInfo.value.platform === 'iOS') {
+      if (sessionInfo.value.platformName === 'iOS') {
         await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
         await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
       }

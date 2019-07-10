@@ -15,6 +15,7 @@ let onlineCaps = []
 setTimeout(async () => {
   debug.log('Test iOS web desired capability')
   await testSingleDesiredCap(data.listOfiOSDesiredCaps)
+  await testMultipleIOSDesiredCaps(data.listOfMultipleIOSDesiredCaps)
   run()
 }, 1000)
 
@@ -34,6 +35,20 @@ async function testSingleDesiredCap(listOfiOSDesiredCaps) {
       const newDesiredCap = `{"${listDesiredCap.name}": ${listDesiredCap.value}}`
       const cloneObj = {...desiredCap}
       desiredCap = Object.assign(cloneObj, JSON.parse(newDesiredCap))
+      const result = await executeDesiredCapsTestPage({desiredCapabilities: desiredCap, timeout})
+      const state = (result) ? 'failed' : 'passed'
+      assert.equal(state, listDesiredCap.expectedResult, result)
+    })
+  })
+}
+
+async function testMultipleIOSDesiredCaps(listOfMultipleIOSDesiredCaps) {
+  await BPromise.mapSeries(listOfMultipleIOSDesiredCaps, async(listDesiredCap) => {
+    // eslint-disable-next-line max-len
+    it(`${listDesiredCap.description} expected result ${listDesiredCap.expectedResult}`, async () => {
+      let desiredCap = await getOnlineDesiredCap()
+      const cloneObj = {...desiredCap}
+      desiredCap = Object.assign(cloneObj, listDesiredCap.desiredCaps)
       const result = await executeDesiredCapsTestPage({desiredCapabilities: desiredCap, timeout})
       const state = (result) ? 'failed' : 'passed'
       assert.equal(state, listDesiredCap.expectedResult, result)

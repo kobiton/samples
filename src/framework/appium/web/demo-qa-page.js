@@ -15,7 +15,6 @@ export default class DemoQAPage {
   constructor(browser, timeout) {
     this._browser = browser
     this._timeout = timeout
-    this._desiredCapabilities = desiredCapabilities
   }
 
   async executeTest(expectedDurationInMinutes) {
@@ -26,7 +25,7 @@ export default class DemoQAPage {
       const sessionInfo = await this._browser.session()
       debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
-      if (sessionInfo.value.platform === 'iOS') {
+      if (sessionInfo.value.platformName === 'iOS') {
         await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
         await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
       }
