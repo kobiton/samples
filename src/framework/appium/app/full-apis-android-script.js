@@ -5,6 +5,7 @@ import * as logger from '../../common/logger'
 import {createDriver, quitDriver} from '../driver'
 import {convertToDesiredCapabilitiesApp, convertToLocalDesiredCapabilitiesApp} from '../helper'
 import config from '../../config/test'
+import wd from 'wd'
 
 const waitingTime = 60000
 const apiDemoDebugApp = {
@@ -116,6 +117,34 @@ export async function fullApisAndroidScript(timestamps, onlineDevice, expectedDu
           getRandomInt(-1000, 0), getRandomInt(100, 1000))
         .back()
         .back()
+        .waitForElementByXPath("//android.widget.TextView[@content-desc='Animation']")
+        .flick(0, -700, 200)
+        .waitForElementByXPath("//android.widget.TextView[@content-desc='Views']")
+        .click()
+        .element('xpath', "//android.widget.TextView[@content-desc='Controls']")
+        .flick(0, -700, 200)
+        .flick(0, -700, 200)
+        .waitForElementByXPath("//android.widget.TextView[@content-desc='WebView']")
+        .click()
+        .execute('mobile: getPermissions', {type: 'granted', appPackage: 'io.appium.android.apis'})
+        // eslint-disable-next-line max-len
+        .execute('mobile: changePermissions', {action: 'grant', appPackage: 'io.appium.android.apis', permissions: 'android.permission.READ_CONTACTS'})
+        .contexts()
+        .context('WEBVIEW_io.appium.android.apis')
+      let touchAction = new wd.TouchAction(driver)
+      touchAction.press({x: 10, y: 10})
+      touchAction.moveTo({x: 10, y: 100})
+      touchAction.release()
+      await touchAction.perform() // eslint-disable-line babel/no-await-in-loop
+      let secondTouchAction = new wd.TouchAction(driver)
+      secondTouchAction.press({x: 10, y: 10})
+      secondTouchAction.moveTo({x: 10, y: 100})
+      secondTouchAction.release()
+      let multiTouchAction = new wd.MultiAction(driver)
+      multiTouchAction.add(touchAction)
+      multiTouchAction.add(secondTouchAction)
+      await multiTouchAction.perform() // eslint-disable-line babel/no-await-in-loop
+      await driver.context('NATIVE_APP') // eslint-disable-line babel/no-await-in-loop
         .getOrientation()
         .setOrientation('PORTRAIT')
         .setOrientation('LANDSCAPE')

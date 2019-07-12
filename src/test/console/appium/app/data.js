@@ -78,7 +78,14 @@ export const listOfSingleiOSDesiredCaps = [
   {name: 'enableAsyncExecuteFromHttps', value: false, expectedResult: 'passed'},
   {name: 'reduceMotion', value: true, expectedResult: 'passed'},
   {name: 'reduceMotion', value: false, expectedResult: 'passed'},
-  {name: 'reduceMotion', value: null, expectedResult: 'passed'}]
+  {name: 'reduceMotion', value: null, expectedResult: 'passed'},
+  {name: 'eventloopIdleDelaySec', value: 1, expectedResult: 'passed'},
+  {name: 'enforceFreshSimulatorCreation', value: true, expectedResult: 'passed'},
+  {name: 'enforceFreshSimulatorCreation', value: false, expectedResult: 'passed'},
+  {name: 'mjpegScalingFactor', value: '"YES"', expectedResult: 'passed'},
+  {name: 'showXcodeLog', value: true, expectedResult: 'passed'},
+  {name: 'showXcodeLog', value: false, expectedResult: 'passed'},
+  {name: 'defaultImageTemplateScale', value: 4, expectedResult: 'passed'}]
 
 export const listOfMultipleiOSDesiredCaps = [
   // WebDriverAgent capabilities
@@ -407,7 +414,16 @@ export const listOfSingleAndroidDesiredCaps = [
   {name: 'automationName', value: '"Selendroid"', expectedResult: 'passed'},
   {name: 'automationName', value: '"YouIEngine"', expectedResult: 'passed'},
   {name: 'automationName', value: '"Appium"', expectedResult: 'passed'},
-  {name: 'localeScript', value: '"Latn"', expectedResult: 'passed'}]
+  {name: 'localeScript', value: '"Latn"', expectedResult: 'passed'},
+  {name: 'skipLogcatCapture', value: true, expectedResult: 'passed'},
+  {name: 'skipLogcatCapture', value: false, expectedResult: 'passed'},
+  {name: 'uninstallOtherPackages', value: '"io.appium.example"', expectedResult: 'passed'},
+  {name: 'remoteAdbHost', value: '"0.0.0.0"', expectedResult: 'passed'},
+  {name: 'dontStopAppOnReset', value: true, expectedResult: 'passed'},
+  {name: 'dontStopAppOnReset', value: false, expectedResult: 'passed'},
+  {name: 'remoteAppsCacheLimit', value: 4, expectedResult: 'passed'},
+  {name: 'buildToolsVersion', value: '"28.0.3"', expectedResult: 'passed'},
+  {name: 'defaultImageTemplateScale', value: 4, expectedResult: 'passed'}]
 
 export const listOfMultipleAndroidDesiredCaps = [
   {
@@ -448,5 +464,15 @@ export const listOfMultipleAndroidDesiredCaps = [
   {
     description: 'skipServerInstallation = 123',
     desiredCaps: {'automationName': 'UIAutomator2', 'skipServerInstallation': '123'},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'chromedriverArgs',
+    desiredCaps: {'chromedriverArgs': ['--disable-gpu', '--disable-web-security']},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'chromedriverPorts',
+    desiredCaps: {'chromedriverPorts': [8000, [9000, 9005]]},
     expectedResult: 'passed'
   }]

@@ -91,7 +91,16 @@ export const listOfSingleAndroidDesiredCaps = [
   {name: 'unlockType', value: '"pattern"', expectedResult: 'passed'},
   {name: 'unlockType', value: '"fingerprint"', expectedResult: 'passed'},
   {name: 'unlockType', value: true, expectedResult: 'failed'},
-  {name: 'localeScript', value: '"Latn"', expectedResult: 'passed'}]
+  {name: 'localeScript', value: '"Latn"', expectedResult: 'passed'},
+  {name: 'chromedriverDisableBuildCheck', value: true, expectedResult: 'passed'},
+  {name: 'chromedriverDisableBuildCheck', value: false, expectedResult: 'passed'},
+  {name: 'skipLogcatCapture', value: true, expectedResult: 'passed'},
+  {name: 'skipLogcatCapture', value: false, expectedResult: 'passed'},
+  {name: 'uninstallOtherPackages', value: '"io.appium.example"', expectedResult: 'passed'},
+  {name: 'remoteAdbHost', value: '"0.0.0.0"', expectedResult: 'passed'},
+  {name: 'dontStopAppOnReset', value: true, expectedResult: 'passed'},
+  {name: 'dontStopAppOnReset', value: false, expectedResult: 'passed'},
+  {name: 'defaultImageTemplateScale', value: 4, expectedResult: 'passed'}]
 
 export const listOfMultipleAndroidDesiredCaps = [
   {
@@ -107,6 +116,16 @@ export const listOfMultipleAndroidDesiredCaps = [
   {
     description: 'resetKeyboard with unicodeKeyboard',
     desiredCaps: {'resetKeyboard': true, 'unicodeKeyboard': true},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'chromedriverArgs',
+    desiredCaps: {'chromedriverArgs': ['--disable-gpu', '--disable-web-security']},
+    expectedResult: 'passed'
+  },
+  {
+    description: 'chromedriverPorts',
+    desiredCaps: {'chromedriverPorts': [8000, [9000, 9005]]},
     expectedResult: 'passed'
   }]
 
@@ -303,7 +322,14 @@ export const listOfiOSDesiredCaps = [
   {name: 'processArguments', value: null, expectedResult: 'passed'},
   {name: 'wdaLocalPort', value: 8100, expectedResult: 'passed'},
   {name: 'wdaLocalPort', value: null, expectedResult: 'passed'},
-  {name: 'wdaLocalPort', value: '"8100"', expectedResult: 'passed'}]
+  {name: 'wdaLocalPort', value: '"8100"', expectedResult: 'passed'},
+  {name: 'eventloopIdleDelaySec', value: 1, expectedResult: 'passed'},
+  {name: 'enforceFreshSimulatorCreation', value: true, expectedResult: 'passed'},
+  {name: 'enforceFreshSimulatorCreation', value: false, expectedResult: 'passed'},
+  {name: 'mjpegScalingFactor', value: '"YES"', expectedResult: 'passed'},
+  {name: 'showXcodeLog', value: true, expectedResult: 'passed'},
+  {name: 'showXcodeLog', value: false, expectedResult: 'passed'},
+  {name: 'defaultImageTemplateScale', value: 4, expectedResult: 'passed'}]
 
 export const listOfMultipleIOSDesiredCaps = [
   {
