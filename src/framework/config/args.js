@@ -45,7 +45,7 @@ const yargs = require('yargs')
   .options('platformName', {
     alias: 'platformName',
     demand: false,
-    default: '*',
+    default: null,
     describe: 'Specific name of platform',
     type: 'string'
   })
@@ -173,6 +173,13 @@ const yargs = require('yargs')
     demand: false,
     default: true,
     describe: 'flag to get device is online or not',
+    type: 'boolean'
+  })
+  .options('allowW3C', {
+    alias: 'allowW3C',
+    demand: false,
+    default: false,
+    describe: 'flag to turn on W3C on WD',
     type: 'boolean'
   })
   .help()

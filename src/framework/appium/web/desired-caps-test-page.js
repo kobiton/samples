@@ -16,8 +16,16 @@ export default class DesiredCapsTestPage {
 
   async executeTest() {
     try {
-      await this._browser.init()
-      const sessionInfo = await this._browser.session()
+      const allowW3C = config.allowW3C || true
+      let sessionInfo
+      if (allowW3C) {
+        sessionInfo = await this._browser
+      }
+      else {
+        await this._browser.init()
+        sessionInfo = await this._browser.session()
+      }
+      
       debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
       if (sessionInfo.value.platformName === 'iOS') {

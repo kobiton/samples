@@ -20,8 +20,16 @@ export default class TempEmailPage {
     let duration = 0
     const startedAt = moment.utc()
     try {
-      await this._browser.init()
-      const sessionInfo = await this._browser.session()
+      const allowW3C = config.allowW3C || true
+      let sessionInfo
+      if (allowW3C) {
+        sessionInfo = await this._browser
+      }
+      else {
+        await this._browser.init()
+        sessionInfo = await this._browser.session()
+      }
+      
       debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
 
       if (sessionInfo.value.platformName === 'iOS') {

@@ -2,6 +2,7 @@ import wd from 'wd'
 import {debug} from '@kobiton/core-util'
 import * as logger from '../../framework/common/logger'
 import {createServerConfig} from './helper'
+import config from '../config/test'
 
 export async function quitDriver(driver) {
   try {
@@ -13,6 +14,9 @@ export async function quitDriver(driver) {
 }
 
 export async function createDriver(desiredCapabilities) {
+  const allowW3C = config.allowW3C
+  if (config.allowW3C) desiredCapabilities.allowW3C = allowW3C
+
   const server = await createServerConfig()
   const driver = await wd.promiseChainRemote(server)
   try {

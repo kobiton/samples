@@ -45,6 +45,7 @@ const config = {
   longTestSuiteIterationAmount: args.longTestSuiteIterationAmount,
   expectedDurationInMinutes: args.mobileTestDuration,
   typeOfTest: args.type,
+  allowW3C: args.allowW3C,
   device: {
     name: args.deviceName,
     platformName: args.platformName,

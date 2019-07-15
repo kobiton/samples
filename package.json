@@ -19,7 +19,7 @@
     "babel-register": "^6.11.6",
     "bluebird": "^3.0.6",
     "canvas-prebuilt": "^1.6.0",
-    "chai": "^3.5.0",
+    "chai": "4.2.0",
     "clipboardy": "^1.2.2",
     "colors": "^1.0.3",
     "ejs": "^2.4.1",
@@ -60,7 +60,7 @@
     "wdio-junit-reporter": "^0.1.0",
     "wdio-mocha-framework": "^0.5.12",
     "wdio-selenium-standalone-service": "0.0.9",
-    "webdriverio": "4.14.4",
+    "webdriverio": "^5.11.2",
     "winston": "^2.3.1",
     "ws": "^5.1.1",
     "yargs": "^6.5.0"

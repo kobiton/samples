@@ -5,8 +5,8 @@
 
   ##### Install nvm to control NodeJS version
   `$ brew install nvm`
-  `$ nvm install 8`
-  `$ nvm use 8`
+  `$ nvm install 8.11.0`
+  `$ nvm use 8.11.0`
 
   ##### Install yarn
   `$ brew install yarn`
