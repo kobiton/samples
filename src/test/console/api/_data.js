@@ -90,6 +90,57 @@ const formatsSubscription = {
   }
 }
 
+const samplePolicies = {
+  'android': {
+    'closeRecentApps': true,
+    'browsersToCleanup': [
+      'com.android.chrome',
+      'org.mozilla.firefox',
+      'com.opera.browser',
+      'com.htc.sense.browser',
+      'com.sec.android.app.sbrowser',
+      'com.UCMobile.intl',
+      'com.android.browser',
+      'com.asus.browser',
+      'mobi.mgeek.TunnyBrowser',
+      'org.mozilla.firefox_beta',
+      'com.opera.mini.native',
+      'com.chrome.beta'
+    ],
+    'removeInstalledApps': true,
+    'resetDeviceSettings': true,
+    'removeSignedInAccounts': true,
+    'removeInstalledAppsData': true
+  },
+  'ios': {
+    'closeRecentApps': true,
+    'browsersToCleanup': [
+      'com.apple.mobilesafari'
+    ],
+    'removeInstalledApps': true,
+    'resetDeviceSettings': true,
+    'removeSignedInAccounts': true,
+    'removeInstalledAppsData': true
+  }
+}
+
+const uncheckPolicies = {
+  'closeRecentApps': false,
+  'browsersToCleanup': [],
+  'resetDeviceSettings': false,
+  'removeSignedInAccounts': false,
+  'removeInstalledAppsData': false,
+  'removeInstalledApps': false
+}
+
+const checkPolicies = {
+  'closeRecentApps': true,
+  'resetDeviceSettings': true,
+  'removeSignedInAccounts': true,
+  'removeInstalledAppsData': true,
+  'removeInstalledApps': true
+}
+
 class APIData extends BaseData {
   getRegisterSchema() {
     return registerSchema
@@ -101,6 +152,18 @@ class APIData extends BaseData {
 
   getFormatsSubscription() {
     return formatsSubscription
+  }
+
+  getSamplePolicies() {
+    return samplePolicies
+  }
+
+  getUncheckPolicies() {
+    return uncheckPolicies
+  }
+
+  getCheckPolicies() {
+    return checkPolicies
   }
 
   generateInvalidEmails() {

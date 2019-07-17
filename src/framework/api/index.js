@@ -4,6 +4,7 @@ import Session from './session'
 import User from './user'
 import AppsRepo from './apps-repo'
 import Organization from './organization'
+import CleanupPolicy from './cleanup-policy'
 
 export default {
   Device,
@@ -11,5 +12,6 @@ export default {
   Session,
   User,
   AppsRepo,
-  Organization
+  Organization,
+  CleanupPolicy
 }
