@@ -4,14 +4,13 @@ import {debug} from '@kobiton/core-util'
 import config from '../../config/test'
 
 const elements = {
-  url: 'https://katalon-demo-cura.herokuapp.com/',
-  makeAppointmentButton: '//a[@id="btn-make-appointment"]',
+  url: 'https://the-internet.herokuapp.com/login',
   usernameInput: '//input[@name="username"]',
   passwordInput: '//input[@name="password"]',
-  LoginButton: '//button[@id="btn-login"]'
+  loginButton: '//form[@name="login"]'
 }
 
-export default class KatalonDemoCuraPage {
+export default class HerokuPage {
   constructor(browser, timeout) {
     this._browser = browser
     this._timeout = timeout
@@ -37,10 +36,6 @@ export default class KatalonDemoCuraPage {
         await this._browser.url(elements.url)
         await this._browser.getUrl()
 
-        const makeAppointmentButton = await this._browser.$(elements.makeAppointmentButton)
-        await makeAppointmentButton.waitForExist(this._timeout)
-        await makeAppointmentButton.click()
-        
         const usernameInput = await this._browser.$(elements.usernameInput)
         await usernameInput.waitForExist(this._timeout)
         await usernameInput.clearValue()
@@ -51,7 +46,7 @@ export default class KatalonDemoCuraPage {
         await passwordInput.clearValue()
         await passwordInput.setValue(word)
 
-        await this._browser.$(elements.LoginButton).click()
+        await this._browser.$(elements.loginButton).click()
         const endedAt = moment.utc()
         duration = endedAt.diff(startedAt, 'minutes')
       } while (duration < expectedDurationInMinutes)

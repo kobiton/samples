@@ -87,6 +87,9 @@ Append argument: --platformName <platformName>
 #### 10. Get devices by platform version
 Append argument: --platformVersion <version>
 
+#### 11. Support w3c for wd
+Append argument: --allowW3C <boolean>
+
 ### Run a specific test suites
 #### API
 

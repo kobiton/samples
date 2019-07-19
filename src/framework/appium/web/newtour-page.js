@@ -18,42 +18,36 @@ export default class NewTourPage {
     let duration = 0
     const startedAt = moment.utc()
     try {
-      const allowW3C = config.allowW3C || true
       let sessionInfo
-      if (allowW3C) {
-        sessionInfo = await this._browser
-      }
-      else {
-        await this._browser.init()
-        sessionInfo = await this._browser.session()
-      }
+      let kobitonSessionId
       
-      debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
+      sessionInfo = await this._browser.getSession()
+      kobitonSessionId = sessionInfo.kobitonSessionId
+      debug.log(`${config.portalUrl}/sessions/${kobitonSessionId}`)
 
-      if (sessionInfo.value.platformName === 'iOS') {
-        await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
-        await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
-      }
-      else {
-        await this._browser.timeouts({
-          'pageLoad': this._timeout,
-          'implicit': this._timeout
-        })
-      }
+      // https://w3c.github.io/webdriver/#dfn-set-timeouts
+      // https://webdriver.io/docs/api/webdriver.html#settimeouts
+      await this._browser.setTimeouts(this._timeout)
 
-      await this._browser
-        .url(elements.url)
+      await this._browser.url(elements.url)
+      await this._browser.getUrl()
+      
       do {
         const word = faker.lorem.word()
-        await this._browser // eslint-disable-line babel/no-await-in-loop
-          .waitForExist(elements.addressInput, this._timeout)
-          .setValue(elements.addressInput, word)
+
+        const addressInput = await this._browser.$(elements.addressInput)
+        await addressInput.waitForExist(this._timeout)
+        await addressInput.waitForDisplayed(this._timeout)
+        await addressInput.waitForEnabled(this._timeout)
+        await addressInput.clearValue()
+        await addressInput.setValue(word)
+
         const endedAt = moment.utc()
         duration = endedAt.diff(startedAt, 'minutes')
       } while (duration < expectedDurationInMinutes)
     }
     finally {
-      this._driver && await this._browser.end()
+      this._driver && await this._browser.deleteSession()
     }
   }
 }

@@ -27,60 +27,60 @@ export default class PasswordGeneratorPage {
     let duration = 0
     const startedAt = moment.utc()
     try {
-      const allowW3C = config.allowW3C || true
       let sessionInfo
-      if (allowW3C) {
-        sessionInfo = await this._browser
-      }
-      else {
-        await this._browser.init()
-        sessionInfo = await this._browser.session()
-      }
+      let kobitonSessionId
       
-      debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
+      sessionInfo = await this._browser.getSession()
+      kobitonSessionId = sessionInfo.kobitonSessionId
+      debug.log(`${config.portalUrl}/sessions/${kobitonSessionId}`)
 
-      if (sessionInfo.value.platformName === 'iOS') {
-        await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
-        await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
-      }
-      else {
-        await this._browser.timeouts({
-          'pageLoad': this._timeout,
-          'implicit': this._timeout
-        })
-      }
+      // https://w3c.github.io/webdriver/#dfn-set-timeouts
+      // https://webdriver.io/docs/api/webdriver.html#settimeouts
+      await this._browser.setTimeouts(this._timeout)
 
-      await this._browser
-        .url(elements.url)
+      await this._browser.url(elements.url)
+      await this._browser.getUrl()
+
       do {
         const word = faker.lorem.word()
-        await this._browser // eslint-disable-line babel/no-await-in-loop
-          .waitForExist(elements.symBols, this._timeout)
-          .click(elements.symBols)
-          .waitForExist(elements.numbers, this._timeout)
-          .click(elements.numbers)
-          .waitForExist(elements.lowercase, this._timeout)
-          .click(elements.lowercase)
-          .waitForExist(elements.uppercase, this._timeout)
-          .click(elements.uppercase)
-          .waitForExist(elements.noAmb, this._timeout)
-          .click(elements.noAmb)
-          .waitForExist(elements.client, this._timeout)
-          .click(elements.client)
-          .waitForExist(elements.autoSelect, this._timeout)
-          .click(elements.autoSelect)
-          .waitForExist(elements.saveSettings, this._timeout)
-          .click(elements.saveSettings)
-          .waitForExist(elements.generateButton, this._timeout)
-          .click(elements.generateButton)
-          .waitForExist(elements.finalPasswordInput, this._timeout)
-          .setValue(elements.finalPasswordInput, word)
+
+        const symBols = await this._browser.$(elements.symBols)
+        await symBols.waitForExist(this._timeout)
+        await symBols.waitForDisplayed(this._timeout)
+        await symBols.waitForEnabled(this._timeout)
+        await symBols.click()
+
+        const numbers = await this._browser.$(elements.numbers)
+        await numbers.click()
+
+        const lowercase = await this._browser.$(elements.lowercase)
+        await lowercase.click()
+
+        const noAmb = await this._browser.$(elements.noAmb)
+        await noAmb.click()
+
+        const client = await this._browser.$(elements.client)
+        await client.click()
+
+        const autoSelect = await this._browser.$(elements.autoSelect)
+        await autoSelect.click()
+
+        const saveSettings = await this._browser.$(elements.saveSettings)
+        await saveSettings.click()
+
+        const generateButton = await this._browser.$(elements.generateButton)
+        await generateButton.click()
+
+        const finalPasswordInput = await this._browser.$(elements.finalPasswordInput)
+        await finalPasswordInput.clearValue(word)
+        await finalPasswordInput.setValue(word)
+        
         const endedAt = moment.utc()
         duration = endedAt.diff(startedAt, 'minutes')
       } while (duration < expectedDurationInMinutes)
     }
     finally {
-      this._driver && await this._browser.end()
+      this._driver && await this._browser.deleteSession()
     }
   }
 }

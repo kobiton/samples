@@ -52,28 +52,17 @@ export default class AutomationPracticePage {
     let duration = 0
     const startedAt = moment.utc()
     try {
-      const allowW3C = config.allowW3C || true
       let sessionInfo
-      if (allowW3C) {
-        sessionInfo = await this._browser
-      }
-      else {
-        await this._browser.init()
-        sessionInfo = await this._browser.session()
-      }
+      let kobitonSessionId
+      
+      sessionInfo = await this._browser.getSession()
+      kobitonSessionId = sessionInfo.kobitonSessionId
 
-      debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
+      debug.log(`${config.portalUrl}/sessions/${kobitonSessionId}`)
 
-      if (sessionInfo.value.platformName === 'iOS') {
-        await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
-        await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
-      }
-      else {
-        await this._browser.timeouts({
-          'pageLoad': this._timeout,
-          'implicit': this._timeout
-        })
-      }
+      // https://w3c.github.io/webdriver/#dfn-set-timeouts
+      // https://webdriver.io/docs/api/webdriver.html#settimeouts
+      await this._browser.setTimeouts(this._timeout * 2)
 
       do {
         await this._run() // eslint-disable-line babel/no-await-in-loop
@@ -87,164 +76,161 @@ export default class AutomationPracticePage {
   }
 
   async _run() {
-    await this._browser
-      .url(elements.authenticationUrl)
-      .title()
-      .getSource()
-      .status()
-      .waitForVisible(elements.searchText, this._timeout)
-      .click(elements.searchText)
-      .rightClick(elements.searchText, 4, 4)
+    await this._browser.url(elements.authenticationUrl)
+    await this._browser.getTitle()
+    await this._browser.getPageSource()
+    await this._browser.status()
+    const searchText = await this._browser.$(elements.searchText)
+    await searchText.waitForVisible(this._timeout)
+    await searchText.click()
+    await searchText.rightClick(4, 4) // replaced by performActions https://github.com/jlipps/simple-wd-spec#perform-actions
 
-    const isAndroid = await this._browser.isAndroid
-    if (isAndroid) {
+    const sessionInfo = await this._browser.getSession()
+    if (sessionInfo.platform && sessionInfo.platform === 'ANDROID') {
       await this._browser.hideDeviceKeyboard('tapOutside')
     }
 
-    await this._browser
-      .addValue(elements.searchText, 't-shirt')
-      .leftClick(elements.searchButton, 4, 4)
-      .timeoutsImplicitWait(this._timeout)
-      .back()
-      .forward() // It is a protocol of w3c Webdriver
-      .url(elements.authenticationUrl)
-      .timeouts('page load', this._timeout)
-      .waitForVisible(elements.emailCreateText, this._timeout)
-      .setValue(elements.emailCreateText, faker.internet.email())
-      .click(elements.createAnAccountButton)
-      .timeouts('page load', this._timeout)
-      .getTitle()
-      .cookie()
-      .setCookie({name: 'test', value: '123'})
-      .getCookie('test')
-      .deleteCookie('test')
-      // Property: get an attribute from a DOM-element based on the selector and attribute name
-      .getAttribute(elements.customerLastNameText, 'type')
-      .getCssProperty(elements.registerButton, 'color')
-      .getElementSize(elements.customerLastNameText)
-      .timeoutsAsyncScript(5000)
-      .getHTML(elements.customerLastNameText)
-      .getLocation(elements.customerLastNameText)
-      .getLocationInView(elements.genderOptionMrs)
-      .getTagName(elements.customerLastNameText)
-      .waitForText(elements.pageHeading, this._timeout)
-      .getText(elements.pageHeading).then((text) => {
-        debug.log('Current text:', text)
-      })
-      .getUrl()
-      .isEnabled(elements.customerLastNameText)
-      .isExisting(elements.customerLastNameText)
-      .isSelected(elements.genderOptionMr)
-      .isVisible(elements.customerLastNameText)
-      .isVisibleWithinViewport(elements.email)
-      .waitForValue(elements.email, this._timeout)
-      .getValue(elements.email)
-      .screenshot()
-      .saveScreenshot('./reports/screenshot.png')
-      .setOrientation('portrait')
-      .setOrientation('landscape')
-      .setOrientation('portrait')
-      .getOrientation()
-      .click(elements.genderOptionMrs)
-      .waitForSelected(elements.genderOptionMrs, this._timeout)
-      .clearElement(elements.email)
-      .selectByAttribute(elements.dateOfBirthSelect, 'value', '2')
-      .selectByIndex(elements.monthOfBirthSelect, 4)
-      .selectByValue(elements.yearOfBirthSelect, '1991')
-      .waitForExist(elements.customerFirstNameText, this._timeout)
-      .setValue(elements.customerFirstNameText, faker.name.firstName())
-      .setValue(elements.customerLastNameText, faker.name.lastName())
-      .setValue(elements.passwordText, faker.internet.password())
-      .selectByIndex(elements.dateOfBirthSelect, 3)
-      .selectByValue(elements.monthOfBirthSelect, '3')
-      .selectByValue(elements.yearOfBirthSelect, '1980')
-      .touch(elements.newsLetterCheckbox, false)
-      .click(elements.specialOfferCheckbox)
-      .setValue(elements.firstAddressText, faker.address.streetAddress())
-      .setValue(elements.cityText, faker.address.city())
-      .selectByVisibleText(elements.stateSelect, faker.address.state())
-      .setValue(elements.zipCodeText, faker.address.zipCode())
-      .selectorExecute('//input', (divs, message) => {
-        return `${divs.length} message`
-      }, 'input on the page')
-      .submitForm(elements.accountCreationForm)
-      .waitForExist(elements.createAnAccountButton, this._timeout)
-      .setValue(elements.emailCreateText, faker.internet.email())
-      .click(elements.createAnAccountButton)
-      .waitForEnabled(elements.customerFirstNameText, this._timeout)
-      .click(elements.registerButton)
-      .waitForVisible(elements.registerError, this._timeout)
-      .refresh()
-      .getCommandHistory()
-      .frame()
-      .waitForExist(elements.searchText, this._timeout)
-      .middleClick(elements.searchText, 2, 2)
-      .getGridNodeDetails()
-      .leftClick(elements.searchText, 2, 2)
-      .rightClick(elements.searchText, 2, 2)
+    await searchText.addValue('t-shirt')
+    const searchButton = await this._browser.$(searchButton)
+    await searchButton.leftClick(4, 4)
+    await this._browser.timeoutsImplicitWait(this._timeout)
+    await this._browser.back()
+    await this._browser.forward() // It is a protocol of w3c Webdriver
+    await this._browser.url(elements.authenticationUrl)
+    await this._browser.timeouts('page load', this._timeout)
+    await this._browser.waitForVisible(elements.emailCreateText, this._timeout)
+    await this._browser.setValue(elements.emailCreateText, faker.internet.email())
+    await this._browser.click(elements.createAnAccountButton)
+    await this._browser.timeouts('page load', this._timeout)
+    await this._browser.getTitle()
+    await this._browser.cookie()
+    await this._browser.setCookie({name: 'test', value: '123'})
+    await this._browser.getCookie('test')
+    await this._browser.deleteCookie('test')
+    // Property: get an attribute from a DOM-element based on the selector and attribute name
+    await this._browser.getAttribute(elements.customerLastNameText, 'type')
+    await this._browser.getCssProperty(elements.registerButton, 'color')
+    await this._browser.getElementSize(elements.customerLastNameText)
+    await this._browser.timeoutsAsyncScript(5000)
+    await this._browser.getHTML(elements.customerLastNameText)
+    await this._browser.getLocation(elements.customerLastNameText)
+    await this._browser.getLocationInView(elements.genderOptionMrs)
+    await this._browser.getTagName(elements.customerLastNameText)
+    await this._browser.waitForText(elements.pageHeading, this._timeout)
+    await this._browser.getText(elements.pageHeading).then((text) => {
+      debug.log('Current text:', text)
+    })
+    await this._browser.getUrl()
+    await this._browser.isEnabled(elements.customerLastNameText)
+    await this._browser.isExisting(elements.customerLastNameText)
+    await this._browser.isSelected(elements.genderOptionMr)
+    await this._browser.isVisible(elements.customerLastNameText)
+    await this._browser.isVisibleWithinViewport(elements.email)
+    await this._browser.waitForValue(elements.email, this._timeout)
+    await this._browser.getValue(elements.email)
+    await this._browser.screenshot()
+    await this._browser.saveScreenshot('./reports/screenshot.png')
+    await this._browser.setOrientation('portrait')
+    await this._browser.setOrientation('landscape')
+    await this._browser.setOrientation('portrait')
+    await this._browser.getOrientation()
+    await this._browser.click(elements.genderOptionMrs)
+    await this._browser.waitForSelected(elements.genderOptionMrs, this._timeout)
+    await this._browser.clearElement(elements.email)
+    await this._browser.selectByAttribute(elements.dateOfBirthSelect, 'value', '2')
+    await this._browser.selectByIndex(elements.monthOfBirthSelect, 4)
+    await this._browser.selectByValue(elements.yearOfBirthSelect, '1991')
+    await this._browser.waitForExist(elements.customerFirstNameText, this._timeout)
+    await this._browser.setValue(elements.customerFirstNameText, faker.name.firstName())
+    await this._browser.setValue(elements.customerLastNameText, faker.name.lastName())
+    await this._browser.setValue(elements.passwordText, faker.internet.password())
+    await this._browser.selectByIndex(elements.dateOfBirthSelect, 3)
+    await this._browser.selectByValue(elements.monthOfBirthSelect, '3')
+    await this._browser.selectByValue(elements.yearOfBirthSelect, '1980')
+    await this._browser.touch(elements.newsLetterCheckbox, false)
+    await this._browser.click(elements.specialOfferCheckbox)
+    await this._browser.setValue(elements.firstAddressText, faker.address.streetAddress())
+    await this._browser.setValue(elements.cityText, faker.address.city())
+    await this._browser.selectByVisibleText(elements.stateSelect, faker.address.state())
+    await this._browser.setValue(elements.zipCodeText, faker.address.zipCode())
+    await this._browser.selectorExecute('//input', (divs, message) => {
+      return `${divs.length} message`
+    }, 'input on the page')
+    await this._browser.submitForm(elements.accountCreationForm)
+    await this._browser.waitForExist(elements.createAnAccountButton, this._timeout)
+    await this._browser.setValue(elements.emailCreateText, faker.internet.email())
+    await this._browser.click(elements.createAnAccountButton)
+    await this._browser.waitForEnabled(elements.customerFirstNameText, this._timeout)
+    await this._browser.click(elements.registerButton)
+    await this._browser.waitForVisible(elements.registerError, this._timeout)
+    await this._browser.refresh()
+    await this._browser.getCommandHistory()
+    await this._browser.frame()
+    await this._browser.waitForExist(elements.searchText, this._timeout)
+    await this._browser.middleClick(elements.searchText, 2, 2)
+    await this._browser.getGridNodeDetails()
+    await this._browser.leftClick(elements.searchText, 2, 2)
+    await this._browser.rightClick(elements.searchText, 2, 2)
 
-    if (isAndroid) {
-      await this._browser
-        .touchDown(10, 30)
-        .touchUp(10, 30)
-        .scroll(0, 150)
-        .moveToObject(elements.searchText)
-        .swipe(elements.searchText, 0, 10, 10)
-        .swipeDown(elements.searchText, 10, 10)
-        .swipeUp(elements.searchText, -10, 10)
-        .swipeLeft(elements.searchText, 10, 10)
-        .swipeRight(elements.searchText, -10, 10)
-        .click(elements.searchText)
-        .hasFocus(elements.searchText)
-        .pressKeycode(3)
-        .longPressKeycode(3)
-        .setGeoLocation({latitude: 5, longitude: 6, altitude: 7})
-        .getGeoLocation()
-        .applicationCacheStatus()
-        .windowHandles()
-        .windowHandle()
-        .keys('Home')
-        .localStorageSize()
-        .localStorage()
-        .windowHandlePosition()
-        .execute((a, b) => {
-          return a + b
-        }, 1, 2)
-        .selectorExecuteAsync('//div', function (divs, message, callback) {
-          callback(divs.length + message)
-        }, 'divs on the page')
-        .settings({ignoreUnimportantViews: false})
-        .settings({ignoreUnimportantViews: true})
-        .toggleData()
+    if (sessionInfo.platform && sessionInfo.platform === 'ANDROID') {
+      await this._browser.touchDown(10, 30)
+      await this._browser.touchUp(10, 30)
+      await this._browser.scroll(0, 150)
+      await this._browser.moveToObject(elements.searchText)
+      await this._browser.swipe(elements.searchText, 0, 10, 10)
+      await this._browser.swipeDown(elements.searchText, 10, 10)
+      await this._browser.swipeUp(elements.searchText, -10, 10)
+      await this._browser.swipeLeft(elements.searchText, 10, 10)
+      await this._browser.swipeRight(elements.searchText, -10, 10)
+      await this._browser.click(elements.searchText)
+      await this._browser.hasFocus(elements.searchText)
+      await this._browser.pressKeycode(3)
+      await this._browser.longPressKeycode(3)
+      await this._browser.setGeoLocation({latitude: 5, longitude: 6, altitude: 7})
+      await this._browser.getGeoLocation()
+      await this._browser.applicationCacheStatus()
+      await this._browser.windowHandles()
+      await this._browser.windowHandle()
+      await this._browser.keys('Home')
+      await this._browser.localStorageSize()
+      await this._browser.localStorage()
+      await this._browser.windowHandlePosition()
+      await this._browser.execute((a, b) => {
+        return a + b
+      }, 1, 2)
+      await this._browser.selectorExecuteAsync('//div', function (divs, message, callback) {
+        callback(divs.length + message)
+      }, 'divs on the page')
+      await this._browser.settings({ignoreUnimportantViews: false})
+      await this._browser.settings({ignoreUnimportantViews: true})
+      await this._browser.toggleData()
     }
 
     const contextId = (await this._browser.contexts()).value[0]
     const currentContextId = await this._browser.context()
     const logType = (await this._browser.logTypes()).value[0]
-    await this._browser
-      .pause(1000)
-      .log(logType)
-      .getCurrentTabId()
-      .getTabIds()
-      .getViewportSize()
-      .context(contextId)
-      .context()
-      .context(currentContextId)
-      .getDeviceTime()
-      .isLocked()
-      .settings({shouldUseCompactResponses: true})
-      .settings({shouldUseCompactResponses: false})
-      .settings({elementResponseAttributes: 'text'})
-      .settings({elementResponseAttributes: 'name'})
-      .settings({elementResponseAttributes: 'rect'})
-      .settings({elementResponseAttributes: 'attribute/name'})
-      .settings({elementResponseAttributes: 'attribute/value'})
-      .settings({enableNotificationListener: true})
-      .settings()
-      .unlock()
+    await this._browser.pause(1000)
+    await this._browser.log(logType)
+    await this._browser.getCurrentTabId()
+    await this._browser.getTabIds()
+    await this._browser.getViewportSize()
+    await this._browser.context(contextId)
+    await this._browser.context()
+    await this._browser.context(currentContextId)
+    await this._browser.getDeviceTime()
+    await this._browser.isLocked()
+    await this._browser.settings({shouldUseCompactResponses: true})
+    await this._browser.settings({shouldUseCompactResponses: false})
+    await this._browser.settings({elementResponseAttributes: 'text'})
+    await this._browser.settings({elementResponseAttributes: 'name'})
+    await this._browser.settings({elementResponseAttributes: 'rect'})
+    await this._browser.settings({elementResponseAttributes: 'attribute/name'})
+    await this._browser.settings({elementResponseAttributes: 'attribute/value'})
+    await this._browser.settings({enableNotificationListener: true})
+    await this._browser.settings()
+    await this._browser.unlock()
 
-    const isIOS = await this._browser.isIOS
-    if (isIOS) {
+   if (sessionInfo.platformName && sessionInfo.platformName === 'iOS') {
       await this._browser.touchPerform([{
         action: 'press',
         options: {
@@ -254,10 +240,9 @@ export default class AutomationPracticePage {
       }])
     }
 
-    await this._browser
-      .session() // It is a protocol of w3c Webdriver
-      .source()  // It is a protocol of w3c Webdriver
-      .launch()
+    await this._browser.session() // It is a protocol of w3c Webdriver
+    await this._browser.source()  // It is a protocol of w3c Webdriver
+    await this._browser.launch()
   }
 }
 

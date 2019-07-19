@@ -27,40 +27,34 @@ export default class MailinatorPage {
     const startedAt = moment.utc()
 
     try {
-      const allowW3C = config.allowW3C || true
       let sessionInfo
-      if (allowW3C) {
-        sessionInfo = await this._browser
-      }
-      else {
-        await this._browser.init()
-        sessionInfo = await this._browser.session()
-      }
+      let kobitonSessionId
       
-      debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
+      sessionInfo = await this._browser.getSession()
+      kobitonSessionId = sessionInfo.kobitonSessionId
+      debug.log(`${config.portalUrl}/sessions/${kobitonSessionId}`)
 
-      if (sessionInfo.value.platformName === 'iOS') {
-        await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
-        await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
-      }
-      else {
-        await this._browser.timeouts({
-          'pageLoad': this._timeout,
-          'implicit': this._timeout
-        })
-      }
+      // https://w3c.github.io/webdriver/#dfn-set-timeouts
+      // https://webdriver.io/docs/api/webdriver.html#settimeouts
+      await this._browser.setTimeouts(this._timeout)
 
-      await this._browser
-        .url(elements.url)
-        .getUrl()
+      await this._browser.url(elements.url)
+      await this._browser.getUrl()
 
       do {
         const word = faker.lorem.word()
-        await this._browser // eslint-disable-line babel/no-await-in-loop
-          .waitForExist(elements.emailInput, this._timeout)
-          .waitForVisible(elements.emailInput, this._timeout)
-          .setValue(elements.emailInput, word)
-          .setValue(elements.passwordInput, word)
+
+        const emailInput = await this._browser.$(elements.emailInput)
+        await emailInput.waitForExist(this._timeout)
+        await emailInput.waitForDisplayed(this._timeout)
+        await emailInput.waitForEnabled(this._timeout)
+        await emailInput.clearValue()
+        await emailInput.setValue(word)
+
+        const passwordInput = await this._browser.$(elements.passwordInput)
+        await passwordInput.clearValue()
+        await passwordInput.setValue(word)
+
         const endedAt = moment.utc()
         duration = endedAt.diff(startedAt, 'seconds')
       } while (duration < expectedDurationInSeconds)
@@ -81,7 +75,7 @@ export default class MailinatorPage {
       }
     }
     finally {
-      this._driver && await this._browser.end()
+      this._driver && await this._browser.deleteSession()
     }
   }
 

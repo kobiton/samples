@@ -16,44 +16,35 @@ export default class DesiredCapsTestPage {
 
   async executeTest() {
     try {
-      const allowW3C = config.allowW3C || true
       let sessionInfo
-      if (allowW3C) {
-        sessionInfo = await this._browser
-      }
-      else {
-        await this._browser.init()
-        sessionInfo = await this._browser.session()
-      }
-      
-      debug.log(`${config.portalUrl}/sessions/${sessionInfo.value.kobitonSessionId}`)
-
-      if (sessionInfo.value.platformName === 'iOS') {
-        await this._browser.timeouts({'type': 'page load', 'ms': this._timeout})
-        await this._browser.timeouts({'type': 'implicit', 'ms': this._timeout})
-      }
-      else {
-        await this._browser.timeouts({
-          'pageLoad': this._timeout,
-          'implicit': this._timeout
-        })
-      }
-
-      await this._browser
-        .url(elements.url)
-        .getUrl()
-
       const word = faker.lorem.word()
-      await this._browser // eslint-disable-line babel/no-await-in-loop
-        .waitForExist(elements.emailInput, this._timeout)
-        .waitForVisible(elements.emailInput, this._timeout)
-        .setValue(elements.emailInput, word)
-        .setValue(elements.passwordInput, word)
-        .end()
+
+      sessionInfo = await this._browser.getSession()
+      debug.log(`${config.portalUrl}/sessions/${sessionInfo.kobitonSessionId}`)
+
+      // https://w3c.github.io/webdriver/#dfn-set-timeouts
+      // https://webdriver.io/docs/api/webdriver.html#settimeouts
+      await this._browser.setTimeouts(this._timeout)
+
+      await this._browser.url(elements.url)
+      await this._browser.getUrl()
+
+      const emailInput = await this._browser.$(elements.emailInput)
+      await emailInput.waitForExist(this._timeout)
+      await emailInput.waitForDisplayed(this._timeout)
+      await emailInput.waitForEnabled(this._timeout)
+      await emailInput.clearValue()
+      await emailInput.setValue(word)
+
+      const passwordInput = await this._browser.$(elements.passwordInput)
+      await passwordInput.clearValue()
+      await passwordInput.setValue(word)
+
+      await this._browser.deleteSession()
     }
     catch (err) {
       debug.log('DesiredCapsTestPage:executeTest', err.message)
-      this._driver && await this._browser.end()
+      this._driver && await await this._browser.deleteSession()
       return err.message
     }
     return null

@@ -60,7 +60,7 @@
     "wdio-junit-reporter": "^0.1.0",
     "wdio-mocha-framework": "^0.5.12",
     "wdio-selenium-standalone-service": "0.0.9",
-    "webdriverio": "^5.11.2",
+    "webdriverio": "^5.11.6",
     "winston": "^2.3.1",
     "ws": "^5.1.1",
     "yargs": "^6.5.0"

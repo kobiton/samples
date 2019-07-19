@@ -5,15 +5,16 @@ import NewTourPage from './newtour-page'
 import PasswordGeneratorPage from './password-generator-page'
 import TempEmailPage from './temp-email-page'
 import KatalonDemoCuraPage from './katalon-demo-cura-herokuapp-page'
+import HerokuPage from './the-internet-herokuapp-page'
 
 const pages = [
-  // DemoQAPage, skip due to this page has issue
   GiveTourPage,
   MailinatorPage,
   NewTourPage,
   PasswordGeneratorPage,
   TempEmailPage,
-  KatalonDemoCuraPage
+  KatalonDemoCuraPage,
+  HerokuPage
 ]
 
 // This test is to make sure that the test won't be cached on the devices
