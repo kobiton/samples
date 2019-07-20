@@ -1,8 +1,4 @@
 from appium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.remote.remote_connection import RemoteConnection
 import unittest
 import re
 import time
@@ -18,9 +14,7 @@ class AndroidAppTest(unittest.TestCase):
   secondQuestion = 'Cruise Control'
 
   def setUp(self):
-    self._command_executor = RemoteConnection(configs.kobitonServerUrl, resolve_ip=False)
-    self._command_executor.set_timeout(configs.session_timeout)
-    self.driver = webdriver.Remote(self._command_executor, configs.desired_caps_android_app)
+    self.driver = webdriver.Remote(configs.kobitonServerUrl, configs.desired_caps_android_app)
     self.driver.implicitly_wait(configs.session_timeout)
 
     kobitonSessionId = self.driver.desired_capabilities.get('kobitonSessionId')

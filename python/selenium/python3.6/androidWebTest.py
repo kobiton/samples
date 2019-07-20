@@ -5,7 +5,7 @@ import urllib3
 urllib3.disable_warnings()
 import sys
 sys.path.append('..')
-from python import configs
+import configs
 
 class AndroidWebTest(unittest.TestCase):
 
