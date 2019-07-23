@@ -18,8 +18,6 @@ class AndroidAppTest(unittest.TestCase):
   secondQuestion = 'Cruise Control'
 
   def setUp(self):
-    # self._command_executor = RemoteConnection(configs.kobitonServerUrl, resolve_ip=False)
-    # self._command_executor.set_timeout(configs.session_timeout)
     self.driver = webdriver.Remote(configs.kobitonServerUrl, configs.desired_caps_android_app)
     self.driver.implicitly_wait(configs.session_timeout)
 
