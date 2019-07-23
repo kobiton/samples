@@ -47,8 +47,7 @@ These are simple samples of how to use Python to run Appium tests. It is suggest
 
 - Modify `username`, `apiKey` in `sample_kobiton_web.robot`, `sample_kobiton_app.robot` file
 
-- I
-nstall appium libraries:
+- Install appium libraries:
 
 ```shell
   pip install robotframework-appiumlibrary
@@ -80,18 +79,18 @@ nstall appium libraries:
 
 ```shell
   cd python/selenium/python2.7
-  python androidWebTest.py
-  python androidAppTest.py
-  python iOSWebTest.py
-  python iOSAppTest.py
+  python2 androidWebTest.py
+  python2 androidAppTest.py
+  python2 iOSWebTest.py
+  python2 iOSAppTest.py
 ```
 
 ```shell
-  cd python/selenium/python3.6
-  python androidWebTest.py
-  python androidAppTest.py
-  python iOSWebTest.py
-  python iOSAppTest.py
+  cd python/selenium/python3.7
+  python3 androidWebTest.py
+  python3 androidAppTest.py
+  python3 iOSWebTest.py
+  python3 iOSAppTest.py
 ```
 
 ### Resources
