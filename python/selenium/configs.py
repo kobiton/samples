@@ -10,7 +10,7 @@ desired_caps_android_web = {
   'browserName':        'chrome',
   'captureScreenshots': True,
   'deviceGroup':        'KOBITON',
-  'deviceName':         'Galaxy S5',
+  'deviceName':         'Galaxy*',
   'platformName':       'Android',
   'newCommandTimeout':  120
 }
@@ -22,7 +22,7 @@ desired_caps_android_app = {
   'app':                'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.apk',
   'captureScreenshots': True,
   'deviceGroup':        'KOBITON',
-  'deviceName':         'Galaxy S5',
+  'deviceName':         'Galaxy*',
   'platformName':       'Android',
   'newCommandTimeout':  120
 }
@@ -34,7 +34,7 @@ desired_caps_ios_web = {
   'browserName':        'safari', 
   'captureScreenshots': True,
   'deviceGroup':        'KOBITON',
-  'deviceName':         'iPhone 7',
+  'deviceName':         'iPhone*',
   'platformName':       'iOS',
   'newCommandTimeout':  120
 }
@@ -46,7 +46,7 @@ desired_caps_ios_app = {
   'app':                'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa',
   'captureScreenshots': True,
   'deviceGroup':        'KOBITON',
-  'deviceName':         'iPhone 7',
+  'deviceName':         'iPhone*',
   'platformName':       'iOS',
   'newCommandTimeout':  120
 }
