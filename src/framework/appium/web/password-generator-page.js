@@ -80,7 +80,7 @@ export default class PasswordGeneratorPage {
       } while (duration < expectedDurationInMinutes)
     }
     finally {
-      this._driver && await this._browser.deleteSession()
+      this._browser && await this._browser.deleteSession()
     }
   }
 }

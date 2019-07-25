@@ -71,7 +71,7 @@ export default class AutomationPracticePage {
       } while (duration < expectedDurationInMinutes)
     }
     finally {
-      this._driver && await this._browser.end()
+      this._browser && await this._browser.end()
     }
   }
 

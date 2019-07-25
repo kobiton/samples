@@ -44,7 +44,7 @@ export default class DesiredCapsTestPage {
     }
     catch (err) {
       debug.log('DesiredCapsTestPage:executeTest', err.message)
-      this._driver && await await this._browser.deleteSession()
+      this._browser && await await this._browser.deleteSession()
       return err.message
     }
     return null
