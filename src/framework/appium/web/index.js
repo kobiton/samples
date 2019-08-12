@@ -67,7 +67,7 @@ executeMultipleDevicesParallelTest({desiredCapsList, durationInMinutes, timeout}
 }
 
 async function _launchSession({desiredCapabilities, durationInMinutes, timeout}) {
-  const browser = remote({desiredCapabilities, ...server})
+  const browser = await remote({logLevel: 'trace', capabilities: desiredCapabilities, ...server})
   const randomPage = new RandomPage(browser, timeout)
   await randomPage.executeTest(durationInMinutes)
 }
