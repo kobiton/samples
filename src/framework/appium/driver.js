@@ -15,7 +15,10 @@ export async function quitDriver(driver) {
 
 export async function createDriver(desiredCapabilities) {
   const allowW3C = config.allowW3C
-  if (config.allowW3C) desiredCapabilities.allowW3C = allowW3C
+  if (config.allowW3C) {
+    desiredCapabilities.allowW3C = allowW3C
+    desiredCapabilities.w3cPrefix = 'appium'
+  }
 
   const server = await createServerConfig()
   const driver = await wd.promiseChainRemote(server)
