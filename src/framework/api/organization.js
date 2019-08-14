@@ -140,7 +140,7 @@ class OrganizationAPI extends Base {
   }
 
   /**
-   * Create a new group.
+   * Create a new group
    * @param {String} token
    * @param {integer} orgId
    * @param {String} groupName
@@ -158,7 +158,20 @@ class OrganizationAPI extends Base {
   }
 
   /**
-   * Edit group name and/ or group description.
+   * Delete a group
+   * @param {String} token
+   * @param {integer} orgId
+   * @param {integer} groupId
+   */
+  async deleteGroup(token, orgId, groupId) {
+    return await this.delete({
+      headers: this.customBearerHeaders(token),
+      path: `organizations/${orgId}/groups/${groupId}`
+    })
+  }
+
+  /**
+   * Edit group name and/ or group description
    * @param {String} token
    * @param {integer} orgId
    * @param {integer} groupId
@@ -177,7 +190,7 @@ class OrganizationAPI extends Base {
   }
 
   /**
-   * Update member(s) of a group.
+   * Update member(s) of a group
    * When assigning member(s), list userIds is updated by current Ids concatenate new Ids.
    * When removing member(s), list userId is updated by Ids wanted to keep.
    * @param {String} token
@@ -194,7 +207,7 @@ class OrganizationAPI extends Base {
   }
 
   /**
-   * Update device(s) of a group.
+   * Update device(s) of a group
    * When assigning device(s), list deviceIds is updated by current Ids concatenate new Ids.
    * When removing device(s), list deviceIds is updated by Ids wanted to keep.
    * @param {String} token

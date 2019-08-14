@@ -6,9 +6,11 @@ import * as util from '../../../framework/util/index'
 const {username1: username, password1: password} = {...config}
 let token
 let orgId
+let groupId
 
 let listMembers
 let listGroups
+let groupInfo
 let listDevices = []
 
 let listGroupsHavingMembers
@@ -23,14 +25,37 @@ describe('API / Group Management', () => {
 
     listDevices = await api.Device.getDevices({onlineDeviceOnly: false})
 
-    const [allGroupInfo] = await api.Organization.getAllGroups(token, orgId)
-    listGroups = allGroupInfo.groups
-
     listMembers = await api.Organization.filterMembers(
       accountInfo.members, {invitationStatus: 'ACCEPTED'})
+  })
 
-    listGroupsHavingMembers = listGroups.filter((groups) => groups.membersCount !== 0)
-    listGroupHavingDevices = listGroups.filter((groups) => groups.devicesCount !== 0)
+  beforeEach(async () => {
+    const [allGroupInfo] = await api.Organization.getAllGroups(token, orgId)
+    listGroups = allGroupInfo.groups
+    groupId = listGroups[0] && listGroups[0].id
+    if (groupId) [groupInfo] = await api.Organization.getGroupInfo(token, orgId, groupId)
+
+    listGroupsHavingMembers = listGroups && listGroups.filter((groups) => groups.membersCount !== 0)
+    listGroupHavingDevices = listGroups && listGroups.filter((groups) => groups.devicesCount !== 0)
+  })
+
+  after(async () => {
+    for (let group of listGroups) {
+      const [resBody, response] = await api.Organization.deleteGroup(token, orgId, group.id)
+    }
+
+    const [emptyGroups] = await api.Organization.getAllGroups(token, orgId)
+    assert(Array.isArray(emptyGroups.groups), 'Group is not empty.')
+  })
+
+  it('should delete all groups successfully', async () => {
+    for (let group of listGroups) {
+      const [resBody, response] = await api.Organization.deleteGroup(token, orgId, group.id)
+      assert.equal(resBody, 'OK', 'Incorrect status code returned')
+    }
+
+    const [emptyGroups] = await api.Organization.getAllGroups(token, orgId)
+    assert(Array.isArray(emptyGroups.groups), 'Group is not empty.')
   })
 
   it('should create a group successfully', async () => {
@@ -46,8 +71,9 @@ describe('API / Group Management', () => {
       'between 5 and 80 characters, contains alphabet, alphanumeric, space, . + - _'
 
     const groupName = util.getRandomItems(listGroups).name
+
     const [resBody, response] = await api.Organization.createGroup(token, orgId, groupName)
-    
+
     assert.equal(response.statusCode, 400, 'Incorrect status code returned')
     assert.equal(resBody, errorMsg, 'Incorrect error message')
   })
@@ -63,7 +89,6 @@ describe('API / Group Management', () => {
   })
 
   it('should edit group information successfully', async () => {
-    const groupId = util.getRandomItems(listGroups).id
     const newGroupName = util.generateUsername()
 
     const [resBody] = await api.Organization.editGroup(token, orgId, groupId, newGroupName)
@@ -71,12 +96,9 @@ describe('API / Group Management', () => {
   })
 
   it('should assign member(s) to group successfully', async () => {
-    const groupId = util.getRandomItems(listGroups).id
     const userId = util.getRandomItems(listMembers).id
 
-    const [groupInfo] = await api.Organization.getGroupInfo(token, orgId, groupId)
     const listUserIds = api.Organization.getUserIdsOfGroup(groupInfo)
-
     const newListUserIds = listUserIds.concat(userId)
 
     const [resBody] =
@@ -85,9 +107,6 @@ describe('API / Group Management', () => {
   })
 
   it('should remove member(s) from group successfully', async () => {
-    const groupId = util.getRandomItems(listGroupsHavingMembers).id
-    const [groupInfo] = await api.Organization.getGroupInfo(token, orgId, groupId)
-
     const listUserIds = api.Organization.getUserIdsOfGroup(groupInfo)
     const userId = util.getRandomItems(listUserIds).id
 
@@ -104,9 +123,6 @@ describe('API / Group Management', () => {
   })
 
   it('should assign device(s) to group successfully', async () => {
-    const groupId = util.getRandomItems(listGroups).id
-    const [groupInfo] = await api.Organization.getGroupInfo(token, orgId, groupId)
-
     const listDeviceIds = api.Organization.getDeviceIdsOfGroup(groupInfo)
     const deviceId = util.getRandomItems(listDevices).id
 
@@ -118,9 +134,6 @@ describe('API / Group Management', () => {
   })
 
   it('should remove device(s) from group successfully', async () => {
-    const groupId = util.getRandomItems(listGroupHavingDevices).id
-    const [groupInfo] = await api.Organization.getGroupInfo(token, orgId, groupId)
-    
     const listDeviceIds = api.Organization.getDeviceIdsOfGroup(groupInfo)
     const deviceId = util.getRandomItems(groupInfo.devices).id
 
