@@ -1,24 +1,21 @@
-// yarn install
-// yarn add request
-
 const request = require('request');
 const fs = require('fs');
 const btoa = require('btoa');
 const USERNAME =  process.env.USERNAME
 const API_KEY =  process.env.API_KEY
 const FILE_NAME =  process.env.FILE_NAME
-const YOUR_APPLICATION_PATH = process.env.YOUR_APPLICATION_PATH
-const stats = fs.statSync(YOUR_APPLICATION_PATH);
+const APP_PATH = process.env.APP_PATH
+const stats = fs.statSync(APP_PATH)
 const inputBody = {
   'filename': `${FILE_NAME}`
 };
 
-const base64EncodedBasicAuth = btoa(`${USERNAME}:${API_KEY}`);
+const base64EncodedBasicAuth = btoa(`${USERNAME}:${API_KEY}`)
 const headers = {
   'Authorization': `Basic ${base64EncodedBasicAuth}`,
   'Content-Type':'application/json',
   'Accept':'application/json'
-};
+}
 
 async function main() {
   
@@ -26,7 +23,7 @@ async function main() {
     console.log('Step 1: Generate Upload URL')
     const getUrl = await new Promise((resolve, reject) => {
       request({
-        url: 'https://api.kobiton.com/v1/apps/uploadUrl',
+        url: 'https://api-test.kobiton.com/v1/apps/uploadUrl',
         json: true,
         method: 'POST',
         body: inputBody,
@@ -45,7 +42,7 @@ async function main() {
     })
   console.log('Step 2: Upload File To S3')
     const uploaddile = await new Promise((resolve, reject) => {
-      fs.createReadStream(YOUR_APPLICATION_PATH).pipe(
+      fs.createReadStream(APP_PATH).pipe(
         request(
           {
             method: 'PUT',
@@ -70,7 +67,7 @@ async function main() {
 console.log('Step 3: Create Application Or Version')
   const createAppVersion = await new Promise((resolve, reject) => {
     request({
-      url: 'https://api.kobiton.com/v1/apps',
+      url: 'https://api-test.kobiton.com/v1/apps',
       json: true,
       method: 'POST',
       body: {
@@ -83,7 +80,7 @@ console.log('Step 3: Create Application Or Version')
         console.error('Error:', err);
         return reject(err)
       }
-      console.log('Response body:', body);
+      console.log('Response body:', body)
       resolve(body)
       console.log('Done')
     })

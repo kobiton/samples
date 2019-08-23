@@ -3,8 +3,7 @@
 ## 1. Setup environment
 ### Nodejs
 - Make sure nodejs version >= 8 is installed
-- yarn install
-- yarn add request
+- npm install
 ## 2 Coding
 - To run in local: `(environment variables) node upload-app-s3.js`
 * Set environment variables:
