@@ -2,7 +2,7 @@
 
 ## 1. Setup environment
 ### Install ack
-- Make sure ack is install at: [link](https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started-install.html) 
+- Make sure ack is install at: [link](https://www.elastic.co/guide/en/elasticsearch/reference/current/)getting-started-install.html) 
 ## 2 Coding
 - To run in local: `bash upload-app-s3.sh (environment variables )`
 * Set environment variables:
