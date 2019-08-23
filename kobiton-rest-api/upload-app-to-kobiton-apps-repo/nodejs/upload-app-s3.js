@@ -83,7 +83,6 @@ console.log('Step 3: Create Application Or Version')
         console.error('Error:', err);
         return reject(err)
       }
-      //console.log('Response:', response);
       console.log('Response body:', body);
       resolve(body)
       console.log('Done')

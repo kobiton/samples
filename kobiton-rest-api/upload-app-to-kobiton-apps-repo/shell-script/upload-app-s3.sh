@@ -30,7 +30,6 @@ curl -X PUT \
   -T $YOUR_APPLICATION_PATH
 
 echo 'Step 4: Create Application Or Version'
-JSON="{\"filename\":\"${FILENAME}\",\"appPath\":\"${APPPATH}\"}"
 curl -X POST \
 'https://api.kobiton.com/v1/apps' \
 -H "Authorization: Basic ${credentials}" \
