@@ -2,7 +2,7 @@
 
 ## 1. Setup environment
 ### Python
-- Make sure python is installed: [link](https://realpython.com/installing-python/)
+- Make sure python was installed: [link](https://realpython.com/installing-python/)
 ## 2 Coding
 - To run in local: `(environment variables) python upload-app-s3.py`
 * Set environment variables:
