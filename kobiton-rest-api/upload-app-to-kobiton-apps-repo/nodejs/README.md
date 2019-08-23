@@ -11,4 +11,5 @@
     * apikey
     * file_name
     * app_path
-- For example: `USERNAME=testuser API_KEY=123ed­123fac­9137dca FILE_NAME=test-app YOUR_APPLICATION_PATH=./Downloads/test-app.apk node upload-app-s3.js`
+    * app_id
+- For example: `USERNAME=testuser API_KEY=123ed­123fac­9137dca FILE_NAME=test-app.apk YOUR_APPLICATION_PATH=~/Downloads/test-app.apk app_id=1234 node upload-app-s3.js`

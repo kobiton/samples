@@ -7,6 +7,10 @@ user_name= os.environ.get('user_name', '')
 apikey= os.environ.get('apikey', '')
 app_path= os.environ.get('app_path', '')
 file_name= os.environ.get('file_name', '')
+<<<<<<< HEAD
+=======
+app_id= os.environ.get('app_id', '')
+>>>>>>> Upload code full flow upload app to kobiton apprepo
 # Get pre-signed link
 api_key = (user_name + ':' + apikey).encode('utf-8')
 print(api_key)
@@ -16,9 +20,17 @@ headers = {
     'Authorization': 'Basic ' + auth,
     'Accept': 'application/json'
 }
-data = {
+
+if app_id==None:
+  data = {
     'filename': file_name,
-}
+  }
+else:
+  data = {
+    'filename': file_name,
+    'appId': app_id
+  }
+
 r = requests.post('https://api.kobiton.com/v1/apps/uploadUrl', json=data, headers=headers)
 
 new_url = None
