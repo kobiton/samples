@@ -1,10 +1,8 @@
 import com.google.gson.JsonObject;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-
 import org.apache.commons.codec.binary.Base64;
 
 public class Common {

@@ -11,13 +11,13 @@ credentials="$(echo -n "$USERNAME:$APIKEY" | base64)"
 header="'Authorization: Basic $credentials'"
 
 echo 'Step 2: Generate Upload URL'
-JSON="{\"filename\" : \"${FILENAME}\"}"
+JSON="{\"filename\": \"${FILENAME}\"}"
 
 curl -X POST \
   'https://api.kobiton.com/v1/apps/uploadUrl' \
   -H "Authorization: Basic ${credentials}" \
   -H 'Content-Type: application/json' \
-  -d "{\"filename\" : \"${FILENAME}\"}" \
+  -d "{\"filename\": \"${FILENAME}\"}" \
   -o ".tmp.response.json"
 UPLOADURL=`cat ".tmp.response.json" | ack -o --match '(?<=url\":")([_\%\&=\?\.aA-zZ0-9:/-]*)'`
 APPPATH=`cat ".tmp.response.json" | ack -o --match '(?<=appPath\":")([_\%\&=\?\.aA-zZ0-9:/-]*)'`
@@ -30,6 +30,7 @@ curl -X PUT \
   -T $YOUR_APPLICATION_PATH
 
 echo 'Step 4: Create Application Or Version'
+
 curl -X POST \
 'https://api.kobiton.com/v1/apps' \
 -H "Authorization: Basic ${credentials}" \

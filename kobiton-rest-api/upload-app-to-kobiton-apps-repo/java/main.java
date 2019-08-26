@@ -1,11 +1,9 @@
 import com.google.gson.*;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
 
 public class Main {
 
@@ -47,7 +45,5 @@ public class Main {
         Common.getApps();
 
         System.out.println("Step 5: Remove App");
-//        Common.deleteAppVersion(versionId);
-//        Common.deleteApp(appId);
     }
 }
