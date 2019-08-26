@@ -17,7 +17,7 @@ headers = {
     'Accept': 'application/json'
 }
 data = {
-    'filename' : file_name,
+    'filename': file_name,
 }
 r = requests.post('https://api.kobiton.com/v1/apps/uploadUrl', json=data, headers=headers)
 

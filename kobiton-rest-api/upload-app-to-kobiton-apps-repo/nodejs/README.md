@@ -7,8 +7,8 @@
 ## 2 Coding
 - To run in local: `(environment variables) node upload-app-s3.js`
 * Set environment variables:
-    * USERNAME
-    * API_KEY
-    * FILE_NAME
-    * YOUR_APPLICATION_PATH
+    * user_name
+    * apikey
+    * file_name
+    * app_path
 - For example: `USERNAME=testuser API_KEY=123ed­123fac­9137dca FILE_NAME=test-app YOUR_APPLICATION_PATH=./Downloads/test-app.apk node upload-app-s3.js`
