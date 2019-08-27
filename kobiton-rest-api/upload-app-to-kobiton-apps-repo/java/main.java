@@ -31,7 +31,6 @@ public class Main {
 
         System.out.println("Step 3: Create an app or app version");
         String appResult = Common.createAnAppOrVersion(fileName, appPath);
-
         jsonObject =(JsonObject) (new JsonParser()).parse(appResult);
         int appId = jsonObject.getAsJsonPrimitive("appId").getAsInt();
         int versionId = jsonObject.getAsJsonPrimitive("versionId").getAsInt();

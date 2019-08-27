@@ -74,7 +74,6 @@ public class Common {
     
     public static String generateUploadURL(String filePath, int appId) {
         try {
-
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("filename", filePath);
             if (appId != 0) {
@@ -303,7 +302,6 @@ public class Common {
         } catch (Exception ex){
             ex.printStackTrace();
         }
-
     }
 
 }

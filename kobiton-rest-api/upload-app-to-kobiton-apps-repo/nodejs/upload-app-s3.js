@@ -54,10 +54,10 @@ async function main() {
             }
           },  
           function (err, res, body) {
-              if(err){
-                  console.log('Upload file Error', err)
-                  return reject(err)
-              }
+            if(err){
+              console.log('Upload file Error', err)
+              return reject(err)
+            }
             console.log('Create App Version ...')
             resolve(body)
           }
