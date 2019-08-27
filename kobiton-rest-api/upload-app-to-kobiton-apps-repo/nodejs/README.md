@@ -2,7 +2,7 @@
 
 ## 1. Setup environment
 ### Nodejs
-- Make sure nodejs version >= 8 is installed
+- Make sure nodejs version >= 8 was installed
 - npm install
 ## 2 Coding
 - To run in local: `(environment variables) node upload-app-s3.js`
