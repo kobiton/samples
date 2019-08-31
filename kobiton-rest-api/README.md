@@ -5,3 +5,4 @@ Kobiton allows third-party application to integrate to Kobiton by exposing many 
 This folder contains sample codes to demonstrate how to utilize some of Kobiton REST API endpoints:
 - [get-devices-info](./get-devices-info/README.md): Samples of how to get devices detailed information.
 - [get-session-data](./get-session-data/README.md): Samples of how to get session data and session commands.
+- [upload-app-to-kobiton-apprepo](.upload-app-to-kobiton-apprepo): Samples code to upload app to kobiton apprepo
