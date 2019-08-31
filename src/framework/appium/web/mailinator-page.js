@@ -70,6 +70,9 @@ export default class MailinatorPage {
         //load page takes more than 30 milliseconds.
         throw new Error('Poor network connectivity on this device')
       }
+      else if (err.message = 'No device matching the desired capabilities') {
+        throw new Error('No device matching the desired capabilities')
+      }
       else {
         throw new Error(err)
       }

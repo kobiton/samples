@@ -81,7 +81,9 @@ export default class AutomationPracticePage {
     await this._browser.getPageSource()
     await this._browser.status()
     const searchText = await this._browser.$(elements.searchText)
-    await searchText.waitForVisible(this._timeout)
+    await searchText.waitForExist(this._timeout)
+    await searchText.waitForDisplayed(this._timeout)
+    await searchText.waitForEnabled(this._timeout)
     await searchText.click()
     await searchText.rightClick(4, 4) // replaced by performActions https://github.com/jlipps/simple-wd-spec#perform-actions
 
@@ -98,8 +100,13 @@ export default class AutomationPracticePage {
     await this._browser.forward() // It is a protocol of w3c Webdriver
     await this._browser.url(elements.authenticationUrl)
     await this._browser.timeouts('page load', this._timeout)
-    await this._browser.waitForVisible(elements.emailCreateText, this._timeout)
-    await this._browser.setValue(elements.emailCreateText, faker.internet.email())
+
+    const emailCreateText = await this._browser.$(elements.emailCreateText)
+    await emailCreateText.waitForExist(this._timeout)
+    await emailCreateText.waitForDisplayed(this._timeout)
+    await emailCreateText.waitForEnabled(this._timeout)
+    await emailCreateText.setValue(faker.internet.email())
+    
     await this._browser.click(elements.createAnAccountButton)
     await this._browser.timeouts('page load', this._timeout)
     await this._browser.getTitle()

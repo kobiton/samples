@@ -159,7 +159,7 @@ Append argument: --allowW3C <boolean>
 ##### Test web:
 
   ```bash
-    yarn run test -- --input /console/appium/web/test-web-session-daily.js
+    yarn run test --input /console/appium/web/test-web-session-daily.js
   ```
 
 ### Device health-check

@@ -6,7 +6,6 @@ import plumber from 'gulp-plumber'
 import moment from 'moment'
 import path from 'path'
 import server from 'gulp-express'
-import webdriver from 'gulp-webdriver'
 import BPromise from 'bluebird'
 import * as $ from '@kobiton/core-build'
 import {debug} from '@kobiton/core-util'
@@ -110,7 +109,7 @@ async function startHealthCheck(type) {
   const healthChecker = require('./build/health-check')
   switch (type) {
     case 'daily-web':
-      return healthChecker.executeWebCheck()
+      return await healthChecker.executeWebCheck()
     case 'android-app':
       return healthChecker.executeAndroidAppCheck()
     case 'ios-app':

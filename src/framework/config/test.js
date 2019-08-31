@@ -68,11 +68,11 @@ const config = {
   report: {
     reporter: args.reporter,
     name: args.reportName,
-    serverUrl: process.env.KOBITON_REPORT_SERVER_URL,
+    serverUrl: process.env.KOBITON_REPORT_SERVER_URL || 'https://asgard.kobiton.com/data/qa-stats',
     serverSecretKey: process.env.KOBITON_REPORT_SECRET_KEY
   },
   log: {
-    serverUrl: process.env.KOBITON_LOGS_SERVER_URL,
+    serverUrl: process.env.KOBITON_LOGS_SERVER_URL || 'https://logs-dev.kobiton.com',
     pushLog: args.logs
   },
   healthCheck: {
