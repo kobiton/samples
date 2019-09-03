@@ -1,0 +1,24 @@
+{
+  "tests": "./test/android-app-test.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "Appium": {
+      "app": "https://appium.github.io/appium/assets/ApiDemos-debug.apk",
+      "platform": "Android",
+      "device": "*",
+      "desiredCapabilities": {
+        "sessionName":        "Automation test session",
+        "sessionDescription": "This is an example for Android app",
+        "deviceOrientation":  "portrait",
+        "captureScreenshots": true,
+        "deviceGroup":        "KOBITON",
+        "deviceName":         "*",
+        "platformVersion":    "*",
+        "platformName":       "Android",
+        "appPackage":         "io.appium.android.apis",
+        "appActivity":        ".ApiDemos"
+      }
+    }
+  }
+}

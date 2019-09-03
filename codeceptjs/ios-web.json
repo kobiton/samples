@@ -1,0 +1,22 @@
+{
+  "tests": "./test/ios-web-test.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "Appium": {
+      "browser": "safari",
+      "platform": "iOS",
+      "device": "*",
+      "desiredCapabilities": {
+        "sessionName":        "Automation test session",
+        "sessionDescription": "This is an example for Android web",
+        "deviceOrientation":  "portrait",
+        "captureScreenshots": true,
+        "deviceGroup":        "KOBITON",
+        "deviceName":         "*",
+        "platformVersion":    "*",
+        "platformName":       "iOS"
+      }
+    }
+  }
+}

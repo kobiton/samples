@@ -1,0 +1,22 @@
+{
+  "tests": "./test/ios-app-test.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "Appium": {
+      "app": "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/UIKitCatalog-Test-Adhoc.ipa",
+      "platform": "iOS",
+      "device": "*",
+      "desiredCapabilities": {
+        "sessionName":        "Automation test session",
+        "sessionDescription": "This is an example for iOS app",
+        "deviceOrientation":  "portrait",
+        "captureScreenshots": true,
+        "deviceGroup":        "KOBITON",
+        "deviceName":         "*",
+        "platformVersion":    "*",
+        "platformName":       "Android"
+      }
+    }
+  }
+}
