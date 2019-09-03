@@ -14,7 +14,7 @@ header="'Authorization: Basic $credentials'"
 echo 'Step 2: Generate Upload URL'
 
 curl -X POST \
-  'https://api-test.kobiton.com/v1/apps/uploadUrl' \
+  'https://api.kobiton.com/v1/apps/uploadUrl' \
   -H "Authorization: Basic ${credentials}" \
   -H 'Content-Type: application/json' \
   -d "{\"filename\": \"${file_name}\", \"appId\": \"${app_id}\"}" \
@@ -32,7 +32,7 @@ curl -X PUT \
 echo 'Step 4: Create Application Or Version'
 
 curl -X POST \
-'https://api-test.kobiton.com/v1/apps' \
+'https://api.kobiton.com/v1/apps' \
 -H "Authorization: Basic ${credentials}" \
 -H 'content-type: application/json' \
 -d "{\"filename\":\"${file_name}\",\"appPath\":\"${APPPATH}\"}"
