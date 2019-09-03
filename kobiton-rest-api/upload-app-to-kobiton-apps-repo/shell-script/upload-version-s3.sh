@@ -5,6 +5,7 @@ user_name=$1
 apikey=$2
 file_name=$3
 app_path=$4
+app_id=$5
 
 echo 'Step 1: Generate Basic Authorization'
 credentials="$(echo -n "$user_name:$apikey" | base64)"
@@ -16,7 +17,7 @@ curl -X POST \
   'https://api-test.kobiton.com/v1/apps/uploadUrl' \
   -H "Authorization: Basic ${credentials}" \
   -H 'Content-Type: application/json' \
-  -d "{\"filename\": \"${file_name}\"}" \
+  -d "{\"filename\": \"${file_name}\", \"appId\": \"${app_id}\"}" \
   -o ".tmp.response.json"
 UPLOADURL=`cat ".tmp.response.json" | ack -o --match '(?<=url\":")([_\%\&=\?\.aA-zZ0-9:/-]*)'`
 APPPATH=`cat ".tmp.response.json" | ack -o --match '(?<=appPath\":")([_\%\&=\?\.aA-zZ0-9:/-]*)'`

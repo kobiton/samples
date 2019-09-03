@@ -5,9 +5,14 @@ const user_name =  process.env.user_name
 const apikey =  process.env.apikey
 const file_name =  process.env.file_name
 const app_path = process.env.app_path
+const appId = process.env.appId
 const stats = fs.statSync(app_path)
 const inputBody = {
   'filename': `${file_name}`
+}
+const inputBodyVersion ={
+  'filename': `${file_name}`,
+  'appId': `${appId}`
 }
 
 const base64EncodedBasicAuth = btoa(`${user_name}:${apikey}`)
@@ -83,6 +88,19 @@ console.log('Step 3: Create Application Or Version')
       console.log('Response body:', body)
       resolve(body)
       console.log('Done')
+    })
+  })
+
+  const changeAppVersion = await new Promise((resolve, reject) => {
+    request({
+      url: 'https://api.kobiton.com/v1/apps/uploadUrl',
+      json: true,
+      method: 'POST',
+      body: inputBodyVersion,
+      headers: headers
+    }, function (err, response, body) {
+      if (err) return console.error('Error:', err)
+      console.log('Response body:', body)
     })
   })
 
