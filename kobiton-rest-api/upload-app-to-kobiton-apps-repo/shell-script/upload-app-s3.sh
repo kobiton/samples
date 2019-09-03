@@ -5,18 +5,25 @@ user_name=$1
 apikey=$2
 file_name=$3
 app_path=$4
+app_id=$5
 
 echo 'Step 1: Generate Basic Authorization'
 credentials="$(echo -n "$user_name:$apikey" | base64)"
 header="'Authorization: Basic $credentials'"
 
 echo 'Step 2: Generate Upload URL'
+if [ -z $5]
+then
+  JSON="{\"filename\": \"${file_name}\"}"
+else
+  JSON="{\"filename\": \"${file_name}\", \"appId\": \"${app_id}\"}"
+fi
 
 curl -X POST \
-  'https://api.kobiton.com/v1/apps/uploadUrl' \
+  'https://api-test.kobiton.com/v1/apps/uploadUrl' \
   -H "Authorization: Basic ${credentials}" \
   -H 'Content-Type: application/json' \
-  -d "{\"filename\": \"${file_name}\"}" \
+  -d "${JSON}" \
   -o ".tmp.response.json"
 UPLOADURL=`cat ".tmp.response.json" | ack -o --match '(?<=url\":")([_\%\&=\?\.aA-zZ0-9:/-]*)'`
 APPPATH=`cat ".tmp.response.json" | ack -o --match '(?<=appPath\":")([_\%\&=\?\.aA-zZ0-9:/-]*)'`
@@ -31,7 +38,7 @@ curl -X PUT \
 echo 'Step 4: Create Application Or Version'
 
 curl -X POST \
-'https://api.kobiton.com/v1/apps' \
+'https://api-test.kobiton.com/v1/apps' \
 -H "Authorization: Basic ${credentials}" \
 -H 'content-type: application/json' \
 -d "{\"filename\":\"${file_name}\",\"appPath\":\"${APPPATH}\"}"
