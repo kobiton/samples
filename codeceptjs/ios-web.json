@@ -14,7 +14,6 @@
         "captureScreenshots": true,
         "deviceGroup":        "KOBITON",
         "deviceName":         "*",
-        "platformVersion":    "*",
         "platformName":       "iOS"
       }
     }

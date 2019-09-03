@@ -6,7 +6,7 @@ Feature('Android app test').config({
   key: process.env.KOBITON_API_KEY
 });
 
-Scenario('android test on apis demo app', (I) => {
+Scenario('Android test on apis demo app', (I) => {
   I.seeElement({xpath: "//android.widget.TextView[@content-desc='Accessibility']"});
   I.wait(2);
   I.tap('Accessibility');

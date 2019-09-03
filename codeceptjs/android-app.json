@@ -14,7 +14,6 @@
         "captureScreenshots": true,
         "deviceGroup":        "KOBITON",
         "deviceName":         "*",
-        "platformVersion":    "*",
         "platformName":       "Android",
         "appPackage":         "io.appium.android.apis",
         "appActivity":        ".ApiDemos"

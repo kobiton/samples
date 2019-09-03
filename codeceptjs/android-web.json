@@ -15,7 +15,6 @@
         "browserName":        "chrome",
         "deviceGroup":        "KOBITON",
         "deviceName":         "*",
-        "platformVersion":    "*",
         "platformName":       "Android"
       }
     }

@@ -10,9 +10,8 @@ Clone this script directly from our GitHub repo and install dependencies:
 mkdir kobiton-samples
 cd kobiton-samples
 git clone git@github.com:kobiton/samples.git
-cd ./javascript
+cd ./codeceptjs
 npm install
-npm install -g codeceptjs webdriverio
 ```
 
 ### Install CodeceptJS
@@ -29,7 +28,15 @@ Go to Kobiton Devices page.
 Hover over the device you want to test and select Show automation settings.
 Select Language = NodeJS.
 
-Update the global variables `KOBITON_USERNAME` and `KOBITON_API_KEY` or replace `user` & `key` in the sample script (./test/*.js).
+Update the global variables `KOBITON_USERNAME` and `KOBITON_API_KEY` using bash shell (you can set in the user directories .bash_profile) by adding the following to new lines of the file:
+
+```
+export KOBITON_USERNAME=''
+export KOBITON_API_KEY=''
+```
+
+Or replace `user` & `key` value in the sample script (./test/*.js).
+
 Update `desiredCapabilities` and other configuration at .json file (android-web.json, android-app.json, ios-web.json, ios-app.json) follow up above information to indicate your expected testing device:
 
 For an example:
