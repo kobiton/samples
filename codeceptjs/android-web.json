@@ -1,0 +1,22 @@
+{
+  "tests": "./test/android-web-test.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "Appium": {
+      "browser": "chrome",
+      "platform": "Android",
+      "device": "*",
+      "desiredCapabilities": {
+        "sessionName":        "Automation test session",
+        "sessionDescription": "This is an example for Android web",
+        "deviceOrientation":  "portrait",
+        "captureScreenshots": true,
+        "browserName":        "chrome",
+        "deviceGroup":        "KOBITON",
+        "deviceName":         "*",
+        "platformName":       "Android"
+      }
+    }
+  }
+}
