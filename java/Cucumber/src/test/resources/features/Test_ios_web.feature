@@ -17,5 +17,5 @@ Feature: Login in heroku page
       | tomsmith | SuperSecretPassword  | Your password is invalid!      |
       | tomsmith | SuperSecretPassword! | You logged into a secure area! |
       
-	Scenario: End session
-  Given User ends session on Android device
+  Scenario: End session
+  Given User ends session on iOS device

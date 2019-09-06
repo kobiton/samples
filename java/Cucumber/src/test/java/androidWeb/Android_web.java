@@ -4,7 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import configs.Configs;
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -12,34 +14,29 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.Utils;
 
 public class Android_web {
-	public static AndroidDriver<WebElement> driver = null;
+	static AndroidDriver<WebElement> driver = null;
 
 	@Given("^User starts a session on android device$")
 	public void start_an_android_web_session() throws MalformedURLException {
-		URL kobitonServerUrl = new URL("https://<KOBITON_USERNAME>:<KOBITON_API_KEY>@api.kobiton.com/wd/hub");
-		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability("sessionName", "Automation test android web session");
-		capabilities.setCapability("sessionDescription", "Automation test android web session"); 
-		capabilities.setCapability("deviceOrientation", "portrait");  
-		capabilities.setCapability("captureScreenshots", true); 
-		capabilities.setCapability("browserName", "chrome"); 
-		capabilities.setCapability("deviceGroup", "KOBITON"); 
-		capabilities.setCapability("deviceName", "Galaxy S6");
-		capabilities.setCapability("platformName", "Android");
-		driver = new AndroidDriver<WebElement>(kobitonServerUrl, capabilities);
-		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		driver = new AndroidDriver<WebElement>(Configs.kobitonServerUrl(), Configs.desiredCapabilitiesAndroidWeb());
+		driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+		driver.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
 	}
 
 	@Given("^User go to login page$")
 	public void go_to_login_page() {
-		driver.get("http://the-internet.herokuapp.com/login");
-		sleep(2);
+		driver.get("https://the-internet.herokuapp.com/login");
 	}
 
 	@And("^User inputs username ([^\"]*)$")
 	public void input_username(String username) {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
 		driver.findElementById("username").sendKeys(username);
 	}
 
@@ -50,13 +47,13 @@ public class Android_web {
 
 	@And("^User clicks login button$")
 	public void click_Login() {
-		driver.findElementByXPath("//form[@name='login']").submit();
+		driver.findElementByXPath("//button/i[contains(text(), 'Login')]").click();
 	}
 
 	@Then("^User will see message ([^\"]*)$")
-	public void verify_login_message(String mesg) {
-		sleep(2);
-		Assert.assertTrue(getMessage().contains(mesg));
+	public void verify_login_message(String msg) {
+		Utils.sleep(2);
+		Assert.assertTrue(getMessage().contains(msg));
 	}
 	
 	@Given("^User ends session on Android device$")
@@ -72,12 +69,4 @@ public class Android_web {
 	public String getMessage() {
 		return driver.findElementById("flash").getText();
 	}
-	
-	public void sleep(int seconds) {
-	    try {
-	      Thread.sleep(seconds * 1000);
-	    } catch (InterruptedException e) {
-	      e.printStackTrace();
-	    }
-	  }
 }

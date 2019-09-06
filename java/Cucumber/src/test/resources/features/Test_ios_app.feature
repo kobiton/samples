@@ -12,4 +12,4 @@ Feature: Test iFixit application on ios device
     Then Verify five items display: Acura Integra, Acura MDX, Acura RL, Acura TL, Acura TSX
 
   Scenario: End session
-  Given User ends session on ios device
+  Given User ends session on iOS device
