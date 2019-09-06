@@ -5,7 +5,7 @@ Feature: Test iFixit application on Android device
   Given User starts a session on android device
 
   Scenario: Verify items on Acura Support Community
-  		Given User goes to Home page
+    Given User goes to Home page
     And User clicks on Car and Truck category
     And User clicks on Acura category
     And User waits for General Information
