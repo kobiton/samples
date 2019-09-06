@@ -8,7 +8,6 @@ Feature: Test iFixit application on Android device
     Given User goes to Home page
     And User clicks on Car and Truck category
     And User clicks on Acura category
-    And User waits for General Information
     Then User see items display: Acura Integra, Acura MDX, Acura RL, Acura TL, Acura TSX
 
   Scenario: End session

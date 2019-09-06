@@ -4,7 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import configs.Configs;
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -12,34 +14,29 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import io.appium.java_client.ios.IOSDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.Utils;
 
 public class Ios_web {
-	public static IOSDriver<WebElement> driver = null;
+	static IOSDriver<WebElement> driver = null;
 
 	@Given("^User starts a session on iOS device$")
 	public void start_an_ios_web_session() throws MalformedURLException {
-		URL kobitonServerUrl = new URL("https://<KOBITON_USERNAME>:<KOBITON_API_KEY>@api-test.kobiton.com/wd/hub");
-		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability("sessionName", "Automation test ios web session");
-		capabilities.setCapability("sessionDescription", "Automation test ios web session");
-		capabilities.setCapability("deviceOrientation", "portrait");
-		capabilities.setCapability("captureScreenshots", true);
-		capabilities.setCapability("browserName", "safari");
-		capabilities.setCapability("deviceGroup", "KOBITON");
-		capabilities.setCapability("deviceName", "iPad mini 2G (Cellular)");
-		capabilities.setCapability("platformName", "iOS");
-		driver = new io.appium.java_client.ios.IOSDriver<WebElement>(kobitonServerUrl, capabilities);
-		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		driver = new IOSDriver<WebElement>(Configs.kobitonServerUrl(), Configs.desiredCapabilitiesiOSWeb());
+		driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
 	}
 
 	@Given("^User go to login page$")
 	public void go_to_login_herokuapp_page() {
-		driver.get("http://the-internet.herokuapp.com/login");
-		sleep(2);
+		driver.get("https://the-internet.herokuapp.com/login");
 	}
 
 	@And("^User inputs username ([^\"]*)$")
 	public void user_input_username(String username) {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
 		driver.findElementById("username").sendKeys(username);
 	}
 
@@ -50,16 +47,16 @@ public class Ios_web {
 
 	@And("^User clicks login button$")
 	public void user_click_login() {
-		driver.findElementByXPath("//form[@name='login']").submit();
+		driver.findElementByXPath("//button/i[contains(text(), 'Login')]").click();
 	}
 
 	@Then("^User will see message ([^\"]*)$")
-	public void user_verify_message(String mesg) {
-		sleep(2);
-		Assert.assertTrue(getMessage().contains(mesg));
+	public void user_verify_message(String msg) {
+		Utils.sleep(2);
+		Assert.assertTrue(getMessage().contains(msg));
 	}
 
-	@Given("^User ends session on Android device$")
+	@Given("^User ends session on iOS device$")
 	public void end_an_ios_web_session() {
 		try {
 			if (driver != null)
@@ -71,13 +68,5 @@ public class Ios_web {
 
 	public String getMessage() {
 		return driver.findElementById("flash").getText();
-	}
-
-	public void sleep(int seconds) {
-		try {
-			Thread.sleep(seconds * 1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 }
