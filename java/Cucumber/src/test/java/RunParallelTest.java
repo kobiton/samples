@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.experimental.ParallelComputer;
 import org.junit.runner.JUnitCore;
 
-public class RunCucumberTest {
+public class RunParallelTest {
 
     @Test
     public void parallelTest() {
