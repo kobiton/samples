@@ -28,7 +28,7 @@ public class Android_web {
 		driver.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
 	}
 
-	@Given("^User go to login page$")
+	@Given("^User goes to login page$")
 	public void go_to_login_page() {
 		driver.get("https://the-internet.herokuapp.com/login");
 	}

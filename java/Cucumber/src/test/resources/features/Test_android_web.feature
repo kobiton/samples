@@ -5,7 +5,7 @@ Feature: Login in heroku page
   Given User starts a session on android device
 
   Scenario Outline: Verify login with invalid username
-    Given User go to login page
+    Given User goes to login page
     And User inputs username <username>
     And User inputs password <password>
     And User clicks login button
