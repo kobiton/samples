@@ -4,7 +4,15 @@
 ### Nodejs
 - Make sure nodejs version >= 8 was installed
 - npm install
-## 2 Coding
+## 2 Upload app to apps repo
+- To run in local: `(environment variables) node upload-app-s3.js`
+* Set environment variables:
+    * user_name
+    * apikey
+    * file_name
+    * app_path
+- For example: `USERNAME=testuser API_KEY=123ed­123fac­9137dca FILE_NAME=test-app.apk YOUR_APPLICATION_PATH=~/Downloads/test-app.apk node upload-app-s3.js`
+## 3 Upload version to apps repo
 - To run in local: `(environment variables) node upload-app-s3.js`
 * Set environment variables:
     * user_name
