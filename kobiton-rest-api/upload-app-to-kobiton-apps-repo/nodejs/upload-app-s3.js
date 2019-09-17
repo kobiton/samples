@@ -11,7 +11,7 @@ const inputBody = {
   filename: file_name
 }
 
-if(app_id){
+if (app_id) {
   inputBody.appId = app_id
 }
 
@@ -59,7 +59,7 @@ async function main() {
             }
           },  
           function (err, res, body) {
-            if(err){
+            if (err) {
               console.log('Upload file Error', err)
               return reject(err)
             }
