@@ -1,8 +1,8 @@
 # Development
 
 ## 1. Prerequisites
-### Install ack package
-- Make sure ack was installed at: [link](https://beyondgrep.com/install/)
+### Install python
+- Make sure python was installed at: [link](https://www.python.org/downloads/)
 
 ### Environment variables
 - user_name: User name

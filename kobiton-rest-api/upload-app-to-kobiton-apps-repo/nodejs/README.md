@@ -2,7 +2,8 @@
 
 ## 1. Prerequisites
 ### Install ack package
-- Make sure ack was installed at: [link](https://beyondgrep.com/install/)
+- Make sure nodejs version >= 8 was installed
+- npm install
 
 ### Environment variables
 - user_name: User name
