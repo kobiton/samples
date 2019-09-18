@@ -5,9 +5,14 @@ const user_name =  process.env.user_name
 const apikey =  process.env.apikey
 const file_name =  process.env.file_name
 const app_path = process.env.app_path
+const app_id = process.env.app_id
 const stats = fs.statSync(app_path)
 const inputBody = {
-  'filename': `${file_name}`
+  filename: file_name
+}
+
+if (app_id) {
+  inputBody.appId = app_id
 }
 
 const base64EncodedBasicAuth = btoa(`${user_name}:${apikey}`)
@@ -54,7 +59,7 @@ async function main() {
             }
           },  
           function (err, res, body) {
-            if(err){
+            if (err) {
               console.log('Upload file Error', err)
               return reject(err)
             }
