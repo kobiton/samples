@@ -1,7 +1,4 @@
-# Development
-
 ## 1. Prerequisites
-### Install ack package
 - Make sure nodejs version >= 8 was installed
 - npm install
 
@@ -14,8 +11,8 @@
 
 ## 2 Upload a new app to apps repo
 
-- For example: `user_name=testuser apikey=123ed­123fac­9137dca file_name=test-app.apk app_path=~/Downloads/test-app.apk node upload-app-s3.js`
+- `user_name=<user_name> apikey=<apikey> file_name=<file_name.fileExtention> app_path=<app_path> node upload-app-s3.js`
 
 ## 3 Upload a new app version to apps repo
 
-- For example: `user_name=testuser apikey=123ed­123fac­9137dca file_name=test-app.apk app_path=~/Downloads/test-app.apk app_id=1234 node upload-app-s3.js`
+- `user_name=<user_name> apikey=<apikey> file_name=<file_name.fileExtention> app_path=<app_path> app_id=<app_id> node upload-app-s3.js`

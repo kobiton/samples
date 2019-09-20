@@ -1,5 +1,3 @@
-# Development
-
 ## 1. Prerequisites
 ### Install python
 - Make sure python was installed at: [link](https://www.python.org/downloads/)
@@ -13,8 +11,8 @@
 
 ## 2 Upload a new app to apps repo
 
-- For example: `user_name=testuser apikey=123ed­123fac­9137dca file_name=test-app.apk app_path=./Downloads/test-app.apk python upload-app-s3.py`
+- `user_name=<user_name> apikey=<apikey> file_name=<file_name.fileExtention> app_path=<app_path> python upload-app-s3.py`
 
 ## 3 Upload a new app version to apps repo
 
-- For example: `user_name=testuser apikey=123ed­123fac­9137dca file_name=test-app.apk app_path=./Downloads/test-app.apk app_id=1234 python upload-app-s3.py`
+- `user_name=<user_name> apikey=<apikey> file_name=<file_name.fileExtention> app_path=<app_path> app_id=<app_id> python upload-app-s3.py`

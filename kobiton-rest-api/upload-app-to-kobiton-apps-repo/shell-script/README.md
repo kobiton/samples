@@ -1,5 +1,3 @@
-# Development
-
 ## 1. Prerequisites
 ### Install ack package
 - Make sure ack was installed at: [link](https://beyondgrep.com/install/)
@@ -13,8 +11,8 @@
 
 ## 2 Upload a new app to apps repo
 
-- For example `bash upload-app-s3.sh <user_name> <apikey> <file_name.fileExtention> <app_path>`
+- `bash upload-app-s3.sh <user_name> <apikey> <file_name.fileExtention> <app_path>`
 
 ## 3 Upload a new app version to apps repo
 
-- For example `bash upload-app-s3.sh <user_name> <apikey> <file_name.fileExtention> <app_path> <app_id>`
+- `bash upload-app-s3.sh <user_name> <apikey> <file_name.fileExtention> <app_path> <app_id>`
