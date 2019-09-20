@@ -1,22 +1,18 @@
-# Development
+## 1. Prerequisites
+### Install python
+- Make sure python was installed at: [link](https://www.python.org/downloads/)
 
-## 1. Setup environment
-### Python
-- Make sure python was installed: [link](https://realpython.com/installing-python/)
-## 2 Upload app to apps repo
-- To run in local: `(environment variables) python upload-app-s3.py`
-* Set environment variables:
-    * user_name
-    * apikey
-    * file_name
-    * app_path
-- For example: `USERNAME=testuser API_KEY=123ed­123fac­9137dca FILE_NAME=test-app.apk YOUR_APPLICATION_PATH=./Downloads/test-app.apk python upload-app-s3.py`
-## 3 Upload version to apps repo
-- To run in local: `(environment variables) python upload-app-s3.py`
-* Set environment variables:
-    * user_name
-    * apikey
-    * file_name
-    * app_path
-    * app_id
-- For example: `USERNAME=testuser API_KEY=123ed­123fac­9137dca FILE_NAME=test-app.apk YOUR_APPLICATION_PATH=./Downloads/test-app.apk app_id=1234 python upload-app-s3.py`
+### Environment variables
+- user_name: User name
+- apikey: Access [Kobition](https://portal.kobiton.com/settings/keys) to get apikey
+- file_name: your custom app filename. fileExtention: .apk, .ipa, .zip
+- app_path: location of your app file (Sample: '~/Downloads/test-app.apk')
+- app_id (optional): If you’re going to create a new version, specify an appId of your existing application here. Otherwise, skip this field
+
+## 2 Upload a new app to apps repo
+
+- `user_name=<user_name> apikey=<apikey> file_name=<file_name.fileExtention> app_path=<app_path> python upload-app-s3.py`
+
+## 3 Upload a new app version to apps repo
+
+- `user_name=<user_name> apikey=<apikey> file_name=<file_name.fileExtention> app_path=<app_path> app_id=<app_id> python upload-app-s3.py`
