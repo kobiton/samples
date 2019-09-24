@@ -19,7 +19,7 @@ public class azureTestNG {
   public AndroidDriver<MobileElement> driver;
 
   @BeforeSuite
-  public void setupAppium() throws MalformedURLException {
+  public void Setup() throws MalformedURLException {
 
     String kobitonServerUrl = "https://" + System.getenv("KOBITON_USERNAME") + ":" + System.getenv("KOBITON_API_KEY") + "@api.kobiton.com/wd/hub";
     String deviceName = System.getenv("KOBITON_DEVICE_NAME") != null ? System.getenv("KOBITON_DEVICE_NAME") : "Galaxy*";
