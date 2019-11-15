@@ -20,9 +20,9 @@ exports.config = {
   port: 443,
   maxInstances: 1,
   beforeTest: () => {
-    const chai = require('chai');
-    const chaiWebdriver = require('chai-webdriverio').default;
-    chai.use(chaiWebdriver(browser));
-    global.assert = chai.assert;
+    const chai = require('chai')
+    const chaiWebdriver = require('chai-webdriverio').default
+    chai.use(chaiWebdriver(browser))
+    global.assert = chai.assert
   }
-};
+}
