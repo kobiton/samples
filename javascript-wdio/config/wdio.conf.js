@@ -1,5 +1,5 @@
 exports.config = {
-  user: process.env.KOBITON_USERNAME_1,
+  user: process.env.KOBITON_USERNAME,
   key: process.env.KOBITON_API_KEY,
   runner: 'local',
   framework: 'mocha',
