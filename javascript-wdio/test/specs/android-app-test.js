@@ -8,4 +8,3 @@ describe('Android App sample', () => {
       await browser.pause(3000)
     });
   })
-  
