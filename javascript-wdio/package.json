@@ -9,7 +9,7 @@
     "ios-app-test": "./node_modules/.bin/wdio ./config/ios-app.conf.js"
   },
   "keywords": [],
-  "author": "Ngan Nguyen",
+  "author": "Kobiton Inc",
   "devDependencies": {
     "@wdio/appium-service": "^5.13.2",
     "@wdio/cli": "^5.15.1",

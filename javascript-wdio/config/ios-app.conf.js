@@ -1,23 +1,18 @@
-const { config } = require('./wdio.conf');
+const {config} = require('./wdio.conf')
 
 config.specs = [
-  './test/specs/ios-app-test.js',
-];
+  './test/specs/ios-app-test.js'
+]
 
-config.capabilities = [
-  {
-    sessionName:        'Automation test session',
-    sessionDescription: '',
-    deviceOrientation:  'portrait',
-    noReset:            false,
-    fullReset:          true,
-    captureScreenshots: true,
-    app:                'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/UIKitCatalog-Test-Adhoc.ipa',
-    deviceGroup:        'KOBITON',
-    deviceName:         '*',
-    platformVersion:    '*',
-    platformName:       'iOS'
-  },
-];
+config.capabilities = [{
+  sessionName:        'iOS app test',
+  sessionDescription: 'This is an example for iOS app',
+  deviceOrientation:  'portrait',
+  captureScreenshots: true,
+  app:                'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/UIKitCatalog-Test-Adhoc.ipa',
+  deviceGroup:        'KOBITON',
+  deviceName:         '*',
+  platformName:       'iOS'
+}]
 
-exports.config = config;
+exports.config = config

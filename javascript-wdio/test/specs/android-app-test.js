@@ -4,6 +4,5 @@ describe('Android App sample', () => {
     const title = await ele.getText()
     await browser.pause(3000)
     assert.include(title.toLocaleLowerCase(), 'api demos')
-    await browser.pause(3000)
   })
 })
