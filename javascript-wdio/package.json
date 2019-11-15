@@ -1,0 +1,22 @@
+{
+  "name": "javascript-wdio",
+  "version": "1.0.0",
+  "description": "This is an example project using Javascript Webdriverio and Mocha framework",
+  "scripts": {
+    "android-web-test": "./node_modules/.bin/wdio ./config/android-web.conf.js",
+    "android-app-test": "./node_modules/.bin/wdio ./config/android-app.conf.js",
+    "ios-web-test": "./node_modules/.bin/wdio ./config/ios-web.conf.js",
+    "ios-app-test": "./node_modules/.bin/wdio ./config/ios-app.conf.js"
+  },
+  "keywords": [],
+  "author": "Ngan Nguyen",
+  "devDependencies": {
+    "@wdio/appium-service": "^5.13.2",
+    "@wdio/cli": "^5.15.1",
+    "@wdio/local-runner": "^5.13.2",
+    "@wdio/mocha-framework": "^5.13.2",
+    "@wdio/spec-reporter": "^5.13.2",
+    "chai": "^4.2.0",
+    "chai-webdriverio": "^1.0.0"
+  }
+}
