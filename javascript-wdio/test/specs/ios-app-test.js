@@ -1,5 +1,4 @@
 describe('iOS App sample', () => {
-  
   it('should get text UIKitCatalog', async () => {
     const ele = await browser.$('//UIAStaticText')
     const title = await ele.getText()
