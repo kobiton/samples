@@ -10,8 +10,7 @@ public class CheckDeviceStatus {
 
     static String username = System.getenv("KOBITON_USERNAME");
     static String apiKey = System.getenv("KOBITON_APIKEY");
-    static Integer deviceId = System.getenv("KOBITON_DEVICE_ID") != null ?
-    Integer.parseInt(System.getenv("KOBITON_DEVICE_ID")) : 684737;
+    static Integer deviceId = Integer.parseInt(System.getenv("KOBITON_DEVICE_ID"));
 
     static String generateBasicAuth() {
         String authString = username + ":" + apiKey;
@@ -58,8 +57,8 @@ public class CheckDeviceStatus {
       }
 
       JSONObject deviceStatus = getDeviceStatus();
-      Boolean isOnline = (Boolean) deviceStatus.get("isOnline");
-      Boolean isBooked = (Boolean) deviceStatus.get("isBooked");
+      Boolean isOnline = (Boolean)deviceStatus.get("isOnline");
+      Boolean isBooked = (Boolean)deviceStatus.get("isBooked");
 
       if (isOnline == true && isBooked == false) {
         System.out.println("The device is ready to use");

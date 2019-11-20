@@ -5,7 +5,7 @@ const sendRequest = BPromise.promisify(request)
 
 const username = process.env.KOBITON_USERNAME
 const apiKey = process.env.KOBITON_APIKEY
-const deviceId = process.env.KOBITON_DEVICE_ID || 684737
+const deviceId = Number(process.env.KOBITON_DEVICE_ID)
 
 const headers = {
     'Accept': 'application/json'
@@ -55,7 +55,7 @@ async function checkDeviceStatus(deviceStatus) {
 async function main() {
   if(!username || !apiKey)
   {
-      console.log("KOBITON_USERNAME and KOBITON_APIKEY variables are need to execute the script")
+      console.log('KOBITON_USERNAME and KOBITON_APIKEY variables are need to execute the script')
       process.exit(1)
   }
   const deviceStatus = await getDeviceStatus(deviceId)

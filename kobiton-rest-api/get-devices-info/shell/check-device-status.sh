@@ -5,10 +5,6 @@ function jsonValue() {
 }
 
 function checkDeviceStatus() {
-  if [ -z "$KOBITON_DEVICE_ID" ]; then
-    KOBITON_DEVICE_ID=684737
-  fi
-
   RESPONSE=$(curl -u $KOBITON_USERNAME:$KOBITON_APIKEY -s -X GET "https://api.kobiton.com/v1/devices/$KOBITON_DEVICE_ID/status" \
     -H 'Accept: application/json')
 

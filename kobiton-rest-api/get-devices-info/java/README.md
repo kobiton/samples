@@ -1,8 +1,7 @@
 # 1. Prerequisites
-**OpenJDK**
-- OpenJDK version >= 1.8.0_212
-- You can go [here](https://openjdk.java.net/install) to install the lastest one
-- Check if you have `openJDK` installed, run this command in your terminal:
+**JDK**
+- JDK version >= 1.8.0_212
+- Check if you have `JDK` installed, run this command in your terminal:
 
 ```bash
 java -version

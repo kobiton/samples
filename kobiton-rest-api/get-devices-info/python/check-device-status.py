@@ -7,7 +7,7 @@ headers = {
 
 username = os.getenv('KOBITON_USERNAME')
 apiKey = os.getenv('KOBITON_APIKEY')
-deviceId = os.getenv('KOBITON_DEVICE_ID') or 684737
+deviceId = int(os.getenv('KOBITON_DEVICE_ID'))
 
 if username==None or apiKey==None:
     print("KOBITON_USERNAME and KOBITON_APIKEY variables are need to execute the script")
