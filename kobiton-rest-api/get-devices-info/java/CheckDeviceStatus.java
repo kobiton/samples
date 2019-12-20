@@ -10,7 +10,6 @@ public class CheckDeviceStatus {
 
     static String username = System.getenv("KOBITON_USERNAME");
     static String apiKey = System.getenv("KOBITON_APIKEY");
-    static Integer deviceId = Integer.parseInt(System.getenv("KOBITON_DEVICE_ID"));
 
     static String generateBasicAuth() {
         String authString = username + ":" + apiKey;
@@ -19,9 +18,21 @@ public class CheckDeviceStatus {
         return "Basic " + authStringEnc;
     }
 
-    static JSONObject getDeviceStatus() {
+    static JSONObject filterDeviceInfo(JSONObject device) {
+      JSONObject filteredDeviceInfo = new JSONObject();
+      filteredDeviceInfo.put("id", device.get("id"));
+      filteredDeviceInfo.put("udid", device.get("udid"));
+      filteredDeviceInfo.put("isBooked", device.get("isBooked"));
+      filteredDeviceInfo.put("modelName", device.get("modelName"));
+      filteredDeviceInfo.put("deviceName", device.get("deviceName"));
+      filteredDeviceInfo.put("platformName", device.get("platformName"));
+      filteredDeviceInfo.put("platformVersion", device.get("platformVersion"));
+      return filteredDeviceInfo;
+    } 
+
+    static JSONArray getOnlineDevices() {
       try {
-        URL obj = new URL("https://api.kobiton.com/v1/devices/" + deviceId + "/status");
+        URL obj = new URL("https://api.kobiton.com/v1/devices?isOnline=true");
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty ("Authorization", generateBasicAuth());
@@ -41,8 +52,15 @@ public class CheckDeviceStatus {
           System.exit(1);
         }
 
-        JSONObject deviceStatus = new JSONObject(response.toString());
-        return deviceStatus;
+        JSONObject deviceList = new JSONObject(response.toString());
+        JSONArray cloudDevices = deviceList.getJSONArray("cloudDevices");
+        JSONArray filteredDeviceInfo = new JSONArray();
+
+        for (int i = 0; i < cloudDevices.length(); i++) {
+          filteredDeviceInfo.put(filterDeviceInfo(cloudDevices.getJSONObject(i)));
+        }
+
+        return filteredDeviceInfo;
       }
       catch (Exception e) {
         e.printStackTrace();
@@ -50,24 +68,19 @@ public class CheckDeviceStatus {
 
       return null;
     }
+
     public static void main(String[] args) {
       if (username == null || apiKey == null) {
         System.out.println("KOBITON_USERNAME and KOBITON_APIKEY variables are need to execute the script");
         System.exit(1);
       }
 
-      JSONObject deviceStatus = getDeviceStatus();
-      Boolean isOnline = (Boolean)deviceStatus.get("isOnline");
-      Boolean isBooked = (Boolean)deviceStatus.get("isBooked");
-
-      if (isOnline == true && isBooked == false) {
-        System.out.println("The device is ready to use");
-      }
-      else if (isOnline == true && isBooked == true) {
-        System.out.println("The device is busy");
+      JSONArray onlineDevices = getOnlineDevices();
+      if (onlineDevices.length() == 0) {
+        System.out.println("There is no online device");
       }
       else {
-        System.out.println("The device is offline");
+        System.out.println("Online device list: " + onlineDevices.toString(4));
       }
     }
 }

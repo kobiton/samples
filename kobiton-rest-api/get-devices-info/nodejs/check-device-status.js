@@ -1,21 +1,20 @@
-import request from 'request'
-import BPromise from 'bluebird'
+const request = require('request')
+const BPromise = require('bluebird')
 
 const sendRequest = BPromise.promisify(request)
 
 const username = process.env.KOBITON_USERNAME
-const apiKey = process.env.KOBITON_APIKEY
-const deviceId = Number(process.env.KOBITON_DEVICE_ID)
+const apiKey = process.env.KOBITON_API_KEY
 
 const headers = {
     'Accept': 'application/json'
 }
 
-async function getDeviceStatus(deviceId) {
+async function getOnlineDevice() {
   let response
   try {
     response = await sendRequest({
-      url: `https://api.kobiton.com/v1/devices/${deviceId}/status`,
+      url: `https://api.kobiton.com/v1/devices?isOnline=true`,
       json: true,
       method: 'GET',
       auth: {
@@ -34,22 +33,29 @@ async function getDeviceStatus(deviceId) {
     console.log('body:', response.body)
     process.exit(1)
   }
+  
+  const {cloudDevices} = response.body
+  const deviceList = await filterDeviceInfo(cloudDevices)
 
-  return response.body
-}
-
-async function checkDeviceStatus(deviceStatus) {
-  const {isBooked, isOnline} = deviceStatus
-
-  if (isOnline && !isBooked) {
-    console.log('The device is ready to use')
-  }
-  else if (isOnline && isBooked) {
-    console.log('The device is busy')
+  if (!deviceList) {
+    console.log('Online device list: ', deviceList)
   }
   else {
-    console.log('The device is offline')
+    console.log('There is no online device')
   }
+}
+
+async function filterDeviceInfo(deviceList) {
+  if (deviceList.length === 0) {
+    return null
+  }
+
+  const filteredDevices = deviceList.map((device) => {
+    const {id, udid, isBooked, modelName, deviceName, platformName, platformVersion} = device
+    return {id, udid, isBooked, modelName, deviceName, platformName, platformVersion}
+  })
+
+  return filteredDevices
 }
 
 async function main() {
@@ -58,9 +64,8 @@ async function main() {
       console.log('KOBITON_USERNAME and KOBITON_APIKEY variables are need to execute the script')
       process.exit(1)
   }
-  const deviceStatus = await getDeviceStatus(deviceId)
 
-  await checkDeviceStatus(deviceStatus)
+  await getOnlineDevice()
 }
 
 main()

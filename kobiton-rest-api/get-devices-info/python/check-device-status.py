@@ -1,31 +1,42 @@
 import os
 import requests
 import sys
+import json
 headers = {
-  'Accept': 'application/json'
+'Accept': 'application/json'
 }
 
 username = os.getenv('KOBITON_USERNAME')
-apiKey = os.getenv('KOBITON_APIKEY')
-deviceId = int(os.getenv('KOBITON_DEVICE_ID'))
+apiKey = os.getenv('KOBITON_API_KEY')
 
 if username==None or apiKey==None:
-    print("KOBITON_USERNAME and KOBITON_APIKEY variables are need to execute the script")
-    sys.exit()
-   
-r = requests.get('https://api.kobiton.com/v1/devices/' + str(deviceId) + '/status', auth=(username, apiKey),
+  print("KOBITON_USERNAME and KOBITON_API_KEY variables are need to execute the script")
+  sys.exit()
+
+r = requests.get('https://api.kobiton.com/v1/devices?isOnline=true', auth=(username, apiKey),
 headers = headers)
 
-if r.status_code!=200:
-    print(r.status_code)
-    print(r.text)
-    sys.exit()
+if r.status_code != 200:
+  print(r.status_code)
+  print(r.text)
+  sys.exit()
 
-deviceStatus = r.json()
+deviceList = json.loads(r.text)
+cloudDevices = deviceList["cloudDevices"]
 
-if deviceStatus['isOnline']==True and deviceStatus['isBooked']==False:
-    print("The device is ready to use")
-elif deviceStatus['isOnline']==True and deviceStatus['isBooked']==True:
-    print("The device is busy")
-else:
-    print("The device is offline")
+if len(cloudDevices) == 0:
+  print("There is no online device")
+  sys.exit()
+
+print("Online device list:")
+for device in cloudDevices:
+  item = {
+    "id": device["id"],
+    "udid": device["udid"],
+    "isBooked": device["isBooked"],
+    "modelName": device["modelName"],
+    "deviceName": device["deviceName"],
+    "platformName": device["platformName"],
+    "platformVersion": device["platformVersion"]
+  }
+  print(json.dumps(item, indent=4, sort_keys=True))
