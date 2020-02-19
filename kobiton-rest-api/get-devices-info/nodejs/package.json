@@ -1,0 +1,16 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "Sample code to check the device is ready to use",
+  "main": "check-device-status.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./check-device-status.js"
+  },
+  "author": "Kobiton .Inc",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.7.1",
+    "request": "^2.88.0"
+  }
+}
