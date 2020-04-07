@@ -23,6 +23,7 @@ public class CheckDeviceStatus {
       filteredDeviceInfo.put("id", device.get("id"));
       filteredDeviceInfo.put("udid", device.get("udid"));
       filteredDeviceInfo.put("isBooked", device.get("isBooked"));
+      filteredDeviceInfo.put("isOnline", device.get("isOnline"));
       filteredDeviceInfo.put("modelName", device.get("modelName"));
       filteredDeviceInfo.put("deviceName", device.get("deviceName"));
       filteredDeviceInfo.put("platformName", device.get("platformName"));
@@ -57,7 +58,11 @@ public class CheckDeviceStatus {
         JSONArray filteredDeviceInfo = new JSONArray();
 
         for (int i = 0; i < cloudDevices.length(); i++) {
-          filteredDeviceInfo.put(filterDeviceInfo(cloudDevices.getJSONObject(i)));
+          boolean isBooked = cloudDevices.getJSONObject(i).getBoolean("isBooked");
+          boolean isOnline = cloudDevices.getJSONObject(i).getBoolean("isOnline");
+          if (isOnline && !isBooked) {
+            filteredDeviceInfo.put(filterDeviceInfo(cloudDevices.getJSONObject(i)));
+          }
         }
 
         return filteredDeviceInfo;
