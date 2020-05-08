@@ -7,18 +7,11 @@
 
 ### Prerequisites
 
- - Install [Maven](https://maven.apache.org/install.html)
+ - Import Java project in IDE (Eclipse or InteliJ IDEA) with Maven project
+ - Add TestNG plugins in Preferences > Plugins > TestNG if not exist
  - Build project with [Maven](https://maven.apache.org/run-maven/) `mvn clean install`
- - Open Java project in Eclipse
- - Install [TestNG Plugin](http://beust.com/eclipse) if it doesn't exist.
 
 ### Run tests
 
-#### Run test with TestNG - package testng
-
-#### 1. Run test suite by right-clicking on testng.xml and select **Run-as → TestNG Suite**
-
-#### 2. Run separate files by right-click on each file and select **Run-as → TestNG Test**
-
- - Select `AndroidAppTest.java`  
- - Select `iOSAppTest.java`
+ - Select `AndroidAppTest.java` and click Run (Ctrl + R)
+ - Select `iOSAppTest.java` and click Run (Ctrl + R)

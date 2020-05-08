@@ -1,5 +1,6 @@
 package tests;
 
+import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
 import com.google.inject.internal.util.ImmutableMap;
@@ -13,10 +14,10 @@ import configs.Configs;
 
 public class AndroidAppTest {
 
-    public static AndroidDriver<WebElement> driver = null;
+    private static AndroidDriver<WebElement> driver = null;
 
     @BeforeTest
-    public void Setup() {
+    public void Setup() throws MalformedURLException {
         driver = new AndroidDriver<WebElement>(Configs.kobitonServerUrl(), Configs.desiredCapabilitiesAndroidApp());
         driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
     }
@@ -35,7 +36,8 @@ public class AndroidAppTest {
     public void testAppLaunchSuccessfullyByDeepLinkUrl() throws InterruptedException {
         /*
          * Steps:
-         * 1. Access the deep link on mobile
+         * 1. Terminate the app under test (optional)
+         * 2. Access the deep link on mobile
          *
          * Expected:
          * 1. Verify app launch successfully
@@ -44,9 +46,9 @@ public class AndroidAppTest {
         String deepLinkUrl = "example://hello";
         String packageName = "com.hld.helloworld";
 
+        driver.closeApp();
         driver.executeScript("mobile:deepLink", ImmutableMap.of("url", deepLinkUrl, "package", packageName));
-
-        boolean appLaunchStatus = driver.findElementById("com.hld.helloworld:id/text_home").isDisplayed();
-        Assert.assertTrue(appLaunchStatus, "The application launched successfully by deep link url");
+        Thread.sleep(5000);
+        Assert.assertEquals(driver.getCurrentPackage(), packageName);
     }
 }

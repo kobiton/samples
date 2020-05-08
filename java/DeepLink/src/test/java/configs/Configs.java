@@ -22,7 +22,7 @@ public class Configs {
         capabilities.setCapability("sessionDescription", "This is an example for Android app testing");
         capabilities.setCapability("deviceOrientation", "portrait");
         capabilities.setCapability("captureScreenshots", true);
-        capabilities.setCapability("app", "https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/valid+apps/app-release.apk");
+        capabilities.setCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/app-release.apk");
         capabilities.setCapability("deviceGroup", "KOBITON");
         capabilities.setCapability("deviceName", "*");
         capabilities.setCapability("platformName", "Android");
@@ -35,7 +35,7 @@ public class Configs {
         capabilities.setCapability("sessionDescription", "This is an example for iOS App testing");
         capabilities.setCapability("deviceOrientation", "portrait");
         capabilities.setCapability("captureScreenshots", true);
-        capabilities.setCapability("app", "https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/ios-apps/TheApp.app.zip");
+        capabilities.setCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/TheApp.app.zip");
         capabilities.setCapability("deviceGroup", "KOBITON");
         capabilities.setCapability("deviceName", "*");
         capabilities.setCapability("platformName", "iOS");
