@@ -18,11 +18,11 @@ public class Configs {
 
     public static final DesiredCapabilities desiredCapabilitiesAndroidApp(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("sessionName", "Automation Android App");
+        capabilities.setCapability("sessionName", "Deep Link - Automation Android App");
         capabilities.setCapability("sessionDescription", "This is an example for Android app testing");
         capabilities.setCapability("deviceOrientation", "portrait");
         capabilities.setCapability("captureScreenshots", true);
-        capabilities.setCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk");
+        capabilities.setCapability("app", "https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/valid+apps/app-release.apk");
         capabilities.setCapability("deviceGroup", "KOBITON");
         capabilities.setCapability("deviceName", "*");
         capabilities.setCapability("platformName", "Android");
@@ -31,11 +31,11 @@ public class Configs {
 
     public static final DesiredCapabilities desiredCapabilitiesiOSApp(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("sessionName", "Automation iOS App");
+        capabilities.setCapability("sessionName", "Deep Link - Automation iOS App");
         capabilities.setCapability("sessionDescription", "This is an example for iOS App testing");
         capabilities.setCapability("deviceOrientation", "portrait");
         capabilities.setCapability("captureScreenshots", true);
-        capabilities.setCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa");
+        capabilities.setCapability("app", "https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/ios-apps/TheApp.app.zip");
         capabilities.setCapability("deviceGroup", "KOBITON");
         capabilities.setCapability("deviceName", "*");
         capabilities.setCapability("platformName", "iOS");

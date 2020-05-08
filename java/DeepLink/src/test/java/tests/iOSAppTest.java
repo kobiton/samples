@@ -44,7 +44,7 @@ public class iOSAppTest {
 
         String bundleIdAppTest = "io.cloudgrey.the-app";
         String bundleIdSafari = "com.apple.mobilesafari";
-        String deepLinkUrl = "theapp://login/darlene/testing123";
+        String deepLinkUrl = "theapp://login/alice/mypassword";
 
         driver.executeScript("mobile: terminateApp", ImmutableMap.of("bundleId", bundleIdAppTest));
         driver.executeScript("mobile: launchApp", ImmutableMap.of("bundleId", bundleIdSafari));

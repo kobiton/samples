@@ -2,7 +2,7 @@ package tests;
 
 import java.util.concurrent.TimeUnit;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.inject.internal.util.ImmutableMap;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -31,7 +31,7 @@ public class AndroidAppTest {
         }
     }
 
-    @Test(priority = 1, description = "Should launch app successfully by deep link url")
+    @Test(priority = 1, description = "Should be able to launch application with a deep link")
     public void testAppLaunchSuccessfullyByDeepLinkUrl() throws InterruptedException {
         /*
          * Steps:
@@ -41,13 +41,12 @@ public class AndroidAppTest {
          * 1. Verify app launch successfully
          */
 
-        String deepLinkUrl = "theapp://login/darlene/testing123";
-        String packageName = "io.cloudgrey.the_app";
+        String deepLinkUrl = "example://hello";
+        String packageName = "com.hld.helloworld";
 
         driver.executeScript("mobile:deepLink", ImmutableMap.of("url", deepLinkUrl, "package", packageName));
 
-        driver.findElementByXPath("//*[@resource-id='android:id/home']").wait(15);
-        boolean appLaunchStatus = driver.findElementByXPath("//*[@resource-id='android:id/home']").isDisplayed();
-        Assert.assertTrue(appLaunchStatus, "The app launched successfully by deep link url");
+        boolean appLaunchStatus = driver.findElementById("com.hld.helloworld:id/text_home").isDisplayed();
+        Assert.assertTrue(appLaunchStatus, "The application launched successfully by deep link url");
     }
 }
