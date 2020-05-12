@@ -48,7 +48,7 @@ public class AndroidAppTest {
 
         driver.closeApp();
         driver.executeScript("mobile:deepLink", ImmutableMap.of("url", deepLinkUrl, "package", packageName));
-        Thread.sleep(5000);
+        Thread.sleep(3000);
         Assert.assertEquals(driver.getCurrentPackage(), packageName);
     }
 }

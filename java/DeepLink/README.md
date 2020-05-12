@@ -14,4 +14,3 @@
 ### Run tests
 
  - Select `AndroidAppTest.java` and click Run (Ctrl + R)
- - Select `iOSAppTest.java` and click Run (Ctrl + R)
