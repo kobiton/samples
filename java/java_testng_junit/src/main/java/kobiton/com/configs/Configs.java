@@ -18,7 +18,7 @@ public class Configs {
     }
 
     public static String generateBasicAuth() {
-        String authString = username + ":" + apiKey;
+        String authString = USERNAME + ":" + ACCESS_KEY;
         byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
         String authStringEnc = new String(authEncBytes);
         return "Basic " + authStringEnc;
