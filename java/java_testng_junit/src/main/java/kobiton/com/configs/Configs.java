@@ -26,7 +26,7 @@ public class Configs {
         return "Basic " + authStringEnc;
     }
     
-    public static final DesiredCapabilities desiredCapabilitiesAndroidWeb(){
+    public static DesiredCapabilities desiredCapabilitiesAndroidWeb(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("sessionName", "Android Web");
         capabilities.setCapability("sessionDescription", "This is an example for Android Web testing");
@@ -39,7 +39,7 @@ public class Configs {
         return capabilities;
     }
 
-    public static final DesiredCapabilities desiredCapabilitiesAndroidApp(){
+    public static DesiredCapabilities desiredCapabilitiesAndroidApp(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("sessionName", "Android app");
         capabilities.setCapability("sessionDescription", "This is an example for Android app testing");
@@ -52,7 +52,7 @@ public class Configs {
         return capabilities;
     }
 
-    public static final DesiredCapabilities desiredCapabilitiesiOSWeb(){
+    public static DesiredCapabilities desiredCapabilitiesiOSWeb(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("sessionName", "iOS Web");
         capabilities.setCapability("sessionDescription", "This is an example for iOS Web testing");
@@ -65,7 +65,7 @@ public class Configs {
         return capabilities;
     }
 
-    public static final DesiredCapabilities desiredCapabilitiesiOSApp(){
+    public static DesiredCapabilities desiredCapabilitiesiOSApp(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("sessionName", "iOS app");
         capabilities.setCapability("sessionDescription", "This is an example for iOS App testing");

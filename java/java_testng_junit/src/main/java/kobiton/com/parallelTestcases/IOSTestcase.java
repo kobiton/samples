@@ -4,6 +4,7 @@ import io.appium.java_client.ios.IOSDriver;
 import kobiton.com.configs.Configs;
 import kobiton.com.configs.Utils;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -17,9 +18,13 @@ public class IOSTestcase {
     public void Setup(@Optional("*") String udid) {
         boolean flag = Utils.waitForDevice("privateDevices", udid);
         if (flag) {
-            Configs.desiredCapabilitiesiOSApp().setCapability("udid", udid);
-            Configs.desiredCapabilitiesiOSApp().setCapability("deviceGroup", "ORGANIZATION");
-            driver = new IOSDriver<WebElement>(Configs.kobitonServerUrl(), Configs.desiredCapabilitiesiOSWeb());
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities = Configs.desiredCapabilitiesiOSWeb();
+            capabilities.setCapability("udid", udid);
+            capabilities.setCapability("deviceGroup", "ORGANIZATION");
+            capabilities.setCapability("deviceName", "*");
+            
+            driver = new IOSDriver<WebElement>(Configs.kobitonServerUrl(), capabilities);
             driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
         }
     }
