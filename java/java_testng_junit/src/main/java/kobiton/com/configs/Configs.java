@@ -17,6 +17,13 @@ public class Configs {
         return null;
     }
 
+    public static String generateBasicAuth() {
+        String authString = username + ":" + apiKey;
+        byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
+        String authStringEnc = new String(authEncBytes);
+        return "Basic " + authStringEnc;
+    }
+    
     public static final DesiredCapabilities desiredCapabilitiesAndroidWeb(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("sessionName", "Android Web");
