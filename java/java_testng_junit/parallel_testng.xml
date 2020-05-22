@@ -1,8 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Parallel Test Suite" parallel="tests" thread-count="2" verbose="1" >
   <!-- This parameter will be passed to every test in this suite -->
-  <parameter name="udid" value="7ea4d8f123" />
   <test name="Testcase One">
+      <parameter name="udid" value="7ea4d8f123" />
     <classes>
       <class name="kobiton.com.parallelTestcases.AndroidTestcase">
       </class>
