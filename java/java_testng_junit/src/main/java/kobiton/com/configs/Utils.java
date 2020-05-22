@@ -12,7 +12,7 @@ public class Utils {
     }
 
     public static boolean waitForDevice(String deviceGroup, String udid) {
-        int loop = 4;
+        int loop = 120;
         int start = 0;
         boolean flag = false;
         while(start < loop) {
