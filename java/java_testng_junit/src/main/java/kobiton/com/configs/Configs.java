@@ -2,6 +2,8 @@ package kobiton.com.configs;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class Configs {
@@ -17,8 +19,8 @@ public class Configs {
         return null;
     }
 
-    public static String generateBasicAuth() {
-        String authString = USERNAME + ":" + ACCESS_KEY;
+    public static String generateBasicAuth(String username, String apiKey) {
+        String authString = username + ":" + apiKey;
         byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
         String authStringEnc = new String(authEncBytes);
         return "Basic " + authStringEnc;
