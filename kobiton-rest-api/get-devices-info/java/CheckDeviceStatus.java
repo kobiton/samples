@@ -33,7 +33,7 @@ public class CheckDeviceStatus {
 
     static JSONArray getOnlineDevices() {
       try {
-        URL obj = new URL("https://api.kobiton.com/v1/devices?isOnline=true");
+        URL obj = new URL("https://api.kobiton.com/v1/devices?isOnline=true&isBooked=false");
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty ("Authorization", generateBasicAuth());

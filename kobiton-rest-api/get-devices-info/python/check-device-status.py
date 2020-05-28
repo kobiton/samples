@@ -13,7 +13,7 @@ if username==None or apiKey==None:
   print("KOBITON_USERNAME and KOBITON_API_KEY variables are need to execute the script")
   sys.exit()
 
-r = requests.get('https://api.kobiton.com/v1/devices?isOnline=true', auth=(username, apiKey),
+r = requests.get('https://api.kobiton.com/v1/devices?isOnline=true&isBooked=false', auth=(username, apiKey),
 headers = headers)
 
 if r.status_code != 200:

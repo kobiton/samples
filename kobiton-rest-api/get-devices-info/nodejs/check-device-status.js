@@ -14,7 +14,7 @@ async function getOnlineDevice() {
   let response
   try {
     response = await sendRequest({
-      url: `https://api.kobiton.com/v1/devices?isOnline=true`,
+      url: `https://api.kobiton.com/v1/devices?isOnline=true&isBooked=false`,
       json: true,
       method: 'GET',
       auth: {

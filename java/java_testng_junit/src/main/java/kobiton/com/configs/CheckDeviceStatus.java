@@ -24,7 +24,7 @@ public class CheckDeviceStatus {
     public static JSONArray getOnlineDevices(String username, String apiKey, String deviceGroup) {
 
         try {
-            URL obj = new URL("https://api.kobiton.com/v1/devices?isOnline=true");
+            URL obj = new URL("https://api.kobiton.com/v1/devices?isOnline=true&isBooked=false");
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", Configs.generateBasicAuth(username, apiKey));
