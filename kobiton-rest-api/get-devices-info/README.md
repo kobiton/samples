@@ -75,14 +75,14 @@ Filter and get only online devices from all devices that current user can access
 
 **Sample:**
 ```bash
-curl -X GET 'https://api.kobiton.com/v1/devices?isOnline=true' \
+curl -X GET 'https://api.kobiton.com/v1/devices?isOnline=true&isBooked=false' \
   -H 'Accept: application/json' \
   -u <YOUR_KOBITON_USERNAME>:<YOUR_KOBITON_API_KEY>
 ```
 
 **For user in org and group**
 ```bash
-curl -X GET 'https://api.kobiton.com/v1/devices?isOnline=true&groupId=<YOUR_GROUP_ID>' \
+curl -X GET 'https://api.kobiton.com/v1/devices?isOnline=true&isBooked=false&groupId=<YOUR_GROUP_ID>' \
   -H 'Accept: application/json' \
   -u <YOUR_KOBITON_USERNAME>:<YOUR_KOBITON_API_KEY>
 ```
@@ -94,14 +94,14 @@ Filter and get only online Android devices from all devices that current user ca
 
 **Sample:**
 ```bash
-curl -X GET 'https://api.kobiton.com/v1/devices?platformName=Android&isOnline=true' \
+curl -X GET 'https://api.kobiton.com/v1/devices?platformName=Android&isOnline=true&isBooked=false' \
   -H 'Accept: application/json' \
   -u <YOUR_KOBITON_USERNAME>:<YOUR_KOBITON_API_KEY>
 ```
 
 **For user in org and group**
 ```bash
-curl -X GET 'https://api.kobiton.com/v1/devices?platformName=Android&isOnline=true&groupId=<YOUR_GROUP_ID>' \
+curl -X GET 'https://api.kobiton.com/v1/devices?platformName=Android&isOnline=true&isBooked=false&groupId=<YOUR_GROUP_ID>' \
   -H 'Accept: application/json' \
   -u <YOUR_KOBITON_USERNAME>:<YOUR_KOBITON_API_KEY>
 ```
