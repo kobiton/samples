@@ -48,4 +48,3 @@ Note: To have the above comparision, should use the same deviceName and platform
 ## III. Report on the test results
 
 When you see your test 'Complete' on the Terminal, you can access https://portal.kobiton.com/sessions and https://eyes.applitools.com/app/results to get your test results.
- 
