@@ -5,7 +5,7 @@ exports.config = {
   mochaOpts: {
     ui: 'bdd',
     timeout: 600000
-    },
+  },
   sync: false,
   logLevel: 'silent',
   specs: [
