@@ -1,7 +1,6 @@
 exports.config = {
     user: process.env.KOBITON_USERNAME,
     key: process.env.KOBITON_API_KEY,
-    runner: 'local',
     framework: 'mocha',
     mochaOpts: {
         ui: 'bdd',
@@ -20,6 +19,7 @@ exports.config = {
         browserName:        'chrome',
         deviceGroup:        'KOBITON',
         deviceName:         '*',
+        platformVersion:    '*',
         platformName:       'Android'
     }],
     deprecationWarnings: true,
