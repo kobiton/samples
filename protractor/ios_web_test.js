@@ -10,6 +10,13 @@ describe('Protractor Demo iOS Web Testing With Kobiton', function() {
   })
 
   it('should add a todo', function() {
+    browser.getSession().then((session) => {
+      let capabilities = new Map()
+      capabilities = session.caps_.map_
+      const kobitonSessionId = capabilities.get('kobitonSessionId')
+      console.log('kobitonSessionId', kobitonSessionId)
+    })
+    
     browser.get('https://angularjs.org')
     todoText.sendKeys('new ticket')
     addButton.click()
