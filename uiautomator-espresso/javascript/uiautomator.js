@@ -7,14 +7,14 @@ const encodeAuth = 'Basic ' + Buffer.from(`${username}:${apiKey}`).toString('bas
 
 const configuration = { 
   sessionName: "Automation test session",
-  sessionDescription: "",
+  sessionDescription: "This is an example for Android app testing",
   noReset: true,
   fullReset: false,
   deviceName: "*",
   platformVersion: "*",
   deviceGroup: "KOBITON",
-  testRunner: "",
   app: "",
+  testRunner: "",
   continueOnFailure: true,
   sessionTimeout: 2,
   testTimeout: 3,
