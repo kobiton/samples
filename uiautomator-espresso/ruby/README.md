@@ -1,53 +1,46 @@
-# Javascript samples using UIAutomator/ Espresso framework
+# Ruby samples using UIAutomator/ Espresso framework
 
 ## I. Setup environment on Mac
 
-#### Homebrew
+#### rvm
 
-- [Homebrew](https://brew.sh/) is a package manager for the Mac.
--  To install Homebrew, open terminal and type the following command:
-
-```bash
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
-
-- This will install Homebrew on your Mac. To check the version, type the following command:
+- [rvm](https://rvm.io/) is a Ruby Version Manager for the Mac.
+-  To install rvm, open terminal and type the following command:
 
 ```bash
-brew -v
+curl -L https://get.rvm.io | bash -s stable
 ```
+- Once this command has finished running you may need to restart your terminal for rvm to be recognised.
 
-#### Node and npm
-
-- To install Node via Homebrew, type the following command:
+- To check the version, type the following command:
 
 ```bash
-brew install node
+ruby -v
 ```
 
-- To check if you have [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) installed, run this command in your terminal:
+#### Install Ruby version 2.4.1
+
+- To install ruby via rvm, type the following command:
 
 ```bash
-node -v
-npm -v
+rvm install ruby-2.4.1
 ```
 
-- To update your npm to latest, type this into in your terminal:
+- If you want to set this version of Ruby as the default version, in terminal type:
 
 ```bash
-npm install npm@latest -g
+rvm --default use 2.4.1
 ```
 
-## Install the uiautomator-espresso samples
+## Get the uiautomator-espresso samples
 
-Clone this script directly from our GitHub repo and install dependencies:
+Clone this script directly from our GitHub repo:
 
 ```
 mkdir kobiton-samples
 cd kobiton-samples
 git clone https://github.com/kobiton/samples.git
-cd samples/uiautomator-espresso/javascript/
-npm install
+cd samples/uiautomator-espresso/ruby/
 ```
 
 ## Getting started with Kobiton
@@ -58,29 +51,30 @@ npm install
 ![automation-settings.png](/uiautomator-espresso/assets/automation-settings.png)
 
 - Select Framework = UIAutomator/ Espresso.
-- Select Language = NodeJS.
+- Select Language = Ruby.
 
-![automation-settings-javascript.png](/uiautomator-espresso/assets/automation-settings-javascript.png)
+![automation-settings-ruby.png](/uiautomator-espresso/assets/automation-settings-ruby.png)
 
 - Input the value for `username` & `apiKey` & in the sample script.
 
-```javascript
-const username = ''
-const apiKey = ''
+```ruby
+username = ''
+apiKey = ''
 ```
 - Update the value for `configuration` to indicate your exptected testing device.
 
-```javascript
-const configuration = { 
-  sessionName:        'Automation test session',
-  sessionDescription: 'This is an example for UIAutomator/ Espresso testing',      
-  deviceName:         'Galaxy S7 edge',
-  platformVersion:    '7.0',
-  deviceGroup:        'KOBITON',
-  app:                '<APP_URL>',
-  testRunner:         '<TEST_RUNNER_URL>', 
-  continueOnFailure:   true,
-  tests:              []
+```ruby
+{
+  'configuration': {
+        'sessionName': 'Automation test session',
+        'sessionDescription': 'This is an example for UIAutomator/ Espresso testing',
+        'deviceName': '*',
+        'deviceGroup': 'KOBITON',
+        'app': '<APP_URL>',
+        'testRunner': '<TEST_RUNNER_URL>',
+        'continueOnFailure': true,
+        'tests': []
+    }
 }
 ```
 
@@ -89,8 +83,8 @@ const configuration = {
 Once you have everything set up, you can run the example test simply by running one of the following command:
 
 ```bash
-node uiautomator.js
-node espresso.js
+ruby uiautomator.rb
+ruby espresso.rb
 ```
 ## III. Report on Test Results
 

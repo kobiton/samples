@@ -20,21 +20,20 @@ request['Accept'] = 'application/json'
 configuration = {
     'configuration': {
         'sessionName': 'Automation test session',
-        'sessionDescription': 'This is an example for UIAutomator testing',
+        'sessionDescription': 'This is an example for Espresso testing',
         'noReset': true,
         'fullReset': false,
         'deviceName': '*',
         'deviceGroup': 'KOBITON',
-        'app': 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-app.apk',
-        'testRunner': 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-test-runner.apk',
+        'app': 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/espresso-app.apk',
+        'testRunner': 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/espresso-test-runner.apk',
         'sessionTimeout': 30,
         'testTimeout': 10,
         'retryTimes': 3,
         'continueOnFailure': true,
         'tests': [
-            'com.example.android.testing.uiautomator.BasicSample.test',
-            'ChangeTextBehaviorTest',
-            'ChangeTextBehaviorTest#testChangeText_sameActivity'
+          'HintMatchersTest#hint_endsWith_Passed',
+          'com.example.android.testing.espresso.CustomMatcherSample.test'
         ]
     }
 }
