@@ -14,23 +14,27 @@ curl_setopt_array($curl, array(
   CURLOPT_TIMEOUT => 0,
   CURLOPT_FOLLOWLOCATION => true,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_CUSTOMREQUEST => 'POST',
   $configuration  = array(
     'configuration' => array(
         'sessionName'         => 'Automation test session',
-        'sessionDescription'  => 'This is an example for Android app testing',
+        'sessionDescription'  => 'This is an example for UIAutomator testing',
         'noReset'             => true,
         'fullReset'           => false,
         'deviceName'          => '*',
         'platformVersion'     => '*',
         'deviceGroup'         => 'KOBITON',
-        'app'                 => '',
-        'testRunner'          => '',
+        'app'                 => 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-app.apk',
+        'testRunner'          => 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-test-runner.apk',
         'continueOnFailure'   => true,
-        'sessionTimeout'      => 2,
-        'testTimeout'         => 3,
-        'retryTimes'          => 2,
-        'tests'        => []
+        'sessionTimeout'      => 30,
+        'testTimeout'         => 10,
+        'retryTimes'          => 3,
+        'tests'               => array(
+          'com.example.android.testing.uiautomator.BasicSample.test',
+          'ChangeTextBehaviorTest',
+          'ChangeTextBehaviorTest#testChangeText_sameActivity'
+        )
     )),
   CURLOPT_POSTFIELDS => json_encode($configuration),
   CURLOPT_HTTPHEADER => array(

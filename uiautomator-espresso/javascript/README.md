@@ -1,4 +1,4 @@
-# Javascript samples using UiAutomator/ Espresso framework
+# Javascript samples using UIAutomator/ Espresso framework
 
 ## I. Setup environment on Mac
 
@@ -57,10 +57,10 @@ npm install
 
 ![automation-settings.png](/uiautomator-espresso/assets/automation-settings.png)
 
-- Select Framework = UiAutomator/ Espresso.
+- Select Framework = UIAutomator/ Espresso.
 - Select Language = NodeJS.
 
-![automation-settings-detail.png](/uiautomator-espresso/assets/automation-settings-detail.png)
+![automation-settings-javascript.png](/uiautomator-espresso/assets/automation-settings-javascript.png)
 
 - Input the value for `username` & `apiKey` & in the sample script.
 
@@ -73,7 +73,7 @@ const apiKey = ''
 ```javascript
 const configuration = { 
   sessionName:        'Automation test session',
-  sessionDescription: 'This is an example for UiAutomator testing',      
+  sessionDescription: 'This is an example for UIAutomator testing',      
   deviceName:         'Galaxy S7 edge',
   platformVersion:    '7.0',
   deviceGroup:        'KOBITON',

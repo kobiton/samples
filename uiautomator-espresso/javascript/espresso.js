@@ -6,20 +6,23 @@ const apiKey = ''
 const encodeAuth = 'Basic ' + Buffer.from(`${username}:${apiKey}`).toString('base64')
 
 const configuration = { 
-  sessionName: "Automation test session",
-  sessionDescription: "",
+  sessionName: 'Automation test session',
+  sessionDescription: 'This is an example for Espresso testing',
   noReset: true,
   fullReset: false,
-  deviceName: "*",
-  platformVersion: "*",
-  deviceGroup: "KOBITON",
-  testRunner: "",
-  app: "",
+  deviceName: '*',
+  platformVersion: '*',
+  deviceGroup: 'KOBITON',
+  app: 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/espresso-app.apk',
+  testRunner: 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/esspresso-test-runner.apk',
   continueOnFailure: true,
-  sessionTimeout: 2,
-  testTimeout: 3,
-  retryTimes: 2,
-  tests: []
+  sessionTimeout: 5,
+  testTimeout: 1,
+  retryTimes: 3,
+  tests: [
+    'HintMatchersTest#hint_endsWith_Passed',
+    'com.example.android.testing.espresso.CustomMatcherSample.test'
+  ]
 }
 
 const headers = {
@@ -39,6 +42,5 @@ request({
   headers
 }, function (err, response, body) {
   if (err) return console.error('Error:', err)
-  console.log('Response:', response)
   console.log('Response body:', body)
 })

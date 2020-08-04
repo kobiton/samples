@@ -6,20 +6,24 @@ const apiKey = ''
 const encodeAuth = 'Basic ' + Buffer.from(`${username}:${apiKey}`).toString('base64')
 
 const configuration = { 
-  sessionName: "Automation test session",
-  sessionDescription: "This is an example for Android app testing",
+  sessionName: 'Automation test session',
+  sessionDescription: 'This is an example for UIAutomator testing',
   noReset: true,
   fullReset: false,
-  deviceName: "*",
-  platformVersion: "*",
-  deviceGroup: "KOBITON",
-  app: "",
-  testRunner: "",
+  deviceName: '*',
+  platformVersion: '*',
+  deviceGroup: 'KOBITON',
+  app: 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-app.apk',
+  testRunner: 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-test-runner.apk',
   continueOnFailure: true,
-  sessionTimeout: 2,
-  testTimeout: 3,
-  retryTimes: 2,
-  tests: []
+  sessionTimeout: 30,
+  testTimeout: 10,
+  retryTimes: 3,
+  tests: [
+    'com.example.android.testing.uiautomator.BasicSample.test',
+    'ChangeTextBehaviorTest',
+    'ChangeTextBehaviorTest#testChangeText_sameActivity'
+  ]
 }
 
 const headers = {
@@ -39,6 +43,5 @@ request({
   headers
 }, function (err, response, body) {
   if (err) return console.error('Error:', err)
-  console.log('Response:', response)
   console.log('Response body:', body)
 })

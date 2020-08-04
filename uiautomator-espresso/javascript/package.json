@@ -14,5 +14,8 @@
   "bugs": {
     "url": "https://github.com/kobiton/samples/issues"
   },
-  "homepage": "https://github.com/kobiton/samples#readme"
+  "homepage": "https://github.com/kobiton/samples#readme",
+  "dependencies": {
+    "request": "^2.88.2"
+  }
 }
