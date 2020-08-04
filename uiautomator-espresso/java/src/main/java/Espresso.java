@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.json.simple.JSONObject;
 
-public class UIAutomator {
+public class Espresso {
     public static void main(String[] args) {
         UIAutomatorTest();
     }
@@ -34,8 +34,8 @@ public class UIAutomator {
             jsonObject.put("sessionDescription", "This is an example for UIAutomator testing");
             jsonObject.put("deviceName", "*");
             jsonObject.put("deviceGroup", "KOBITON");
-            jsonObject.put("app", "https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-app.apk");
-            jsonObject.put("testRunner", "https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-test-runner.apk");
+            jsonObject.put("app", "https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/espresso-app.apk");
+            jsonObject.put("testRunner", "https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/esspresso-test-runner.apk");
             jsonObject.put("sessionTimeout", 30);
             jsonObject.put("testTimeout", 10);
             jsonObject.put("retryTimes", 3);

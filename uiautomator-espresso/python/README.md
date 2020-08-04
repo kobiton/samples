@@ -72,7 +72,7 @@ const apiKey = ''
 configuration = {
   'configuration': {
     'sessionName': 'Automation test session',
-    'sessionDescription': 'This is an example for UiAutomator testing',
+    'sessionDescription': 'This is an example for UiAutomator/ Espresso testing',
     'deviceName': 'Galaxy S7 edge',
     'platformVersion: '7.0',
     'deviceGroup': 'KOBITON',

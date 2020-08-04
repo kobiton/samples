@@ -73,7 +73,7 @@ const apiKey = ''
 ```javascript
 const configuration = { 
   sessionName:        'Automation test session',
-  sessionDescription: 'This is an example for UIAutomator testing',      
+  sessionDescription: 'This is an example for UIAutomator/ Espresso testing',      
   deviceName:         'Galaxy S7 edge',
   platformVersion:    '7.0',
   deviceGroup:        'KOBITON',
