@@ -5,7 +5,7 @@ require 'base64'
 
 username = ''
 apiKey = ''
-encodeAuth = 'Basic ' + Base64.encode64(username + ':' + apiKey)
+encodeAuth = 'Basic ' + Base64.encode64(username + ':' + apiKey).gsub("\n", '')
 
 url = URI('https://api.kobiton.com/hub/session')
 
