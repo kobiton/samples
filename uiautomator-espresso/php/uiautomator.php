@@ -9,7 +9,6 @@ $encodeAuth = 'Basic ' .base64_encode($username. ':' .$apiKey);
 curl_setopt_array($curl, array(
   CURLOPT_URL => 'https://api.kobiton.com/hub/session',
   CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
   CURLOPT_MAXREDIRS => 10,
   CURLOPT_TIMEOUT => 0,
   CURLOPT_FOLLOWLOCATION => true,

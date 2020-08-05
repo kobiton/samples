@@ -5,11 +5,11 @@ require 'base64'
 
 username = ''
 apiKey = ''
-encodeAuth   = 'Basic ' + Base64.encode64(username + ':' + apiKey)
+encodeAuth = 'Basic ' + Base64.encode64(username + ':' + apiKey)
 
 url = URI('https://api.kobiton.com/hub/session')
 
-https = Net::HTTP.new(url.host, url.port);
+https = Net::HTTP.new(url.host, url.port)
 https.use_ssl = true
 
 request = Net::HTTP::Post.new(url)

@@ -66,15 +66,15 @@ apiKey = ''
 ```ruby
 {
   'configuration': {
-        'sessionName': 'Automation test session',
-        'sessionDescription': 'This is an example for UIAutomator/ Espresso testing',
-        'deviceName': '*',
-        'deviceGroup': 'KOBITON',
-        'app': '<APP_URL>',
-        'testRunner': '<TEST_RUNNER_URL>',
-        'continueOnFailure': true,
-        'tests': []
-    }
+    'sessionName': 'Automation test session',
+    'sessionDescription': 'This is an example for UIAutomator/ Espresso testing',
+    'deviceName': '*',
+    'deviceGroup': 'KOBITON',
+    'app': '<APP_URL>',
+    'testRunner': '<TEST_RUNNER_URL>',
+    'continueOnFailure': true,
+    'tests': []
+  }
 }
 ```
 

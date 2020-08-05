@@ -29,7 +29,6 @@ brew install python
 
 ```bash
 python --version
-python3 --version
 ```
 
 ### Pip
