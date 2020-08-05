@@ -1,18 +1,16 @@
 const request = require('request')
 
-const username = ''
-const apiKey = ''
+const username = 'ngantlnguyentest'
+const apiKey = '423158ce-9933-4dd3-b2ce-d28c1cb76619'
 
 const encodeAuth = 'Basic ' + Buffer.from(`${username}:${apiKey}`).toString('base64')
 
 const configuration = { 
   sessionName: 'Automation test session',
   sessionDescription: 'This is an example for Espresso testing',
-  noReset: true,
-  fullReset: false,
   deviceName: '*',
-  platformVersion: '*',
-  deviceGroup: 'KOBITON',
+  udid: '710KPVH0319927',
+  deviceGroup: 'ORGANIZATION',
   app: 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/espresso-app.apk',
   testRunner: 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/esspresso-test-runner.apk',
   continueOnFailure: true,
@@ -35,7 +33,7 @@ const body = {
 }
 
 request({
-  url: 'https://api.kobiton.com/hub/session',
+  url: 'https://api-staging.kobiton.com/hub/session',
   json: true,
   method: 'POST',
   body,

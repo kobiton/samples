@@ -18,10 +18,7 @@ curl_setopt_array($curl, array(
     'configuration' => array(
       'sessionName'         => 'Automation test session',
       'sessionDescription'  => 'This is an example for Espresso testing',
-      'noReset'             => true,
-      'fullReset'           => false,
       'deviceName'          => '*',
-      'platformVersion'     => '*',
       'deviceGroup'         => 'KOBITON',
       'app'                 => 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/espresso-app.apk',
       'testRunner'          => 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/esspresso-test-runner.apk',

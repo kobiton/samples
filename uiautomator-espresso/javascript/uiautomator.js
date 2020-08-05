@@ -3,7 +3,7 @@ const request = require('request')
 const username = ''
 const apiKey = ''
 
-const encodeAuth = 'Basic ' + Buffer.from(`${username}:${apiKey}`).toString('base64')
+const encodeAuth= `Basic ${Buffer.from(`${username}:${apiKey}`).toString('base64')}`
 
 const configuration = { 
   sessionName: 'Automation test session',
@@ -11,8 +11,6 @@ const configuration = {
   noReset: true,
   fullReset: false,
   deviceName: '*',
-  platformVersion: '*',
-  deviceGroup: 'KOBITON',
   app: 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-app.apk',
   testRunner: 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-test-runner.apk',
   continueOnFailure: true,
@@ -36,7 +34,7 @@ const body = {
 }
 
 request({
-  url: 'https://api.kobiton.com/hub/session',
+  url: 'https://api-staging.kobiton.com/hub/session',
   json: true,
   method: 'POST',
   body,
