@@ -32,7 +32,7 @@ const body = {
 }
 
 request({
-  url: 'https://api-staging.kobiton.com/hub/session',
+  url: 'https://api.kobiton.com/hub/session',
   json: true,
   method: 'POST',
   body,
