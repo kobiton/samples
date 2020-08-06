@@ -21,8 +21,6 @@ configuration = {
   'configuration': {
     'sessionName': 'Automation test session',
     'sessionDescription': 'This is an example for UIAutomator testing',
-    'noReset': true,
-    'fullReset': false,
     'deviceName': '*',
     'deviceGroup': 'KOBITON',
     'app': 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/uiautomator-app.apk',
