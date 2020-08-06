@@ -3,7 +3,7 @@ const request = require('request')
 const username = ''
 const apiKey = ''
 
-const encodeAuth = 'Basic ' + Buffer.from(`${username}:${apiKey}`).toString('base64')
+const encodeAuth = `Basic ${Buffer.from(`${username}:${apiKey}`).toString('base64')}`
 
 const configuration = { 
   sessionName: 'Automation test session',
