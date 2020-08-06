@@ -40,7 +40,9 @@ Run separate files by right-click on each file and select `Run UIAutomator.main(
 
 - When you see your test has the response message that `Session is started.`, you can access [Session Page](https://portal.kobiton.com/sessions) to get your test status.
 
-![response-body.png](/uiautomator-espresso/assets/response-body.png)
+```
+Response body: { kobitonSessionId: 98363, message: 'Session is started.' }
+```
 
 ## V. Notes
 
