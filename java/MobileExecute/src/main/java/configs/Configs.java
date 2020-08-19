@@ -29,7 +29,7 @@ public class Configs {
         capabilities.setCapability("deviceName", "*");
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("platformVersion", "*");
-        capabilities.setCapability("allowMobileShell", "true");
+        capabilities.setCapability("allowMobileShell", true);
 
         return capabilities;
     }
