@@ -33,4 +33,19 @@ public class Configs {
 
         return capabilities;
     }
+
+    public static final DesiredCapabilities desiredCapabilitiesiOSApp(){
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("sessionName", "Java TestNG - iOS App");
+        capabilities.setCapability("sessionDescription", "This is an example for iOS App testing");
+        capabilities.setCapability("deviceOrientation", "portrait");
+        capabilities.setCapability("captureScreenshots", true);
+        capabilities.setCapability("app", "https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/iFixit.ipa");
+        capabilities.setCapability("deviceGroup", "KOBITON");
+        capabilities.setCapability("deviceName", "*");
+        capabilities.setCapability("platformName", "iOS");
+        capabilities.setCapability("platformVersion", "*");
+
+        return capabilities;
+    }
 }

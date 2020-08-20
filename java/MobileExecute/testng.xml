@@ -6,4 +6,9 @@
       <class name="testng.AndroidMobileShellTest"/>
     </classes>
   </test>
+  <test name="Test iOS Web">
+    <classes>
+      <class name="testng.iOSMobileExecuteTest"/>
+    </classes>
+  </test>
 </suite>
