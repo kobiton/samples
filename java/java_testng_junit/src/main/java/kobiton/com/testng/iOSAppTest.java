@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import io.appium.java_client.ios.IOSDriver;
 import kobiton.com.configs.Configs;
+import com.google.common.collect.ImmutableMap;
 
 public class iOSAppTest {
 	
@@ -120,6 +121,20 @@ public class iOSAppTest {
 		Assert.assertTrue(secondResult.size() >= 6,
 			"The expected results are greater or equal to 6 results.");
    }
+
+	@Test(priority = 3, description = "should press home button")
+	public void testMobileExecute() {
+
+		/*
+		 * Steps:
+		 * 1. Send mobile:shell command line to device
+		 *
+		 * Expected: It should allow to send command mobile shell.
+		 */
+
+		driver.executeScript("mobile: pressButton", ImmutableMap.of("name", "home"));
+		sleep(2);
+	}
    
    public void sleep(int seconds) {
 		try {
