@@ -114,6 +114,8 @@ public class iOSAppTest {
 	   sleep(2);
 	   
 	   List<WebElement> secondResult = driver.findElementsByXPath("//XCUIElementTypeStaticText[contains(@label,'Acura')]");
+	   driver.executeScript("mobile: scroll", ImmutableMap.of("direction", "down"));
+	   driver.executeScript("mobile: scroll", ImmutableMap.of("direction", "up"));
 	   
 		Assert.assertTrue(firstResult.size() >= 33,
 			"The expected results are greater or equal to 33 results.");
@@ -121,20 +123,6 @@ public class iOSAppTest {
 		Assert.assertTrue(secondResult.size() >= 6,
 			"The expected results are greater or equal to 6 results.");
    }
-
-	@Test(priority = 3, description = "should press home button")
-	public void testMobileExecute() {
-
-		/*
-		 * Steps:
-		 * 1. Send mobile:shell command line to device
-		 *
-		 * Expected: It should allow to send command mobile shell.
-		 */
-
-		driver.executeScript("mobile: pressButton", ImmutableMap.of("name", "home"));
-		sleep(2);
-	}
    
    public void sleep(int seconds) {
 		try {

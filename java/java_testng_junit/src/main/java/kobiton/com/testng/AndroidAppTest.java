@@ -3,6 +3,8 @@ package kobiton.com.testng;
 import java.util.concurrent.TimeUnit;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.collect.Lists;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
@@ -129,12 +131,12 @@ public class AndroidAppTest {
 		 * Expected: It should allow to send command mobile shell.
 		 */
 
-		Map<String, Object> args = new HashMap<>();
+		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("command", "echo");
 		args.put("args", Lists.newArrayList("hello", "world"));
 
 		Object output = driver.executeScript("mobile: shell", args);
-		assert output.equals("hello world");
+		Assert.assertEquals(output, "hello world");
 	}
 
 	public void sleep(int seconds) {
