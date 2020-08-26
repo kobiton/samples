@@ -1,6 +1,10 @@
 package kobiton.com.testng;
 
 import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.common.collect.Lists;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
@@ -115,6 +119,24 @@ public class AndroidAppTest {
 		secondResult = secondResult.replaceAll("[^0-9]", "");
 		Assert.assertTrue(Integer.parseInt(secondResult) >= 5,
 			"The returned results are greater or equal to 5 results.");
+	}
+
+	@Test(priority = 3, description = "should allow to send command mobile shell")
+	public void testMobileShell() {
+
+		/*
+		 * Steps:
+		 * 1. Send mobile:shell command line to device
+		 *
+		 * Expected: It should allow to send command mobile shell.
+		 */
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("command", "echo");
+		args.put("args", Lists.newArrayList("hello", "world"));
+
+		Object output = driver.executeScript("mobile: shell", args);
+		Assert.assertEquals(output, "hello world");
 	}
 
 	public void sleep(int seconds) {

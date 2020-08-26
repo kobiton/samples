@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import io.appium.java_client.ios.IOSDriver;
 import kobiton.com.configs.Configs;
+import com.google.common.collect.ImmutableMap;
 
 public class iOSAppTest {
 	
@@ -113,6 +114,8 @@ public class iOSAppTest {
 	   sleep(2);
 	   
 	   List<WebElement> secondResult = driver.findElementsByXPath("//XCUIElementTypeStaticText[contains(@label,'Acura')]");
+	   driver.executeScript("mobile: scroll", ImmutableMap.of("direction", "down"));
+	   driver.executeScript("mobile: scroll", ImmutableMap.of("direction", "up"));
 	   
 		Assert.assertTrue(firstResult.size() >= 33,
 			"The expected results are greater or equal to 33 results.");
