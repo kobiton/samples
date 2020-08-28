@@ -29,19 +29,23 @@ class IOSWebTest extends PHPUnit_Framework_TestCase {
   }
 
   public function verify_login_invalid_username() {
+    print "\n";
     print 'should return error when we input wrong username';
+    print "\n";
     $this->login('foo', 'SuperSecretPassword!');
     $this->assertContains($this->wrong_username_msg, $this->getMessage());
   }
 
   public function verify_login_invalid_password() {
     print 'should return error when we input wrong password';
+    print "\n";
     $this->login('tomsmith', 'SuperSecretPassword');
     $this->assertContains($this->wrong_password_msg, $this->getMessage());
   }
 
   public function verify_login_successfully() {
     print 'should run test successfully with correct username and password';
+    print "\n";
     $this->login('tomsmith', 'SuperSecretPassword!');
     $this->assertContains($this->success_msg, $this->getMessage());
   }
