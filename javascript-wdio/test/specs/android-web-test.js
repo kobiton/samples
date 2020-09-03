@@ -1,5 +1,8 @@
 describe('WebdriverIO', () => {
   it('should return the title that contains Kobiton', async () => {
+    const sessionInfo = await browser.getSession()
+    console.log('kobitonSessionId', sessionInfo.kobitonSessionId)
+    
     await browser.url('https://google.com')
     await browser.pause(3000)
     const input = await $('//*[@name="q"]')
