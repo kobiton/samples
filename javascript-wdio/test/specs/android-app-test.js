@@ -1,6 +1,6 @@
 describe('Android App sample', () => {
   it('should show the app label', async () => {
-	const sessionInfo = await browser.getSession()
+    const sessionInfo = await browser.getSession()
     console.log('kobitonSessionId', sessionInfo.kobitonSessionId)
 
     const ele = await browser.$('android.widget.TextView')
