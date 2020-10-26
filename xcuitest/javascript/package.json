@@ -1,0 +1,21 @@
+{
+  "name": "kobiton-uiautomator-espresso-sample",
+  "version": "1.0.0",
+  "description": "This a (an) UIAutomator/ Espresso sample test",
+  "keywords": [
+    "kobiton",
+    "testing",
+    "automation",
+    "uiautomator",
+    "espresso"
+  ],
+  "author": "Kobiton Inc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kobiton/samples/issues"
+  },
+  "homepage": "https://github.com/kobiton/samples#readme",
+  "dependencies": {
+    "request": "^2.88.2"
+  }
+}
