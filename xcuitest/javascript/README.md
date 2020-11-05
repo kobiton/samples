@@ -1,4 +1,4 @@
-# Javascript samples using XCUITest framework
+# Javascript samples using xcuitest framework
 
 ## I. Setup environment on Mac
 
@@ -39,7 +39,7 @@ npm -v
 npm install npm@latest -g
 ```
 
-## Install the XCUITest samples
+## Install the xcuitest samples
 
 Clone this script directly from our GitHub repo and install dependencies:
 
@@ -47,7 +47,7 @@ Clone this script directly from our GitHub repo and install dependencies:
 mkdir kobiton-samples
 cd kobiton-samples
 git clone https://github.com/kobiton/samples.git
-cd samples/XCUITest/javascript/
+cd samples/xcuitest/javascript/
 npm install
 ```
 
@@ -56,12 +56,12 @@ npm install
 - Go to [Kobiton Devices page](https://portal.kobiton.com/devices).
 - Hover over the device you want to test, click on the More icon then select Automation Settings.
 
-![automation-settings.png](/XCUITest/assets/automation-settings.png)
+![automation-settings.png](/xcuitest/assets/automation-settings.png)
 
-- Select Framework = XCUITest
+- Select Framework = xcuitest
 - Select Language = NodeJS.
 
-![automation-settings-javascript.png](/XCUITest/assets/automation-settings-nodejs.png)
+![automation-settings-javascript.png](/xcuitest/assets/automation-settings-nodejs.png)
 
 - Input the value for `username` & `apiKey` & in the sample script.
 
@@ -76,7 +76,7 @@ const apiKey = ''
 Once you have everything set up, you can run the example test simply by running one of the following command:
 
 ```bash
-node XCUITest.js
+node xcuitest.js
 ```
 ## III. Report on Test Results
 
@@ -91,11 +91,11 @@ Response body: { kobitonSessionId: 98363, message: 'Session is started.' }
 If you want to run the test scripts with your application, please:
 - Input the value for `app` with your application under test. The `app` value can be a direct link or you can upload your app to the Kobiton Stores and get the appId.
 
-![kobiton-store.png](/XCUITest/assets/kobiton-store.png)
+![kobiton-store.png](/xcuitest/assets/kobiton-store.png)
 
 - At `Automation Settings`, scroll down to upload the test runner to Kobiton repository and get the downloadable link, then input the value for `testRunner`.
 
-![upload-test-runner.png](/XCUITest/assets/upload-test-runner.png)
+![upload-test-runner.png](/xcuitest/assets/upload-test-runner.png)
 
 - Put your tests you want to run at `tests: []`
 - Run your test scripts and enjoy the results.

@@ -1,7 +1,7 @@
 {
-  "name": "kobiton-uiautomator-espresso-sample",
+  "name": "kobiton-xcuitest-sample",
   "version": "1.0.0",
-  "description": "This a (an) UIAutomator/ Espresso sample test",
+  "description": "This a (an) xcuitest test",
   "keywords": [
     "kobiton",
     "testing",
