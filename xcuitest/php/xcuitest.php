@@ -25,6 +25,9 @@ curl_setopt_array($curl, array(
         'testRunner'          => 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/XCUITestSampleUITestRunner.ipa',
         'testFramework'       => 'XCUITEST',
         'sessionTimeout'      => 30,
+        
+        // The user can specific test running via testPlan or test
+        // If the testPlan and tests are set, the test framework will auto select the testPlan first
         'tests'               => array(),
         'testPlan'            => 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/sample.xctestplan'
     )),

@@ -20,6 +20,9 @@ configuration = {
     'testRunner': 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/XCUITestSampleUITestRunner.ipa',
     'testFramework': 'XCUITEST',
     'sessionTimeout': 30,
+
+    # The user can specifically test running via testPlan or tests
+    # If the testPlan and tests are set, the test framework will auto-select the testPlan first
     'tests': [],
     'testPlan': 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/sample.xctestplan'
   }

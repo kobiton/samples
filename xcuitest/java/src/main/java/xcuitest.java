@@ -37,6 +37,9 @@ public class UIAutomator {
       jsonObject.put("testRunner", "https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/XCUITestSampleUITestRunner.ipa");
       jsonObject.put("sessionTimeout", 30);
       jsonObject.put("testFramework", "XCUITEST");
+
+      // The user can specifically test running via testPlan or tests
+      // If the testPlan and tests are set, the test framework will auto-select the testPlan first
       jsonObject.puit("tests", "");
       jsonObject.puit("testPlan","https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/sample.xctestplan");
 
