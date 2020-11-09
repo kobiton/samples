@@ -2,6 +2,22 @@ const wdio = require('webdriverio');
 const assert = require('assert');
 const find = require('appium-flutter-finder');
 
+const username = process.env.KOBITON_USERNAME || ''
+const apiKey = process.env.KOBITON_API_KEY || ''
+const deviceName = process.env.KOBITON_DEVICE_NAME || ''
+
+const kobitonServerConfig = {
+  protocol: 'https',
+  hostname: `${username}:${apiKey}@api.kobiton.com`,
+  port: 443,
+  capabilities: {
+    ...osSpecificOps,
+    sessionName:        'Flutter Automation testing session',
+    deviceGroup:        'KOBITON',
+    automationName:     'Flutter'
+  }
+};
+
 const osSpecificOps =
   process.env.APPIUM_OS === 'android'
     ? {
@@ -27,18 +43,6 @@ const osSpecificOps =
         autoAcceptAlerts: true
       }
     : {};
-
-const opts = {
-  protocol: 'https',
-  hostname: 'username:apiKey@api.kobiton.com',
-  port: 443,
-  capabilities: {
-    ...osSpecificOps,
-    sessionName:        'Flutter Automation testing session',
-    deviceGroup:        'KOBITON',
-    automationName:     'Flutter'
-  }
-};
 
 (async () => {
   const counterTextFinder = find.byValueKey('counter');
