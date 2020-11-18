@@ -21,7 +21,7 @@ const desiredCaps = {
   deviceGroup:        'KOBITON', 
   deviceName:         deviceName,
   platformName:       'iOS',
-  app: 'kobiton-store:7179'
+  app: 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/demo/iFixit.ipa'
 }
 
 let driver
@@ -58,9 +58,13 @@ describe('iOS App sample', () => {
   })
 
   it('should get text RandomText', async () => {
-    await driver.waitForElementByXPath('//XCUIElementTypeStaticText[@name="Hello"]')
+    await driver
+      .waitForElementByXPath('//XCUIElementTypeButton[@name="START A REPAIR"]')
+      .click()
+      .sleep(3000)
+      .waitForElementByXPath('//XCUIElementTypeStaticText[@name="Favorites"]')
       .text().then(function(text) {
-        assert.include(text, 'Hello')
+        assert.include(text, 'Favorites')
       })
   })
 
