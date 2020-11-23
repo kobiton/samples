@@ -57,12 +57,10 @@ describe('iOS App sample', () => {
     }
   })
 
-  it('should get text RandomText', async () => {
-    await driver
-    .waitForElementByXPath('//UIAStaticText')
-    .text().then(function(text) {
-      assert.include(text, 'UIKitCatalog')
-    })
+  it('should get text UIKitCatalog', async () => {
+    let textTitle = await driver.waitForElementByXPath('//UIAStaticText').text()
+    assert.include(textTitle,'UIKitCatalog')
+
   })
 
   after(async () => {
