@@ -65,7 +65,7 @@ describe('iOS Web sample', () => {
     .submit()
     
     let msg = await driver.title()
-    assert.include(msg,'Kobiton')
+    assert.include(msg, 'Kobiton')
   })
 
   after(async () => {
