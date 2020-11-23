@@ -60,8 +60,8 @@ describe('iOS App sample', () => {
   it('should get text UIKitCatalog', async () => {
     try{
       let element = await driver.waitForElementByXPath('//UIAStaticText')
-      let title = await getElement.text();
-      assert.include(textTitle, 'UIKitCatalog')
+      let title = await element.text();
+      assert.include(title, 'UIKitCatalog')
     }
     catch(err)
     {
