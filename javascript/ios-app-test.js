@@ -21,7 +21,7 @@ const desiredCaps = {
   deviceGroup:        'KOBITON', 
   deviceName:         deviceName,
   platformName:       'iOS',
-  app: 'https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/UIKitCatalog-Test-Adhoc.ipa'
+  app: 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/UIKitCatalog-Test.ipa'
 }
 
 let driver
@@ -58,10 +58,17 @@ describe('iOS App sample', () => {
   })
 
   it('should get text UIKitCatalog', async () => {
-    await driver.waitForElementByXPath('//UIAStaticText')
-      .text().then(function(text) {
-        assert.include(text, 'UIKitCatalog')
-      })
+    try{
+      let element = await driver.waitForElementByXPath('//UIAStaticText')
+      let title = await element.text();
+      assert.include(title, 'UIKitCatalog')
+    }
+    catch(err)
+    {
+      console.error(err)
+      throw err
+    }
+
   })
 
   after(async () => {
