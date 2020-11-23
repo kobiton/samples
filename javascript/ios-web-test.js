@@ -60,12 +60,12 @@ describe('iOS Web sample', () => {
   it('should return the title that contains Kobiton', async () => {
     await driver.get('https://www.google.com')
     .waitForElementByName('q')
-    .sendKeys("Kobiton")
+    .sendKeys('Kobiton')
     .sleep(3000)
     .submit()
     
     let msg = await driver.title()
-    assert.include(msg, "Kobiton","Contains")
+    assert.include(msg,'Kobiton')
   })
 
   after(async () => {
