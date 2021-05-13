@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>upload_and_delete_app_file_to_S3</name>
+   <tag></tag>
+   <comment></comment>
+   <testCaseGuid>fb3e1dc7-1266-47bd-9297-273d430a71b5</testCaseGuid>
+   <variable>
+      <defaultValue>GlobalVariable.G_androidAppFilePath</defaultValue>
+      <description></description>
+      <id>9ae428d3-769d-4926-a8a3-9107cad8d34d</id>
+      <masked>false</masked>
+      <name>FilePath</name>
+   </variable>
+   <variable>
+      <defaultValue>'com.dozuki.ifixit.apk'</defaultValue>
+      <description></description>
+      <id>c121dff7-46b6-4158-aab1-305937b54fc0</id>
+      <masked>false</masked>
+      <name>FileName</name>
+   </variable>
+</TestCaseEntity>
