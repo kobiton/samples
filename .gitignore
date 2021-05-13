@@ -1,3 +1,9 @@
 .DS_Store
 java/.idea
 java/AppsRepo/target/classes
+katalon-upload-app/console.properties
+katalon-upload-app/Include/config/log.properties
+katalon-upload-app/settings/external
+katalon-upload-app/settings/internal
+katalon-upload-app/Profiles/Kobiton.glbl
+katalon-upload-app/.settings
