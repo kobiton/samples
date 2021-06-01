@@ -61,8 +61,6 @@
             <version>0.14.0</version>
             <scope>runtime</scope>
         </dependency>
-
-
     </dependencies>
 
     <build>
@@ -92,8 +90,5 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-
-
     </repositories>
-
 </project>
