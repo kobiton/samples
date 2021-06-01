@@ -28,18 +28,13 @@ public class FlutterDemo extends BaseDriver {
     MobileElement buttonFinder = find.byValueKey("increment");
 
     // Doc: https://api.flutter.dev/flutter/flutter_driver/FlutterDriver/tap.html
-
     assertEquals(driver.executeScript("flutter:checkHealth"), "ok");
     driver.executeScript("flutter:clearTimeline");
     driver.executeScript("flutter:forceGC");
 
-
-
     driver.context("NATIVE_APP");
     File f1 = driver.getScreenshotAs(OutputType.FILE);
     f1.renameTo(new File("./native-screenshot.png"));
-
-
 
     driver.context("FLUTTER");
 
@@ -56,9 +51,5 @@ public class FlutterDemo extends BaseDriver {
 
     File f3 = driver.getScreenshotAs(OutputType.FILE);
     f3.renameTo(new File("./flutter-tab.png"));
-
-
-
   }
-
 }
