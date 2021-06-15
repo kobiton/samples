@@ -7,12 +7,12 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class Configs {
 
-    static String USERNAME = "";
-    static String ACCESS_KEY = "";
+    static String USERNAME = "<YOUR_KOBITON_USERNAME>";
+    static String API_KEY = "<YOUR_KOBITON_API_KEY>";
 
     public static final URL kobitonServerUrl() {
         try {
-            return new URL("https://" + USERNAME + ":" + ACCESS_KEY + "@api.kobiton.com/wd/hub");
+            return new URL("https://" + USERNAME + ":" + API_KEY + "@api.kobiton.com/wd/hub");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -31,10 +31,10 @@ public class Configs {
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("platformVersion", "*");
 
-        capabilities.setCapability("kobiton:tcmServerAddress", "");
-        capabilities.setCapability("kobiton:tcmUsername", "");
-        capabilities.setCapability("kobiton:tcmApiKey", "");
-        capabilities.setCapability("kobiton:externalRunId", "");
+        capabilities.setCapability("kobiton:tcmServerAddress", "<YOUR_TCM_SERVER_ADDRESS>");
+        capabilities.setCapability("kobiton:tcmUsername", "<YOUR_TCM_USERNAME>");
+        capabilities.setCapability("kobiton:tcmApiKey", "<YOUR_TCM_API_KEY>");
+        capabilities.setCapability("kobiton:externalRunId", "<YOUR_TCM_TEST_RUN_ID>");
         capabilities.setCapability("kobiton:externalCaseId", externalCaseId);
         return capabilities;
     }
@@ -52,10 +52,10 @@ public class Configs {
         capabilities.setCapability("platformVersion", "*");
         capabilities.setCapability("automationName", "XCUITest");
 
-        capabilities.setCapability("kobiton:tcmServerAddress", "");
-        capabilities.setCapability("kobiton:tcmUsername", "");
-        capabilities.setCapability("kobiton:tcmApiKey", "");
-        capabilities.setCapability("kobiton:externalRunId", "");
+        capabilities.setCapability("kobiton:tcmServerAddress", "<YOUR_TCM_SERVER_ADDRESS>");
+        capabilities.setCapability("kobiton:tcmUsername", "<YOUR_TCM_USERNAME>");
+        capabilities.setCapability("kobiton:tcmApiKey", "<YOUR_TCM_API_KEY>");
+        capabilities.setCapability("kobiton:externalRunId", "<YOUR_TCM_TEST_RUN_ID>");
         capabilities.setCapability("kobiton:externalCaseId", externalCaseId);
         return capabilities;
     }

@@ -3,13 +3,13 @@ import 'colors'
 import wd from 'wd'
 import {assert} from 'chai'
 
-const username = process.env.KOBITON_USERNAME
-const apiKey = process.env.KOBITON_API_KEY
+const username = process.env.KOBITON_USERNAME || '<YOUR_KOBITON_USERNAME>'
+const apiKey = process.env.KOBITON_API_KEY || '<YOUR_KOBITON_API_KEY>'
 const deviceName = process.env.KOBITON_DEVICE_NAME || 'Galaxy*'
 
-const tcmServerAddress = process.env.TESTRAIL_SERVER_ADDRESS
-const tcmUsername = process.env.TESTRAIL_USERNAME
-const tcmApiKey = process.env.TESTRAIL_API_KEY
+const tcmServerAddress = process.env.TCM_SERVER_ADDRESS || '<YOUR_TCM_SERVER_ADDRESS>'
+const tcmUsername = process.env.TCM_USERNAME || '<YOUR_TCM_USERNAME>'
+const tcmApiKey = process.env.TCM_API_KEY || '<YOUR_TCM_API_KEY>'
 
 const kobitonServerConfig = {
   protocol: 'https',
@@ -25,16 +25,15 @@ const desiredCaps = {
   deviceGroup:        'KOBITON',
   deviceName:         deviceName,
   platformName:       'Android',
-  app: 'https://appium.github.io/appium/assets/ApiDemos-debug.apk',
-  appPackage: 'io.appium.android.apis',
-  appActivity: '.ApiDemos'
+  app:                'https://appium.github.io/appium/assets/ApiDemos-debug.apk',
+  appPackage:         'io.appium.android.apis',
+  appActivity:        '.ApiDemos',
 
   "kobiton:tcmServerAddress": tcmServerAddress,
-  "kobiton:tcmUsername": tcmUsername,
-  "kobiton:tcmApiKey": tcmApiKey,
-  "kobiton:externalRunId": "",
-  "kobiton:externalCaseId": "",
-
+  "kobiton:tcmUsername":      tcmUsername,
+  "kobiton:tcmApiKey":        tcmApiKey,
+  "kobiton:externalRunId":    '<YOUR_TCM_TEST_RUN_ID>',
+  "kobiton:externalCaseId":   '<YOUR_TCM_TEST_CASE_ID>'
 }
 
 let driver
@@ -66,12 +65,14 @@ describe('Android App sample', () => {
       if (err.data) {
         console.error(`init driver: ${err.data}`)
       }
-    throw err
+
+      throw err
     }
   })
 
   it('should show the app label', async () => {
-    await driver.elementByClassName("android.widget.TextView")
+    await driver
+      .elementByClassName("android.widget.TextView")
       .text().then(function(text) {
         assert.equal(text.toLocaleLowerCase(), 'api demos')
       })
@@ -79,12 +80,12 @@ describe('Android App sample', () => {
 
   after(async () => {
     if (driver != null) {
-    try {
-      await driver.quit()
+      try {
+        await driver.quit()
+      }
+      catch (err) {
+        console.error(`quit driver: ${err}`)
+      }
     }
-    catch (err) {
-      console.error(`quit driver: ${err}`)
-    }
-  }
   })
 })

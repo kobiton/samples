@@ -2,11 +2,11 @@
 
 ### Init
 
-- Access [Kobition](https://portal.kobiton.com) to get `USERNAME` and `ACCESS_KEY`
-- Replace `USERNAME` and `ACCESS_KEY` on `configs/Configs.java`
+- Access [Kobition](https://portal.kobiton.com) to get `USERNAME` and `API_KEY`
+- Update value for `USERNAME` and `API_KEY` on [Configs.java](./src/main/java/configs/Configs.java#L10-L11)
 - Access TestRail to get `tcmServerAddress`, `tcmUsername`, `tcmApiKey`, `externalRunId` and `externalCaseId`
-- Replace `tcmServerAddress`, `tcmUsername`, `tcmApiKey` and `externalRunId` on `configs/Configs.java`
-- Replace `externalCaseId` on `configs/testmg.xml`
+- Update value for `tcmServerAddress`, `tcmUsername`, `tcmApiKey` and `externalRunId` on [Configs.java](./src/main/java/configs/Configs.java#L34-L38)
+- Update value for `externalCaseId` on [testng.xml](./src/main/java/configs/testng.xml)
 
 ### Prerequisites
 
@@ -23,5 +23,5 @@
 
 #### 2. Run separate files by right-click on each file and select **Run-as → TestNG Test**
 
- - Select `AndroidTests` 
- - Select `iOSTests` 
+- Select `AndroidTests`
+- Select `iOSTests`
