@@ -59,10 +59,15 @@ npm install
 
 - Select Language = NodeJS.
 - Replace `username` & `apiKey` in the sample script
+- Replace `tcmServerAddress`, `tcmUsername` & `tcmApiKey` in sample script if integrating with TestRail
 
 ```javascript
 const username = ''
 const apiKey = ''
+
+const tcmServerAddress = ''
+const tcmUsername = ''
+const tcmApiKey = ''
 ```
 
 ![auth.gif](/javascript/assets/auth.gif)
@@ -79,6 +84,9 @@ const desiredCaps = {
   deviceGroup:        'KOBITON',
   deviceName:         'Galaxy',
   platformName:       'Android'
+
+  "kobiton:externalRunId": "",
+  "kobiton:externalCaseId": "",
 }
 
 ```
@@ -95,6 +103,7 @@ npm run ios-app-test
 npm run multiple-devices-test
 npm run jasmine-android-web-test
 npm run jasmine-android-app-test
+npm run integrate-with-testrail-test
 ```
 
 ## VI. Report on Test Results
