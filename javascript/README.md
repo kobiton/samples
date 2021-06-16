@@ -59,10 +59,15 @@ npm install
 
 - Select Language = NodeJS.
 - Replace `username` & `apiKey` in the sample script
+- Replace `tcmServerAddress`, `tcmUsername` & `tcmApiKey` in sample script if [integrating with TestRail](./integrate-with-testrail-test.js#L10-L12)
 
 ```javascript
-const username = ''
-const apiKey = ''
+const username = '<YOUR_KOBITON_USERNAME>'
+const apiKey = '<YOUR_KOBITON_API_KEY>'
+
+const tcmServerAddress = '<YOUR_TCM_SERVER_ADDRESS>'
+const tcmUsername = '<YOUR_TCM_USERNAME>'
+const tcmApiKey = '<YOUR_TCM_API_KEY>'
 ```
 
 ![auth.gif](/javascript/assets/auth.gif)
@@ -79,8 +84,13 @@ const desiredCaps = {
   deviceGroup:        'KOBITON',
   deviceName:         'Galaxy',
   platformName:       'Android'
-}
 
+  "kobiton:tcmServerAddress": '<YOUR_TCM_SERVER_ADDRESS>',
+  "kobiton:tcmUsername":      '<YOUR_TCM_USERNAME>',
+  "kobiton:tcmApiKey":        '<YOUR_TCM_API_KEY>',
+  "kobiton:externalRunId":    '<YOUR_TCM_TEST_RUN_ID>',
+  "kobiton:externalCaseId":   '<YOUR_TCM_TEST_CASE_ID>'
+}
 ```
 
 ## V. Execute the Sample Tests
@@ -95,6 +105,7 @@ npm run ios-app-test
 npm run multiple-devices-test
 npm run jasmine-android-web-test
 npm run jasmine-android-app-test
+npm run integrate-with-testrail-test
 ```
 
 ## VI. Report on Test Results

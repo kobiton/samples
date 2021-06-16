@@ -1,0 +1,52 @@
+<suite name="Integrate Kobiton with TestRail">
+    <test name="Test Run 1">
+        <parameter name="externalCaseId" value="<YOUR_VALUE>"/>
+        <classes>
+            <class name="testng.AndroidTests">
+                <methods>
+                    <include name="testInvalidUsername"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Test Run 2">
+        <parameter name="externalCaseId" value="<YOUR_VALUE>"/>
+        <classes>
+            <class name="testng.AndroidTests">
+                <methods>
+                    <include name="testInvalidPassword"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Test Run 3">
+        <parameter name="externalCaseId" value="<YOUR_VALUE>"/>
+        <classes>
+            <class name="testng.AndroidTests">
+                <methods>
+                    <include name="testLoginSuccessfully"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Test Run 4">
+        <parameter name="externalCaseId" value="<YOUR_VALUE>"/>
+        <classes>
+            <class name="testng.iOSTests">
+                <methods>
+                    <include name="testNavigationOnAcuraSupportCommunity"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Test Run 5">
+        <parameter name="externalCaseId" value="<YOUR_VALUE>"/>
+        <classes>
+            <class name="testng.iOSTests">
+                <methods>
+                    <include name="testSearchIFixitOnHomeScreen"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
