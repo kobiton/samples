@@ -49,6 +49,7 @@ public class Configs {
         capabilities.setCapability("deviceGroup", "KOBITON");
         capabilities.setCapability("deviceName", "Galaxy S5");
         capabilities.setCapability("platformName", "Android");
+        capabilities.setCapability("allowMobileShell", true);
         return capabilities;
     }
 
