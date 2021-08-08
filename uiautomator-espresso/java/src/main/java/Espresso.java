@@ -41,6 +41,7 @@ public class Espresso {
       jsonObject.put("retryTimes", 3);
       jsonObject.put("continueWhenFail", true);
       jsonObject.put("tests", tests);
+      jsonObject.put("testFramework", "UIAUTOMATOR");
 
       String url = "https://api.kobiton.com/hub/session";
       URL uri = new URL(url);

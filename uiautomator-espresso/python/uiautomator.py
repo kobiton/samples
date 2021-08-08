@@ -25,7 +25,8 @@ configuration = {
       'com.example.android.testing.uiautomator.BasicSample.test',
       'ChangeTextBehaviorTest',
       'ChangeTextBehaviorTest#testChangeText_sameActivity'
-    ]
+    ],
+    'testFramework': 'UIAUTOMATOR'
   }
 }
 
