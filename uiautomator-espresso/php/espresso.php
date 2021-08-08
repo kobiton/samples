@@ -29,7 +29,8 @@ curl_setopt_array($curl, array(
       'tests'               => array(
         'HintMatchersTest#hint_endsWith_Passed',
         'com.example.android.testing.espresso.CustomMatcherSample.test'
-      )
+      ),
+      'testFramework'       => 'UIAUTOMATOR'
     )),
   CURLOPT_POSTFIELDS => json_encode($configuration),
   CURLOPT_HTTPHEADER => array(

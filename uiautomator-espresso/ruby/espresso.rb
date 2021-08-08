@@ -24,11 +24,12 @@ configuration = {
     'deviceName': '*',
     'deviceGroup': 'KOBITON',
     'app': 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/espresso-app.apk',
-    'testRunner': 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/espresso-test-runner.apk',
+    'testRunner': 'https://kobiton-devvn.s3-ap-southeast-1.amazonaws.com/apps-test/uiautomator-espresso/esspresso-test-runner.apk',
     'sessionTimeout': 30,
     'testTimeout': 10,
     'retryTimes': 3,
     'continueOnFailure': true,
+    'testFramework': 'UIAUTOMATOR',
     'tests': [
       'HintMatchersTest#hint_endsWith_Passed',
       'com.example.android.testing.espresso.CustomMatcherSample.test'

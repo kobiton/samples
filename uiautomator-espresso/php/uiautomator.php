@@ -30,7 +30,8 @@ curl_setopt_array($curl, array(
           'com.example.android.testing.uiautomator.BasicSample.test',
           'ChangeTextBehaviorTest',
           'ChangeTextBehaviorTest#testChangeText_sameActivity'
-        )
+        ),
+        'testFramework'       => 'UIAUTOMATOR'
     )),
   CURLOPT_POSTFIELDS => json_encode($configuration),
   CURLOPT_HTTPHEADER => array(
