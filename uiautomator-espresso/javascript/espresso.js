@@ -19,7 +19,8 @@ const configuration = {
   tests: [
     'HintMatchersTest#hint_endsWith_Passed',
     'com.example.android.testing.espresso.CustomMatcherSample.test'
-  ]
+  ],
+  testFramework: 'UIAUTOMATOR'
 }
 
 const headers = {
