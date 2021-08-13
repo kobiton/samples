@@ -20,7 +20,7 @@ const kobitonServerConfig = {
 
 const desiredCaps = {
   sessionName:        'Automation test session',
-  sessionDescription: 'This is an example for Android web', 
+  sessionDescription: 'This is an example for iOS web', 
   browserName:        'safari', 
   udid:               deviceUdid                   
 }
