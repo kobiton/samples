@@ -82,6 +82,11 @@ const desiredCaps = {
 Once you have everything set up, you can run the example test simply by running one of the following command:
 
 ```bash
+# Make sure to stay in this folder first and use node 14
+$ cd ~/kobiton-samples/javascript
+$ nvm use 14
+
+# Run desire script
 $ npm run android-web-test
 $ npm run android-app-test
 $ npm run ios-web-test
