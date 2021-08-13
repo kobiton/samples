@@ -11,7 +11,8 @@
     "multiple-devices-test": "mocha --require babel-core/register --no-timeouts multiple-devices-test.js",
     "jasmine-android-web-test": "./node_modules/jasmine/bin/jasmine.js ./spec/jasmine-android-web-spec.js",
     "jasmine-android-app-test": "./node_modules/jasmine/bin/jasmine.js ./spec/jasmine-android-app-spec.js",
-    "integrate-with-testrail-test": "mocha --require babel-core/register --no-timeouts integrate-with-testrail-test.js"
+    "integrate-with-testrail-test": "mocha --require babel-core/register --no-timeouts integrate-with-testrail-test.js",
+    "android-web-test-ip": "mocha --require babel-core/register --no-timeouts android-web-test-ip.js"
   },
   "keywords": [
     "kobiton",

@@ -1,61 +1,45 @@
-# Automated Testing using Appium on Kobiton
+# Running Appium script on Kobiton device
 
-## I. Setup environment on Mac
+## I. Setup to run the script on macOS
 
-#### Homebrew
+There are many ways to install NodeJS, in this guideline, the NodeJS will be installed from [nvm](https://github.com/nvm-sh/nvm) which is lightweight and doesn't change your macOS
 
-- [Homebrew](https://brew.sh/) is a package manager for the Mac.
--  To install Homebrew, open terminal and type the following command:
-
-```bash
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
-
-- This will install Homebrew on your Mac. To check the version type the following command:
+- Install **nvm** with below command
 
 ```bash
-brew -v
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 ```
 
-#### Node and npm
-
-- Install Node via Homebrew, type the following command to install Node.
+- Open new Terminal window, and install node v14
 
 ```bash
-brew install node
+nvm install 14
 ```
 
-- Check if you have [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) installed, run this command in your terminal:
+- Clone [kobiton/samples](https://github.com/kobiton/samples) in any folder, let's assume it will be cloned at `~/kobiton-samples`
 
 ```bash
-node -v
-npm -v
+$ mkdir kobiton-samples
+$ cd kobiton-samples
+$ git clone git@github.com:kobiton/samples.git .
 ```
 
-- Update your npm to latest, type this into your terminal:
+- Install dependencies
 
 ```bash
-npm install npm@latest -g
+$ cd ~/kobiton-samples/javascript
+$ nvm use 14
+$ npm install
 ```
 
-## II. Install the samples
+- Now you've completed the setup for executing the Appium script
 
-- Clone [this script directly from our GitHub repo](https://github.com/kobiton/samples) and install dependencies:
-
-```bash
-mkdir kobiton-samples
-cd kobiton-samples
-git clone git@github.com:kobiton/samples.git .
-cd ./javascript
-npm install
-```
-
-## III. Getting started with Kobiton
+## II. Getting started Appium with Kobiton devices
 
 - Go to [Kobiton Devices page](https://portal.kobiton.com/devices).
 - Hover over the device you want to test and select Show automation settings.
 
-  ![automation-settings.png](/javascript/assets/automation-settings.png)
+![automation-settings.png](/javascript/assets/automation-settings.png)
 
 - Select Language = NodeJS.
 - Replace `username` & `apiKey` in the sample script
@@ -93,22 +77,30 @@ const desiredCaps = {
 }
 ```
 
-## V. Execute the Sample Tests
+## III. Execute the sample script
 
 Once you have everything set up, you can run the example test simply by running one of the following command:
 
 ```bash
-npm run android-web-test
-npm run android-app-test
-npm run ios-web-test
-npm run ios-app-test
-npm run multiple-devices-test
-npm run jasmine-android-web-test
-npm run jasmine-android-app-test
-npm run integrate-with-testrail-test
+# Make sure to stay in this folder first and use node 14
+$ cd ~/kobiton-samples/javascript
+$ nvm use 14
+
+# Run desire script
+$ npm run android-web-test
+$ npm run android-app-test
+$ npm run ios-web-test
+$ npm run ios-app-test
+$ npm run multiple-devices-test
+$ npm run jasmine-android-web-test
+$ npm run jasmine-android-app-test
+$ npm run integrate-with-testrail-test
+
+$ KOBITON_USERNAME="your username" KOBITON_API_KEY="your api key" \
+    KOBITON_DEVICE_UDID="device udid" npm run android-web-test-ip
 ```
 
-## VI. Report on Test Results
+## IV. Report on Test Results
 
 - When you see your test 'Complete' on Terminal, you can access [https://portal.kobiton.com/sessions](https://portal.kobiton.com/sessions) to get your test results.
 
