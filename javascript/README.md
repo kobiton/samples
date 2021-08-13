@@ -106,6 +106,7 @@ npm run multiple-devices-test
 npm run jasmine-android-web-test
 npm run jasmine-android-app-test
 npm run integrate-with-testrail-test
+npm run integrated-android-web-test
 ```
 
 ## VI. Report on Test Results
