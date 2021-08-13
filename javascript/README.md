@@ -98,6 +98,8 @@ $ npm run integrate-with-testrail-test
 
 $ KOBITON_USERNAME="your username" KOBITON_API_KEY="your api key" \
     KOBITON_DEVICE_UDID="device udid" npm run android-web-test-ip
+$ KOBITON_USERNAME="your username" KOBITON_API_KEY="your api key" \
+    KOBITON_DEVICE_UDID="device udid" npm run ios-web-test-ip
 ```
 
 ## IV. Report on Test Results
