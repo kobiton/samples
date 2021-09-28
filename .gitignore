@@ -1,6 +1,7 @@
 .DS_Store
 java/.idea
-java/AppsRepo/target/classes
+kobiton-rest-api/upload-app-to-kobiton-apps-repo/java/target
+kobiton-rest-api/upload-app-to-kobiton-apps-repo/java/.idea
 katalon-upload-app/console.properties
 katalon-upload-app/Include/config/log.properties
 katalon-upload-app/settings/external

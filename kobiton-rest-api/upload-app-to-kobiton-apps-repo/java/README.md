@@ -1,7 +1,6 @@
 # Prerequisites
 - Install Java JDK 1.8 [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-- Install IntelliJ IDEA (Community Edition) [here](https://www.jetbrains.com/idea/download/)
-- Open project as Maven project
+- Install Maven [here](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html#installation)
 
 # Steps
 
@@ -12,17 +11,17 @@ static String username = "";
 static String apiKey = "";
 ```
 
-- Run Main class
-
-- The default script will download an app from URL and then upload it into your Kobiton Apps Repo
+- Please update variables filePath & fileName on Main class to upload your app from local
 
 ```
- Common.downloadFile("https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk", "com.dozuki.ifixit.apk");
+static  String filePath ="";
+static  String fileName ="";
 ```
 
-- If you want to upload your app from local, please update variables filePath & fileName on Main class
+- Run the following commands
 
 ```
-static  String filePath ="com.dozuki.ifixit.apk";
-static  String fileName ="iFixit";
+mvn clean
+mvn package
+java -cp ./target/com.kobiton.inc-1.0-SNAPSHOT-jar-with-dependencies.jar Main
 ```
