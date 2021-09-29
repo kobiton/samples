@@ -9,16 +9,16 @@ import java.net.URLConnection;
 
 
 public class Main {
-
-    static  String filePath ="com.dozuki.ifixit.apk";
-    static  String fileName ="iFixit.apk";
+    static  String filePath ="";
+    static  String fileName ="";
 
     public static void main(String[] args) {
+        if (filePath == null || filePath.trim().isEmpty() || fileName == null || fileName.trim().isEmpty()) {
+            System.out.println("Failed to upload app to app repo because the 'filePath' or 'fileName' is null or empty");
+            return;
+        }
 
-        System.out.println("If you want to use your app at local, please comment the downloadFile() method");
-        Common.downloadFile("https://s3-ap-southeast-1.amazonaws.com/kobiton-devvn/apps-test/demo/com.dozuki.ifixit.apk", "com.dozuki.ifixit.apk");
         System.out.println("Step 1: Generate Upload URL");
-
         File file = new File(filePath);
         filePath = file.getAbsolutePath();
 
@@ -36,19 +36,32 @@ public class Main {
         String appResult = Common.createAnAppOrVersion(fileName, appPath);
 
         jsonObject =(JsonObject) (new JsonParser()).parse(appResult);
-        int appId = jsonObject.getAsJsonPrimitive("appId").getAsInt();
-        int versionId = jsonObject.getAsJsonPrimitive("versionId").getAsInt();
+        int appId = 0;
+        int versionId = 0;
+
+        JsonElement appIdElement = jsonObject.get("appId");
+        JsonElement versionIdElement = jsonObject.get("versionId");
+
+        if (!(appIdElement instanceof JsonNull)) {
+            appId = ((JsonPrimitive) appIdElement).getAsInt();
+        }
+
+        if (!(versionIdElement instanceof JsonNull)) {
+            versionId = ((JsonPrimitive) versionIdElement).getAsInt();
+        }
 
         System.out.println("Wait for few seconds to sync data");
         Common.sleep(3000);
 
         System.out.println("Step 4: Get App Info");
-        Common.getApp(appId);
-        Common.getAppVersion(versionId);
-        Common.getApps();
+        if (appId > 0) {
+            Common.getApp(appId);
+        }
 
-        System.out.println("Step 5: Remove App");
-//        Common.deleteAppVersion(versionId);
-//        Common.deleteApp(appId);
+        if (versionId > 0) {
+            Common.getAppVersion(versionId);
+        }
+
+        Common.getApps();
     }
 }

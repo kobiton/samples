@@ -1,14 +1,17 @@
 import com.google.gson.JsonObject;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+
 import org.apache.commons.codec.binary.Base64;
 
 public class Common {
 
     static String username = "";
     static String apiKey = "";
+    static String apiBaseUrl = "https://api.kobiton.com";
 
     static String generateBasicAuth() {
         String authString = username + ":" + apiKey;
@@ -29,7 +32,7 @@ public class Common {
             }
             jsonObject.addProperty("appPath", appPath);
 
-            URL uri = new URL("https://api.kobiton.com/v1/apps");
+            URL uri = new URL(apiBaseUrl + "/v1/apps");
             HttpURLConnection con = (HttpURLConnection) uri.openConnection();
 
             con.setDoOutput(true);
@@ -74,13 +77,14 @@ public class Common {
     
     public static String generateUploadURL(String filePath, int appId) {
         try {
+
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("filename", filePath);
             if (appId != 0) {
                 jsonObject.addProperty("appId", appId);
             }
 
-            URL obj = new URL("https://api.kobiton.com/v1/apps/uploadUrl");
+            URL obj = new URL(apiBaseUrl + "/v1/apps/uploadUrl");
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("POST");
             con.setDoInput(true);
@@ -168,7 +172,7 @@ public class Common {
 
     public static void deleteApp(int appId) {
         try {
-            URL obj = new URL("https://api.kobiton.com/v1/apps/" + appId);
+            URL obj = new URL(apiBaseUrl + "/v1/apps/" + appId);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("DELETE");
             con.setRequestProperty("Authorization", generateBasicAuth());
@@ -189,7 +193,7 @@ public class Common {
 
     public static void deleteAppVersion(int appIdVersion) {
         try {
-            URL obj = new URL("https://api.kobiton.com/v1/app/versions/" + appIdVersion);
+            URL obj = new URL(apiBaseUrl + "/v1/app/versions/" + appIdVersion);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("DELETE");
             con.setRequestProperty("Authorization", generateBasicAuth());
@@ -210,7 +214,7 @@ public class Common {
 
     public static void getApp(int appId) {
         try {
-            URL obj = new URL("https://api.kobiton.com/v1/apps/" + appId);
+            URL obj = new URL(apiBaseUrl + "/v1/apps/" + appId);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", generateBasicAuth());
@@ -232,7 +236,7 @@ public class Common {
 
     public static void getAppVersion(int appIdVersion) {
         try {
-            URL obj = new URL("https://api.kobiton.com/v1/app/versions/" + appIdVersion);
+            URL obj = new URL(apiBaseUrl + "/v1/app/versions/" + appIdVersion);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", generateBasicAuth());
@@ -253,7 +257,7 @@ public class Common {
 
     public static void getApps() {
         try {
-            URL obj = new URL("https://api.kobiton.com/v1/apps");
+            URL obj = new URL(apiBaseUrl + "/v1/apps");
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", generateBasicAuth());
@@ -302,6 +306,7 @@ public class Common {
         } catch (Exception ex){
             ex.printStackTrace();
         }
+
     }
 
 }
