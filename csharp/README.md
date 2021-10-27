@@ -11,7 +11,7 @@
 * Install Appium Webdriver, run the following command in the [Package Manager Console](https://docs.nuget.org/docs/start-here/using-the-package-manager-console)
 
 ```shell
-PM > Install-Package Appium.WebDriver
+PM > Install-Package Appium.WebDriver -Version 3.0.0.2
 ```
 
 #### Run tests
