@@ -3,9 +3,9 @@ import 'colors'
 import wd from 'wd'
 import {assert} from 'chai'
 
-const username = process.env.KOBITON_USERNAME
-const apiKey = process.env.KOBITON_API_KEY
-const deviceName = process.env.KOBITON_DEVICE_NAME || 'iPhone*'
+const username = 'jeromewallace+demo'
+const apiKey = '2a9a1dcf-d503-4437-96dd-7aeb766fc6b6'
+const deviceName ='iPhone*'
 
 const kobitonServerConfig = {
   protocol: 'https',
@@ -22,6 +22,7 @@ const desiredCaps = {
   deviceGroup:        'KOBITON', 
   deviceName:         deviceName,
   platformName:       'iOS'
+  platformVersion:    '*'
 }
 
 let driver
@@ -62,8 +63,8 @@ describe('iOS Web sample', () => {
     .waitForElementByName('q')
     .sendKeys('Kobiton')
     .sleep(3000)
-    .submit()
-    
+    //This will click on the first button in the drop down menu. As Apple/Safari does not allow for a .submit within the search bar
+    driver.findElementByXpath(".//*[@class='sbic sb43']").click();
     let msg = await driver.title()
     assert.include(msg, 'Kobiton')
   })
