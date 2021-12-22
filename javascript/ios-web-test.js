@@ -21,7 +21,7 @@ const desiredCaps = {
   browserName:        'safari', 
   deviceGroup:        'KOBITON', 
   deviceName:         deviceName,
-  platformName:       'iOS'
+  platformName:       'iOS',
   platformVersion:    '*'
 }
 
