@@ -21,7 +21,8 @@ const desiredCaps = {
   browserName:        'safari', 
   deviceGroup:        'KOBITON', 
   deviceName:         deviceName,
-  platformName:       'iOS'
+  platformName:       'iOS',
+  platformVersion:    '*'
 }
 
 let driver
@@ -62,8 +63,8 @@ describe('iOS Web sample', () => {
     .waitForElementByName('q')
     .sendKeys('Kobiton')
     .sleep(3000)
-    .submit()
-    
+    //This will click on the first button in the drop down menu. As Apple/Safari does not allow for a .submit within the search bar
+    driver.findElementByXpath(".//*[@class='sbic sb43']").click();
     let msg = await driver.title()
     assert.include(msg, 'Kobiton')
   })
