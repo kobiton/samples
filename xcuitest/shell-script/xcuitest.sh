@@ -16,28 +16,43 @@ header="Authorization: Basic $BASICAUTH"
 upload_test_runner() {
     echo 'Upload Test Runner To S3'
 
-    echo 'Step 1: Generate Upload URL'
+    echo 'Step 1: Generate Upload URL For Test Runner'
 
     JSON="{\"runnerName\":\"${TESTRUNNERNAME}\"}"
   	curl -v -H "Content-Type: application/json" -d "$JSON" -H "$header" \
-      https://api.kobiton.com/v1/testRunner/uploadUrl  -o uploadTestRunnerUrlResponse.json
+        https://api.kobiton.com/v1/testRunner/uploadUrl  -o uploadTestRunnerUrlResponse.json
+
+    if [ 0 -ne $? ]; then 
+        echo 'Step 1: Generate Upload URL For Test Runner Failed'
+        exit 0 
+    fi;
 
     uploadUrl=`cat "uploadTestRunnerUrlResponse.json" | ack -o --match '(?<=uploadUrl\":")([_\%\&=\?\.aA-zZ0-9:/-]*)'`
     runnerPath=`cat "uploadTestRunnerUrlResponse.json" | ack -o --match '(?<=runnerPath\":")([^"]*)'`
 
-    echo 'Step 2: Upload File To S3'
+    echo 'Step 2: Upload Test Runner To S3'
 
     curl -T "${TESTRUNNERPATH}" \
         -H 'content-type: application/octet-stream' \
         -H 'x-amz-tagging: unsaved=true' \
         -X PUT "${uploadUrl}"
 
+    if [ 0 -ne $? ]; then 
+        echo 'Step 2: Upload Test Runner To S3 Failed'
+        exit 0 
+    fi;
+
     printf "{\"runnerPath\": \"${runnerPath}\"}" > inputTestRunnerPath.json
 
-    echo 'Step 3: Get downloadUrl'
+    echo 'Step 3: Get Test Runner Download Url'
 
     curl -v -H "Content-Type: application/json" --data @inputTestRunnerPath.json \
          -H "$header" https://api.kobiton.com/v1/testRunner/downloadUrl -o downloadUrlResponse.json
+
+    if [ 0 -ne $? ]; then 
+        echo 'Step 3: Get Test Runner Download Url Failed'
+        exit 0 
+    fi;
 
     downloadUrl=`cat downloadUrlResponse.json | ack -o --match '(?<=downloadUrl\":")([_\%\&=\?\.aA-zZ0-9:/-]*)'`
     echo "--------> downloadUrl ${downloadUrl}"
@@ -47,7 +62,7 @@ upload_test_runner() {
 
 upload_app() {
     echo 'Upload App To S3'
-    echo 'Step 1: Generate Upload URL'
+    echo 'Step 1: Generate Upload URL For App'
     if [ -z "$APPID" ]; then
         JSON="{\"filename\":\"${APPPATH}\"}"
     else
@@ -61,19 +76,28 @@ upload_app() {
         -d "$JSON" \
         -o "uploadAppUrlResponse.json"
 
+    if [ 0 -ne $? ]; then 
+        echo 'Step 1: Generate Upload URL For App Failed'
+        exit 0 
+    fi;
+
     UPLOADURL=`cat "uploadAppUrlResponse.json" | ack -o --match '(?<=url\":")([_\%\&=\?\.aA-zZ0-9:/-]*)'`
     KAPPPATH=`cat "uploadAppUrlResponse.json" | ack -o --match '(?<=appPath\":")([_\%\&=\?\.aA-zZ0-9:/-]*)'`
 
     echo
-    echo 'Step 2: Upload File To S3'
+    echo 'Step 2: Upload App To S3'
 
     curl -T "${APPPATH}" \
         -H 'content-type: application/octet-stream' \
         -H 'x-amz-tagging: unsaved=true' \
         -X PUT "${UPLOADURL}"
 
-    echo 'Step 3: Create Application Or Version'
+    if [ 0 -ne $? ]; then 
+        echo 'Step 2: Upload App To S3 Failed'
+        exit 0 
+    fi;
 
+    echo 'Step 3: Create Application Or Version'
     JSON="{\"filename\":\"${APPNAME}\",\"appPath\":\"${KAPPPATH}\"}"
 
     echo
@@ -83,6 +107,11 @@ upload_app() {
         -d "$JSON" \
         -o appIdOrVersionResponse.json
 
+    if [ 0 -ne $? ]; then 
+        echo 'Step 3: Create Application Or Version'
+        exit 0 
+    fi;
+    
     echo '...Done'
 }
 
@@ -120,5 +149,3 @@ execute_test() {
 upload_test_runner
 upload_app
 execute_test
-
-
