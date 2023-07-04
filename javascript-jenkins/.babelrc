@@ -1,0 +1,16 @@
+{
+  "presets": ["es2015"],
+  "plugins": [
+    "add-module-exports",
+    "syntax-async-functions",
+    "syntax-flow",
+    "transform-regenerator",
+    "transform-function-bind",
+    "transform-object-rest-spread",
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "transform-export-extensions",
+    "transform-flow-strip-types",
+    "transform-do-expressions"
+  ]
+}
