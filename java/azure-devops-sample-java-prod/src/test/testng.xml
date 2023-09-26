@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite">
+	<test name="Test1">
+		<classes>
+			<class name="com.pcc.testngAzureDemo.AppTest"/>
+		</classes>
+	</test>
+</suite> 
+
+
+
