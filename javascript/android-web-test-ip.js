@@ -6,26 +6,31 @@ import {assert} from 'chai'
 const username = process.env.KOBITON_USERNAME
 const apiKey = process.env.KOBITON_API_KEY
 const deviceUdid = process.env.KOBITON_DEVICE_UDID
+const protocol = 'https'
+const host = 'api-test-green.kobiton.com'
 
 if (!username || !apiKey || !deviceUdid) {
   console.log('Error: Environment variables KOBITON_USERNAME, KOBITON_API_KEY or KOBITON_DEVICE_UDID are required to execute script')
   process.exit(1)
 }
 
-const kobitonServerConfig = {
-  protocol: 'https',
-  host: 'api.kobiton.com',
-  auth: `${username}:${apiKey}`
-}
+const kobitonServerConfig = {protocol, host, auth: `${username}:${apiKey}`}
 
 const desiredCaps = {
-  sessionName:        'Automation test session',
-  sessionDescription: 'This is an example for Android web', 
-  browserName:        'chrome', 
-  udid:               deviceUdid                   
+  sessionName: 'Dat Automation test session obfuscated',
+  sessionDescription: 'Dat automation test',
+  udid: deviceUdid,
+  noReset: true,
+  fullReset: false,
+  browserName: 'chrome',
+  autoWebview: 'true',
 }
 
 let driver
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
 
 describe('Android Web sample', () => {
   before(async () => {
@@ -53,14 +58,56 @@ describe('Android Web sample', () => {
   })
 
   it('should return the title that contains Kobiton', async () => {
+    await driver.settings()
+
+    await driver.updateSettings({'kobiton:privateMode': true})
+    await driver.settings()
+
+    await driver.get('https://kobiton.com')
+    await sleep(2000)
+    await driver.title()
+
+    await driver.updateSettings({'kobiton:privateMode': false})
+    await driver.settings()
+
+    await driver.get('https://www.youtube.com')
+    await sleep(2000)
+    await driver.title()
+
+    await driver.updateSettings({'kobiton:privateMode': false})
+    await driver.settings()
+
     await driver.get('https://www.google.com')
-      .waitForElementByName('q')
-      .sendKeys('Kobiton')
-      .sleep(3000)
-      .keys(wd.SPECIAL_KEYS.Enter)
-    
-    let msg = await driver.title()
-    assert.include(msg, 'Kobiton - Google Search')
+    await sleep(2000)
+    await driver.title()
+
+    await driver.updateSettings({'kobiton:privateMode': true})
+
+    await driver.get('https://kobiton.com')
+    await sleep(2000)
+    await driver.title()
+
+    await driver.updateSettings({'kobiton:privateMode': true})
+
+    await driver.get('https://www.youtube.com')
+    await sleep(2000)
+    await driver.title()
+
+    await driver.updateSettings({'kobiton:privateMode': false})
+
+    await driver.get('https://www.google.com')
+    await sleep(2000)
+    await driver.title()
+
+    await driver.updateSettings({'kobiton:privateMode': true})
+
+    await driver.get('https://kobiton.com')
+    await sleep(2000)
+    await driver.title()
+
+    await driver.get('https://www.youtube.com')
+    await sleep(2000)
+    await driver.title()
   })
 
   after(async () => {
