@@ -33,7 +33,7 @@ public class CallReceiverTest {
             capabilities.setCapability("kobiton:captureScreenshots", true);
 
             // Initialize driver
-            String kobitonServerUrl = "https://sushmakannedari+audio:0f1a47ce-9eda-498a-9905-054154c136f4@api-test-green.kobiton.com/wd/hub";
+            String kobitonServerUrl = "Your_server_url";
             driver = new AndroidDriver(new URL(kobitonServerUrl), capabilities);
             System.out.println("Launching Phone app on Pixel 4...");
 

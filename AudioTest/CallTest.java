@@ -36,7 +36,7 @@ public class CallTest {
             capabilities.setCapability("appium:javascriptEnabled", true);
 
             // Initialize driver
-            String kobitonServerUrl = "https://sushmakannedari+audio:0f1a47ce-9eda-498a-9905-054154c136f4@api-test-green.kobiton.com/wd/hub";
+            String kobitonServerUrl = "Your_server_url";
             driver = new IOSDriver(new URL(kobitonServerUrl), capabilities);
             System.out.println("Driver initialized successfully");
 
