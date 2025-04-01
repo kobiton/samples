@@ -35,7 +35,7 @@ public class CallReceiverTest {
 
             // Initialize driver
             // REPLACE: <user_name>, <api_key>, <api_url> with your Kobiton credentials
-            String kobitonServerUrl = "https://<user_name>:<api_key>c@<api_url>";
+            String kobitonServerUrl = "https://<user_name>:<api_key>@<api_url>";
 
             driver = new AndroidDriver(new URL(kobitonServerUrl), capabilities);
             System.out.println("Launching Phone app on Pixel 4...");

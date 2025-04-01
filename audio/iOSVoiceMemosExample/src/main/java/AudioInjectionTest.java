@@ -36,7 +36,7 @@ public class AudioInjectionTest {
             capabilities.setCapability("appium:javascriptEnabled", true);
 
             // REPLACE: <user_name>, <api_key>, <api_url> with your Kobiton credentials
-            String kobitonServerUrl = "https://<user_name>:<api_key>c@<api_url>";
+            String kobitonServerUrl = "https://<user_name>:<api_key>@<api_url>";
             driver = new IOSDriver(new URL(kobitonServerUrl), capabilities);
             System.out.println("Launching Voice Memos app...");
 
