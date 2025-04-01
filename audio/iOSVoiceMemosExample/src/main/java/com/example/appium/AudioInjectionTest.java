@@ -32,7 +32,7 @@ public class AudioInjectionTest {
             // Removed "logLevel" to reduce Appium debug output; can set to "error" if needed
             capabilities.setCapability("appium:javascriptEnabled", true);
 
-            String kobitonServerUrl = "https://<user>:<api_key>@api-test-green.kobiton.com/wd/hub";
+            String kobitonServerUrl = "https://<user>:<api_key>@api.kobiton.com/wd/hub";
             driver = new IOSDriver(new URL(kobitonServerUrl), capabilities);
             System.out.println("Launching Voice Memos app...");
 
