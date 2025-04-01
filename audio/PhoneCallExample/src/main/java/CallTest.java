@@ -11,8 +11,12 @@ import java.util.Map;
 
 public class CallTest {
     // Constants
-    private static final String PHONE_NUMBER = "4706760652"; // Pixel 4's number
-    private static final String AUDIO_FILE_URL = "https://drive.google.com/uc?export=download&id=1xrT5q3yWjZRt_-V8xSXEEj8FEUKtqDLb";
+    
+    // REPLACE: <phone_number> with the phone number of the device you want to call. +1 is not needed for US number to US number calls
+    private static final String PHONE_NUMBER = "<phone_number>"; // e.g. 1231234567
+    // REPLACE: <audio_file_url> with the URL of the audio file you want to inject
+    // Ensure the URL is accessible and points to a valid audio file (8 kHz, 16-bit, mono PCM WAV format)
+    private static final String AUDIO_FILE_URL = "<audio_file_url>";
     private static final int AUDIO_INJECTION_DURATION_SECONDS = 30;
 
     public static void main(String[] args) {
@@ -23,6 +27,7 @@ public class CallTest {
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setCapability("kobiton:device", "00008110-001119590C62801E"); // iPhone 14
             capabilities.setCapability("appium:deviceName", "iPhone14,4");
+            // BLUETOOTH capability is set to true to enable Bluetooth for the call
             capabilities.setCapability("kobiton:bluetooth", true);
             capabilities.setCapability("appium:bundleId", "com.apple.mobilephone"); // Phone app
             capabilities.setCapability("appium:automationName", "XCUITest");
@@ -36,7 +41,8 @@ public class CallTest {
             capabilities.setCapability("appium:javascriptEnabled", true);
 
             // Initialize driver
-            String kobitonServerUrl = "Your_server_url";
+            // REPLACE: <user_name>, <api_key>, <api_url> with your Kobiton credentials
+            String kobitonServerUrl = "https://<user_name>:<api_key>c@<api_url>";
             driver = new IOSDriver(new URL(kobitonServerUrl), capabilities);
             System.out.println("Driver initialized successfully");
 
@@ -80,6 +86,16 @@ public class CallTest {
             // Poll audio injection status
             Object status = driver.executeScript("kobiton:pollaudioinjection");
             System.out.println("Audio injection status: " + status);
+            /*
+             * RETURNS:
+             * { "state": "INITIALIZATION", "operationResult": { "success": true/false, "msg"="optional error message field" } }
+             * { "state": "DOWNLOAD_START", "operationResult": { "success": true } } 
+             * { "state": "DOWNLOAD_END", "operationResult": { "success": true/false } }
+             * { "state": "INJECT_START", "operationResult": { "success": true } }
+             * { "state": "INJECT_END", "operationResult": { "success": true/false } }
+             * 
+             * FALSE in any state means the audio injection failed or was stopped. 'msg' field is emitted when success is false.
+             */
 
             // End the call using accessibilityId (worked in logs)
             System.out.println("Ending call...");

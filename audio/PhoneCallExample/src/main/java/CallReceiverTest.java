@@ -19,6 +19,7 @@ public class CallReceiverTest {
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setCapability("kobiton:device", "99151FFAZ00AQ5"); // Pixel 4 UDID
             capabilities.setCapability("appium:deviceName", "Pixel 4");
+            // BLUETOOTH capability is set to true to enable Bluetooth for the call. For this call, the audio will be recorded. Recording is default for all bluetooth sessions.
             capabilities.setCapability("kobiton:bluetooth", true);
             capabilities.setCapability("appium:appPackage", "com.google.android.dialer");
             capabilities.setCapability("appium:appActivity", "com.google.android.dialer.extensions.GoogleDialtactsActivity");
@@ -33,7 +34,9 @@ public class CallReceiverTest {
             capabilities.setCapability("kobiton:captureScreenshots", true);
 
             // Initialize driver
-            String kobitonServerUrl = "Your_server_url";
+            // REPLACE: <user_name>, <api_key>, <api_url> with your Kobiton credentials
+            String kobitonServerUrl = "https://<user_name>:<api_key>c@<api_url>";
+
             driver = new AndroidDriver(new URL(kobitonServerUrl), capabilities);
             System.out.println("Launching Phone app on Pixel 4...");
 
