@@ -1,5 +1,6 @@
 .DS_Store
 java/.idea
+.vscode/launch.json
 kobiton-rest-api/upload-app-to-kobiton-apps-repo/java/target
 kobiton-rest-api/upload-app-to-kobiton-apps-repo/java/.idea
 katalon-upload-app/console.properties
@@ -8,3 +9,5 @@ katalon-upload-app/settings/external
 katalon-upload-app/settings/internal
 katalon-upload-app/Profiles/Kobiton.glbl
 katalon-upload-app/.settings
+**/*.class
+java/Cucumber/target/**/*.feature
