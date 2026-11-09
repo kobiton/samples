@@ -1,0 +1,16 @@
+users:
+  standard:
+    username: standard_user
+    password: secret123
+
+products:
+  - {position: 1, name: Backpack,      price: '29.99'}
+  - {position: 2, name: Bike Light,    price: '9.99'}
+  - {position: 3, name: T-Shirt,       price: '15.99'}
+  - {position: 4, name: Fleece Jacket, price: '49.99'}
+  - {position: 5, name: Onesie,        price: '7.99'}
+
+scenarios:
+  checkout:
+    items: [1, 2]
+    confirmation_message: Order placed successfully

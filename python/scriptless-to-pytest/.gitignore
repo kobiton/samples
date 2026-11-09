@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Engine output on failures (source.xml + screenshot.png)
+debug/
+
+# Run reports (JUnit XML etc.)
+reports/
+
+# IDE
+.idea/
+.vscode/

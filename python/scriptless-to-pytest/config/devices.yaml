@@ -1,0 +1,20 @@
+defaults:
+  sessionDescription: ''
+  deviceOrientation: portrait
+  noReset: false
+  fullReset: true
+  captureScreenshots: true
+  newCommandTimeout: 900
+  keepScreenOn: true
+  ensureWebviewsHavePages: true
+  'kobiton:flexCorrect': false
+  'kobiton:includeSystemWindows': true
+  'kobiton:baselineSessionId': 9073267
+  app: 'kobiton-store:v783250'
+  deviceGroup: ORGANIZATION
+
+devices:
+  galaxy_s22_android_16:
+    deviceName: Galaxy S22
+    platformName: Android
+    platformVersion: '16'
